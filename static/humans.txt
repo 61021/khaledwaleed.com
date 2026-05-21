@@ -1,0 +1,10 @@
+/* TEAM */
+Khaled Waleed — Senior Software Engineer
+Site: https://khaledwaleed.com
+Location: Baghdad, Iraq
+
+/* SITE */
+Last update: 2026-05
+Standards: HTML5, CSS3
+Components: SvelteKit 5, Tailwind 4
+Software: Bun, Vite, Netlify

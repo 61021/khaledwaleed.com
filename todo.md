@@ -1,5 +1,0 @@
-- remove languages, irrelevant
-- remove or replace (Linux everywhere in between) it's cringe and immature
-- remove or playing chess badly. coryny and cringe
-- remove Editor Cursor & Neovim, cringe
-- remove or replace “Taste is the only honest CV.”, cringe, maybe replace with I'm worthy because I'm curious, not because I'm smart

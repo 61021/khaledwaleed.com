@@ -34,6 +34,9 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.22.0",
+		"@fontsource/inter": "^5.2.8",
+		"@fontsource/jetbrains-mono": "^5.2.8",
+		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-netlify": "^5.0.0",
 		"@sveltejs/kit": "^2.22.0",
 		"@sveltejs/package": "^2.0.0",
@@ -50,6 +53,8 @@
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
 		"publint": "^0.3.2",
+		"satori": "^0.26.0",
+		"satori-html": "^0.3.2",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^4.0.0",
