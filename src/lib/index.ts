@@ -7,3 +7,4 @@ export { default as Badge } from './components/Badge.svelte';
 export { default as Eyebrow } from './components/Eyebrow.svelte';
 export { default as Terminal } from './components/Terminal.svelte';
 export { default as CommandPalette } from './components/CommandPalette.svelte';
+export { default as ReadingProgress } from './components/ReadingProgress.svelte';

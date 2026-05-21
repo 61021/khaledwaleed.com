@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Container, Eyebrow, Seo, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+	import ReadingProgress from '$lib/components/ReadingProgress.svelte';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -28,6 +29,8 @@
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(articleSchema)}</script>`}
 </svelte:head>
+
+<ReadingProgress />
 
 <section class="py-8">
 	<Container size="prose">

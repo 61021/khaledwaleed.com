@@ -201,6 +201,33 @@ a {
 	animation: blink 1s steps(1) infinite;
 }
 
+/* ---------- View transitions (cross-route fade) ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 220ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-old(root) {
+	animation-name: vt-fade-out;
+}
+::view-transition-new(root) {
+	animation-name: vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+	to {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+}
+@keyframes vt-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,
