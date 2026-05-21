@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { Seo, Container, Eyebrow } from '$lib';
+	import { Seo, Container, PageHeader, Fleuron } from '$lib';
 
 	type Section = {
 		num: string;
 		name: string;
 		kicker: string;
-		intro: string;
-		spotlights?: { title: string; note?: string }[];
-		tags?: string[];
+		items?: string[];
 	};
 
 	const sections: Section[] = [
@@ -15,293 +13,223 @@
 			num: '01',
 			name: 'Mind',
 			kicker: 'Philosophy & quiet obsessions',
-			intro:
-				'I keep returning to writers who refuse to make existence comfortable — the absurdists, the postmodernists, the ones who treat meaning like a question rather than a possession.',
-			spotlights: [
-				{ title: 'Absurdist philosophy', note: 'Camus, the Myth of Sisyphus crowd' },
-				{ title: 'Postmodern anthologies', note: 'essays that dissect modern existence' },
-				{ title: 'Nihilism & meaning', note: 'symposiums, not slogans' }
-			]
+			items: ['Absurdism', 'Existentialism', 'Buddhism']
 		},
 		{
 			num: '02',
 			name: 'Cinema',
 			kicker: 'Directors I rewatch on principle',
-			intro:
-				'Films where the frame does half the talking. I want texture, silence, dread, and a slow camera. The medium is wasted on plot.',
-			spotlights: [
-				{ title: 'Stanley Kubrick', note: '2001 · A Clockwork Orange' },
-				{ title: 'David Lynch', note: 'Mulholland Drive · Twin Peaks · the music too' },
-				{ title: 'Alfred Hitchcock', note: 'Vertigo · Rear Window' },
-				{ title: 'Studio Ghibli', note: 'Spirited Away · Princess Mononoke' },
-				{ title: 'Blade Runner 2049', note: 'futuristic noir as religion' },
-				{ title: 'Antonioni', note: 'alienation, framed' },
-				{ title: 'Fellini', note: 'Italian dreams' }
-			]
+			items: ['Stanley Kubrick', 'David Lynch', 'Studio Ghibli']
 		},
 		{
 			num: '03',
-			name: 'Lens',
-			kicker: 'Photography I stop scrolling for',
-			intro:
-				'Anything with chiaroscuro, weight, and a sense that no one is watching. Portraits that catch a thought, places that feel paused.',
-			tags: [
-				'Close-up portraiture',
-				'Chiaroscuro landscapes',
-				'Liminal spaces',
-				'Urban decay (HDR)',
-				'Abandoned-space street scenes'
+			name: 'Art',
+			kicker: 'Paintings & prose I live inside',
+			items: [
+				'Northern Romantic painting',
+				'Caspar David Friedrich',
+				'Johan Christian Dahl',
+				'Moonlit landscapes',
+				'Shakespearean tragedy',
+				'Ballet, especially Swan Lake'
 			]
 		},
 		{
 			num: '04',
 			name: 'Sound',
 			kicker: 'Listening rooms in my head',
-			intro:
-				'Music that holds a room — modular synths breathing, a horn section thinking out loud, a piano alone in a hall.',
-			spotlights: [
-				{ title: 'Ambient electronic', note: 'live modular synth sets' },
-				{ title: 'Neo-bop jazz', note: 'horn arrangements, sophisticated and unhurried' },
-				{ title: 'Piano & violin chamber', note: 'intimate, solo, no rush' },
-				{ title: 'Improv ensembles', note: 'jazz × classical counterpoint' },
-				{ title: 'Melancholy ambient', note: 'for staring out of trains' }
+			items: [
+				'Classical, all of it',
+				'Progressive metal',
+				'Britpop',
+				'Garage rock revival',
+				'Moody Americana'
 			]
 		},
 		{
 			num: '05',
 			name: 'Style',
 			kicker: 'A dark, tailored world',
-			intro:
-				'A small, repeating wardrobe in dark grey, dark leather, and silk. The goal is to look like you took it seriously without looking like you tried.',
-			spotlights: [
-				{ title: 'Savile Row tailoring', note: 'bespoke or nothing' },
-				{ title: 'Linen pants & dress shirts', note: 'modern cuts' },
-				{ title: 'Hermès silk scarves' },
-				{ title: 'Midnight velvet couture' }
-			],
-			tags: [
-				'Pixel-perfect suits',
+			items: [
+				'Oversized English trousers',
+				'Crisp dress shirts',
+				'Tall coats & capes',
+				'Eyes Wide Shut masks',
+				'Glasses, always',
+				'Artistic rings shaped like animals',
+				'Classical hand-wound watches',
+				'Silver necklaces',
+				'Silver lapel pins & cufflinks',
+				'Victorian-patterned ties',
 				'Fedora hats',
-				'Big black umbrellas',
-				'Dark grey, always',
-				'Silk — clothes, sheets, everything',
-				'Soft dark leather'
+				'Textured leather belts',
+				'Wooden-soled leather shoes',
+				'Long boots',
+				'Raincoats'
 			]
 		},
 		{
 			num: '06',
 			name: 'Space',
 			kicker: 'How a room should feel',
-			intro:
-				'Clean lines, low light, big glass, real trees inside. Scandinavian restraint dropped into an industrial shell, fully automated, quietly alive.',
-			spotlights: [
-				{ title: 'Scandinavian × industrial loft' },
-				{ title: 'Floor-to-ceiling glass walls', note: 'with integrated trees' },
-				{ title: 'Full home automation', note: 'state-of-the-art, invisible' },
-				{ title: 'Living green walls' }
-			],
-			tags: [
-				'Minimalist decor',
-				'Ambient lighting',
-				'Eco-friendly systems',
-				'Curated home projects'
+			items: [
+				'Cozy, small, lived-in rooms',
+				'Patterned wallpaper',
+				'Warm yellow light',
+				'Victorian & Greek detailing',
+				'A real fireplace',
+				'Dark wooden doors',
+				'Archways instead of corners',
+				'Dark wood interiors',
+				'Worn leather',
+				'Indoor plants, everywhere',
+				'Paintings on every wall',
+				'Dead flowers in a vase',
+				'Patterned carpets',
+				'A big TV, sofa pulled close',
+				'A bed too big for the room',
+				'Candles & lanterns',
+				'Detailed spoons & utensils',
+				'A coffee corner',
+				'A shoe-shine corner',
+				'Windows onto trees & train tracks',
+				'Fallen leaves indoors',
+				'Easter eggs scattered through the room',
+				'Hand-painted appliances — fridge, TV, the lot',
+				'Floor-to-ceiling bookshelves',
+				'Wall-sized mirrors in the dressing room',
+				'A big mirrored bathroom',
+				'An oversized shower head'
 			]
 		},
 		{
 			num: '07',
 			name: 'Plate',
 			kicker: 'What I order without reading the menu',
-			intro:
-				'Iraqi food at home, Michelin tasting menus when I travel, a glass of something amber afterwards.',
-			spotlights: [
-				{ title: 'Quzi', note: 'the answer to most questions' },
-				{ title: 'Wrapped grape leaves (dolma)' },
-				{ title: 'Steak — properly rested' },
-				{ title: 'Risotto, done right' },
-				{ title: 'Truffle-infused foie gras' },
-				{ title: 'Decanter-aged single-malt scotch' }
-			],
-			tags: [
-				'Michelin tasting menus',
-				'Molecular fusion',
-				'Seasonal chef menus',
-				'Caesar salad',
-				'Broccoli (yes, broccoli)',
-				'Brandy whiskey',
-				'Jägermeister'
+			items: [
+				'Quzi',
+				'Yalanji',
+				'Steak, rested',
+				'Risotto, done right',
+				'Truffle-infused foie gras',
+				'Decanter-aged single-malt'
 			]
 		},
 		{
 			num: '08',
 			name: 'Road',
 			kicker: 'Engines worth the silence after',
-			intro:
-				'Sports cars with restraint, luxury cars with engineering. And the cabin at full-blast AC, regardless of season.',
-			spotlights: [
-				{ title: 'Porsche 911 Turbo S' },
-				{ title: 'Aston Martin DB11' },
-				{ title: 'Ferrari 488 Pista' },
-				{ title: 'Toyota Crown', note: 'the dark horse' }
-			],
-			tags: ['Sport cars', 'Luxury cars', 'AC at full blast', 'Cabin as cathedral']
+			items: ['Porsche 911 Turbo S', 'Aston Martin DB11', 'Ferrari 488 Pista']
 		},
 		{
 			num: '09',
 			name: 'Wild',
 			kicker: 'Travel, weather, slight danger',
-			intro:
-				'Thunderstorms, foreign alleys at 2am, forests with no service. I like trips that are not quite safe and not quite planned.',
-			spotlights: [
-				{ title: 'Rain & thunderstorms', note: 'the louder the better' },
-				{ title: 'Solo travel in big cities' },
-				{ title: 'Nocturnal urban exploration' },
-				{ title: 'Secret European alleys' },
-				{ title: 'Arboreal retreats', note: 'hidden, off-map' }
-			],
-			tags: ['Liminal-space travel', 'Permaculture gardens', 'Arboreal biodiversity']
+			items: [
+				'Rain & thunderstorms',
+				'Solo travel, big cities',
+				'Nocturnal urban exploration',
+				'Secret European alleys',
+				'Arboreal retreats, off-map',
+				'Deep mountain hikes where no one has been'
+			]
 		},
 		{
 			num: '10',
 			name: 'Body',
-			kicker: 'Discipline as a form of love',
-			intro:
-				'Shredded, mobile, calm. High-intensity work for the body, slow work for the nervous system. Both required.',
-			tags: [
-				'Olympian-grade functional training',
-				'Strength · agility · endurance',
-				'Yoga',
-				'Meditation',
-				'Recovery protocols'
+			kicker: 'A Greek-god frame, earned',
+			items: [
+				'Inhuman training volumes',
+				'Endurance past the point of reason',
+				'Strength as a default state',
+				'Sitting in discomfort, on purpose',
+				'Meditation'
 			]
 		},
 		{
 			num: '11',
 			name: 'Craft',
 			kicker: 'The software taste behind the day job',
-			intro:
-				'Open, owned, and obsessive about the details. Pixel-perfect interfaces sitting on top of small, fast services in Rust and Go.',
-			spotlights: [
-				{ title: 'Open source', note: 'as default' },
-				{ title: 'Self-hosted everything' },
-				{ title: 'Rust & Go microservices', note: 'small, sharp, boring' },
-				{ title: 'Scandinavian-minimal UI frameworks' }
-			],
-			tags: ['Pixel-perfect design', 'Responsive, user-centric', 'Simplicity as a feature']
+			items: [
+				'Linux, always',
+				'Suckless philosophy',
+				'Go, Rust, Svelte',
+				'Open source as default',
+				'Self-hosted everything',
+				'Total control over my stack',
+				'Sorting files and data like a maniac'
+			]
 		}
 	];
 </script>
 
 <Seo
 	title="Likes"
-	description="An evolving, opinionated catalogue of things Khaled Waleed loves — cinema, music, style, food, travel, design, and everything in between."
+	description="An evolving, opinionated catalogue of things Khaled Waleed loves — cinema, music, style, food, design, and everything in between."
 />
 
-<Container>
-	<!-- ============ Hero ============ -->
-	<section class="animate-fade-up max-w-3xl space-y-6">
-		<Eyebrow label="~/likes" />
-		<h1 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl lg:text-6xl">
-			A short catalogue of <em class="font-bold text-[var(--brand)] not-italic">obsessions</em>.
-		</h1>
-		<p class="text-lg leading-relaxed text-[var(--fg-muted)]">
-			Not a list — a map. The films I rewatch, the music I think in, the cars I'd own if I were
-			unreasonable, the food I'd order anywhere. Updated whenever something earns its place.
+<PageHeader
+	room="likes"
+	eyebrow="a catalogue of obsessions"
+	title="Likes"
+>
+	{#snippet lede()}
+		<p>
+			A scattered, unfinished sketch — not a manifesto, not a polished self-portrait.
+			Just the films, sounds, books, rooms, and small obsessions that happen to be
+			circling my head right now. Random by design, immature on purpose, and never
+			meant to be anything else. Updated whenever something earns its place — or quietly
+			loses it.
 		</p>
-	</section>
+	{/snippet}
+</PageHeader>
 
-	<!-- ============ Section index ============ -->
-	<nav aria-label="Sections" class="mt-14">
-		<ul class="flex flex-wrap gap-x-5 gap-y-2 border-y border-[var(--border)] py-4">
+<Container size="prose">
+	<!-- Section index -->
+	<nav aria-label="Sections" class="rise-3 mt-10">
+		<ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 smallcaps">
 			{#each sections as s}
 				<li>
-					<a
-						href="#{s.name.toLowerCase()}"
-						class="group flex items-baseline gap-1.5 text-sm text-[var(--fg-muted)] transition-colors hover:text-[var(--brand)]"
-					>
-						<span class="font-mono text-[10px] text-[var(--fg-dim)] group-hover:text-[var(--brand)]"
-							>{s.num}</span
-						>
-						<span>{s.name}</span>
-					</a>
+					<a href={`#${s.name.toLowerCase()}`} class="link-quiet">{s.name}</a>
 				</li>
 			{/each}
 		</ul>
 	</nav>
 
-	<!-- ============ Sections ============ -->
-	<div class="mt-20 space-y-24 sm:space-y-28">
+	<Fleuron />
+
+	<div class="rise space-y-16">
 		{#each sections as s, i}
-			<section id={s.name.toLowerCase()} class="scroll-mt-24">
-				<!-- header row -->
-				<div class="grid gap-8 lg:grid-cols-12">
-					<div class="space-y-5 lg:col-span-5">
-						<div class="flex items-baseline gap-4">
-							<span class="font-mono text-sm text-[var(--brand)]">{s.num}</span>
-							<span class="h-px flex-1 bg-[var(--border)]"></span>
-							<span class="font-mono text-[11px] tracking-widest text-[var(--fg-dim)] uppercase"
-								>{s.kicker}</span
-							>
-						</div>
-						<h2 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl">
-							{s.name}.
-						</h2>
-						<p class="text-[var(--fg-muted)]">{s.intro}</p>
-					</div>
-
-					<!-- content -->
-					<div class="space-y-5 lg:col-span-7">
-						{#if s.spotlights}
-							<div class="grid gap-3 sm:grid-cols-2">
-								{#each s.spotlights as item, j}
-									<div
-										class="surface surface-hover group relative overflow-hidden p-5"
-										style="animation-delay: {j * 40}ms"
-									>
-										<div class="flex items-start gap-3">
-											<span
-												class="mt-0.5 font-mono text-[10px] text-[var(--fg-dim)] transition-colors group-hover:text-[var(--brand)]"
-											>
-												{String(j + 1).padStart(2, '0')}
-											</span>
-											<div class="min-w-0">
-												<div class="font-medium text-[var(--fg)]">{item.title}</div>
-												{#if item.note}
-													<div class="mt-1 text-sm text-[var(--fg-muted)]">{item.note}</div>
-												{/if}
-											</div>
-										</div>
-									</div>
-								{/each}
-							</div>
-						{/if}
-
-						{#if s.tags}
-							<div class="flex flex-wrap gap-1.5">
-								{#each s.tags as t}
-									<span
-										class="rounded-full border border-[var(--border)] bg-white/[0.02] px-3 py-1 text-xs text-[var(--fg-muted)] transition-colors hover:border-[var(--brand)]/40 hover:text-[var(--fg)]"
-									>
-										{t}
-									</span>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				</div>
+			<section id={s.name.toLowerCase()} class="scroll-mt-20">
+				<div class="smallcaps">{s.num} · {s.kicker}</div>
+				<h2
+					class="mt-2 italic text-[var(--ink)]"
+					style="font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;"
+				>
+					{s.name}.
+				</h2>
+				{#if s.items && s.items.length}
+					<ul class="mt-5 flex flex-wrap gap-x-3 gap-y-1 leading-relaxed text-[var(--ink-muted)]">
+						{#each s.items as it, j}
+							<li>
+								{it}{#if j < s.items.length - 1}<span class="ml-3 text-[var(--rule)]">·</span>{/if}
+							</li>
+						{/each}
+					</ul>
+				{/if}
+				{#if i < sections.length - 1}
+					<div class="mt-12 rule-fine"></div>
+				{/if}
 			</section>
 		{/each}
 	</div>
 
-	<!-- ============ Sign-off ============ -->
-	<section class="mt-28 border-t border-[var(--border)] pt-12">
-		<figure class="mx-auto max-w-2xl text-center">
-			<blockquote class="text-xl leading-relaxed text-[var(--fg)] sm:text-2xl">
-				<span class="text-[var(--brand)]">“</span>I'm worthy because I'm curious, not because I'm
-				smart.<span class="text-[var(--brand)]">”</span>
-			</blockquote>
-			<figcaption class="mt-4 font-mono text-xs tracking-widest text-[var(--fg-dim)] uppercase">
-				— a note to self
-			</figcaption>
-		</figure>
-	</section>
+	<Fleuron />
+
+	<figure class="rise mx-auto max-w-md text-center">
+		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.35rem; line-height: 1.5;">
+			I am worthy because I am curious, not because I am clever.
+		</blockquote>
+		<figcaption class="mt-4 smallcaps">a note to self</figcaption>
+	</figure>
 </Container>

@@ -24,15 +24,15 @@
 	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
 </svelte:head>
 
-<nav aria-label="Breadcrumb" class="text-sm">
-	<ol class="flex flex-wrap items-center gap-2 text-[var(--fg-dim)]">
+<nav aria-label="Breadcrumb" class="smallcaps">
+	<ol class="flex flex-wrap items-center gap-x-2">
 		{#each items as item, i (item.href)}
 			<li class="flex items-center gap-2">
 				{#if i < items.length - 1}
-					<a href={item.href} class="hover:text-[var(--fg)] transition-colors">{item.name}</a>
-					<span aria-hidden="true" class="text-[var(--fg-dim)]/50">/</span>
+					<a href={item.href} class="link-quiet">{item.name}</a>
+					<span aria-hidden="true" class="text-[var(--rule)]">·</span>
 				{:else}
-					<span class="text-[var(--fg-muted)]" aria-current="page">{item.name}</span>
+					<span aria-current="page" class="text-[var(--ink-muted)]">{item.name}</span>
 				{/if}
 			</li>
 		{/each}
