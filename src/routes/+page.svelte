@@ -45,8 +45,7 @@
 			<p class="max-w-xl text-lg leading-relaxed text-[var(--fg-muted)]">
 				I design and ship modern web apps end to end — <span class="text-[var(--fg)]">SvelteKit</span>
 				and <span class="text-[var(--fg)]">Nuxt</span> on the frontend,
-				<span class="text-[var(--fg)]">Go</span> on the backend, Linux everywhere in between. Currently
-				building at
+				<span class="text-[var(--fg)]">Go</span> on the backend. Currently building at
 				<a href="https://qi.iq" target="_blank" rel="noopener" class="text-[var(--brand)] hover:underline">Qi</a>
 				and
 				<a href="https://vitex.dev" target="_blank" rel="noopener" class="text-[var(--brand)] hover:underline">Vitex</a>.
@@ -71,8 +70,6 @@
 				</span>
 				<span class="text-[var(--border-strong)]">·</span>
 				<span>5+ years experience</span>
-				<span class="text-[var(--border-strong)]">·</span>
-				<span>EN / AR</span>
 			</div>
 		</div>
 

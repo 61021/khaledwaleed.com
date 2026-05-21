@@ -30,13 +30,11 @@
 		Frontend: ['TypeScript', 'SvelteKit', 'Nuxt.js', 'Vue', 'React', 'Tailwind CSS', 'Vite'],
 		Backend: ['Go', 'Node.js', 'PostgreSQL', 'Redis', 'REST APIs', 'gRPC'],
 		Platform: ['Docker', 'Kubernetes', 'CI/CD', 'Nginx', 'AWS', 'Linux'],
-		Tooling: ['Git', 'Neovim', 'Cursor', 'Fish', 'Arch Linux']
+		Tooling: ['Git', 'Fish', 'Arch Linux']
 	};
 
 	const facts = [
 		{ label: 'Based in', value: `${site.location.city}, ${site.location.country}` },
-		{ label: 'Languages', value: 'English · Arabic' },
-		{ label: 'Editor', value: 'Cursor & Neovim' },
 		{ label: 'OS', value: 'Arch Linux (Hyprland)' },
 		{ label: 'Currently learning', value: 'Distributed systems · Rust' },
 		{ label: 'Open to', value: 'Senior roles · consulting · contracts' }
@@ -64,15 +62,15 @@
 			</p>
 			<p>
 				Most of my work lives at the intersection of <span class="text-[var(--fg)]">SvelteKit / Nuxt</span> on the
-				frontend and <span class="text-[var(--fg)]">Go</span> on the backend, glued together with Linux,
-				containers and good taste. Right now I'm building things I'm proud of at
+				frontend and <span class="text-[var(--fg)]">Go</span> on the backend. Right now I'm building things
+				I'm proud of at
 				<a href="https://qi.iq" target="_blank" rel="noopener" class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]">Qi</a>
 				and
 				<a href="https://vitex.dev" target="_blank" rel="noopener" class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]">Vitex</a>.
 			</p>
 			<p>
-				Outside of work I'm usually tinkering with my Arch setup, reading something nerdy, or playing chess
-				badly. If any of this sounds like your kind of person —
+				Outside of work I'm usually deep in a book, chasing a side project, or somewhere I haven't been
+				before. If any of this sounds like your kind of person —
 				<a href="/contact" class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]">let's talk</a>.
 			</p>
 		</div>
