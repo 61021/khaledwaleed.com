@@ -1,0 +1,31 @@
+# Khaled Waleed
+
+> Senior Software Engineer based in Baghdad, Iraq. Five years shipping production web apps with SvelteKit, Nuxt, and Go. Currently building at Qi and Vitex.
+
+## About
+
+- Name: Khaled Waleed
+- Role: Senior Software Engineer
+- Location: Baghdad, Iraq
+- Stack: SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Docker, Linux
+- Languages: English, Arabic
+- Site: https://khaledwaleed.com
+- Contact: contact@khaledwaleed.com
+
+## Key pages
+
+- [Home](https://khaledwaleed.com/): Overview, current work, stack.
+- [About](https://khaledwaleed.com/about): Background, experience, skills.
+- [Writing](https://khaledwaleed.com/writing): Short, opinionated essays on engineering, hiring, and working from Iraq.
+- [Likes](https://khaledwaleed.com/likes): A short list of tools, books and ideas I recommend.
+- [Contact](https://khaledwaleed.com/contact): Email and direct links.
+
+## Writing
+
+- [Hiring senior engineers in Iraq](https://khaledwaleed.com/writing/hiring-senior-engineers-in-iraq): Notes on the Iraqi tech market from inside it.
+- [The cost of a slow page](https://khaledwaleed.com/writing/the-cost-of-a-slow-page): Why page speed is a business metric, not a vanity one.
+- [Building for the web from Baghdad](https://khaledwaleed.com/writing/building-for-the-web-from-baghdad): Working as a senior engineer from Iraq — tooling, trade-offs, client expectations.
+
+## Sitemap
+
+https://khaledwaleed.com/sitemap.xml
