@@ -7,7 +7,7 @@ export const site = {
 	tagline:
 		'Senior software engineer from Baghdad, Iraq — building fast SvelteKit & Go systems for Qi and Vitex.',
 	shortBio:
-		'I design and ship modern web apps end to end: SvelteKit and Nuxt on the frontend, Go on the backend, Linux everywhere in between.',
+		'I design and ship modern web apps end to end: SvelteKit and Nuxt on the frontend, Go on the backend.',
 	location: {
 		city: 'Baghdad',
 		country: 'Iraq',
