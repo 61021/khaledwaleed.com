@@ -6,7 +6,6 @@
 	import '@fontsource/eb-garamond/500-italic.css';
 	import '@fontsource/cormorant-garamond/400-italic.css';
 	import '@fontsource/cormorant-garamond/500.css';
-	import '@fontsource/cormorant-garamond/500-italic.css';
 	import '@fontsource/cormorant-sc/400.css';
 
 	import { page } from '$app/stores';

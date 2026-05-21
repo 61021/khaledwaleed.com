@@ -165,7 +165,7 @@
 
 <Seo
 	title="Likes"
-	description="An evolving, opinionated catalogue of things Khaled Waleed loves — cinema, music, style, food, design, and everything in between."
+	description="A scattered, evolving catalogue of Khaled Waleed's obsessions — cinema, music, art, style, food, philosophy, and everything in between."
 />
 
 <PageHeader
