@@ -34,7 +34,10 @@ async function getOriginalImageUrl(title: string): Promise<string> {
 		headers: { 'User-Agent': 'khaledwaleed.com painting fetcher (contact@khaledwaleed.com)' }
 	});
 	if (!res.ok) throw new Error(`summary ${title} ${res.status}`);
-	const json = (await res.json()) as { originalimage?: { source: string }; thumbnail?: { source: string } };
+	const json = (await res.json()) as {
+		originalimage?: { source: string };
+		thumbnail?: { source: string };
+	};
 	const src = json.originalimage?.source ?? json.thumbnail?.source;
 	if (!src) throw new Error(`no image for ${title}`);
 	return src;
@@ -88,9 +91,7 @@ async function main() {
 			console.log(`  url: ${url}`);
 			const src = await download(url);
 			const out = await process(p.slug, src);
-			console.log(
-				`  ✓ ${out.width}×${out.height}, avif ${out.avifKb}kb, webp ${out.webpKb}kb`
-			);
+			console.log(`  ✓ ${out.width}×${out.height}, avif ${out.avifKb}kb, webp ${out.webpKb}kb`);
 		} catch (e) {
 			console.error(`  ✗ ${p.slug}: ${(e as Error).message}`);
 		}

@@ -80,7 +80,13 @@ export const GET: RequestHandler = async () => {
 				'KW'
 			),
 			el('div', {
-				style: { display: 'flex', height: '1px', width: '80px', background: '#d9b66c', opacity: 0.6 }
+				style: {
+					display: 'flex',
+					height: '1px',
+					width: '80px',
+					background: '#d9b66c',
+					opacity: 0.6
+				}
 			}),
 			el(
 				'div',
