@@ -6,3 +6,4 @@ export { default as Button } from './components/Button.svelte';
 export { default as Badge } from './components/Badge.svelte';
 export { default as Eyebrow } from './components/Eyebrow.svelte';
 export { default as Terminal } from './components/Terminal.svelte';
+export { default as CommandPalette } from './components/CommandPalette.svelte';
