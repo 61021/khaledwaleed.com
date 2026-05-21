@@ -51,7 +51,7 @@
 	<!-- Header -->
 	<section class="animate-fade-up space-y-6">
 		<Eyebrow label="~/about" />
-		<h1 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl">Hey, I'm Khaled.</h1>
+		<h1 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl">Hey</h1>
 		<div class="max-w-2xl space-y-5 text-lg leading-relaxed text-[var(--fg-muted)]">
 			<p>
 				I'm a senior software engineer based in <span class="text-[var(--fg)]"

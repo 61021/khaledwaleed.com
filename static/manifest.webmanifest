@@ -1,0 +1,15 @@
+{
+	"name": "Khaled Waleed",
+	"short_name": "Khaled W",
+	"description": "Senior software engineer from Baghdad, Iraq.",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#07090c",
+	"theme_color": "#07090c",
+	"orientation": "portrait",
+	"icons": [
+		{ "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+		{ "src": "/avatar.svg", "type": "image/svg+xml", "sizes": "512x512", "purpose": "maskable" }
+	]
+}
