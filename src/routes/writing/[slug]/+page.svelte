@@ -91,6 +91,77 @@
 						instead of a thread, I'd rather put it on my own domain than rent it on someone else's
 						platform.
 					</p>
+				{:else if post.slug === 'the-cost-of-a-slow-page'}
+					<p>
+						A slow page is a tax. You pay it on every user, every session, every retry. The
+						bill arrives quietly — as a slightly lower conversion rate, a slightly higher
+						bounce, a slightly less patient customer — and most teams never trace it back to
+						the source.
+					</p>
+					<h2>What "slow" actually means</h2>
+					<p>
+						The number that matters is not your local lab score. It is the 75th-percentile
+						Largest Contentful Paint on a mid-range Android over a flaky 4G connection. If you
+						are building for the global web — and most of us are — that is your user. They are
+						not on a MacBook Pro on fibre.
+					</p>
+					<p>
+						Aim for LCP under 2.5 seconds at the 75th percentile. Interaction-to-next-paint
+						under 200 ms. Cumulative layout shift under 0.1. Anything worse and you are
+						leaving money on the table.
+					</p>
+					<h2>Where the time actually goes</h2>
+					<p>
+						In ninety percent of real-world apps, the bottleneck is one of four things: too
+						much JavaScript, render-blocking fonts, oversized images, or a slow server. Fix
+						those four in order and you have already beaten most of the web.
+					</p>
+					<h2>The discipline part</h2>
+					<p>
+						Performance is not a one-time clean-up. It is a budget you defend on every pull
+						request. Once a page is fast, the only way it stays fast is if someone owns the
+						number. Track it like you track errors. Regress and revert.
+					</p>
+				{:else if post.slug === 'hiring-senior-engineers-in-iraq'}
+					<p>
+						The Iraqi tech market is younger than the engineers building it. There are
+						excellent people here. There are also a lot of teams hiring badly and wondering
+						why the seniors they meet do not feel senior. I have been on both sides of that
+						interview table. A few notes from inside.
+					</p>
+					<h2>Title inflation is the default</h2>
+					<p>
+						"Senior" in Baghdad often means three years of experience and the willingness to
+						run a small team. That is fine for some companies. It is not fine if you are
+						hiring against a global standard and paying global rates. Calibrate against what
+						the role actually has to ship, not what the resume says.
+					</p>
+					<h2>The shortlist is smaller than you think</h2>
+					<p>
+						The pool of engineers in Iraq who have shipped production systems for international
+						users at scale is small. Most of them are not on LinkedIn. They are working
+						quietly, usually for a foreign company, usually already paid well. Finding them
+						requires referrals, not job boards.
+					</p>
+					<h2>What actually retains people</h2>
+					<p>
+						In order: meaningful work, a manager who can read code, predictable pay in a
+						stable currency, async culture, and equipment that does not get in the way.
+						Pingpong tables and snacks rank below all of these. Far below.
+					</p>
+					<h2>If you are hiring</h2>
+					<p>
+						Write a clear job description. Pay above the local market and below the SF
+						market. Interview for the work the role will actually do — not for whiteboard
+						trivia. Move fast. The best Iraqi seniors have offers within days of starting to
+						look.
+					</p>
+					<h2>If you are an engineer here</h2>
+					<p>
+						Build in public, even quietly. Keep a portfolio of real systems, not toy projects.
+						Write English well — the kind that travels through Slack at three in the morning.
+						The opportunities are there. They are just not where most people are looking.
+					</p>
 				{/if}
 			</div>
 

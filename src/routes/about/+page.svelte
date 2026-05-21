@@ -39,6 +39,23 @@
 		{ label: 'Currently learning', value: 'Distributed systems · Rust' },
 		{ label: 'Open to', value: 'Senior roles · consulting · contracts' }
 	];
+
+	const profilePageSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'ProfilePage',
+		'@id': `${site.url}/about#profile`,
+		url: `${site.url}/about`,
+		name: `About ${site.name}`,
+		dateModified: '2026-05-21',
+		mainEntity: { '@id': `${site.url}/#person` },
+		breadcrumb: {
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+				{ '@type': 'ListItem', position: 2, name: 'About', item: `${site.url}/about` }
+			]
+		}
+	};
 </script>
 
 <Seo
@@ -46,6 +63,10 @@
 	description="About Khaled Waleed — a senior software engineer based in Baghdad, Iraq. Five years building production web apps with SvelteKit, Nuxt and Go."
 	type="profile"
 />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(profilePageSchema)}</script>`}
+</svelte:head>
 
 <Container>
 	<!-- Header -->
