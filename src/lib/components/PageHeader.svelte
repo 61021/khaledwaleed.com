@@ -50,9 +50,10 @@
 	}
 
 	.lede :global(p) {
-		font-size: 1.25rem;
-		font-style: italic;
+		font-family: var(--font-body);
+		font-size: 1.2rem;
+		font-style: normal;
 		color: var(--ink-muted);
-		line-height: 1.6;
+		line-height: 1.7;
 	}
 </style>

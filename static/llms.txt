@@ -22,7 +22,7 @@
 - /writing/the-cost-of-a-slow-page — Why page speed is a tax on the whole business.
 - /writing/building-for-the-web-from-baghdad — Shipping production software from Iraq.
 - /now — What I'm working on, building, reading, learning right now. Updated periodically.
-- /likes — An evolving catalogue of obsessions: cinema, music, food, design.
+- /likes — A scattered catalogue of obsessions: cinema, music, art, style, food, philosophy.
 - /contact — Email, LinkedIn, Telegram, WhatsApp, GitHub.
 - /rss.xml — RSS feed for the writing.
 
