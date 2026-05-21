@@ -3,7 +3,7 @@ import { posts } from '$lib/posts';
 
 export const prerender = true;
 
-const staticRoutes = ['/', '/about', '/likes', '/contact', '/writing'];
+const staticRoutes = ['/', '/about', '/now', '/likes', '/contact', '/writing'];
 
 export const GET = () => {
 	const now = new Date().toISOString();

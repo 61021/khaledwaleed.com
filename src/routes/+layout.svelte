@@ -9,6 +9,7 @@
 	import '@fontsource/jetbrains-mono/500.css';
 	import '@fontsource/jetbrains-mono/600.css';
 	import { page } from '$app/stores';
+	import { onNavigate } from '$app/navigation';
 	import { JsonLd, Container, CommandPalette, site } from '$lib';
 
 	let { children } = $props();
@@ -17,10 +18,30 @@
 		window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
 	}
 
+	onNavigate((navigation) => {
+		if (typeof document === 'undefined') return;
+		// @ts-expect-error - View Transitions API not yet in lib.dom
+		if (!document.startViewTransition) return;
+		if (
+			typeof window !== 'undefined' &&
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches
+		)
+			return;
+
+		return new Promise((resolve) => {
+			// @ts-expect-error - View Transitions API not yet in lib.dom
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
+
 	const nav = [
 		{ name: 'Home', href: '/' },
 		{ name: 'About', href: '/about' },
 		{ name: 'Writing', href: '/writing' },
+		{ name: 'Now', href: '/now' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Contact', href: '/contact' }
 	];

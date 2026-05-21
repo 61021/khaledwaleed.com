@@ -15,6 +15,7 @@
 		{ id: 'home', title: 'Home', subtitle: 'Overview', href: '/', kind: 'page' },
 		{ id: 'about', title: 'About', subtitle: 'Background & experience', href: '/about', kind: 'page' },
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
+		{ id: 'now', title: 'Now', subtitle: 'What I’m working on right now', href: '/now', kind: 'page', keywords: 'current today recent' },
 		{ id: 'likes', title: 'Likes', subtitle: 'Tools & recommendations', href: '/likes', kind: 'page' },
 		{ id: 'contact', title: 'Contact', subtitle: 'Get in touch', href: '/contact', kind: 'page' },
 		...posts.map(

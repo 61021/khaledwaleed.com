@@ -17,6 +17,7 @@
 - [Home](https://khaledwaleed.com/): Overview, current work, stack.
 - [About](https://khaledwaleed.com/about): Background, experience, skills.
 - [Writing](https://khaledwaleed.com/writing): Short, opinionated essays on engineering, hiring, and working from Iraq.
+- [Now](https://khaledwaleed.com/now): What I'm working on, building, reading and learning right now.
 - [Likes](https://khaledwaleed.com/likes): A short list of tools, books and ideas I recommend.
 - [Contact](https://khaledwaleed.com/contact): Email and direct links.
 
