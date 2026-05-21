@@ -9,9 +9,13 @@
 	import '@fontsource/jetbrains-mono/500.css';
 	import '@fontsource/jetbrains-mono/600.css';
 	import { page } from '$app/stores';
-	import { JsonLd, Container, site } from '$lib';
+	import { JsonLd, Container, CommandPalette, site } from '$lib';
 
 	let { children } = $props();
+
+	function openPalette() {
+		window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }));
+	}
 
 	const nav = [
 		{ name: 'Home', href: '/' },
@@ -28,6 +32,7 @@
 </script>
 
 <JsonLd />
+<CommandPalette />
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -49,23 +54,34 @@
 					<span class="text-[var(--fg)]">khaled</span>
 				</a>
 
-				<nav aria-label="Primary" class="flex items-center gap-1">
-					{#each nav as item, i (item.name)}
-						{@const active = isActive(item.href, $page.url.pathname)}
-						<a
-							href={item.href}
-							class="relative rounded-lg px-3 py-1.5 text-sm transition-colors duration-200 {active
-								? 'text-[var(--fg)]'
-								: 'text-[var(--fg-dim)] hover:text-[var(--fg)]'}"
-							aria-current={active ? 'page' : undefined}
-						>
-							{item.name}
-							{#if active}
-								<span class="absolute inset-x-3 -bottom-0.5 h-px bg-[var(--brand)]"></span>
-							{/if}
-						</a>
-					{/each}
-				</nav>
+				<div class="flex items-center gap-1">
+					<nav aria-label="Primary" class="flex items-center gap-1">
+						{#each nav as item, i (item.name)}
+							{@const active = isActive(item.href, $page.url.pathname)}
+							<a
+								href={item.href}
+								class="relative rounded-lg px-3 py-1.5 text-sm transition-colors duration-200 {active
+									? 'text-[var(--fg)]'
+									: 'text-[var(--fg-dim)] hover:text-[var(--fg)]'}"
+								aria-current={active ? 'page' : undefined}
+							>
+								{item.name}
+								{#if active}
+									<span class="absolute inset-x-3 -bottom-0.5 h-px bg-[var(--brand)]"></span>
+								{/if}
+							</a>
+						{/each}
+					</nav>
+					<button
+						type="button"
+						onclick={openPalette}
+						aria-label="Open command palette"
+						class="ml-2 hidden items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)]/60 px-2 py-1 font-mono text-[11px] text-[var(--fg-dim)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--fg-muted)] sm:inline-flex"
+					>
+						<span aria-hidden="true">⌘</span>
+						<span>K</span>
+					</button>
+				</div>
 			</div>
 		</Container>
 	</header>
