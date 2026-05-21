@@ -1,32 +1,34 @@
-# Khaled Waleed
+# khaledwaleed.com
 
-> Senior Software Engineer based in Baghdad, Iraq. Five years shipping production web apps with SvelteKit, Nuxt, and Go. Currently building at Qi and Vitex.
+> A small, hand-built site by Khaled Waleed — senior software engineer in
+> Baghdad. Quiet pages, one painting each, plain serif text. SvelteKit & Go
+> for the day job; essays, notes, and lists for the rest.
 
 ## About
 
 - Name: Khaled Waleed
 - Role: Senior Software Engineer
 - Location: Baghdad, Iraq
-- Stack: SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Docker, Linux
-- Languages: English, Arabic
-- Site: https://khaledwaleed.com
-- Contact: contact@khaledwaleed.com
+- Working at: Qi (qi.iq), Vitex (vitex.dev)
+- Stack: SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux
+- Email: contact@khaledwaleed.com
 
-## Key pages
+## Pages
 
-- [Home](https://khaledwaleed.com/): Overview, current work, stack.
-- [About](https://khaledwaleed.com/about): Background, experience, skills.
-- [Writing](https://khaledwaleed.com/writing): Short, opinionated essays on engineering, hiring, and working from Iraq.
-- [Now](https://khaledwaleed.com/now): What I'm working on, building, reading and learning right now.
-- [Likes](https://khaledwaleed.com/likes): A short list of tools, books and ideas I recommend.
-- [Contact](https://khaledwaleed.com/contact): Email and direct links.
+- / — Home. Bio, current work, what I build.
+- /about — Background, experience, toolkit.
+- /writing — Essays and notes on software engineering.
+- /writing/hiring-senior-engineers-in-iraq — Hiring seniors in the Iraqi market.
+- /writing/the-cost-of-a-slow-page — Why page speed is a tax on the whole business.
+- /writing/building-for-the-web-from-baghdad — Shipping production software from Iraq.
+- /now — What I'm working on, building, reading, learning right now. Updated periodically.
+- /likes — An evolving catalogue of obsessions: cinema, music, food, design.
+- /contact — Email, LinkedIn, Telegram, WhatsApp, GitHub.
+- /rss.xml — RSS feed for the writing.
 
-## Writing
+## Style note
 
-- [Hiring senior engineers in Iraq](https://khaledwaleed.com/writing/hiring-senior-engineers-in-iraq): Notes on the Iraqi tech market from inside it.
-- [The cost of a slow page](https://khaledwaleed.com/writing/the-cost-of-a-slow-page): Why page speed is a business metric, not a vanity one.
-- [Building for the web from Baghdad](https://khaledwaleed.com/writing/building-for-the-web-from-baghdad): Working as a senior engineer from Iraq — tooling, trade-offs, client expectations.
-
-## Sitemap
-
-https://khaledwaleed.com/sitemap.xml
+Each page is paired with one public-domain Northern Romantic painting
+(Friedrich, Dahl, Spitzweg). The site is set in EB Garamond and Cormorant
+Garamond. There is no JavaScript framework chrome on display — only text,
+paintings, and quiet rules.

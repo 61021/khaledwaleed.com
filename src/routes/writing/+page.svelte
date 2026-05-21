@@ -1,67 +1,63 @@
 <script lang="ts">
-	import { Container, Eyebrow, Seo, site } from '$lib';
+	import { Container, Seo, PageHeader, Fleuron, site } from '$lib';
 	import { posts } from '$lib/posts';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
-
-	const url = `${site.url}/writing`;
 </script>
 
 <Seo
 	title="Writing — Khaled Waleed"
-	description="Essays and notes on software engineering, web performance, and building from Iraq."
-	canonical={url}
+	description="Short essays on software engineering, performance, and building from Baghdad."
 />
 
-<section class="py-8">
-	<Container>
+<PageHeader
+	room="writing"
+	eyebrow="essays · notes"
+	title="Writing"
+>
+	{#snippet lede()}
+		<p>
+			Short, opinionated pieces on shipping software — performance, architecture, and the
+			realities of building remotely from Baghdad.
+		</p>
+	{/snippet}
+</PageHeader>
+
+<Container size="prose">
+	<div class="rise-3 mt-10">
 		<Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Writing', href: '/writing' }]} />
+	</div>
 
-		<header class="mt-8 mb-14 max-w-2xl animate-fade-up">
-			<Eyebrow>/writing</Eyebrow>
-			<h1 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-[var(--fg)]">
-				Notes from the workbench.
-			</h1>
-			<p class="mt-4 text-lg text-[var(--fg-muted)] leading-relaxed">
-				Short, opinionated pieces on shipping software — performance, architecture, and the realities
-				of building remotely from Baghdad.
-			</p>
-			<a
-				href="/rss.xml"
-				class="mt-5 inline-flex items-center gap-2 text-xs font-mono text-[var(--fg-dim)] hover:text-[var(--brand)] transition-colors"
-			>
-				<span aria-hidden="true">↯</span> Subscribe via RSS
-			</a>
-		</header>
+	<Fleuron />
 
-		<ol class="border-t border-[var(--border)]">
-			{#each posts as post (post.slug)}
-				<li class="border-b border-[var(--border)] group">
-					<a
-						href={`/writing/${post.slug}`}
-						class="flex flex-col gap-2 py-8 transition-colors hover:bg-[var(--bg-subtle)]/40 px-2 -mx-2 rounded-lg"
+	<ol class="rise space-y-12">
+		{#each posts as post (post.slug)}
+			<li>
+				<a href={`/writing/${post.slug}`} class="group block">
+					<div class="smallcaps">
+						<time datetime={post.date}>{post.date}</time>
+						<span class="mx-2 text-[var(--rule)]">·</span>
+						<span>{post.readingTime}</span>
+					</div>
+					<h2
+						class="mt-3 italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+						style="font-family: var(--font-display); font-size: clamp(1.6rem, 3vw + 0.5rem, 2.25rem); line-height: 1.15;"
 					>
-						<div class="flex items-baseline gap-4 text-xs font-mono text-[var(--fg-dim)]">
-							<time datetime={post.date}>{post.date}</time>
-							<span>·</span>
-							<span>{post.readingTime}</span>
-						</div>
-						<h2
-							class="text-2xl md:text-3xl font-semibold text-[var(--fg)] group-hover:text-[var(--brand)] transition-colors"
-						>
-							{post.title}
-						</h2>
-						<p class="text-[var(--fg-muted)] leading-relaxed max-w-2xl">{post.description}</p>
-						<div class="mt-2 flex flex-wrap gap-2">
-							{#each post.tags as tag (tag)}
-								<span
-									class="text-xs font-mono px-2 py-0.5 rounded-full border border-[var(--border)] text-[var(--fg-dim)]"
-									>{tag}</span
-								>
-							{/each}
-						</div>
-					</a>
-				</li>
-			{/each}
-		</ol>
-	</Container>
-</section>
+						{post.title}
+					</h2>
+					<p class="mt-3 leading-relaxed text-[var(--ink-muted)]">{post.description}</p>
+					<div class="mt-3 smallcaps">
+						{post.tags.join(' · ')}
+					</div>
+				</a>
+			</li>
+		{/each}
+	</ol>
+
+	<Fleuron />
+
+	<div class="rise text-center">
+		<a href="/rss.xml" class="smallcaps link-quiet">
+			subscribe via rss
+		</a>
+	</div>
+</Container>

@@ -1,33 +1,36 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Seo, Container, Button } from '$lib';
+	import { Seo, Container, Button, PageHeader, Fleuron } from '$lib';
 </script>
 
 <Seo title="Page not found" noindex />
 
-<Container>
-	<section class="animate-fade-up py-12 text-center sm:py-20">
-		<div class="font-mono text-7xl font-bold text-[var(--brand)] sm:text-8xl">
-			{$page.status}
-		</div>
-		<h1 class="mt-6 text-3xl font-semibold tracking-tight text-[var(--fg)] sm:text-4xl">
-			{$page.status === 404 ? 'Page not found.' : 'Something went wrong.'}
-		</h1>
-		<p class="mx-auto mt-4 max-w-md text-[var(--fg-muted)]">
+<PageHeader
+	room="404"
+	eyebrow="not found"
+	title={$page.status === 404 ? 'A page that isn’t' : 'Something went wrong'}
+>
+	{#snippet lede()}
+		<p>
 			{$page.status === 404
-				? "The page you're looking for doesn't exist — or maybe it never did."
+				? 'The page you were looking for is not here — perhaps it never was.'
 				: ($page.error?.message ?? 'An unexpected error occurred.')}
 		</p>
+	{/snippet}
+</PageHeader>
+
+<Container size="prose">
+	<Fleuron />
+	<div class="rise text-center">
 		<div
-			class="mt-8 inline-block rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-5 py-3 text-left font-mono text-sm"
+			class="italic text-[var(--ink-muted)]"
+			style="font-family: var(--font-display); font-size: 6rem; line-height: 1;"
 		>
-			<span class="text-[var(--brand)]">$</span>
-			<span class="text-[var(--fg-muted)]"> cd ~ </span>
-			<span class="animate-blink ml-0.5 inline-block w-[7px] bg-[var(--brand)]">&nbsp;</span>
+			{$page.status}
 		</div>
-		<div class="mt-10 flex justify-center gap-3">
-			<Button href="/" size="lg">Back home</Button>
-			<Button href="/contact" variant="outline" size="lg">Contact me</Button>
+		<div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+			<Button href="/" size="lg">Back to the front</Button>
+			<Button href="/writing" variant="outline" size="lg">Read something instead</Button>
 		</div>
-	</section>
+	</div>
 </Container>

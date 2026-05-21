@@ -1,10 +1,12 @@
-export { site } from './site';
+export { site, paintings, roomForPath } from './site';
+export type { Painting as PaintingMeta } from './site';
 export { default as Seo } from './components/Seo.svelte';
 export { default as JsonLd } from './components/JsonLd.svelte';
 export { default as Container } from './components/Container.svelte';
 export { default as Button } from './components/Button.svelte';
 export { default as Badge } from './components/Badge.svelte';
-export { default as Eyebrow } from './components/Eyebrow.svelte';
-export { default as Terminal } from './components/Terminal.svelte';
 export { default as CommandPalette } from './components/CommandPalette.svelte';
 export { default as ReadingProgress } from './components/ReadingProgress.svelte';
+export { default as Painting } from './components/Painting.svelte';
+export { default as Fleuron } from './components/Fleuron.svelte';
+export { default as PageHeader } from './components/PageHeader.svelte';

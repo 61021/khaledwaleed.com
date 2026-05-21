@@ -1,15 +1,12 @@
 {
 	"name": "Khaled Waleed",
-	"short_name": "Khaled W",
-	"description": "Senior software engineer from Baghdad, Iraq.",
+	"short_name": "Khaled Waleed",
+	"description": "Senior software engineer in Baghdad — SvelteKit, Nuxt, Go.",
 	"start_url": "/",
-	"scope": "/",
 	"display": "standalone",
-	"background_color": "#07090c",
-	"theme_color": "#07090c",
-	"orientation": "portrait",
+	"background_color": "#0a1220",
+	"theme_color": "#0a1220",
 	"icons": [
-		{ "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
-		{ "src": "/avatar.svg", "type": "image/svg+xml", "sizes": "512x512", "purpose": "maskable" }
+		{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
 	]
 }
