@@ -25,6 +25,12 @@
 				Short, opinionated pieces on shipping software — performance, architecture, and the realities
 				of building remotely from Baghdad.
 			</p>
+			<a
+				href="/rss.xml"
+				class="mt-5 inline-flex items-center gap-2 text-xs font-mono text-[var(--fg-dim)] hover:text-[var(--brand)] transition-colors"
+			>
+				<span aria-hidden="true">↯</span> Subscribe via RSS
+			</a>
 		</header>
 
 		<ol class="border-t border-[var(--border)]">
