@@ -100,7 +100,12 @@
 				{ title: 'Full home automation', note: 'state-of-the-art, invisible' },
 				{ title: 'Living green walls' }
 			],
-			tags: ['Minimalist decor', 'Ambient lighting', 'Eco-friendly systems', 'Curated home projects']
+			tags: [
+				'Minimalist decor',
+				'Ambient lighting',
+				'Eco-friendly systems',
+				'Curated home projects'
+			]
 		},
 		{
 			num: '07',
@@ -196,7 +201,7 @@
 	<section class="animate-fade-up max-w-3xl space-y-6">
 		<Eyebrow label="~/likes" />
 		<h1 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl lg:text-6xl">
-			A short catalogue of <em class="font-bold not-italic text-[var(--brand)]">obsessions</em>.
+			A short catalogue of <em class="font-bold text-[var(--brand)] not-italic">obsessions</em>.
 		</h1>
 		<p class="text-lg leading-relaxed text-[var(--fg-muted)]">
 			Not a list — a map. The films I rewatch, the music I think in, the cars I'd own if I were
@@ -233,7 +238,7 @@
 						<div class="flex items-baseline gap-4">
 							<span class="font-mono text-sm text-[var(--brand)]">{s.num}</span>
 							<span class="h-px flex-1 bg-[var(--border)]"></span>
-							<span class="font-mono text-[11px] uppercase tracking-widest text-[var(--fg-dim)]"
+							<span class="font-mono text-[11px] tracking-widest text-[var(--fg-dim)] uppercase"
 								>{s.kicker}</span
 							>
 						</div>
@@ -291,11 +296,10 @@
 	<section class="mt-28 border-t border-[var(--border)] pt-12">
 		<figure class="mx-auto max-w-2xl text-center">
 			<blockquote class="text-xl leading-relaxed text-[var(--fg)] sm:text-2xl">
-				<span class="text-[var(--brand)]">“</span>I'm worthy because I'm curious, not because I'm smart.<span
-					class="text-[var(--brand)]">”</span
-				>
+				<span class="text-[var(--brand)]">“</span>I'm worthy because I'm curious, not because I'm
+				smart.<span class="text-[var(--brand)]">”</span>
 			</blockquote>
-			<figcaption class="mt-4 font-mono text-xs uppercase tracking-widest text-[var(--fg-dim)]">
+			<figcaption class="mt-4 font-mono text-xs tracking-widest text-[var(--fg-dim)] uppercase">
 				— a note to self
 			</figcaption>
 		</figure>
