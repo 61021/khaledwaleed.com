@@ -43,18 +43,41 @@
 			</h1>
 
 			<p class="max-w-xl text-lg leading-relaxed text-[var(--fg-muted)]">
-				I design and ship modern web apps end to end — <span class="text-[var(--fg)]">SvelteKit</span>
+				I design and ship modern web apps end to end — <span class="text-[var(--fg)]"
+					>SvelteKit</span
+				>
 				and <span class="text-[var(--fg)]">Nuxt</span> on the frontend,
 				<span class="text-[var(--fg)]">Go</span> on the backend. Currently building at
-				<a href="https://qi.iq" target="_blank" rel="noopener" class="text-[var(--brand)] hover:underline">Qi</a>
+				<a
+					href="https://qi.iq"
+					target="_blank"
+					rel="noopener"
+					class="text-[var(--brand)] hover:underline">Qi</a
+				>
 				and
-				<a href="https://vitex.dev" target="_blank" rel="noopener" class="text-[var(--brand)] hover:underline">Vitex</a>.
+				<a
+					href="https://vitex.dev"
+					target="_blank"
+					rel="noopener"
+					class="text-[var(--brand)] hover:underline">Vitex</a
+				>.
 			</p>
 
 			<div class="flex flex-wrap items-center gap-3 pt-2">
 				<Button href="/contact" size="lg">
 					Work with me
-					<svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+					<svg
+						class="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						viewBox="0 0 24 24"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M13 7l5 5m0 0l-5 5m5-5H6"
+						/></svg
+					>
 				</Button>
 				<Button href="/about" variant="outline" size="lg">About me</Button>
 			</div>
@@ -63,7 +86,9 @@
 			<div class="flex flex-wrap items-center gap-x-5 gap-y-2 pt-4 text-xs text-[var(--fg-dim)]">
 				<span class="inline-flex items-center gap-2">
 					<span class="relative flex h-2 w-2">
-						<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--brand)] opacity-60"></span>
+						<span
+							class="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--brand)] opacity-60"
+						></span>
 						<span class="relative inline-flex h-2 w-2 rounded-full bg-[var(--brand)]"></span>
 					</span>
 					<span>Available for select work</span>
@@ -88,7 +113,10 @@
 					Shipping at two companies I believe in.
 				</h2>
 			</div>
-			<a href="/about" class="hidden text-sm text-[var(--fg-muted)] hover:text-[var(--brand)] sm:inline">
+			<a
+				href="/about"
+				class="hidden text-sm text-[var(--fg-muted)] hover:text-[var(--brand)] sm:inline"
+			>
 				More about me →
 			</a>
 		</div>
@@ -116,9 +144,22 @@
 						<Badge tone="brand">● {h.tag}</Badge>
 					</div>
 					<p class="text-sm leading-relaxed text-[var(--fg-muted)]">{h.summary}</p>
-					<div class="mt-5 inline-flex items-center gap-1.5 text-xs text-[var(--fg-dim)] transition-colors group-hover:text-[var(--brand)]">
+					<div
+						class="mt-5 inline-flex items-center gap-1.5 text-xs text-[var(--fg-dim)] transition-colors group-hover:text-[var(--brand)]"
+					>
 						Visit
-						<svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+						<svg
+							class="h-3 w-3"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							viewBox="0 0 24 24"
+							><path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M14 5l7 7m0 0l-7 7m7-7H3"
+							/></svg
+						>
 					</div>
 				</a>
 			{/each}
@@ -137,7 +178,7 @@
 		<div class="grid gap-5 md:grid-cols-3">
 			{#each stack as col}
 				<div class="surface p-6">
-					<div class="mb-4 font-mono text-xs uppercase tracking-wider text-[var(--brand)]">
+					<div class="mb-4 font-mono text-xs tracking-wider text-[var(--brand)] uppercase">
 						{col.group}
 					</div>
 					<div class="flex flex-wrap gap-1.5">
@@ -160,14 +201,17 @@
 				class="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl"
 			></div>
 
-			<div class="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+			<div
+				class="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center"
+			>
 				<div class="max-w-xl space-y-3">
 					<Eyebrow label="Let's build" />
 					<h2 class="text-2xl font-semibold tracking-tight text-[var(--fg)] sm:text-3xl">
 						Got an idea worth building? I'd love to hear it.
 					</h2>
 					<p class="text-[var(--fg-muted)]">
-						Whether it's a green-field product, a stuck team, or a stack you want modernised — let's talk.
+						Whether it's a green-field product, a stuck team, or a stack you want modernised — let's
+						talk.
 					</p>
 				</div>
 				<div class="flex flex-wrap gap-3">

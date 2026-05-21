@@ -51,39 +51,62 @@
 	<!-- Header -->
 	<section class="animate-fade-up space-y-6">
 		<Eyebrow label="~/about" />
-		<h1 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl">
-			Hey, I'm Khaled.
-		</h1>
+		<h1 class="text-4xl font-bold tracking-tight text-[var(--fg)] sm:text-5xl">Hey, I'm Khaled.</h1>
 		<div class="max-w-2xl space-y-5 text-lg leading-relaxed text-[var(--fg-muted)]">
 			<p>
-				I'm a senior software engineer based in <span class="text-[var(--fg)]">{site.location.city}, {site.location.country}</span>.
-				I've spent the last five years shipping production web apps — the kind that real people use every day —
-				with a soft spot for fast, restrained interfaces and backends that don't fall over at 3am.
+				I'm a senior software engineer based in <span class="text-[var(--fg)]"
+					>{site.location.city}, {site.location.country}</span
+				>. I've spent the last five years shipping production web apps — the kind that real people
+				use every day — with a soft spot for fast, restrained interfaces and backends that don't
+				fall over at 3am.
 			</p>
 			<p>
-				Most of my work lives at the intersection of <span class="text-[var(--fg)]">SvelteKit / Nuxt</span> on the
-				frontend and <span class="text-[var(--fg)]">Go</span> on the backend. Right now I'm building things
-				I'm proud of at
-				<a href="https://qi.iq" target="_blank" rel="noopener" class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]">Qi</a>
+				Most of my work lives at the intersection of <span class="text-[var(--fg)]"
+					>SvelteKit / Nuxt</span
+				>
+				on the frontend and <span class="text-[var(--fg)]">Go</span> on the backend. Right now I'm
+				building things I'm proud of at
+				<a
+					href="https://qi.iq"
+					target="_blank"
+					rel="noopener"
+					class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]"
+					>Qi</a
+				>
 				and
-				<a href="https://vitex.dev" target="_blank" rel="noopener" class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]">Vitex</a>.
+				<a
+					href="https://vitex.dev"
+					target="_blank"
+					rel="noopener"
+					class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]"
+					>Vitex</a
+				>.
 			</p>
 			<p>
-				Outside of work I'm usually deep in a book, chasing a side project, or somewhere I haven't been
-				before. If any of this sounds like your kind of person —
-				<a href="/contact" class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]">let's talk</a>.
+				Outside of work I'm usually deep in a book, chasing a side project, or somewhere I haven't
+				been before. If any of this sounds like your kind of person —
+				<a
+					href="/contact"
+					class="text-[var(--brand)] underline decoration-[var(--brand)]/40 underline-offset-4 hover:decoration-[var(--brand)]"
+					>let's talk</a
+				>.
 			</p>
 		</div>
 	</section>
 
 	<!-- Quick facts -->
 	<section class="mt-20">
-		<div class="surface divide-y divide-[var(--border)] sm:grid sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-3">
+		<div
+			class="surface divide-y divide-[var(--border)] sm:grid sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-3"
+		>
 			{#each facts as f, i}
 				<div
-					class="p-6 {i % 2 === 0 ? 'sm:border-r sm:border-[var(--border)]' : ''} {i < facts.length - (facts.length % 3 || 3) ? 'lg:border-b lg:border-[var(--border)]' : ''}"
+					class="p-6 {i % 2 === 0 ? 'sm:border-r sm:border-[var(--border)]' : ''} {i <
+					facts.length - (facts.length % 3 || 3)
+						? 'lg:border-b lg:border-[var(--border)]'
+						: ''}"
 				>
-					<div class="font-mono text-[11px] uppercase tracking-wider text-[var(--brand)]">
+					<div class="font-mono text-[11px] tracking-wider text-[var(--brand)] uppercase">
 						{f.label}
 					</div>
 					<div class="mt-1.5 text-sm text-[var(--fg)]">{f.value}</div>
@@ -105,7 +128,7 @@
 			{#each experiences as exp}
 				<li class="relative">
 					<span
-						class="absolute -left-[33px] top-2 grid h-3.5 w-3.5 place-items-center rounded-full border-2 border-[var(--brand)] bg-[var(--bg)]"
+						class="absolute top-2 -left-[33px] grid h-3.5 w-3.5 place-items-center rounded-full border-2 border-[var(--brand)] bg-[var(--bg)]"
 					></span>
 					<article class="surface p-6 sm:p-7">
 						<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
@@ -148,7 +171,7 @@
 		<div class="grid gap-5 sm:grid-cols-2">
 			{#each Object.entries(skills) as [category, items]}
 				<div class="surface p-6">
-					<div class="mb-4 font-mono text-xs uppercase tracking-wider text-[var(--brand)]">
+					<div class="mb-4 font-mono text-xs tracking-wider text-[var(--brand)] uppercase">
 						{category}
 					</div>
 					<div class="flex flex-wrap gap-1.5">
@@ -161,7 +184,9 @@
 
 	<!-- CTA -->
 	<section class="mt-24">
-		<div class="flex flex-col items-start justify-between gap-6 border-t border-[var(--border)] pt-12 sm:flex-row sm:items-center">
+		<div
+			class="flex flex-col items-start justify-between gap-6 border-t border-[var(--border)] pt-12 sm:flex-row sm:items-center"
+		>
 			<p class="max-w-md text-[var(--fg-muted)]">
 				Want to work together, ask a question, or just say hi? My inbox is open.
 			</p>
