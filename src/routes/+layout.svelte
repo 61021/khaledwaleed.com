@@ -44,6 +44,7 @@
 		{ name: 'Writing', href: '/writing' },
 		{ name: 'Now', href: '/now' },
 		{ name: 'Likes', href: '/likes' },
+		{ name: 'Library', href: '/library' },
 		{ name: 'Contact', href: '/contact' }
 	];
 

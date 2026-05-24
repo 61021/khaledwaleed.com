@@ -42,6 +42,16 @@ const items: Item[] = [
 		file: 'Caspar_David_Friedrich_-_Mondaufgang_am_Meer_-_Google_Art_Project.jpg',
 		srcWidth: 3200,
 		outWidth: 2400
+	},
+	{
+		// Tiny oak panel (28×34 cm), only 1013×841 scan available on Commons.
+		// Take the original and sharpen lightly for the chiaroscuro detail.
+		slug: 'library',
+		file: 'Rembrandt_-_The_Philosopher_in_Meditation.jpg',
+		outWidth: 1013,
+		avifQuality: 68,
+		webpQuality: 86,
+		sharpen: true
 	}
 ];
 

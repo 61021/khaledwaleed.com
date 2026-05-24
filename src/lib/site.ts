@@ -171,6 +171,16 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/',
 		source: 'https://en.wikipedia.org/wiki/The_Monk_by_the_Sea',
 		alt: 'A single small figure on a pale dune facing an enormous, empty grey sea under a vast quiet sky.'
+	},
+	library: {
+		key: 'library',
+		title: 'Philosopher in Meditation',
+		artist: 'Rembrandt van Rijn',
+		year: '1632',
+		museum: 'Musée du Louvre, Paris',
+		museumUrl: 'https://www.louvre.fr/en/',
+		source: 'https://en.wikipedia.org/wiki/Philosopher_in_Meditation',
+		alt: 'An old scholar seated by a tall arched window in a vaulted chamber, head bowed, a spiral wooden staircase winding up into shadow behind him.'
 	}
 };
 
@@ -180,6 +190,7 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/about') return 'about';
 	if (pathname === '/now') return 'now';
 	if (pathname === '/likes') return 'likes';
+	if (pathname === '/library') return 'library';
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
 	if (pathname.startsWith('/writing/building-for-the-web-from-baghdad')) return 'post-baghdad';

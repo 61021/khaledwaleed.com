@@ -4,31 +4,12 @@
 
 	const lastUpdated = '2026-05-21';
 
-	const working = [
-		{
-			where: 'Qi',
-			url: 'https://qi.iq',
-			focus:
-				'Leading frontend architecture across consumer products and a shared design system. Pulling LCP toward the second-mark on mid-range Android.'
-		},
-		{
-			where: 'Vitex',
-			url: 'https://vitex.dev',
-			focus:
-				'Shipping Nuxt interfaces over Go microservices. Profiling and tuning real production load. Owning the surface as well as the metal beneath it.'
-		}
-	];
-
 	const building = [
 		'This site — small, fast, hand-built, refurnished gently every few months.',
 		'A small Go service for personal analytics. Privacy-first, no third parties, structured logs to a quiet Postgres.'
 	];
 
-	const reading = [
-		{ title: 'Designing Data-Intensive Applications', author: 'Martin Kleppmann' },
-		{ title: 'A Philosophy of Software Design', author: 'John Ousterhout' },
-		{ title: 'The Beginning of Infinity', author: 'David Deutsch' }
-	];
+	const reading = [{ title: 'Thinking, Fast and Slow', author: 'Daniel Kahneman' }];
 
 	const learning = [
 		'Distributed consensus — Raft, then enough Paxos to argue about it.',
@@ -94,22 +75,6 @@
 
 	<Fleuron />
 
-	<section class="rise space-y-8">
-		<h2 class="italic">Working at</h2>
-		<ul class="space-y-6">
-			{#each working as w (w.where)}
-				<li class="border-l-2 border-[var(--accent)] pl-5">
-					<a href={w.url} target="_blank" rel="noopener" class="link italic">
-						{w.where}
-					</a>
-					<p class="mt-2 leading-relaxed text-[var(--ink-muted)]">{w.focus}</p>
-				</li>
-			{/each}
-		</ul>
-	</section>
-
-	<Fleuron />
-
 	<section class="rise space-y-5">
 		<h2 class="italic">Building on the side</h2>
 		<ul class="space-y-3 italic text-[var(--ink-muted)]">
@@ -134,6 +99,9 @@
 				</li>
 			{/each}
 		</ul>
+		<p class="mt-4 text-sm italic text-[var(--ink-muted)]">
+			The rest of the shelf lives in the <a href="/library" class="link">library</a>.
+		</p>
 	</section>
 
 	<Fleuron />
@@ -155,6 +123,17 @@
 	<section class="rise space-y-3">
 		<h2 class="italic">Place</h2>
 		<p class="leading-relaxed text-[var(--ink-muted)]">{place}</p>
+	</section>
+
+	<Fleuron />
+
+	<section class="rise space-y-3">
+		<h2 class="italic">What is this page?</h2>
+		<p class="leading-relaxed text-[var(--ink-muted)]">
+			The answer to <em>“what are you up to lately?”</em> &mdash; part of the
+			<a href="https://nownownow.com" target="_blank" rel="noopener" class="link">Now Now Now</a>
+			project.
+		</p>
 	</section>
 
 	<div class="rise mt-16 text-center italic text-[var(--ink-muted)]">
