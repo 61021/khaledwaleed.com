@@ -17,10 +17,10 @@
 
 - / — Home. Bio, current work, what I build.
 - /about — Background, experience, toolkit.
-- /writing — Essays and notes on software engineering.
-- /writing/hiring-senior-engineers-in-iraq — Hiring seniors in the Iraqi market.
-- /writing/the-cost-of-a-slow-page — Why page speed is a tax on the whole business.
-- /writing/building-for-the-web-from-baghdad — Shipping production software from Iraq.
+- /writing — Essays and notes.
+- /writing/in-defense-of-melancholy — On Friedrich, tragedy, and the room sadness opens.
+- /writing/sitting-in-discomfort-on-purpose — The small, private habit of voluntary difficulty.
+- /writing/absurdism-without-nihilism — Camus, the rock, and meaning as a verb.
 - /now — What I'm working on, building, reading, learning right now. Updated periodically.
 - /likes — A scattered catalogue of obsessions: cinema, music, art, style, food, philosophy.
 - /contact — Email, LinkedIn, Telegram, WhatsApp, GitHub.

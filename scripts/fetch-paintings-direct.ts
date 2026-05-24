@@ -19,14 +19,6 @@ type Item = {
 
 const items: Item[] = [
 	{
-		slug: 'post-baghdad',
-		file: 'Johan_Christian_Claussen_Dahl_-_A_Mother_and_Child_by_the_Sea.jpg'
-	},
-	{
-		slug: 'post-hiring',
-		file: 'Caspar_David_Friedrich_-_Cross_in_the_Mountains_(Tetschen_Altar)_-_WGA08237.jpg'
-	},
-	{
 		slug: 'now',
 		file: 'Caspar_David_Friedrich_-_Riesengebirge_Landscape_with_Rising_Fog_-_WGA8257.jpg'
 	},

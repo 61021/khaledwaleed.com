@@ -2,16 +2,8 @@
 	import { Seo, Container, PageHeader, Fleuron, Button, site } from '$lib';
 
 	const channels = [
-		{ label: 'Email', value: site.email, href: `mailto:${site.email}`, primary: true },
-		{
-			label: 'LinkedIn',
-			value: 'kwaleedkhalid',
-			href: 'https://www.linkedin.com/in/kwaleedkhalid/'
-		},
-		{ label: 'GitHub', value: '@61021', href: 'https://github.com/61021' },
-		{ label: 'Telegram', value: '@x61021', href: 'https://t.me/x61021' },
-		{ label: 'WhatsApp', value: 'Send a message', href: 'https://wa.me/message/6N52L7STPCUJO1' },
-		{ label: 'Instagram', value: '@khaled.jsx', href: 'https://www.instagram.com/khaled.jsx/' }
+		{ label: 'Email', value: site.email, href: `mailto:${site.email}` },
+		...site.socials.map((s) => ({ label: s.label, value: s.handle, href: s.href }))
 	];
 </script>
 

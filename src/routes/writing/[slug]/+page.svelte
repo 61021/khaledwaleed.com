@@ -6,34 +6,46 @@
 	const post = $derived(data.post);
 
 	const url = $derived(`${site.url}/writing/${post.slug}`);
-	const room = $derived(
-		post.slug === 'building-for-the-web-from-baghdad'
-			? 'post-baghdad'
-			: post.slug === 'the-cost-of-a-slow-page'
-				? 'post-slow'
-				: post.slug === 'hiring-senior-engineers-in-iraq'
-					? 'post-hiring'
-					: 'writing'
-	);
+	const room = $derived('writing');
 	const painting = $derived(paintings[room as keyof typeof paintings]);
 
 	const articleSchema = $derived({
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
+		'@id': `${url}#article`,
 		headline: post.title,
 		description: post.description,
 		datePublished: post.date,
 		dateModified: post.date,
 		url,
-		author: { '@id': `${site.url}/#person` },
-		publisher: { '@id': `${site.url}/#person` },
-		mainEntityOfPage: url,
+		inLanguage: 'en',
+		author: {
+			'@type': 'Person',
+			'@id': `${site.url}/#person`,
+			name: site.name,
+			url: site.url
+		},
+		publisher: {
+			'@type': 'Person',
+			'@id': `${site.url}/#person`,
+			name: site.name,
+			url: site.url
+		},
+		mainEntityOfPage: { '@type': 'WebPage', '@id': url },
 		keywords: post.tags.join(', '),
-		image: `${site.url}/og.png`
+		image: `${site.url}/og.png`,
+		isPartOf: { '@id': `${site.url}/#website` }
 	});
 </script>
 
-<Seo title={`${post.title} — Khaled Waleed`} description={post.description} />
+<Seo
+	title={post.title}
+	description={post.description}
+	type="article"
+	keywords={post.tags}
+	publishedTime={post.date}
+	modifiedTime={post.date}
+/>
 
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(articleSchema)}</script>`}
@@ -61,6 +73,7 @@
 			]}
 		/>
 		<div class="mt-4 smallcaps">
+			by <a href="/about" class="link-quiet" rel="author">Khaled Waleed</a> ·
 			<time datetime={post.date}>{post.date}</time>
 		</div>
 	</div>
@@ -68,178 +81,161 @@
 	<Fleuron />
 
 	<article class="rise prose-romantic mx-auto">
-		{#if post.slug === 'building-for-the-web-from-baghdad'}
+		{#if post.slug === 'in-defense-of-melancholy'}
 			<p class="dropcap">
-				You learn to plan around the connection. That, more than anything else, is what
-				building for the web from Baghdad teaches you. The fibre is good when it is good
-				and absent when it is not, and so the day arranges itself in the spaces between
-				outages — work that needs the network, work that does not, the careful queueing
-				of long downloads against the early light.
+				The mood I am about to defend has been out of fashion for so long that we have
+				forgotten it is a mood at all. We treat sadness like a software bug: identify,
+				reproduce, patch, ship. There is an industry that lives off this metaphor, and
+				it is doing very well.
+			</p>
+			<p>I think we have lost something.</p>
+
+			<h2>The figure with its back turned</h2>
+			<p>
+				The Northern Romantics painted figures with their backs turned, looking out at
+				fog, at moonlit sea, at the ruins of an abbey through bare trees. The figures
+				are not in crisis. They are not posting about it. They are doing the older
+				thing, the harder thing, which is sitting with a feeling long enough to know
+				what it is. Friedrich does not ask his monks to cheer up. Dahl does not edit
+				out the broken ship. The painting is the sustained attention itself.
 			</p>
 			<p>
-				The romantic version of this is wrong. There is nothing picturesque about a
-				broken deploy. But what I have come to like about working from here is that the
-				friction strips away cleverness. You cannot afford an architecture that depends
-				on twenty cloud services responding in concert. You build things that hold up
-				offline, retry well, fail without drama. Boring things. The web is, on its better
-				days, exactly the medium for them.
+				Tragedy used to do the same work. We watched Lear, or Hamlet, or <em
+					>Swan Lake</em
+				>, not because we wanted to feel worse, but because the form held a kind of
+				feeling we could not produce on our own. Catharsis is not a word that gets
+				used much now. The closest contemporary equivalent is "doomscrolling," which
+				is the same impulse stripped of the structure that once made it useful.
 			</p>
 
-			<h2>The stack stays small</h2>
+			<h2>Not depression</h2>
 			<p>
-				My tooling has not changed in any meaningful way for three years. SvelteKit on
-				the surface or Nuxt where the team already speaks Vue. Go beneath, Postgres in
-				the middle, a Linux box wherever a Linux box belongs. The newest dependency I
-				take is whatever shipped in last month's stable release — never last week's.
+				Melancholy, properly handled, is not depression. It is the long, slow
+				recognition that the world is finite, that the people you love are finite,
+				that the afternoon light will leave the room and not come back in quite that
+				arrangement again. It is what makes the afternoon light worth noticing in the
+				first place.
 			</p>
 			<p>
-				A boring stack means I spend my hours on the parts that move the business: the
-				domain, the data model, the page that loads in under a second on the phone the
-				customer actually owns. Not chasing the framework du jour, which is anyway being
-				deprecated by the time you have learned its conventions.
-			</p>
-
-			<h2>What clients actually want</h2>
-			<p>
-				No one outside engineering has ever cared that I wrote a clever abstraction.
-				They care that the feature shipped, that the page loads, that the invoice is
-				predictable, and that I replied when I said I would. Everything else is
-				decoration. I have come to think the senior part of the job is mostly knowing
-				which decorations to refuse.
+				A culture that flinches from this feeling ends up unable to depict it. Look
+				at what mass cinema has done to grief in the last fifteen years. The
+				character cries, the score swells, the next scene resolves. The audience is
+				given no time to sit. The form has been optimised, in the same way the page
+				is optimised, and what has been removed is the part that was doing the work.
 			</p>
 
-			<h2>Asynchronous, by necessity</h2>
+			<h2>The room</h2>
 			<p>
-				The single greatest unlock for anyone working outside the dominant timezones is
-				ruthless async discipline. Write more than you speak. Leave a paper trail.
-				Make every handoff complete enough to survive your absence. Treat the pull
-				request description as a small essay; treat the commit message as a small
-				poem.
+				I am not arguing for sadness. I am arguing for the room in which sadness
+				becomes something else — older, quieter, almost beautiful. The Romantics knew
+				the way into that room. So did Shakespeare. So, for that matter, does any
+				good piece of music played at the right hour.
 			</p>
-			<p>
-				The clients who like working this way tend to be the clients worth working with.
-				The ones who do not want to write things down, who insist on real-time meetings
-				as the default medium of thought — they are usually not the future. Let them
-				go.
-			</p>
-
-			<h2>Coda</h2>
-			<p>
-				The web does not care where you sit. That has been true for a long time, but
-				it took until quite recently to feel true from this part of the world. There is
-				more of us here now than people expect, doing serious work for serious teams,
-				quietly. I think that is the most encouraging thing I could write about working
-				from Baghdad — that there is nothing remarkable left to say about it.
-			</p>
-		{:else if post.slug === 'the-cost-of-a-slow-page'}
+			<p>We could stand to remember the address.</p>
+		{:else if post.slug === 'sitting-in-discomfort-on-purpose'}
 			<p class="dropcap">
-				A slow page is a tax. You pay it on every user, every session, every retry. The
-				bill arrives quietly — as a slightly lower conversion, a slightly higher bounce,
-				a slightly less patient customer — and most teams never trace the loss back to
-				the cause. They redesign the funnel and hire another marketer instead.
+				The most useful habit I picked up in my twenties was the habit of being
+				slightly uncomfortable on purpose, every day, with no audience.
+			</p>
+			<p>
+				Cold water in the morning. Walking when I could drive. Skipping the meal when
+				I was not actually hungry. Sitting through a difficult conversation instead
+				of leaving the room. Reading a book that was harder than the one I wanted to
+				read. None of these are dramatic. None of them make for a satisfying post.
+				They cost almost nothing, which is the entire point.
 			</p>
 
-			<h2>What "slow" actually means</h2>
+			<h2>Headroom</h2>
 			<p>
-				The number worth caring about is not your local lab score. It is the
-				seventy-fifth-percentile Largest Contentful Paint on a mid-range Android over a
-				flaky connection. If you are building for the public web — and most of us are
-				— that is your user. They are not on a MacBook Pro on fibre.
-			</p>
-			<p>
-				A reasonable target is LCP under two and a half seconds at the seventy-fifth
-				percentile. Interaction-to-next-paint under two hundred milliseconds. Cumulative
-				layout shift under a tenth. Anything worse and you are leaving real money on
-				the table, every day, in a way nobody is measuring.
+				What they buy you is a kind of headroom. The involuntary discomforts — the
+				deadline that slips, the loss, the long night in the hospital corridor —
+				arrive without warning and ask for a strength you did not know you needed. If
+				your nervous system has spent the previous decade in a climate-controlled
+				twenty-three degrees, you have not built it. If you have practised, even
+				badly, even inconsistently, you have a little more to draw from than you
+				would have otherwise.
 			</p>
 
-			<h2>Where the time really goes</h2>
+			<h2>The performed version</h2>
 			<p>
-				In ninety percent of real-world applications the bottleneck is one of four
-				things: too much JavaScript, render-blocking fonts, oversized images, or a slow
-				server. Fix those four in order and you have already beaten most of the
-				internet. There is no exotic technique required. Most teams simply have not
-				done the dull work.
+				The mistake people make with this idea is to dress it up. They turn it into a
+				regimen, post the regimen, sell the regimen. The regimen then becomes its
+				own form of comfort — performed difficulty, applauded, optimised, mild.
+				Whatever was useful about the original act is gone.
+			</p>
+			<p>
+				The version I trust is unglamorous and private. You feel the cold. You do
+				not film it. You do the lift you do not feel like doing. You let yourself be
+				bored for an hour without reaching for the screen. You sit through the
+				meditation when the meditation is bad, which is most of the time, which is
+				the meditation.
 			</p>
 
-			<h2>It is a discipline, not a clean-up</h2>
+			<h2>The reward</h2>
 			<p>
-				Performance is not a one-time effort. It is a budget you defend on every pull
-				request. Once a page is fast, the only way it stays fast is if someone owns the
-				number. Track it the way you track errors. Regress and revert. Eventually
-				speed becomes the team's instinct — they reach for the small library, the
-				lighter image, the simpler query without being asked.
+				The reward, if there is one, is that the world stops feeling so brittle. The
+				day stops feeling like something you have to survive. Small things — a hot
+				meal, a warm room, a friend on the phone — return to being small pleasures
+				rather than required infrastructure.
 			</p>
-
-			<h2>The shipwreck</h2>
 			<p>
-				The reason I keep writing about this is that almost every team I have joined
-				had a fast site once, briefly, and then drifted. New requirements arrived. New
-				engineers arrived. The site got heavier by a few hundred kilobytes here, a few
-				render-blocking scripts there. Nobody made any individual mistake, and so the
-				site became slow the way ships used to wreck: not on one rock, but on the slow
-				accumulation of small ones.
+				There is nothing mystical about any of it. It is the body, asked to do a
+				little of what it was built to do, and answering, gratefully, that it
+				remembers how.
 			</p>
-		{:else if post.slug === 'hiring-senior-engineers-in-iraq'}
+		{:else if post.slug === 'absurdism-without-nihilism'}
 			<p class="dropcap">
-				The Iraqi tech market is younger than the engineers building inside it. There
-				are excellent people here. There are also a great many teams hiring badly and
-				wondering, in private, why the seniors they meet do not quite feel senior. I
-				have been on both sides of that interview, and these are a few honest notes
-				from the middle.
+				Camus is read badly more often than he is read well. The bad reading goes:
+				the universe is meaningless, therefore nothing matters, therefore do as you
+				please. The good reading is almost the opposite.
+			</p>
+			<p>
+				The universe, Camus says, does not arrive pre-loaded with meaning. Fine.
+				This is not a discovery; this is the starting condition for every life that
+				has ever been lived. What he does with it is the interesting part. He looks
+				at the man pushing the rock up the hill, condemned to push it forever, and
+				he refuses both available exits. He will not pretend the rock has a reason.
+				He will not stop pushing.
+			</p>
+			<p>The refusal is the whole thing.</p>
+
+			<h2>The easy move</h2>
+			<p>
+				Nihilism is the easy move from the same premise. If nothing matters, you
+				owe nothing, to yourself or anyone else. It feels like freedom for about a
+				week. After that, it reveals itself as what it always was — a slow
+				turning-away from the work of being a person.
 			</p>
 
-			<h2>Title inflation is the default</h2>
+			<h2>The harder one</h2>
 			<p>
-				"Senior" in Baghdad often means three years of experience and the willingness
-				to lead a small team. That is fine for some companies; it is not fine if you
-				are hiring against a global standard and paying global rates. Calibrate against
-				what the role has to ship, not against what the resume says. The calibration
-				will be uncomfortable. Do it anyway.
+				Absurdism asks for something harder. It asks you to keep showing up to a
+				life that will not, at any point, justify itself to you. You build the
+				company. You raise the child. You learn the language. You write the thing.
+				You do these without the consolation that they were always going to mean
+				something. You do them because the doing is the meaning, and the doing is
+				enough.
+			</p>
+			<p>
+				The Buddhists arrive at a related place by a different road. The Stoics,
+				too. What all three traditions seem to know, and what the contemporary mood
+				seems to have forgotten, is that meaning is a verb. It is not given to you.
+				It is what you make when you push the rock one more time, knowing exactly
+				what the rock is.
 			</p>
 
-			<h2>The shortlist is smaller than you think</h2>
+			<h2>Sisyphus, properly read</h2>
 			<p>
-				The pool of engineers in Iraq who have shipped production systems for
-				international users at scale is small. Most of them are not on LinkedIn. They
-				are working quietly, usually for a foreign company, usually already paid well.
-				Finding them requires referrals, patience, and the unglamorous habit of being
-				known among other senior engineers — not job boards.
+				Camus ends the essay with a line that gets quoted to death and rarely
+				understood. <em>One must imagine Sisyphus happy.</em> It is not an instruction
+				to fake cheer. It is the observation that happiness, of the only kind
+				available to us, lives inside the pushing.
 			</p>
-
-			<h2>What actually keeps people</h2>
 			<p>
-				In order: meaningful work, a manager who can read code, predictable pay in a
-				stable currency, async culture, and equipment that does not get in the way.
-				Free snacks rank below all of these. Far below. If you are losing your seniors,
-				it is almost never the snacks.
+				The rock is not the problem. The pretending the rock should not be there —
+				that is the problem.
 			</p>
-
-			<h2>If you are hiring</h2>
-			<p>
-				Write a clear job description. Pay above the local market and below the San
-				Francisco market — the room between is wide and honest. Interview for the work
-				the role will actually do, not for whiteboard trivia from a different decade.
-				Move fast. The best Iraqi seniors have offers within days of starting to look,
-				and most of those offers are not from Iraq.
-			</p>
-
-			<h2>If you are an engineer here</h2>
-			<p>
-				Build in public, even quietly. Keep a portfolio of real systems, not toy
-				projects. Write English well — the kind that survives Slack at three in the
-				morning. Read more than you write. The opportunities are there; they are
-				simply not where most people are still looking.
-			</p>
-
-			<h2>Coda</h2>
-			<p>
-				There is a small, real renaissance happening in Iraqi software, and it is
-				being built by engineers most international companies have not heard of yet.
-				If you are running a serious team and you have not looked here — look here. If
-				you are one of those engineers — keep going. You are not alone, and the work
-				is real.
-			</p>
+			<p>You put your shoulder to it. You walk it up. You walk down for it. You begin again.</p>
 		{/if}
 	</article>
 

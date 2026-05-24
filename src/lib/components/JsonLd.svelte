@@ -6,10 +6,23 @@
 		'@type': 'Person',
 		'@id': `${site.url}/#person`,
 		name: site.name,
-		alternateName: ['Khaled', 'Khaled W', 'kwaleedkhalid'],
+		givenName: 'Khaled',
+		familyName: 'Waleed',
+		alternateName: ['Khaled', 'Khaled W', 'Khaled Waleed Khalid', 'kwaleedkhalid'],
+		nationality: { '@type': 'Country', name: 'Iraq' },
 		url: site.url,
+		mainEntityOfPage: site.url,
 		image: `${site.url}${site.avatar}`,
 		jobTitle: site.role,
+		hasOccupation: {
+			'@type': 'Occupation',
+			name: 'Senior Software Engineer',
+			occupationLocation: {
+				'@type': 'Country',
+				name: 'Iraq'
+			},
+			skills: 'SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux'
+		},
 		email: `mailto:${site.email}`,
 		telephone: site.phone,
 		description: site.tagline,
