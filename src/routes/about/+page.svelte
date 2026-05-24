@@ -59,8 +59,8 @@
 </script>
 
 <Seo
-	title="About"
-	description="About Khaled Waleed — a senior software engineer in Baghdad, Iraq, working in SvelteKit, Nuxt, and Go."
+	title="About Khaled Waleed"
+	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq, working in SvelteKit, Nuxt, and Go. Five years shipping production web apps for international and Iraqi teams."
 	type="profile"
 />
 

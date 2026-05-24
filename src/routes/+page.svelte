@@ -11,7 +11,8 @@
 >
 	{#snippet lede()}
 		<p>
-			A senior software engineer in Baghdad, building quiet, well-made software for the web.
+			A senior software engineer in Baghdad, Iraq — building quiet, well-made software for the
+			web.
 		</p>
 	{/snippet}
 </PageHeader>
@@ -20,10 +21,8 @@
 	<section class="rise-3 mt-12">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
 			I make web applications for a living — SvelteKit and Nuxt on the surface,
-			<em>Go</em> underneath, Postgres in the middle, a tidy Linux box wherever a Linux box
-			belongs. The work I am proudest of is the kind no one notices: a page that loads before
-			you have time to wonder, a form that does not lose your input, a deploy that goes out
-			on a Friday and is forgotten by Monday.
+			<em>Go</em> underneath, a tidy Linux box wherever a Linux box
+			belongs. The work I am proudest of is the kind no one notices.
 		</p>
 		<p>
 			I work primarily with two companies I admire — <a
@@ -32,8 +31,7 @@
 				rel="noopener"
 				class="link">Qi</a
 			>, where I lead frontend architecture across several products, and
-			<a href="https://vitex.dev" target="_blank" rel="noopener" class="link">Vitex</a>, where
-			I ship Nuxt interfaces backed by Go services. The rest of the time I read, write here,
+			<a href="https://vitex.dev" target="_blank" rel="noopener" class="link">Vitex</a>, My personal software company. The rest of the time I read, write here,
 			and walk around the city looking at things.
 		</p>
 	</section>

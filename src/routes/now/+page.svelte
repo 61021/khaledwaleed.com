@@ -55,12 +55,9 @@
 >
 	{#snippet lede()}
 		<p>
-			What I am at, today — in the spirit of Derek Sivers' <a
-				href="https://nownownow.com"
-				target="_blank"
-				rel="noopener"
-				class="link">/now</a
-			> page, but with less of a hurry about it.
+		The answer to <em>“what are you up to lately?”</em> &mdash; part of the
+			<a href="https://nownownow.com" target="_blank" rel="noopener" class="link">Now Now Now</a>
+			project.
 		</p>
 	{/snippet}
 </PageHeader>
@@ -118,23 +115,6 @@
 		</ul>
 	</section>
 
-	<Fleuron />
-
-	<section class="rise space-y-3">
-		<h2 class="italic">Place</h2>
-		<p class="leading-relaxed text-[var(--ink-muted)]">{place}</p>
-	</section>
-
-	<Fleuron />
-
-	<section class="rise space-y-3">
-		<h2 class="italic">What is this page?</h2>
-		<p class="leading-relaxed text-[var(--ink-muted)]">
-			The answer to <em>“what are you up to lately?”</em> &mdash; part of the
-			<a href="https://nownownow.com" target="_blank" rel="noopener" class="link">Now Now Now</a>
-			project.
-		</p>
-	</section>
 
 	<div class="rise mt-16 text-center italic text-[var(--ink-muted)]">
 		Want the longer version? Read <a href="/about" class="link">about</a>, the

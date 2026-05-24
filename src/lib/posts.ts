@@ -12,31 +12,31 @@ export interface Post {
 
 export const posts: Post[] = [
 	{
-		slug: 'hiring-senior-engineers-in-iraq',
-		title: 'Hiring senior engineers in Iraq',
+		slug: 'in-defense-of-melancholy',
+		title: 'In defense of melancholy',
 		description:
-			'What it actually looks like to find, vet and keep senior software engineers in the Iraqi market — from someone working inside it.',
-		date: '2026-05-21',
-		readingTime: '5 min read',
-		tags: ['hiring', 'iraq', 'engineering management']
-	},
-	{
-		slug: 'the-cost-of-a-slow-page',
-		title: 'The cost of a slow page',
-		description:
-			'Page speed is not a vanity metric. It is a tax on every product decision, every conversion, every retry. A short case for taking it seriously.',
-		date: '2026-05-20',
+			'On Friedrich, Shakespeare, Swan Lake, and what a culture loses when it decides sadness is a bug to be fixed.',
+		date: '2026-05-24',
 		readingTime: '3 min read',
-		tags: ['performance', 'frontend', 'web']
+		tags: ['art', 'philosophy', 'culture']
 	},
 	{
-		slug: 'building-for-the-web-from-baghdad',
-		title: 'Building for the web from Baghdad',
+		slug: 'sitting-in-discomfort-on-purpose',
+		title: 'Sitting in discomfort on purpose',
 		description:
-			'A few honest notes on shipping production software from Iraq — the tooling, the trade-offs, and what international clients actually want.',
-		date: '2026-05-18',
-		readingTime: '4 min read',
-		tags: ['career', 'iraq', 'remote']
+			'The small, private, unglamorous habit of being slightly uncomfortable every day — and what it buys you when the involuntary discomforts arrive.',
+		date: '2026-05-23',
+		readingTime: '3 min read',
+		tags: ['discipline', 'body', 'philosophy']
+	},
+	{
+		slug: 'absurdism-without-nihilism',
+		title: 'Absurdism without nihilism',
+		description:
+			'Camus is read badly more often than he is read well. A short defense of the harder reading — the one that asks you to keep pushing the rock.',
+		date: '2026-05-22',
+		readingTime: '3 min read',
+		tags: ['philosophy', 'camus', 'meaning']
 	}
 ];
 

@@ -5,7 +5,7 @@ export const site = {
 	name: 'Khaled Waleed',
 	role: 'Senior Software Engineer',
 	tagline:
-		'A senior software engineer in Baghdad — building quiet, well-made software for the web in SvelteKit and Go.',
+		'Khaled Waleed — a senior software engineer in Baghdad, Iraq, building quiet, well-made software for the web in SvelteKit and Go.',
 	shortBio:
 		'I design and ship modern web apps end to end: SvelteKit and Nuxt on the frontend, Go on the backend.',
 	location: {
@@ -24,13 +24,20 @@ export const site = {
 	keywords: [
 		'Khaled Waleed',
 		'Khaled Waleed software engineer',
-		'Iraq software engineer',
+		'senior software engineer Iraq',
+		'senior software engineer Baghdad',
+		'senior developer Iraq',
+		'senior dev Iraq',
+		'senior frontend engineer Iraq',
+		'senior backend engineer Iraq',
+		'Iraqi software engineer',
 		'Baghdad software engineer',
-		'SvelteKit developer',
-		'Nuxt developer',
+		'hire senior engineer Iraq',
+		'SvelteKit developer Iraq',
+		'Nuxt developer Iraq',
 		'Go developer Iraq',
-		'TypeScript engineer',
-		'freelance software engineer Baghdad'
+		'TypeScript engineer Iraq',
+		'freelance senior software engineer Baghdad'
 	],
 
 	companies: [
@@ -44,6 +51,11 @@ export const site = {
 			label: 'LinkedIn',
 			href: 'https://www.linkedin.com/in/kwaleedkhalid/',
 			handle: 'kwaleedkhalid'
+		},
+		{
+			label: 'Bluesky',
+			href: 'https://bsky.app/profile/khaledwaleed.com',
+			handle: '@khaledwaleed.com'
 		},
 		{ label: 'Telegram', href: 'https://t.me/x61021', handle: '@x61021' },
 		{ label: 'Instagram', href: 'https://www.instagram.com/khaled.jsx/', handle: '@khaled.jsx' },
@@ -101,36 +113,6 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/',
 		source: 'https://en.wikipedia.org/wiki/The_Abbey_in_the_Oakwood',
 		alt: 'The ruined gothic facade of an abbey rising out of bare oaks under a pale winter sky; small dark figures process toward it.'
-	},
-	'post-baghdad': {
-		key: 'post-baghdad',
-		title: 'Mother and Child by the Sea',
-		artist: 'Johan Christian Dahl',
-		year: 'c. 1830',
-		museum: 'Nasjonalmuseet, Oslo',
-		museumUrl: 'https://www.nasjonalmuseet.no/en/',
-		source: 'https://en.wikipedia.org/wiki/Johan_Christian_Dahl',
-		alt: 'A mother seated on a quiet shore with a small child, low pale sky, sandbar reaching into still water.'
-	},
-	'post-slow': {
-		key: 'post-slow',
-		title: 'Shipwreck on the Coast of Norway',
-		artist: 'Johan Christian Dahl',
-		year: '1832',
-		museum: 'Nasjonalmuseet, Oslo',
-		museumUrl: 'https://www.nasjonalmuseet.no/en/',
-		source: 'https://en.wikipedia.org/wiki/Johan_Christian_Dahl',
-		alt: 'A storm-broken ship pitched against dark rock; foam and torn sail under a furious sky.'
-	},
-	'post-hiring': {
-		key: 'post-hiring',
-		title: 'Cross in the Mountains (the Tetschen Altar)',
-		artist: 'Caspar David Friedrich',
-		year: '1808',
-		museum: 'Galerie Neue Meister, Dresden',
-		museumUrl: 'https://gemaeldegalerie.skd.museum/',
-		source: 'https://en.wikipedia.org/wiki/Cross_in_the_Mountains_(Tetschen_Altar)',
-		alt: 'A small wooden crucifix on a fir-covered peak, struck by the last gold of the sunset behind it.'
 	},
 	now: {
 		key: 'now',
@@ -193,9 +175,6 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/library') return 'library';
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
-	if (pathname.startsWith('/writing/building-for-the-web-from-baghdad')) return 'post-baghdad';
-	if (pathname.startsWith('/writing/the-cost-of-a-slow-page')) return 'post-slow';
-	if (pathname.startsWith('/writing/hiring-senior-engineers-in-iraq')) return 'post-hiring';
 	if (pathname.startsWith('/writing/')) return 'writing';
 	return 'home';
 }
