@@ -17,6 +17,7 @@
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{ id: 'now', title: 'Now', subtitle: 'What I am at, right now', href: '/now', kind: 'page', keywords: 'current today recent' },
 		{ id: 'likes', title: 'Likes', subtitle: 'A catalogue of obsessions', href: '/likes', kind: 'page' },
+		{ id: 'library', title: 'Library', subtitle: 'What I am reading, and what is waiting', href: '/library', kind: 'page', keywords: 'books reading shelf' },
 		{ id: 'contact', title: 'Contact', subtitle: 'Get in touch', href: '/contact', kind: 'page' },
 		...posts.map(
 			(p): Item => ({

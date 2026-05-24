@@ -39,6 +39,17 @@
 	--accent: #b4a16f;
 }
 
+:root[data-room='library'] {
+	/* a quieter, slightly warmer reading-room cousin of writing */
+	--bg: #1a1814;
+	--bg-soft: #221f1a;
+	--ink: #e2d6bd;
+	--ink-muted: #a89c84;
+	--ink-dim: #756b58;
+	--rule: #2a2620;
+	--accent: #c9a464;
+}
+
 :root[data-room='post-baghdad'] {
 	--bg: #ede2cf;
 	--bg-soft: #f6edd8;
