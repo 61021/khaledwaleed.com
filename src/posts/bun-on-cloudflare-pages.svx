@@ -1,0 +1,67 @@
+---
+title: Deploying Bun projects to Cloudflare Pages
+description: Cloudflare Pages doesn't detect bun.lock and silently falls back to npm. Here's the working BUN_VERSION config, debugged on a real Nuxt 4 build.
+date: 2026-06-02
+readingTime: 4 min read
+tags:
+  - tech
+  - cloudflare
+  - bun
+  - nuxt
+---
+
+The build worked on my laptop and failed on Cloudflare. The error was about ESLint peer dependencies, which was strange, because I had not changed anything about ESLint. I spent something like twenty minutes pinning versions before I noticed the line above the error: `npm install`. The project uses Bun.
+
+That was the whole problem. Everything that followed was downstream of that one line.
+
+## The lockfile nobody updated
+
+Cloudflare Pages picks a package manager by looking for a lockfile. It knows `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, and `bun.lockb`. If none of those match, it shrugs and runs `npm install`.
+
+The trap is that Bun 1.2 changed the default. The lockfile it writes now is called `bun.lock` — text format, much nicer to diff, and entirely invisible to Cloudflare. A perfectly valid Bun repo, the kind every new project produces, looks lockfile-less to the build image. So npm takes over without telling you, and you start debugging the wrong thing.
+
+I debugged the wrong thing twice. First the ESLint error — `eslint@10` against `@nuxt/eslint`'s `peer eslint@^9`. Bun is relaxed about that. npm, with strict peer deps, is not. I almost downgraded ESLint. Then, after working around it, Tailwind: *"the PostCSS plugin has moved to a separate package."* I was on v3 deliberately, but npm had hoisted a transitive `tailwindcss@4` to the top of `node_modules`, and `@nuxtjs/tailwindcss@6` picked that up instead of the v3 I had declared. Same code, different hoisting, different runtime.
+
+Neither error was real. Both disappeared the moment Bun was actually doing the install.
+
+## Making Bun do the install
+
+There are two settings, both in the Pages project. The environment variable:
+
+```
+BUN_VERSION = 1.3.13
+```
+
+And the build command:
+
+```
+bun install && bun run build
+```
+
+The `bun install &&` is the part you have to know. Cloudflare will happily provision the Bun binary when you set `BUN_VERSION`, but it will not run install. With every other package manager it detects, the install step is automatic. With Bun, it is on you. Set the build command to just `bun run build` and the build crashes with `nuxt: command not found`, because nothing ever populated `node_modules`. Chain it. The same applies to Workers builds.
+
+## The other kind of failure
+
+Once Bun was installing cleanly, the next error had nothing to do with package managers:
+
+```
+Cannot resolve "@takumi-rs/wasm/takumi_wasm_bg.wasm?module" from nuxt-og-image
+```
+
+`@nuxtjs/og-image` renders Open Graph images at the edge using Takumi, which is the Rust-based successor to satori and resvg. It ships in two flavours. `@takumi-rs/core` is a native binary, which is fine for Node and does not run on Workers at all. `@takumi-rs/wasm` is the variant the edge needs.
+
+This is the point in a deploy where it is worth asking whether you actually need the feature. I did not. The fix was three lines in `nuxt.config.ts`:
+
+```ts
+ogImage: { enabled: false }
+```
+
+And dropping `@takumi-rs/core`, `@takumi-rs/wasm`, `satori`, and `sharp` from the dependency list entirely. The build went green. The cold start got shorter as a bonus.
+
+The general lesson is the boring one. Anything in your dependency graph that ships a native binary either needs a WASM story for Workers or it needs to not run on Workers. The runtime is not Node, no matter how much it looks like Node from the outside.
+
+## What I wish Cloudflare would fix
+
+A short list. Detect `bun.lock`, which has been Bun's default lockfile for over a year. Run `bun install` automatically when Bun is selected, the way it does for every other package manager. Document, in the meantime, that you have to chain the install yourself. None of these are heroic engineering. Bun is almost a first-class citizen on Cloudflare's build platform. The gap is small and very fixable.
+
+Until then, the only debugging move that matters is to read the first install line in the build log. If it says `npm install` and you use Bun, you already know what went wrong.

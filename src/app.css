@@ -473,6 +473,17 @@ a.link-quiet:hover {
 	margin-top: 0;
 }
 
+.prose-romantic > p:first-child::first-letter {
+	font-family: var(--font-display);
+	font-style: italic;
+	font-weight: 400;
+	font-size: 4.5em;
+	line-height: 0.85;
+	float: left;
+	padding: 0.05em 0.12em 0 0;
+	color: var(--ink);
+}
+
 .prose-romantic h2 {
 	font-family: var(--font-display);
 	font-style: italic;

@@ -1,5 +1,8 @@
-// Writing index. Add new posts here. Each entry corresponds to a route at
-// /writing/<slug>. Keep ordered newest-first.
+// Writing index. Posts live as markdown in src/posts/<slug>.svx with YAML
+// frontmatter. Metadata is collected eagerly; rendered components load on
+// demand from the [slug] route.
+
+import type { Component } from 'svelte';
 
 export interface Post {
 	slug: string;
@@ -10,34 +13,30 @@ export interface Post {
 	tags: string[];
 }
 
-export const posts: Post[] = [
-	{
-		slug: 'in-defense-of-melancholy',
-		title: 'In defense of melancholy',
-		description:
-			'On Friedrich, Shakespeare, Swan Lake, and what a culture loses when it decides sadness is a bug to be fixed.',
-		date: '2026-05-24',
-		readingTime: '3 min read',
-		tags: ['art', 'philosophy', 'culture']
-	},
-	{
-		slug: 'sitting-in-discomfort-on-purpose',
-		title: 'Sitting in discomfort on purpose',
-		description:
-			'The small, private, unglamorous habit of being slightly uncomfortable every day — and what it buys you when the involuntary discomforts arrive.',
-		date: '2026-05-23',
-		readingTime: '3 min read',
-		tags: ['discipline', 'body', 'philosophy']
-	},
-	{
-		slug: 'absurdism-without-nihilism',
-		title: 'Absurdism without nihilism',
-		description:
-			'Camus is read badly more often than he is read well. A short defense of the harder reading — the one that asks you to keep pushing the rock.',
-		date: '2026-05-22',
-		readingTime: '3 min read',
-		tags: ['philosophy', 'camus', 'meaning']
-	}
-];
+type PostMeta = Omit<Post, 'slug'>;
+
+const metaModules = import.meta.glob<PostMeta>('../posts/*.svx', {
+	eager: true,
+	import: 'metadata'
+});
+
+const componentLoaders = import.meta.glob<{ default: Component }>('../posts/*.svx');
+
+const slugFromPath = (path: string) =>
+	path
+		.split('/')
+		.pop()!
+		.replace(/\.svx$/, '');
+
+export const posts: Post[] = Object.entries(metaModules)
+	.map(([path, meta]) => ({ slug: slugFromPath(path), ...meta }))
+	.sort((a, b) => b.date.localeCompare(a.date));
 
 export const getPost = (slug: string) => posts.find((p) => p.slug === slug);
+
+export const loadPostComponent = async (slug: string): Promise<Component | null> => {
+	const entry = Object.entries(componentLoaders).find(([path]) => slugFromPath(path) === slug);
+	if (!entry) return null;
+	const mod = await entry[1]();
+	return mod.default;
+};
