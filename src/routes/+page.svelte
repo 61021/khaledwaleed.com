@@ -2,7 +2,9 @@
 	import { Seo, Container, Button, PageHeader, Fleuron, site } from '$lib';
 </script>
 
-<Seo description={site.tagline} />
+<Seo
+	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq, building production web apps in SvelteKit, Nuxt, and Go."
+/>
 
 <PageHeader
 	room="home"
