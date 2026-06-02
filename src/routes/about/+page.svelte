@@ -45,7 +45,7 @@
 		'@type': 'ProfilePage',
 		'@id': `${site.url}/about#profile`,
 		url: `${site.url}/about`,
-		name: `About ${site.name}`,
+		name: 'About',
 		dateModified: '2026-05-21',
 		mainEntity: { '@id': `${site.url}/#person` },
 		breadcrumb: {
@@ -59,7 +59,7 @@
 </script>
 
 <Seo
-	title="About Khaled Waleed"
+	title="About"
 	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq, working in SvelteKit, Nuxt, and Go. Five years shipping production web apps for international and Iraqi teams."
 	type="profile"
 />
