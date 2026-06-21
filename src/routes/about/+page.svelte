@@ -40,14 +40,18 @@
 		{ label: 'Open to', value: 'Senior roles · contracts' }
 	];
 
-	const profilePageSchema = {
+	// Supporting page about the person — NOT the canonical ProfilePage
+	// (that is the homepage). Using AboutPage + `about` keeps /about from
+	// competing with "/" for the person-name query.
+	const aboutPageSchema = {
 		'@context': 'https://schema.org',
-		'@type': 'ProfilePage',
-		'@id': `${site.url}/about#profile`,
+		'@type': 'AboutPage',
+		'@id': `${site.url}/about#aboutpage`,
 		url: `${site.url}/about`,
 		name: 'About',
+		isPartOf: { '@id': `${site.url}/#website` },
 		dateModified: '2026-05-21',
-		mainEntity: { '@id': `${site.url}/#person` },
+		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
 			itemListElement: [
@@ -61,11 +65,10 @@
 <Seo
 	title="About"
 	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq, working in SvelteKit, Nuxt, and Go. Five years shipping production web apps for international and Iraqi teams."
-	type="profile"
 />
 
 <svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(profilePageSchema)}</script>`}
+	{@html `<script type="application/ld+json">${JSON.stringify(aboutPageSchema)}</script>`}
 </svelte:head>
 
 <PageHeader
