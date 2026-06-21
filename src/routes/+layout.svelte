@@ -66,9 +66,9 @@
 			<a
 				href="/"
 				class="font-[var(--font-display)] text-2xl italic text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
-				aria-label="Home"
+				aria-label="Khaled Waleed — home"
 			>
-				KW
+				KW<span class="sr-only">Khaled Waleed</span>
 			</a>
 
 			<nav aria-label="Primary" class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">

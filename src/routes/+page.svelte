@@ -1,10 +1,30 @@
 <script lang="ts">
 	import { Seo, Container, Button, PageHeader, Fleuron, site } from '$lib';
+
+	// The homepage is the canonical profile page for the person entity.
+	// This tells Google that "/" — not "/about" — is the primary page for
+	// the "Khaled Waleed" query.
+	const profilePageSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'ProfilePage',
+		'@id': `${site.url}/#profilepage`,
+		url: site.url,
+		name: `${site.name} — ${site.role}`,
+		isPartOf: { '@id': `${site.url}/#website` },
+		dateModified: '2026-05-21',
+		primaryImageOfPage: `${site.url}${site.avatar}`,
+		mainEntity: { '@id': `${site.url}/#person` }
+	};
 </script>
 
 <Seo
 	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq, building production web apps in SvelteKit, Nuxt, and Go."
+	type="profile"
 />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(profilePageSchema)}</script>`}
+</svelte:head>
 
 <PageHeader
 	room="home"
