@@ -29,10 +29,26 @@ const slugFromPath = (path: string) =>
 		.replace(/\.svx$/, '');
 
 export const posts: Post[] = Object.entries(metaModules)
-	.map(([path, meta]) => ({ slug: slugFromPath(path), ...meta }))
+	.map(([path, meta]) => ({
+		slug: slugFromPath(path),
+		...meta,
+		// YAML parses an unquoted `date:` as a timestamp, which mdsvex then
+		// serializes as a full ISO string — keep just the yyyy-mm-dd part.
+		date: String(meta.date).slice(0, 10)
+	}))
 	.sort((a, b) => b.date.localeCompare(a.date));
 
 export const getPost = (slug: string) => posts.find((p) => p.slug === slug);
+
+/** Format a yyyy-mm-dd date as e.g. "24 May 2026" (UTC, locale-stable). */
+export function formatDate(date: string): string {
+	return new Date(date).toLocaleDateString('en-GB', {
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
+		timeZone: 'UTC'
+	});
+}
 
 export const loadPostComponent = async (slug: string): Promise<Component | null> => {
 	const entry = Object.entries(componentLoaders).find(([path]) => slugFromPath(path) === slug);

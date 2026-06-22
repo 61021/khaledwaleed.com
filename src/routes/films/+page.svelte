@@ -22,28 +22,11 @@
 	const avg = (films.reduce((s, f) => s + f.rating, 0) / total).toFixed(1);
 	const lastUpdated = films.reduce((a, f) => (f.rated > a ? f.rated : a), films[0].rated);
 
-	// Top genre + busiest decade, from the data.
-	const genreCount = new Map<string, number>();
-	for (const f of films) for (const g of f.genres) genreCount.set(g, (genreCount.get(g) ?? 0) + 1);
-	const topGenre = [...genreCount.entries()].sort(
-		(a, b) => b[1] - a[1] || a[0].localeCompare(b[0])
-	)[0];
-
-	const decadeCount = new Map<number, number>();
-	for (const f of films) {
-		if (!f.year) continue;
-		const d = Math.floor(f.year / 10) * 10;
-		decadeCount.set(d, (decadeCount.get(d) ?? 0) + 1);
-	}
-	const topDecade = [...decadeCount.entries()].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0];
-
 	const facts = [
 		{ label: 'Titles rated', value: String(total) },
 		{ label: 'Movies · shows', value: `${movieCount} · ${showCount}` },
 		{ label: 'Average rating', value: `${avg} / 10` },
-		{ label: 'Perfect tens', value: String(tens) },
-		{ label: 'Favourite genre', value: topGenre ? `${topGenre[0]} · ${topGenre[1]}` : '—' },
-		{ label: 'Busiest decade', value: topDecade ? `${topDecade[0]}s · ${topDecade[1]}` : '—' }
+		{ label: 'Perfect tens', value: String(tens) }
 	];
 
 	// --- Type filter -----------------------------------------------------
