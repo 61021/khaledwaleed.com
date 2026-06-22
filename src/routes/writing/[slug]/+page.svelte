@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Container, Seo, PageHeader, Fleuron, ReadingProgress, site, paintings } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+	import { formatDate } from '$lib/posts';
 
 	let { data } = $props();
 	const post = $derived(data.post);
@@ -54,11 +55,7 @@
 
 <ReadingProgress />
 
-<PageHeader
-	{room}
-	eyebrow={post.readingTime}
-	title={post.title}
->
+<PageHeader {room} eyebrow={post.readingTime} title={post.title}>
 	{#snippet lede()}
 		<p>{post.description}</p>
 	{/snippet}
@@ -75,7 +72,7 @@
 		/>
 		<div class="mt-4 smallcaps">
 			by <a href="/about" class="link-quiet" rel="author">Khaled Waleed</a> ·
-			<time datetime={post.date}>{post.date}</time>
+			<time datetime={post.date}>{formatDate(post.date)}</time>
 		</div>
 	</div>
 

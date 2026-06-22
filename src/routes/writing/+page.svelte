@@ -1,30 +1,31 @@
 <script lang="ts">
 	import { Container, Seo, PageHeader, Fleuron, site } from '$lib';
-	import { posts } from '$lib/posts';
+	import { posts, formatDate } from '$lib/posts';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 </script>
 
 <Seo
-	title="Writing — Khaled Waleed"
-	description="Short essays on software engineering, performance, and building from Baghdad."
+	title="Writing"
+	description="Essays on people, ideas, art, and philosophy — with the occasional piece on software."
 />
 
-<PageHeader
-	room="writing"
-	eyebrow="essays · notes"
-	title="Writing"
->
+<PageHeader room="writing" eyebrow="essays · notes" title="Writing">
 	{#snippet lede()}
 		<p>
-			Short, opinionated pieces on shipping software — performance, architecture, and the
-			realities of building remotely from Baghdad.
+			Essays on the things that occupy my mind — how people think, the choices that define them,
+			art, philosophy, and now and then, software.
 		</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
 	<div class="rise-3 mt-10">
-		<Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Writing', href: '/writing' }]} />
+		<Breadcrumb
+			items={[
+				{ name: 'Home', href: '/' },
+				{ name: 'Writing', href: '/writing' }
+			]}
+		/>
 	</div>
 
 	<Fleuron />
@@ -34,7 +35,7 @@
 			<li>
 				<a href={`/writing/${post.slug}`} class="group block">
 					<div class="smallcaps">
-						<time datetime={post.date}>{post.date}</time>
+						<time datetime={post.date}>{formatDate(post.date)}</time>
 						<span class="mx-2 text-[var(--rule)]">·</span>
 						<span>{post.readingTime}</span>
 					</div>
@@ -56,8 +57,6 @@
 	<Fleuron />
 
 	<div class="rise text-center">
-		<a href="/rss.xml" class="smallcaps link-quiet">
-			subscribe via rss
-		</a>
+		<a href="/rss.xml" class="smallcaps link-quiet"> subscribe via rss </a>
 	</div>
 </Container>
