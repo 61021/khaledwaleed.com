@@ -8,5 +8,6 @@ export { default as Badge } from './components/Badge.svelte';
 export { default as CommandPalette } from './components/CommandPalette.svelte';
 export { default as ReadingProgress } from './components/ReadingProgress.svelte';
 export { default as Painting } from './components/Painting.svelte';
+export { default as Poster } from './components/Poster.svelte';
 export { default as Fleuron } from './components/Fleuron.svelte';
 export { default as PageHeader } from './components/PageHeader.svelte';

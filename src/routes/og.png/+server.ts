@@ -20,23 +20,13 @@ function loadFont(...candidates: string[]): Buffer | null {
 	return null;
 }
 
-const garamondRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-normal.woff'),
-	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-all-400-normal.woff')
+const interRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/inter/files/inter-latin-400-normal.woff'),
+	join(ROOT, 'node_modules/@fontsource/inter/files/inter-latin-all-400-normal.woff')
 );
-const garamondItalic = loadFont(
-	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff'),
-	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-all-400-italic.woff')
-);
-const cormorantItalic = loadFont(
-	join(
-		ROOT,
-		'node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff'
-	),
-	join(
-		ROOT,
-		'node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-all-400-italic.woff'
-	)
+const frauncesItalic = loadFont(
+	join(ROOT, 'node_modules/@fontsource/fraunces/files/fraunces-latin-400-italic.woff'),
+	join(ROOT, 'node_modules/@fontsource/fraunces/files/fraunces-latin-all-400-italic.woff')
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,7 +48,7 @@ export const GET: RequestHandler = async () => {
 				justifyContent: 'space-between',
 				background: 'linear-gradient(180deg, #0a1220 0%, #131d34 100%)',
 				padding: '80px 100px',
-				fontFamily: '"EB Garamond", serif',
+				fontFamily: '"Inter", sans-serif',
 				color: '#ece4ce'
 			}
 		},
@@ -70,7 +60,7 @@ export const GET: RequestHandler = async () => {
 				{
 					style: {
 						display: 'flex',
-						fontFamily: '"Cormorant Garamond", serif',
+						fontFamily: '"Fraunces", serif',
 						fontStyle: 'italic',
 						fontSize: '56px',
 						color: '#d9b66c',
@@ -111,7 +101,7 @@ export const GET: RequestHandler = async () => {
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"Cormorant Garamond", serif',
+						fontFamily: '"Fraunces", serif',
 						fontStyle: 'italic',
 						fontSize: '96px',
 						lineHeight: 1.05,
@@ -127,7 +117,6 @@ export const GET: RequestHandler = async () => {
 				{
 					style: {
 						display: 'flex',
-						fontStyle: 'italic',
 						fontSize: '30px',
 						color: '#a8b3c9',
 						lineHeight: 1.4
@@ -155,17 +144,10 @@ export const GET: RequestHandler = async () => {
 	);
 
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
-	if (garamondRegular)
-		fonts.push({ name: 'EB Garamond', data: garamondRegular, weight: 400, style: 'normal' });
-	if (garamondItalic)
-		fonts.push({ name: 'EB Garamond', data: garamondItalic, weight: 400, style: 'italic' });
-	if (cormorantItalic)
-		fonts.push({
-			name: 'Cormorant Garamond',
-			data: cormorantItalic,
-			weight: 400,
-			style: 'italic'
-		});
+	if (interRegular)
+		fonts.push({ name: 'Inter', data: interRegular, weight: 400, style: 'normal' });
+	if (frauncesItalic)
+		fonts.push({ name: 'Fraunces', data: frauncesItalic, weight: 400, style: 'italic' });
 
 	const svg = await satori(node, { width: 1200, height: 630, fonts });
 	const png = new Resvg(svg).render().asPng();

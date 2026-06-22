@@ -17,7 +17,7 @@
 <header class="page-header">
 	<Painting {room} priority />
 
-	<div class="mx-auto mt-12 max-w-2xl px-6 text-center sm:mt-16">
+	<div class="mx-auto mt-12 px-6 text-center sm:mt-16">
 		{#if eyebrow}
 			<div class="smallcaps mb-5 rise-2">{eyebrow}</div>
 		{/if}

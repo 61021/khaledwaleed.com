@@ -30,7 +30,7 @@
 		</picture>
 	</div>
 
-	<figcaption class="plate mx-auto mt-4 max-w-2xl px-6 rise-2">
+	<figcaption class="plate mx-auto mt-4 px-6 rise-2">
 		<em>{p.title}</em>
 		<span class="plate-sep">·</span>
 		{p.artist}

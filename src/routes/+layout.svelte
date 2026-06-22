@@ -1,12 +1,10 @@
 <script lang="ts">
 	import '../app.css';
-	import '@fontsource/eb-garamond/400.css';
-	import '@fontsource/eb-garamond/400-italic.css';
-	import '@fontsource/eb-garamond/500.css';
-	import '@fontsource/eb-garamond/500-italic.css';
-	import '@fontsource/cormorant-garamond/400-italic.css';
-	import '@fontsource/cormorant-garamond/500.css';
-	import '@fontsource/cormorant-sc/400.css';
+	import '@fontsource/inter/400.css';
+	import '@fontsource/inter/400-italic.css';
+	import '@fontsource/inter/600.css';
+	import '@fontsource/fraunces/400.css';
+	import '@fontsource/fraunces/400-italic.css';
 
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
@@ -45,6 +43,7 @@
 		{ name: 'Now', href: '/now' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Library', href: '/library' },
+		{ name: 'Films', href: '/films' },
 		{ name: 'Contact', href: '/contact' }
 	];
 
@@ -76,7 +75,7 @@
 					{@const active = isActive(item.href, $page.url.pathname)}
 					<a
 						href={item.href}
-						class="text-[1rem] italic transition-colors duration-300 {active
+						class="font-[var(--font-display)] text-[1.05rem] italic transition-colors duration-300 {active
 							? 'text-[var(--accent)]'
 							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 						aria-current={active ? 'page' : undefined}
@@ -101,7 +100,7 @@
 						{site.name} · {site.location.city}, {site.location.country}
 					</div>
 					<div class="smallcaps">
-						mmxxvi · set in eb garamond
+						mmxxvi · set in inter &amp; fraunces
 					</div>
 				</div>
 				<nav aria-label="Elsewhere" class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
