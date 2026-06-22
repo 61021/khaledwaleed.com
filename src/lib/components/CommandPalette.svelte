@@ -18,6 +18,7 @@
 		{ id: 'now', title: 'Now', subtitle: 'What I am at, right now', href: '/now', kind: 'page', keywords: 'current today recent' },
 		{ id: 'likes', title: 'Likes', subtitle: 'A catalogue of obsessions', href: '/likes', kind: 'page' },
 		{ id: 'library', title: 'Library', subtitle: 'What I am reading, and what is waiting', href: '/library', kind: 'page', keywords: 'books reading shelf' },
+		{ id: 'films', title: 'Films', subtitle: 'Everything I have rated, by score', href: '/films', kind: 'page', keywords: 'movies cinema imdb ratings tv shows watch' },
 		{ id: 'contact', title: 'Contact', subtitle: 'Get in touch', href: '/contact', kind: 'page' },
 		...posts.map(
 			(p): Item => ({

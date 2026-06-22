@@ -50,6 +50,17 @@
 	--accent: #c9a464;
 }
 
+:root[data-room='films'] {
+	/* the orrery: a dark room lit by one warm lamp — amber faces, gold glow */
+	--bg: #120d0a;
+	--bg-soft: #1c1411;
+	--ink: #efdcbd;
+	--ink-muted: #b39a78;
+	--ink-dim: #7d6a52;
+	--rule: #2b2018;
+	--accent: #dca34e;
+}
+
 :root[data-room='post-baghdad'] {
 	--bg: #ede2cf;
 	--bg-soft: #f6edd8;
@@ -121,16 +132,19 @@
 	--accent: #b8a87a;
 }
 
-/* ---------- Typography stack ---------- */
+/* ---------- Typography stack ----------
+   Two families, one role each:
+   · body    = Inter    (sans — running text, labels, smallcaps)
+   · display = Fraunces (serif — headings, dropcaps, logo, buttons)
+   One weight per family (400); Inter 600 only for smallcaps labels. */
 :root {
-	--font-body: 'EB Garamond', 'Cormorant Garamond', 'Times New Roman', Georgia, ui-serif, serif;
-	--font-display: 'Cormorant Garamond', 'EB Garamond', 'Cormorant SC', Georgia, ui-serif, serif;
-	--font-smallcaps: 'Cormorant SC', 'Cormorant Garamond', 'EB Garamond', Georgia, ui-serif, serif;
+	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+	--font-display: 'Fraunces', Georgia, 'Times New Roman', ui-serif, serif;
 }
 
 @theme inline {
 	--font-sans: var(--font-body);
-	--font-serif: var(--font-body);
+	--font-serif: var(--font-display);
 	--font-display: var(--font-display);
 	--color-bg: var(--bg);
 	--color-bg-soft: var(--bg-soft);
@@ -162,12 +176,11 @@ body {
 	font-family: var(--font-body);
 	background-color: var(--bg);
 	color: var(--ink);
-	font-size: 18px;
+	font-size: 17px;
 	line-height: 1.7;
 	font-feature-settings:
 		'liga' 1,
-		'kern' 1,
-		'onum' 1;
+		'kern' 1;
 	transition: background-color 600ms ease;
 }
 
@@ -179,7 +192,7 @@ h5,
 h6 {
 	font-family: var(--font-display);
 	color: var(--ink);
-	font-weight: 500;
+	font-weight: 400;
 	letter-spacing: 0;
 	line-height: 1.15;
 }
@@ -187,7 +200,6 @@ h6 {
 h1 {
 	font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
 	font-style: italic;
-	font-weight: 400;
 }
 
 h2 {
@@ -208,11 +220,11 @@ i {
 }
 
 .smallcaps {
-	font-family: var(--font-smallcaps);
-	font-feature-settings: 'smcp' 1;
-	letter-spacing: 0.16em;
-	text-transform: lowercase;
-	font-size: 0.78rem;
+	font-family: var(--font-body);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	font-size: 0.72rem;
+	font-weight: 600;
 	color: var(--ink-dim);
 }
 
@@ -495,7 +507,7 @@ a.link-quiet:hover {
 
 .prose-romantic h3 {
 	font-family: var(--font-display);
-	font-weight: 500;
+	font-weight: 400;
 	font-size: 1.35rem;
 	margin: 2.5rem 0 0.75rem;
 	color: var(--ink);
@@ -544,7 +556,7 @@ a.link-quiet:hover {
 }
 
 .prose-romantic code {
-	font-family: 'EB Garamond', Georgia, serif;
+	font-family: var(--font-display);
 	font-style: italic;
 	background: color-mix(in oklab, var(--accent) 12%, transparent);
 	padding: 0 0.3em;

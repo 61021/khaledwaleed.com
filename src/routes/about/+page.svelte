@@ -130,7 +130,7 @@
 					<div class="smallcaps mb-2">{exp.period}</div>
 					<h3
 						class="italic text-[var(--ink)]"
-						style="font-family: var(--font-display); font-weight: 500;"
+						style="font-family: var(--font-display);"
 					>
 						{exp.title} ·
 						<a

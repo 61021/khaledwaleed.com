@@ -217,6 +217,11 @@
 						{/each}
 					</ul>
 				{/if}
+				{#if s.name === 'Cinema'}
+					<p class="mt-5">
+						<a href="/films" class="link">Every film and show I have rated →</a>
+					</p>
+				{/if}
 				{#if i < sections.length - 1}
 					<div class="mt-12 rule-fine"></div>
 				{/if}

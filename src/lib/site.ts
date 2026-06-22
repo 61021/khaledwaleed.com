@@ -163,6 +163,16 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.louvre.fr/en/',
 		source: 'https://en.wikipedia.org/wiki/Philosopher_in_Meditation',
 		alt: 'An old scholar seated by a tall arched window in a vaulted chamber, head bowed, a spiral wooden staircase winding up into shadow behind him.'
+	},
+	films: {
+		key: 'films',
+		title: 'A Philosopher Lecturing on the Orrery',
+		artist: 'Joseph Wright of Derby',
+		year: 'c. 1766',
+		museum: 'Derby Museum and Art Gallery',
+		museumUrl: 'https://www.derbymuseums.org/',
+		source: 'https://en.wikipedia.org/wiki/A_Philosopher_Lecturing_on_the_Orrery',
+		alt: 'A lecturer demonstrates a mechanical model of the solar system in a darkened room; a single lamp at its centre stands in for the sun, lighting the rapt faces gathered around it in warm gold.'
 	}
 };
 
@@ -173,6 +183,7 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/now') return 'now';
 	if (pathname === '/likes') return 'likes';
 	if (pathname === '/library') return 'library';
+	if (pathname === '/films') return 'films';
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
 	if (pathname.startsWith('/writing/')) return 'writing';

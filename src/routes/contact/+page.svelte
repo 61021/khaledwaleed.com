@@ -19,8 +19,7 @@
 >
 	{#snippet lede()}
 		<p>
-			The fastest way is email — I read everything, and I reply within a day or two. For
-			a quicker note, Telegram or WhatsApp will find me sooner.
+			The fastest way is a call, or you can email, I read everything, and I reply within a day or two. 
 		</p>
 	{/snippet}
 </PageHeader>

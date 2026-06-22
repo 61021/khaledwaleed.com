@@ -8,7 +8,26 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [vitePreprocess(), mdsvex()],
 	kit: {
-		adapter: adapter()
+		// Keep _routes.json under Cloudflare's 100-rule limit. The default
+		// `<files>` token lists every static asset individually (440+ posters),
+		// which overflows. Instead collapse the asset folders into wildcards.
+		adapter: adapter({
+			routes: {
+				include: ['/*'],
+				exclude: [
+					'<build>',
+					'<prerendered>',
+					'/paintings/*',
+					'/logos/*',
+					'/.well-known/*',
+					'/avatar.svg',
+					'/favicon.svg',
+					'/humans.txt',
+					'/llms.txt',
+					'/manifest.webmanifest'
+				]
+			}
+		})
 	},
 	extensions: ['.svelte', '.svx']
 };
