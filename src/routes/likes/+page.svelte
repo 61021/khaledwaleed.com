@@ -105,24 +105,41 @@
 		{
 			num: '07',
 			name: 'Plate',
-			kicker: 'What I order without reading the menu',
+			kicker: 'Foods that are worth the effort.',
 			items: [
-				'Quzi',
+				'Pancakes, flawless and faintly divine',
+				'Quzi, slow-cooked',
 				'Yalanji',
 				'Steak, rested',
 				'Risotto, done right',
-				'Truffle-infused foie gras',
-				'Decanter-aged single-malt'
+				'Penne arrabiata',
+				'Rocket (arugula) salad',
+				'Sushi',
+				'Sunflower seeds, by the bag'
 			]
 		},
 		{
 			num: '08',
+			name: 'Glass',
+			kicker: 'What ends up in the glass',
+			items: [
+				'Cocktails, more or less all of them',
+				'Sex on the Beach, ordered without irony',
+				'Jägermeister, very cold',
+				'Beer, very cold',
+				'Iced V60',
+				'Peach iced tea',
+				'Black tea'
+			]
+		},
+		{
+			num: '09',
 			name: 'Road',
 			kicker: 'Engines worth the silence after',
 			items: ['Porsche 911 Turbo S', 'Aston Martin DB11', 'Ferrari 488 Pista']
 		},
 		{
-			num: '09',
+			num: '10',
 			name: 'Wild',
 			kicker: 'Travel, weather, slight danger',
 			items: [
@@ -135,7 +152,7 @@
 			]
 		},
 		{
-			num: '10',
+			num: '11',
 			name: 'Body',
 			kicker: 'A Greek-god frame, earned',
 			items: [
@@ -147,7 +164,7 @@
 			]
 		},
 		{
-			num: '11',
+			num: '12',
 			name: 'Craft',
 			kicker: 'The software taste behind the day job',
 			items: [
@@ -168,18 +185,13 @@
 	description="A scattered, evolving catalogue of Khaled Waleed's obsessions — cinema, music, art, style, food, philosophy, and everything in between."
 />
 
-<PageHeader
-	room="likes"
-	eyebrow="a catalogue of obsessions"
-	title="Likes"
->
+<PageHeader room="likes" eyebrow="a catalogue of obsessions" title="Likes">
 	{#snippet lede()}
 		<p>
-			A scattered, unfinished sketch — not a manifesto, not a polished self-portrait.
-			Just the films, sounds, books, rooms, and small obsessions that happen to be
-			circling my head right now. Random by design, immature on purpose, and never
-			meant to be anything else. Updated whenever something earns its place — or quietly
-			loses it.
+			A scattered, unfinished sketch — not a manifesto, not a polished self-portrait. Just the
+			films, sounds, books, rooms, and small obsessions that happen to be circling my head right
+			now. Random by design, immature on purpose, and never meant to be anything else. Updated
+			whenever something earns its place — or quietly loses it.
 		</p>
 	{/snippet}
 </PageHeader>
