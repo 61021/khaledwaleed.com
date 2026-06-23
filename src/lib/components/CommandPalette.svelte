@@ -12,7 +12,7 @@
 	};
 
 	const items: Item[] = [
-		{ id: 'home', title: 'Home', subtitle: 'Front matter', href: '/', kind: 'page' },
+		{ id: 'home', title: 'Home', subtitle: 'Entrance', href: '/', kind: 'page' },
 		{
 			id: 'about',
 			title: 'About',

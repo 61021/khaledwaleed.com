@@ -1,31 +1,38 @@
 #!/usr/bin/env bun
 /**
- * Add (or update) a title in src/lib/films.json by IMDb id/URL, pulling its
- * metadata from TMDB, and resolve its poster into src/lib/posters.ts.
+ * Add (or update) a title in src/lib/films.json by IMDb id/URL.
+ *
+ * films.json stores ONLY your data per title:
+ *   { id, rating, watched, watchedOn, notes?, privateNotes? }
+ * Title / year / genres / poster and the rest are TMDB metadata, baked into
+ * src/lib/films.ts by scripts/build-films.ts — which this script runs for you.
  *
  * Usage:
- *   bun run scripts/add-film.ts <imdb-id-or-url> <your-rating 1-10> [times-watched]
+ *   bun run scripts/add-film.ts <imdb-id-or-url> <rating 1-10> [times-watched]
  *
  * Examples:
  *   bun run scripts/add-film.ts https://www.imdb.com/title/tt37287335/ 8
  *   bun run scripts/add-film.ts tt0111161 9 3
  *
- * Re-running on an existing id UPDATES it (rating / watched), keeping its
- * original `rated` date. Requires TMDB_API_KEY in .env.
- *
- * Note: TMDB doesn't expose IMDb's rating, so the public TMDB score is used as
- * a stand-in for `imdbRating` — edit it in films.json if you want the exact one.
+ * Re-running on an existing id updates its rating / watched, keeping its
+ * watchedOn date and any notes. Adding a NEW title needs TMDB_API_KEY in .env.
+ * Write notes / privateNotes by hand-editing films.json.
  */
-import { writeFile } from 'node:fs/promises';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { films, type Film } from '../src/lib/films';
-import { posterPaths } from '../src/lib/posters';
+import { spawnSync } from 'node:child_process';
 
-const API_KEY = process.env.TMDB_API_KEY;
-if (!API_KEY) {
-	console.error('✗ TMDB_API_KEY missing. Add it to .env (see .env.example).');
-	process.exit(1);
+interface Entry {
+	id: string;
+	rating: number;
+	watched: number;
+	watchedOn: string;
+	notes?: string;
+	privateNotes?: string;
 }
+
+const SRC = path.resolve('src/lib/films.json');
+const OUT = path.resolve('src/lib/films.ts');
 
 const [rawId, rawRating, rawWatched] = process.argv.slice(2);
 const id = rawId?.match(/tt\d+/)?.[0];
@@ -41,111 +48,37 @@ if (!Number.isInteger(rating) || rating < 1 || rating > 10) {
 	process.exit(1);
 }
 
-type TmdbObj = Record<string, unknown>;
-const api = (p: string) =>
-	`https://api.themoviedb.org/3${p}${p.includes('?') ? '&' : '?'}api_key=${API_KEY}`;
-async function get(p: string): Promise<TmdbObj> {
-	const r = await fetch(api(p), { headers: { Accept: 'application/json' } });
-	if (!r.ok) throw new Error(`${p} → ${r.status}`);
-	return (await r.json()) as TmdbObj;
-}
-const names = (arr: unknown): string[] =>
-	Array.isArray(arr) ? arr.map((x) => (x as TmdbObj).name as string).filter(Boolean) : [];
-const round1 = (n: unknown) => Math.round((Number(n) || 0) * 10) / 10;
-
-const existing = films.find((f) => f.id === id);
+const list: Entry[] = JSON.parse(readFileSync(SRC, 'utf8'));
+const existing = list.find((f) => f.id === id);
 const watched = rawWatched ? Number(rawWatched) : (existing?.watched ?? 1);
 
-let film: Film;
-let newPoster: string | null = null;
-
 if (existing) {
-	// Update ONLY rating + watched. Never clobber metadata you may have
-	// hand-corrected (imdbRating, runtime, genres, …) or the original date.
-	film = { ...existing, rating, watched };
+	// Update only your data; keep watchedOn and any notes you've written.
+	existing.rating = rating;
+	existing.watched = watched;
 } else {
-	// New title — pull everything from TMDB.
-	const found = await get(`/find/${id}?external_source=imdb_id`);
-	const movieHit = (found.movie_results as TmdbObj[])?.[0];
-	const tvHit = (found.tv_results as TmdbObj[])?.[0];
-	const hit = movieHit ?? tvHit;
-	if (!hit) {
-		console.error(`✗ TMDB has no movie/TV match for ${id}`);
-		process.exit(1);
-	}
-	newPoster = (hit.poster_path as string) ?? null;
-	const rated = new Date().toISOString().slice(0, 10);
-
-	if (movieHit) {
-		const d = await get(`/movie/${hit.id}?append_to_response=credits`);
-		const crew = ((d.credits as TmdbObj)?.crew as TmdbObj[]) ?? [];
-		film = {
-			id,
-			title: d.title as string,
-			year: Number(String(d.release_date ?? '').slice(0, 4)) || 0,
-			type: 'Movie',
-			rating,
-			imdbRating: round1(d.vote_average),
-			runtime: (d.runtime as number) || null,
-			genres: names(d.genres),
-			directors: crew.filter((c) => c.job === 'Director').map((c) => c.name as string),
-			rated,
-			url: `https://www.imdb.com/title/${id}`,
-			watched
-		};
-	} else {
-		const d = await get(`/tv/${hit.id}`);
-		const type = /miniseries/i.test(String(d.type ?? '')) ? 'TV Mini Series' : 'TV Series';
-		film = {
-			id,
-			title: d.name as string,
-			year: Number(String(d.first_air_date ?? '').slice(0, 4)) || 0,
-			type,
-			rating,
-			imdbRating: round1(d.vote_average),
-			runtime: (d.episode_run_time as number[])?.[0] ?? null,
-			genres: names(d.genres),
-			directors: [],
-			rated,
-			url: `https://www.imdb.com/title/${id}`,
-			watched
-		};
-	}
+	list.push({ id, rating, watched, watchedOn: new Date().toISOString().slice(0, 10) });
 }
 
-// Upsert into films.json (same sort the data uses: rating, year, title).
-const list = films.filter((f) => f.id !== id);
-list.push(film);
-list.sort((a, b) => b.rating - a.rating || b.year - a.year || a.title.localeCompare(b.title));
-await writeFile(path.resolve('src/lib/films.json'), JSON.stringify(list, null, 2) + '\n');
+// Write a provisional films.json so the generator can see the new id …
+writeFileSync(SRC, JSON.stringify(list, null, 2) + '\n');
 
-// For a NEW title, merge its poster_path into posters.ts (existing ones keep theirs).
-if (!existing && newPoster) {
-	const map: Record<string, string> = { ...posterPaths, [id]: newPoster };
-	const entries = Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
-	const postersBody = `// AUTO-GENERATED by scripts/fetch-posters.ts — do not edit by hand.
-// IMDb const → TMDB poster_path. Images are hotlinked from image.tmdb.org.
-// Posters via the TMDB API (not endorsed or certified by TMDB).
-// ${entries.length} posters · generated ${new Date().toISOString().slice(0, 10)}
-
-export const posterPaths: Record<string, string> = {
-${entries.map(([k, v]) => `\t'${k}': '${v}'`).join(',\n')}
-};
-`;
-	await writeFile(path.resolve('src/lib/posters.ts'), postersBody);
+// … then regenerate films.ts (TMDB only for the new id, cache for the rest).
+const gen = spawnSync('bun', ['run', 'scripts/build-films.ts'], { stdio: 'inherit' });
+if (gen.status !== 0) {
+	console.error('✗ build-films failed — films.json was updated but films.ts was not rebuilt.');
+	process.exit(gen.status ?? 1);
 }
+
+// Reorder films.json to match the canonical sort baked into films.ts.
+const built = readFileSync(OUT, 'utf8');
+const order = [...built.matchAll(/"id":\s*"(tt\d+)"/g)].map((m) => m[1]);
+const rank = new Map(order.map((tid, i) => [tid, i] as const));
+list.sort((a, b) => (rank.get(a.id) ?? 1e9) - (rank.get(b.id) ?? 1e9));
+writeFileSync(SRC, JSON.stringify(list, null, 2) + '\n');
 
 // Report.
-const verb = existing ? 'Updated' : 'Added';
-console.log(`✓ ${verb}: ${film.title} (${film.year}) · ${film.type}`);
-console.log(
-	`  rating ${rating}/10 · seen ${watched}×` +
-		(existing ? '' : ` · IMDb ${film.imdbRating} (TMDB stand-in)`)
-);
-if (!existing) {
-	console.log(
-		`  ${film.genres.join(', ')}` + (film.directors.length ? ` · ${film.directors.join(', ')}` : '')
-	);
-	if (!newPoster) console.warn('  – no poster found on TMDB');
-}
+const title = built.match(new RegExp(`"id":\\s*"${id}",\\s*"title":\\s*"([^"]+)"`))?.[1] ?? id;
+console.log(`✓ ${existing ? 'Updated' : 'Added'}: ${title}`);
+console.log(`  rating ${rating}/10 · seen ${watched}×`);
 console.log(`  films.json now has ${list.length} titles. Run \`bun run build\` to ship.`);
