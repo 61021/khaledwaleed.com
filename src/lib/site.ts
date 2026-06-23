@@ -173,6 +173,16 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.derbymuseums.org/',
 		source: 'https://en.wikipedia.org/wiki/A_Philosopher_Lecturing_on_the_Orrery',
 		alt: 'A lecturer demonstrates a mechanical model of the solar system in a darkened room; a single lamp at its centre stands in for the sun, lighting the rapt faces gathered around it in warm gold.'
+	},
+	music: {
+		key: 'music',
+		title: 'The Guitar Player',
+		artist: 'Johannes Vermeer',
+		year: 'c. 1672',
+		museum: 'Kenwood House, London',
+		museumUrl: 'https://www.english-heritage.org.uk/visit/places/kenwood/',
+		source: 'https://en.wikipedia.org/wiki/The_Guitar_Player_(Vermeer)',
+		alt: 'A young woman in a yellow ermine-trimmed jacket plays a guitar, glancing aside with a half-smile, in a sunlit Dutch interior.'
 	}
 };
 
@@ -184,6 +194,7 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/likes') return 'likes';
 	if (pathname === '/library') return 'library';
 	if (pathname === '/films') return 'films';
+	if (pathname === '/music') return 'music';
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
 	if (pathname.startsWith('/writing/')) return 'writing';

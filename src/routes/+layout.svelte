@@ -44,6 +44,7 @@
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Library', href: '/library' },
 		{ name: 'Films', href: '/films' },
+		{ name: 'Music', href: '/music' },
 		{ name: 'Contact', href: '/contact' }
 	];
 
@@ -60,8 +61,10 @@
 
 <div class="flex min-h-[100dvh] flex-col">
 	<!-- Quiet classical header: not sticky, no chrome -->
-	<header class="py-4 ">
-		<div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-6 sm:flex-row sm:justify-between">
+	<header class="py-4">
+		<div
+			class="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-6 sm:flex-row sm:justify-between"
+		>
 			<a
 				href="/"
 				class="font-[var(--font-display)] text-2xl italic text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
@@ -94,16 +97,19 @@
 	<!-- Footer: equally quiet -->
 	<footer class="mt-24 border-t border-[var(--rule)] py-10 sm:mt-32">
 		<Container size="wide">
-			<div class="flex flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left">
+			<div
+				class="flex flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left"
+			>
 				<div class="space-y-1">
 					<div class="italic text-[var(--ink-muted)]">
 						{site.name} · {site.location.city}, {site.location.country}
 					</div>
-					<div class="smallcaps">
-						mmxxvi · set in inter &amp; fraunces
-					</div>
+					<div class="smallcaps">mmxxvi · set in inter &amp; fraunces</div>
 				</div>
-				<nav aria-label="Elsewhere" class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+				<nav
+					aria-label="Elsewhere"
+					class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+				>
 					{#each site.socials as s}
 						<a
 							href={s.href}

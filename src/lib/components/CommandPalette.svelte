@@ -13,12 +13,53 @@
 
 	const items: Item[] = [
 		{ id: 'home', title: 'Home', subtitle: 'Front matter', href: '/', kind: 'page' },
-		{ id: 'about', title: 'About', subtitle: 'Background & experience', href: '/about', kind: 'page' },
+		{
+			id: 'about',
+			title: 'About',
+			subtitle: 'Background & experience',
+			href: '/about',
+			kind: 'page'
+		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
-		{ id: 'now', title: 'Now', subtitle: 'What I am at, right now', href: '/now', kind: 'page', keywords: 'current today recent' },
-		{ id: 'likes', title: 'Likes', subtitle: 'A catalogue of obsessions', href: '/likes', kind: 'page' },
-		{ id: 'library', title: 'Library', subtitle: 'What I am reading, and what is waiting', href: '/library', kind: 'page', keywords: 'books reading shelf' },
-		{ id: 'films', title: 'Films', subtitle: 'Everything I have rated, by score', href: '/films', kind: 'page', keywords: 'movies cinema imdb ratings tv shows watch' },
+		{
+			id: 'now',
+			title: 'Now',
+			subtitle: 'What I am at, right now',
+			href: '/now',
+			kind: 'page',
+			keywords: 'current today recent'
+		},
+		{
+			id: 'likes',
+			title: 'Likes',
+			subtitle: 'A catalogue of obsessions',
+			href: '/likes',
+			kind: 'page'
+		},
+		{
+			id: 'library',
+			title: 'Library',
+			subtitle: 'What I am reading, and what is waiting',
+			href: '/library',
+			kind: 'page',
+			keywords: 'books reading shelf'
+		},
+		{
+			id: 'films',
+			title: 'Films',
+			subtitle: 'Everything I have rated, by score',
+			href: '/films',
+			kind: 'page',
+			keywords: 'movies cinema imdb ratings tv shows watch'
+		},
+		{
+			id: 'music',
+			title: 'Music',
+			subtitle: 'Top tracks & artists, via Spotify',
+			href: '/music',
+			kind: 'page',
+			keywords: 'spotify listening songs albums tracks artists'
+		},
 		{ id: 'contact', title: 'Contact', subtitle: 'Get in touch', href: '/contact', kind: 'page' },
 		...posts.map(
 			(p): Item => ({
