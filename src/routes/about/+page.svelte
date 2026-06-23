@@ -7,22 +7,16 @@
 			company: 'Qi',
 			period: '2024 — present',
 			url: 'https://qi.iq',
-			points: [
-				'Leading frontend architecture across several consumer-facing products.',
-				'Building the shared design system every product team draws from.',
-				'Tightening performance budgets and the design ↔ engineering feedback loop.'
-			]
+			summary:
+				'Working across several consumer-facing products, design systems, and frontend architecture.'
 		},
 		{
 			title: 'Senior Software Engineer',
 			company: 'Vitex',
 			period: '2023 — present',
 			url: 'https://vitex.dev',
-			points: [
-				'Shipping Nuxt interfaces backed by Go microservices.',
-				'Owning features end to end — from schema and API to UI and deploy.',
-				'Profiling and tuning Go services under real production load.'
-			]
+			summary:
+				'Building Nuxt interfaces on Go services, owned end to end — schema, API, UI, and deploy.'
 		}
 	];
 
@@ -50,7 +44,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-05-21',
+		dateModified: '2026-06-23',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -64,60 +58,53 @@
 
 <Seo
 	title="About"
-	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq, working in SvelteKit, Nuxt, and Go. Five years shipping production web apps for international and Iraqi teams."
+	description="Khaled Waleed is a software engineer in Baghdad, Iraq — five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go."
 />
 
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(aboutPageSchema)}</script>`}
 </svelte:head>
 
-<PageHeader
-	room="about"
-	eyebrow="a brief portrait"
-	title="About"
->
+<PageHeader room="about" eyebrow="a brief portrait" title="About">
 	{#snippet lede()}
-		<p>Five years of shipping production web apps, written down honestly.</p>
+		<p>A curious person who happens to build software.</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
 	<section class="rise-3 mt-12">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
-			I have spent the last five years writing production software for real people who do
-			not particularly care about the language it is written in. That is the part of the job
-			I keep returning to — the long, quiet work of building things that hold up. A page that
-			loads fast. A form that doesn't lose its mind. A backend that doesn't wake anyone up at
-			three in the morning. The unglamorous virtues.
+			I build software for a living, but curiosity is probably the more accurate description. For
+			the last five years I have worked as a software engineer here in Baghdad, mostly building web
+			applications that have to survive contact with real users.
 		</p>
 		<p>
-			Most of my work is at the seam between
-			<em>SvelteKit</em> or <em>Nuxt</em> on the surface and <em>Go</em> beneath. I am at home
-			in TypeScript and at home in pointer arithmetic, and I am suspicious of any opinion
-			about engineering that does not survive both. Right now I do this at
+			Most of that work has been in Iraq, which I have come to treat as an advantage rather than a
+			footnote — government platforms, payment systems, work for democracy organisations, private
+			companies, startups. The constraints are real and the stakes are rarely abstract, and you
+			learn quickly which engineering virtues actually hold up when the thing simply has to work.
+		</p>
+		<p>
+			The work itself is straightforward to describe: <em>TypeScript</em>, <em>Go</em>, databases,
+			APIs, production systems. But what keeps me interested is less the technology than the long,
+			quiet business of understanding something well enough to make it simple. A page that loads
+			fast. A form that doesn't lose its mind. A backend that doesn't wake anyone at three in the
+			morning. The unglamorous virtues. I do this now at
 			<a href="https://qi.iq" target="_blank" rel="noopener" class="link">Qi</a> and
 			<a href="https://vitex.dev" target="_blank" rel="noopener" class="link">Vitex</a>.
 		</p>
 		<p>
-			Away from the screen I read mostly fiction and essays, walk around the older quarters
-			of Baghdad after dark, and keep a long list of films I plan to rewatch. If any of
-			that travels well with yours,
-			<a href="/contact" class="link">let's talk</a>.
+			Away from the screen I spend an unreasonable amount of time reading, watching films, and
+			wandering through the older parts of cities, chasing questions that never seem to stay
+			answered for very long. Meaning, suffering, morality, love, failure, beauty, why people do
+			what they do. Some people collect stamps. I collect questions.
 		</p>
-	</section>
-
-	<Fleuron />
-
-	<section class="rise mt-8">
-		<h2 class="text-center italic">Quick facts</h2>
-		<dl class="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-			{#each facts as f}
-				<div>
-					<dt class="smallcaps">{f.label}</dt>
-					<dd class="mt-1 italic text-[var(--ink)]">{f.value}</dd>
-				</div>
-			{/each}
-		</dl>
+		<p>
+			I <a href="/writing" class="link">write</a> occasionally too, mostly because some thoughts
+			become annoying if you leave them alone for too long. I have found that most things become
+			more bearable once they become interesting. Software included. If any of that travels well
+			with yours, <a href="/contact" class="link">let's talk</a>.
+		</p>
 	</section>
 
 	<Fleuron />
@@ -128,47 +115,16 @@
 			{#each experiences as exp}
 				<li class="border-l-2 border-[var(--accent)] pl-6">
 					<div class="smallcaps mb-2">{exp.period}</div>
-					<h3
-						class="italic text-[var(--ink)]"
-						style="font-family: var(--font-display);"
-					>
+					<h3 class="italic text-[var(--ink)]" style="font-family: var(--font-display);">
 						{exp.title} ·
-						<a
-							href={exp.url}
-							target="_blank"
-							rel="noopener"
-							class="link"
-						>
+						<a href={exp.url} target="_blank" rel="noopener" class="link">
 							{exp.company}
 						</a>
 					</h3>
-					<ul class="mt-3 space-y-2 italic text-[var(--ink-muted)]">
-						{#each exp.points as p}
-							<li class="flex gap-3">
-								<span aria-hidden="true" class="text-[var(--accent)]">·</span>
-								<span>{p}</span>
-							</li>
-						{/each}
-					</ul>
+					<p class="mt-3 italic text-[var(--ink-muted)]">{exp.summary}</p>
 				</li>
 			{/each}
 		</ol>
-	</section>
-
-	<Fleuron />
-
-	<section class="rise mt-8">
-		<h2 class="text-center italic">The toolkit</h2>
-		<dl class="mt-8 grid gap-8 sm:grid-cols-2">
-			{#each Object.entries(skills) as [cat, items]}
-				<div>
-					<dt class="smallcaps">{cat}</dt>
-					<dd class="mt-2 italic text-[var(--ink-muted)]">
-						{items.join(' · ')}
-					</dd>
-				</div>
-			{/each}
-		</dl>
 	</section>
 
 	<Fleuron />

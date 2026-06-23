@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { posterPaths } from '$lib/posters';
-
 	type Props = {
-		/** IMDb const, e.g. tt0166924 */
-		id: string;
+		/** TMDB poster_path, e.g. /abc.jpg; null renders a placeholder */
+		posterPath: string | null;
 		alt: string;
 		/** rendered width in px; height follows the 2:3 poster ratio */
 		width?: number;
@@ -11,10 +9,9 @@
 		vivid?: boolean;
 	};
 
-	let { id, alt, width = 52, vivid = false }: Props = $props();
+	let { posterPath, alt, width = 52, vivid = false }: Props = $props();
 
 	const TMDB = 'https://image.tmdb.org/t/p';
-	const posterPath = $derived(posterPaths[id]);
 	const height = $derived(Math.round((width * 3) / 2));
 	// Hotlinked from TMDB; request a small size and a 2× for retina.
 	const src = $derived(posterPath ? `${TMDB}/${vivid ? 'w342' : 'w185'}${posterPath}` : null);

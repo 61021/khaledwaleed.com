@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Seo, Container, Button, PageHeader, Fleuron, site } from '$lib';
+	import { Seo, Container, PageHeader, site } from '$lib';
 
 	// The homepage is the canonical profile page for the person entity.
 	// This tells Google that "/" — not "/about" — is the primary page for
@@ -11,10 +11,21 @@
 		url: site.url,
 		name: `${site.name} — ${site.role}`,
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-05-21',
+		dateModified: '2026-06-23',
 		primaryImageOfPage: `${site.url}${site.avatar}`,
 		mainEntity: { '@id': `${site.url}/#person` }
 	};
+
+	// Every section of the site, listed on the homepage as an index.
+	const sections = [
+		{ name: 'About', href: '/about', blurb: 'More about me' },
+		{ name: 'Writing', href: '/writing', blurb: 'Essays & notes' },
+		{ name: 'Likes', href: '/likes', blurb: 'Things I like' },
+		{ name: 'Library', href: '/library', blurb: 'Books' },
+		{ name: 'Films', href: '/films', blurb: 'Rated films & shows' },
+		{ name: 'Music', href: '/music', blurb: "What I'm listening to" },
+		{ name: 'Contact', href: '/contact', blurb: 'Get in touch' }
+	];
 </script>
 
 <Seo
@@ -26,38 +37,95 @@
 	{@html `<script type="application/ld+json">${JSON.stringify(profilePageSchema)}</script>`}
 </svelte:head>
 
-<PageHeader room="home" eyebrow="front matter" title="Khaled Waleed">
+<PageHeader room="home" eyebrow="Entrance" title="Khaled Waleed">
 	{#snippet lede()}
 		<p>
-			I build software for a living, but most of what occupies my mind has very little to do with
-			software.
+			I build software, write occasionally, and spend an unreasonable amount of time thinking about
+			things.
 		</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
-	<section class="rise-3 mt-12">
-		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
-			I'm interested in the way people think, the stories they tell themselves, and the decisions
-			that separate a good person from a bad one. Not in theory. In real life.
+	<section class="rise mt-10">
+		<p class="mx-auto max-w-md text-center italic text-[var(--ink-muted)]">
+			This website is a record of some of that.
 		</p>
-		<p>
-			Professionally, I work in technology, payments, and public-interest projects. Personally, I
-			spend most of my time, reading, writing, arguing about ideas, watching films, drinking coffee,
-			abusing my body through exercise, and trying to make sense of a world that rarely makes sense
-			of itself.
-		</p>
-	</section>
 
-	<Fleuron />
-
-	<section class="rise mt-8 space-y-5 text-center">
-		<p class="mx-auto max-w-md italic text-[var(--ink-muted)]">
-			This website is where I collect some of those thoughts.
-		</p>
-		<div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-			<Button href="/writing" size="lg">Read the essays</Button>
-			<Button href="/contact" variant="outline" size="lg">Write to me</Button>
-		</div>
+		<nav aria-label="Sections" class="mt-10">
+			<ul class="divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
+				{#each sections as s (s.href)}
+					<li>
+						<a href={s.href} class="index-row">
+							<span class="index-name">{s.name}</span>
+							<span class="index-blurb">{s.blurb}</span>
+							<span class="index-arrow" aria-hidden="true">→</span>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
 	</section>
 </Container>
+
+<style>
+	.index-row {
+		display: flex;
+		align-items: baseline;
+		gap: 1rem;
+		padding: 1.05rem 0.25rem;
+		transition: padding-left 250ms ease;
+	}
+
+	.index-row:hover {
+		padding-left: 0.85rem;
+	}
+
+	.index-name {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 1.5rem;
+		line-height: 1.1;
+		color: var(--ink);
+		transition: color 250ms ease;
+	}
+
+	.index-row:hover .index-name {
+		color: var(--accent);
+	}
+
+	.index-blurb {
+		flex: 1;
+		font-family: var(--font-body);
+		font-size: 0.95rem;
+		color: var(--ink-muted);
+		text-align: right;
+	}
+
+	.index-arrow {
+		color: var(--accent);
+		opacity: 0;
+		transform: translateX(-6px);
+		transition:
+			opacity 250ms ease,
+			transform 250ms ease;
+	}
+
+	.index-row:hover .index-arrow {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	@media (max-width: 460px) {
+		.index-blurb {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.index-row,
+		.index-arrow {
+			transition: none;
+		}
+	}
+</style>

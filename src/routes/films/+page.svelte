@@ -20,13 +20,14 @@
 	const showCount = total - movieCount;
 	const tens = films.filter((f) => f.rating === 10).length;
 	const avg = (films.reduce((s, f) => s + f.rating, 0) / total).toFixed(1);
-	const lastUpdated = films.reduce((a, f) => (f.rated > a ? f.rated : a), films[0].rated);
+	const lastUpdated = films.reduce(
+		(a, f) => (f.watchedOn > a ? f.watchedOn : a),
+		films[0].watchedOn
+	);
 
 	const facts = [
 		{ label: 'Titles rated', value: String(total) },
-		{ label: 'Movies · shows', value: `${movieCount} · ${showCount}` },
-		{ label: 'Average rating', value: `${avg} / 10` },
-		{ label: 'Perfect tens', value: String(tens) }
+		{ label: 'Average rating', value: `${avg} / 10` }
 	];
 
 	// --- Type filter -----------------------------------------------------
@@ -58,7 +59,7 @@
 		if (sort === 'year') {
 			arr.sort((a, b) => b.year - a.year || b.rating - a.rating || a.title.localeCompare(b.title));
 		} else if (sort === 'recent') {
-			arr.sort((a, b) => b.rated.localeCompare(a.rated) || b.rating - a.rating);
+			arr.sort((a, b) => b.watchedOn.localeCompare(a.watchedOn) || b.rating - a.rating);
 		}
 		return arr;
 	});
@@ -112,7 +113,6 @@
 	);
 
 	// Credits line under each title: director(s) and, for non-films, the format.
-	// The IMDb rating is shown separately as its own badge, not folded in here.
 	function meta(f: Film): string {
 		const parts: string[] = [];
 		if (f.directors.length) parts.push(f.directors.join(', '));
@@ -120,9 +120,16 @@
 		return parts.join('  ·  ');
 	}
 
-	// Only surface rewatches — "once" is the unremarkable default.
-	const watchedLabel = (f: Film): string | null =>
-		f.watched > 1 ? `seen ${f.watched} times` : null;
+	// A compact "watched on" date (e.g. 24 Oct 2021) for the log.
+	const fmtWatched = (iso: string): string =>
+		iso
+			? new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
+					day: 'numeric',
+					month: 'short',
+					year: 'numeric',
+					timeZone: 'UTC'
+				})
+			: '';
 
 	const schema = {
 		'@context': 'https://schema.org',
@@ -130,7 +137,7 @@
 		'@id': `${site.url}/films#page`,
 		url: `${site.url}/films`,
 		name: `${site.name}'s Films`,
-		description: `Every film and series Khaled Waleed has rated on IMDb — ${total} titles, scored 1–10. Updated ${lastUpdated}.`,
+		description: `Every film and series Khaled Waleed has rated — ${total} titles, scored 1–10. Updated ${lastUpdated}.`,
 		dateModified: lastUpdated,
 		isPartOf: { '@id': `${site.url}/#website` },
 		about: { '@id': `${site.url}/#person` },
@@ -146,7 +153,7 @@
 
 <Seo
 	title="Films"
-	description={`Every film and series Khaled Waleed has rated on IMDb — ${total} titles, scored 1–10. A lifelong cinema obsession, logged honestly.`}
+	description={`Every film and series Khaled Waleed has rated — ${total} titles, scored 1–10. A lifelong cinema obsession, logged honestly.`}
 />
 
 <svelte:head>
@@ -160,49 +167,54 @@
 	{/snippet}
 </PageHeader>
 
+{#snippet rewatch(n: number)}
+	<span class="rewatch" role="img" aria-label={`seen ${n} times`} data-tip={`seen ${n} times`}>
+		<span class="rewatch-count">X{n}</span>
+	</span>
+{/snippet}
+
 {#snippet filmRow(f: Film, showRating: boolean)}
 	<li class="group py-3">
 		<div class="flex gap-4">
-			<a
-				href={f.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				tabindex="-1"
-				aria-hidden="true"
-				class="shrink-0"
-			>
-				<Poster id={f.id} alt={`${f.title} poster`} width={52} />
-			</a>
+			<div class="shrink-0">
+				<Poster posterPath={f.posterPath} alt={`${f.title} poster`} width={52} />
+			</div>
 			<div class="min-w-0 flex-1">
 				<div class="flex items-baseline justify-between gap-6">
-					<a
-						href={f.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="italic text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
+					<span
+						class="italic text-[var(--ink)]"
 						style="font-family: var(--font-display); font-size: 1.25rem; line-height: 1.2;"
 					>
 						{f.title}{#if f.id === FAVOURITE_ID}<span
 								style="color: var(--accent);"
 								title="My favourite">&nbsp;★</span
 							>{/if}
-					</a>
-					<span class="flex shrink-0 items-baseline gap-2">
-						<span class="imdb" title="Public IMDb rating">
-							<span class="imdb-mark">IMDb</span><span class="imdb-score"
-								>{f.imdbRating.toFixed(1)}</span
-							>
+					</span>
+					<span class="flex shrink-0 flex-col items-end gap-1">
+						<span class="flex items-baseline gap-2">
+							{#if showRating}<span class="rating-chip" title="My rating">{f.rating}</span>{/if}
+							<span class="smallcaps">{f.year}</span>
 						</span>
-						{#if showRating}<span class="rating-chip" title="My rating">{f.rating}</span>{/if}
-						<span class="smallcaps">{f.year}</span>
+						{#if f.watchedOn}
+							<time
+								class="watched-date"
+								datetime={f.watchedOn}
+								title={`Watched ${fmtWatched(f.watchedOn)}`}>{fmtWatched(f.watchedOn)}</time
+							>
+						{/if}
 					</span>
 				</div>
-				{#if meta(f) || watchedLabel(f)}
+				{#if meta(f) || f.watched > 1}
 					<p class="mt-1 text-sm text-[var(--ink-muted)]">
-						{meta(f)}{#if meta(f) && watchedLabel(f)}<span class="watched"
-								>&nbsp;· {watchedLabel(f)}</span
-							>{:else if watchedLabel(f)}<span class="watched">{watchedLabel(f)}</span>{/if}
+						{meta(
+							f
+						)}{#if meta(f) && f.watched > 1}&nbsp;·&nbsp;{/if}{#if f.watched > 1}{@render rewatch(
+								f.watched
+							)}{/if}
 					</p>
+				{/if}
+				{#if f.notes}
+					<p class="film-note mt-1.5">{f.notes}</p>
 				{/if}
 			</div>
 		</div>
@@ -225,14 +237,16 @@
 	<!-- Favourite spotlight: the one thing above the ratings -->
 	{#if favourite}
 		<section class="rise-2 mt-8">
-			<a
-				href={favourite.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="fave group flex flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left"
+			<div
+				class="fave flex flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left"
 			>
 				<div class="shrink-0">
-					<Poster id={favourite.id} alt={`${favourite.title} poster`} width={132} vivid />
+					<Poster
+						posterPath={favourite.posterPath}
+						alt={`${favourite.title} poster`}
+						width={132}
+						vivid
+					/>
 				</div>
 				<div class="min-w-0">
 					<div class="fave-label smallcaps">★ The best thing I have ever watched.</div>
@@ -240,16 +254,14 @@
 					{#if meta(favourite)}
 						<p class="mt-2 text-sm text-[var(--ink-muted)]">{meta(favourite)}</p>
 					{/if}
-					<div class="mt-3 flex items-center justify-center gap-3 sm:justify-start">
-						<span class="imdb" title="Public IMDb rating">
-							<span class="imdb-mark">IMDb</span><span class="imdb-score"
-								>{favourite.imdbRating.toFixed(1)}</span
-							>
-						</span>
-						{#if watchedLabel(favourite)}<span class="watched">{watchedLabel(favourite)}</span>{/if}
-					</div>
+					{#if favourite.watched > 1}
+						<p class="mt-3">{@render rewatch(favourite.watched)}</p>
+					{/if}
+					{#if favourite.notes}
+						<p class="film-note mt-3 text-left">{favourite.notes}</p>
+					{/if}
 				</div>
-			</a>
+			</div>
 		</section>
 	{/if}
 
@@ -257,8 +269,7 @@
 
 	<!-- By the numbers -->
 	<section class="rise">
-		<h2 class="text-center italic">By the numbers</h2>
-		<dl class="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+		<dl class="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2 text-center">
 			{#each facts as f (f.label)}
 				<div>
 					<dt class="smallcaps">{f.label}</dt>
@@ -335,7 +346,7 @@
 		<section class="rise mt-12">
 			<div class="flex items-baseline justify-between gap-6 border-b border-[var(--rule)] pb-3">
 				<h2 class="italic" style="margin:0;">
-					{sort === 'year' ? 'By year' : 'Recently rated'}
+					{sort === 'year' ? 'By year' : 'Recently watched'}
 				</h2>
 				<span class="smallcaps shrink-0">{sortedFlat.length} titles</span>
 			</div>
@@ -427,26 +438,48 @@
 			),
 			var(--bg-soft);
 		box-shadow: 0 10px 34px rgba(0, 0, 0, 0.34);
-		transition:
-			transform 400ms ease,
-			box-shadow 400ms ease,
-			border-color 400ms ease;
-	}
-
-	.fave:hover {
-		transform: translateY(-3px);
-		border-color: color-mix(in oklab, var(--accent) 60%, var(--rule));
-		box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
 	}
 
 	.fave-label {
 		color: var(--accent);
 	}
 
-	.watched {
-		font-weight: 600;
-		font-style: normal;
-		color: var(--accent);
+	/* Rewatch badge: rotation icon + count; reveals "seen N times" on hover. */
+	.rewatch {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.225rem;
+		color: var(--ink-muted);
+		cursor: default;
+	}
+
+	.rewatch-count {
+		font-size: 0.85rem;
+		line-height: 1;
+	}
+
+	/* A very small, faint "watched on" date in the log. */
+	.watched-date {
+		font-family: var(--font-body);
+		font-size: 0.65rem;
+		letter-spacing: 0.04em;
+		line-height: 1;
+		color: var(--ink-dim);
+		opacity: 0.6;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	/* A personal margin note on a title — the public `notes` field. */
+	.film-note {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 0.95rem;
+		line-height: 1.55;
+		color: var(--ink);
+		border-left: 2px solid color-mix(in oklab, var(--accent) 50%, var(--rule));
+		padding-left: 0.7rem;
 	}
 
 	.rating-chip {
@@ -465,35 +498,6 @@
 		line-height: 1;
 	}
 
-	/* Public IMDb score — deliberately neutral so it never reads as "my rating"
-	   (which is the warm accent chip). The wordmark makes the source explicit. */
-	.imdb {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.34rem;
-		height: 1.5rem;
-		padding: 0 0.5rem;
-		border-radius: 9999px;
-		border: 1px solid var(--rule);
-		background: var(--bg-soft);
-		line-height: 1;
-	}
-
-	.imdb-mark {
-		font-family: var(--font-body);
-		font-size: 0.62rem;
-		font-weight: 700;
-		letter-spacing: 0.04em;
-		color: var(--ink-dim);
-	}
-
-	.imdb-score {
-		font-size: 0.78rem;
-		font-weight: 600;
-		font-variant-numeric: tabular-nums;
-		color: var(--ink);
-	}
-
 	.fave-title {
 		margin: 0;
 		font-family: var(--font-display);
@@ -502,14 +506,5 @@
 		font-size: clamp(1.7rem, 3vw + 1rem, 2.5rem);
 		line-height: 1.08;
 		color: var(--ink);
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.fave {
-			transition: border-color 400ms ease;
-		}
-		.fave:hover {
-			transform: none;
-		}
 	}
 </style>
