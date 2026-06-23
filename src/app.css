@@ -61,6 +61,17 @@
 	--accent: #dca34e;
 }
 
+:root[data-room='music'] {
+	/* Vermeer daylight, dimmed: warm parchment over a faintly violet umber */
+	--bg: #141017;
+	--bg-soft: #1d1620;
+	--ink: #ead8c0;
+	--ink-muted: #ad9fb0;
+	--ink-dim: #786a7c;
+	--rule: #2a2230;
+	--accent: #d8b25a;
+}
+
 :root[data-room='post-baghdad'] {
 	--bg: #ede2cf;
 	--bg-soft: #f6edd8;
@@ -138,7 +149,8 @@
    · display = Fraunces (serif — headings, dropcaps, logo, buttons)
    One weight per family (400); Inter 600 only for smallcaps labels. */
 :root {
-	--font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+	--font-body:
+		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
 	--font-display: 'Fraunces', Georgia, 'Times New Roman', ui-serif, serif;
 }
 

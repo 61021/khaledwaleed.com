@@ -10,6 +10,7 @@ const staticRoutes = [
 	'/likes',
 	'/library',
 	'/films',
+	'/music',
 	'/contact',
 	'/writing'
 ];

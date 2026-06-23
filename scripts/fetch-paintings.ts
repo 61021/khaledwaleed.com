@@ -21,6 +21,7 @@ const paintings: Painting[] = [
 	{ slug: 'likes', wiki: 'The_Bookworm_(Spitzweg)' },
 	{ slug: 'contact', wiki: 'Frederiksborg_Castle_by_Moonlight' },
 	{ slug: 'films', wiki: 'A_Philosopher_Lecturing_on_the_Orrery' },
+	{ slug: 'music', wiki: 'The_Guitar_Player_(Vermeer)' },
 	{ slug: '404', wiki: 'The_Monk_by_the_Sea' }
 ];
 

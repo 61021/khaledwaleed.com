@@ -12,14 +12,28 @@
 		{
 			num: '01',
 			name: 'Mind',
-			kicker: 'Philosophy & quiet obsessions',
-			items: ['Absurdism', 'Existentialism', 'Buddhism']
+			kicker: 'Philosophy I keep returning to.',
+			items: [
+				`Why people suffer`,
+				`Whether meaning is discovered or invented`,
+				`The line between good and evil`,
+				`What makes a life worthwhile`,
+				`Why some relationships survive and others don't`,
+				`How much of personality is choice`,
+				`What curiosity itself is`
+			]
 		},
 		{
 			num: '02',
 			name: 'Cinema',
 			kicker: 'Directors I rewatch on principle',
-			items: ['Stanley Kubrick', 'David Lynch', 'Studio Ghibli']
+			items: [
+				'Stanley Kubrick',
+				'David Lynch',
+				'Studio Ghibli',
+				'Beautiful failures',
+				'Films that trust the audience'
+			]
 		},
 		{
 			num: '03',
@@ -31,12 +45,16 @@
 				'Johan Christian Dahl',
 				'Moonlit landscapes',
 				'Shakespearean tragedy',
-				'Ballet, especially Swan Lake'
+				'Ballet, especially Swan Lake',
+				'Ruins reclaimed by nature',
+				'Lonely figures in vast landscapes',
+				'Storms at sea',
+				'Melancholy without despair'
 			]
 		},
 		{
 			num: '04',
-			name: 'Sound',
+			name: 'Music',
 			kicker: 'Listening rooms in my head',
 			items: [
 				'Classical, all of it',
@@ -57,7 +75,6 @@
 				'Eyes Wide Shut masks',
 				'Glasses, always',
 				'Artistic rings shaped like animals',
-				'Classical hand-wound watches',
 				'Silver necklaces',
 				'Silver lapel pins & cufflinks',
 				'Victorian-patterned ties',
@@ -99,12 +116,16 @@
 				'Floor-to-ceiling bookshelves',
 				'Wall-sized mirrors in the dressing room',
 				'A big mirrored bathroom',
-				'An oversized shower head'
+				'An oversized shower head',
+				'Libraries',
+				'Old train stations',
+				'Hotel bars at midnight',
+				'Rain against windows'
 			]
 		},
 		{
 			num: '07',
-			name: 'Plate',
+			name: 'Food',
 			kicker: 'Foods that are worth the effort.',
 			items: [
 				'Pancakes, flawless and faintly divine',
@@ -120,7 +141,7 @@
 		},
 		{
 			num: '08',
-			name: 'Glass',
+			name: 'Drink',
 			kicker: 'What ends up in the glass',
 			items: [
 				'Cocktails, more or less all of them',
@@ -140,7 +161,7 @@
 		},
 		{
 			num: '10',
-			name: 'Wild',
+			name: 'Wander',
 			kicker: 'Travel, weather, slight danger',
 			items: [
 				'Rain & thunderstorms',
@@ -154,12 +175,15 @@
 		{
 			num: '11',
 			name: 'Body',
-			kicker: 'A Greek-god frame, earned',
+			kicker: 'A Greek-god frame, and tolerance for pain',
 			items: [
 				'Inhuman training volumes',
 				'Endurance past the point of reason',
 				'Strength as a default state',
 				'Sitting in discomfort, on purpose',
+				'Breathing exercises',
+				'Streching & mobility',
+				'Balance',
 				'Meditation'
 			]
 		},
@@ -168,12 +192,11 @@
 			name: 'Craft',
 			kicker: 'The software taste behind the day job',
 			items: [
+				'Total control over my stack',
 				'Linux, always',
 				'Suckless philosophy',
 				'Go, Rust, Svelte',
-				'Open source as default',
 				'Self-hosted everything',
-				'Total control over my stack',
 				'Sorting files and data like a maniac'
 			]
 		}
@@ -188,10 +211,9 @@
 <PageHeader room="likes" eyebrow="a catalogue of obsessions" title="Likes">
 	{#snippet lede()}
 		<p>
-			A scattered, unfinished sketch — not a manifesto, not a polished self-portrait. Just the
-			films, sounds, books, rooms, and small obsessions that happen to be circling my head right
-			now. Random by design, immature on purpose, and never meant to be anything else. Updated
-			whenever something earns its place — or quietly loses it.
+			A scattered, unfinished sketch, not a manifesto, certainly not a polished self-portrait.
+			Random by design, immature on purpose. Updated whenever something earns its place or quietly
+			loses it.
 		</p>
 	{/snippet}
 </PageHeader>
