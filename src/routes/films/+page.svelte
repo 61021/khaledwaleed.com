@@ -111,12 +111,12 @@
 			.filter((t) => t.items.length > 0)
 	);
 
+	// Credits line under each title: director(s) and, for non-films, the format.
+	// The IMDb rating is shown separately as its own badge, not folded in here.
 	function meta(f: Film): string {
 		const parts: string[] = [];
 		if (f.directors.length) parts.push(f.directors.join(', '));
 		if (f.type !== 'Movie') parts.push(f.type);
-		if (f.genres.length) parts.push(f.genres.slice(0, 2).join(', '));
-		parts.push(`IMDb ${f.imdbRating.toFixed(1)}`);
 		return parts.join('  ·  ');
 	}
 
@@ -188,13 +188,22 @@
 							>{/if}
 					</a>
 					<span class="flex shrink-0 items-baseline gap-2">
+						<span class="imdb" title="Public IMDb rating">
+							<span class="imdb-mark">IMDb</span><span class="imdb-score"
+								>{f.imdbRating.toFixed(1)}</span
+							>
+						</span>
 						{#if showRating}<span class="rating-chip" title="My rating">{f.rating}</span>{/if}
 						<span class="smallcaps">{f.year}</span>
 					</span>
 				</div>
-				<p class="mt-1 text-sm text-[var(--ink-muted)]">
-					{meta(f)}{#if watchedLabel(f)}<span class="watched">&nbsp;· {watchedLabel(f)}</span>{/if}
-				</p>
+				{#if meta(f) || watchedLabel(f)}
+					<p class="mt-1 text-sm text-[var(--ink-muted)]">
+						{meta(f)}{#if meta(f) && watchedLabel(f)}<span class="watched"
+								>&nbsp;· {watchedLabel(f)}</span
+							>{:else if watchedLabel(f)}<span class="watched">{watchedLabel(f)}</span>{/if}
+					</p>
+				{/if}
 			</div>
 		</div>
 	</li>
@@ -228,10 +237,17 @@
 				<div class="min-w-0">
 					<div class="fave-label smallcaps">★ The best thing I have ever watched.</div>
 					<h2 class="fave-title mt-2">{favourite.title}</h2>
-					<p class="mt-2 text-sm text-[var(--ink-muted)]">{meta(favourite)}</p>
-					{#if watchedLabel(favourite)}
-						<p class="watched mt-2">{watchedLabel(favourite)}</p>
+					{#if meta(favourite)}
+						<p class="mt-2 text-sm text-[var(--ink-muted)]">{meta(favourite)}</p>
 					{/if}
+					<div class="mt-3 flex items-center justify-center gap-3 sm:justify-start">
+						<span class="imdb" title="Public IMDb rating">
+							<span class="imdb-mark">IMDb</span><span class="imdb-score"
+								>{favourite.imdbRating.toFixed(1)}</span
+							>
+						</span>
+						{#if watchedLabel(favourite)}<span class="watched">{watchedLabel(favourite)}</span>{/if}
+					</div>
 				</div>
 			</a>
 		</section>
@@ -447,6 +463,35 @@
 		font-weight: 600;
 		font-variant-numeric: tabular-nums;
 		line-height: 1;
+	}
+
+	/* Public IMDb score — deliberately neutral so it never reads as "my rating"
+	   (which is the warm accent chip). The wordmark makes the source explicit. */
+	.imdb {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.34rem;
+		height: 1.5rem;
+		padding: 0 0.5rem;
+		border-radius: 9999px;
+		border: 1px solid var(--rule);
+		background: var(--bg-soft);
+		line-height: 1;
+	}
+
+	.imdb-mark {
+		font-family: var(--font-body);
+		font-size: 0.62rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		color: var(--ink-dim);
+	}
+
+	.imdb-score {
+		font-size: 0.78rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: var(--ink);
 	}
 
 	.fave-title {
