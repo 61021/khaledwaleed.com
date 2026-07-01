@@ -48,13 +48,6 @@
 			box-shadow 500ms ease;
 	}
 
-	/* lift to full colour when the row (a .group ancestor) is hovered */
-	:global(.group):hover img {
-		filter: none;
-		transform: translateY(-2px);
-		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
-	}
-
 	/* spotlight: always full colour, richer shadow */
 	img.vivid {
 		filter: none;
@@ -77,9 +70,6 @@
 	@media (prefers-reduced-motion: reduce) {
 		img {
 			transition: filter 500ms ease;
-		}
-		:global(.group):hover img {
-			transform: none;
 		}
 	}
 </style>

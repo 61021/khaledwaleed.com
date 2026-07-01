@@ -48,10 +48,6 @@
 
 <Container size="prose">
 	<section class="rise mt-10">
-		<p class="mx-auto max-w-md text-center italic text-[var(--ink-muted)]">
-			This website is a record of some of that.
-		</p>
-
 		<nav aria-label="Sections" class="mt-10">
 			<ul class="divide-y divide-[var(--rule)] border-y border-[var(--rule)]">
 				{#each sections as s (s.href)}
@@ -97,7 +93,7 @@
 	.index-blurb {
 		flex: 1;
 		font-family: var(--font-body);
-		font-size: 0.95rem;
+		font-size: 1.05rem;
 		color: var(--ink-muted);
 		text-align: right;
 	}

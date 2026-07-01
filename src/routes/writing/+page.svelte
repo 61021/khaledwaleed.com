@@ -11,10 +11,7 @@
 
 <PageHeader room="writing" eyebrow="essays · notes" title="Writing">
 	{#snippet lede()}
-		<p>
-			Essays on the things that occupy my mind — how people think, the choices that define them,
-			art, philosophy, and now and then, software.
-		</p>
+		<p>Essays on the things that occupy my mind, art, philosophy, software, and some others.</p>
 	{/snippet}
 </PageHeader>
 

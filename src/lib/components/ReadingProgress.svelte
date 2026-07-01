@@ -26,12 +26,6 @@
 	});
 </script>
 
-<div
-	class="pointer-events-none fixed inset-x-0 top-0 z-50 h-px"
-	aria-hidden="true"
->
-	<div
-		class="h-full origin-left bg-[var(--accent)]"
-		style="transform: scaleX({progress});"
-	></div>
+<div class="pointer-events-none fixed inset-x-0 top-0 z-50 h-px" aria-hidden="true">
+	<div class="h-full origin-left bg-[var(--accent)]" style="transform: scaleX({progress});"></div>
 </div>

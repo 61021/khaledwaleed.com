@@ -39,23 +39,16 @@
 	};
 </script>
 
-<Seo
-	title="Now"
-	description={`What Khaled Waleed is at, right now. Updated ${lastUpdated}.`}
-/>
+<Seo title="Now" description={`What Khaled Waleed is at, right now. Updated ${lastUpdated}.`} />
 
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
 </svelte:head>
 
-<PageHeader
-	room="now"
-	eyebrow="a snapshot"
-	title="Now"
->
+<PageHeader room="now" eyebrow="a snapshot" title="Now">
 	{#snippet lede()}
 		<p>
-		The answer to <em>“what are you up to lately?”</em> &mdash; part of the
+			The answer to <em>“what are you up to lately?”</em> &mdash; part of the
 			<a href="https://nownownow.com" target="_blank" rel="noopener" class="link">Now Now Now</a>
 			project.
 		</p>
@@ -64,7 +57,12 @@
 
 <Container size="prose">
 	<div class="rise-3 mt-10">
-		<Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Now', href: '/now' }]} />
+		<Breadcrumb
+			items={[
+				{ name: 'Home', href: '/' },
+				{ name: 'Now', href: '/now' }
+			]}
+		/>
 		<div class="mt-4 smallcaps">
 			updated <time datetime={lastUpdated}>{lastUpdated}</time>
 		</div>
@@ -114,7 +112,6 @@
 			{/each}
 		</ul>
 	</section>
-
 
 	<div class="rise mt-16 text-center italic text-[var(--ink-muted)]">
 		Want the longer version? Read <a href="/about" class="link">about</a>, the

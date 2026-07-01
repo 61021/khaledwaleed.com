@@ -13,8 +13,8 @@
 	--bg: #0a1220;
 	--bg-soft: #111a2c;
 	--ink: #ece4ce;
-	--ink-muted: #a8b3c9;
-	--ink-dim: #6f7d97;
+	--ink-muted: #c4ccdb;
+	--ink-dim: #909cb3;
 	--rule: #1f2a40;
 	--accent: #d9b66c;
 }
@@ -237,7 +237,7 @@ i {
 	text-transform: uppercase;
 	font-size: 0.72rem;
 	font-weight: 600;
-	color: var(--ink-dim);
+	color: var(--ink-muted);
 }
 
 /* ---------- Links ---------- */
@@ -351,7 +351,7 @@ a.link-quiet:hover {
 	font-family: var(--font-body);
 	font-style: italic;
 	font-size: 0.875rem;
-	color: var(--ink-dim);
+	color: var(--ink-muted);
 	text-align: center;
 	line-height: 1.6;
 	letter-spacing: 0.01em;
