@@ -49,15 +49,18 @@
 
 <PageHeader room="library" eyebrow="a quiet shelf" title="Library">
 	{#snippet lede()}
-		<p>
-			Books on the desk, books on the queue, books I return to. still in progress.
-		</p>
+		<p>Books on the desk, books on the queue, books I return to. still in progress.</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
 	<div class="rise-3 mt-10">
-		<Breadcrumb items={[{ name: 'Home', href: '/' }, { name: 'Library', href: '/library' }]} />
+		<Breadcrumb
+			items={[
+				{ name: 'Home', href: '/' },
+				{ name: 'Library', href: '/library' }
+			]}
+		/>
 		<div class="mt-4 smallcaps">
 			updated <time datetime={lastUpdated}>{lastUpdated}</time>
 		</div>
@@ -134,8 +137,7 @@
 
 	<figure class="rise mx-auto max-w-md text-center">
 		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.25rem; line-height: 1.5;">
-			“When I am attacked by gloomy thoughts, nothing helps me so much as
-			running to my books.”
+			“When I am attacked by gloomy thoughts, nothing helps me so much as running to my books.”
 		</blockquote>
 		<figcaption class="mt-4 smallcaps">— Montaigne</figcaption>
 	</figure>

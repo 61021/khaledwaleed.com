@@ -5,43 +5,93 @@
 	import { Container, Seo, PageHeader, Fleuron, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import Poster from '$lib/components/Poster.svelte';
-	import { films, type Film } from '$lib/films';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
+	type Personal = PageData['films'][number];
+
+	type FilmMeta = {
+		title: string;
+		year: number;
+		type: 'Movie' | 'TV Series' | 'TV Mini Series' | (string & {});
+		runtime: number | null;
+		genres: string[];
+		directors: string[];
+		posterPath: string | null;
+	};
 
 	// --- The one ---------------------------------------------------------
-	const FAVOURITE_ID = 'tt0417299'; // Avatar: The Last Airbender
-	const favourite = films.find((f) => f.id === FAVOURITE_ID);
+	// Avatar: The Last Airbender (TMDB tv/246).
+	const FAVOURITE = { tmdbId: 246, type: 'tv' as const };
+	const isFavourite = (f: Personal): boolean =>
+		f.tmdbId === FAVOURITE.tmdbId && f.type === FAVOURITE.type;
 
-	// --- Type classification (binary: shows vs everything else) ----------
-	const isShow = (f: Film) => f.type === 'TV Series' || f.type === 'TV Mini Series';
+	// Your data (rating, watched, dates, type) is here at first paint; the
+	// descriptive bits are fetched live from TMDB via /api/tmdb/[type]/[id].
+	const personal = $derived(data.films);
+	const favourite = $derived(personal.find(isFavourite));
+
+	// Keyed by "type/tmdbId" — a tmdb id can repeat across a movie and a show.
+	const key = (f: Personal): string => `${f.type}/${f.tmdbId}`;
+	let metadata = $state<Record<string, FilmMeta>>({});
+	const md = (f: Personal): FilmMeta | undefined => metadata[key(f)];
+
+	onMount(() => {
+		let cancelled = false;
+		// Favourite first, then the rest — a small pool keeps it quick.
+		const queue = [...personal].sort(
+			(a, b) => (isFavourite(a) ? -1 : 0) - (isFavourite(b) ? -1 : 0)
+		);
+		let next = 0;
+		async function worker() {
+			while (next < queue.length && !cancelled) {
+				const f = queue[next++];
+				try {
+					const r = await fetch(`/api/tmdb/${f.type}/${f.tmdbId}`);
+					if (r.ok && !cancelled) {
+						metadata[key(f)] = (await r.json()) as FilmMeta;
+					}
+				} catch {
+					/* leave this title unresolved */
+				}
+			}
+		}
+		for (let i = 0; i < 8; i++) worker();
+		return () => (cancelled = true);
+	});
+
+	// --- Type classification (authoritative, from your data) -------------
+	const isShow = (f: Personal): boolean => f.type === 'tv';
 
 	// --- Summary numbers -------------------------------------------------
-	const total = films.length;
-	const movieCount = films.filter((f) => !isShow(f)).length;
-	const showCount = total - movieCount;
-	const tens = films.filter((f) => f.rating === 10).length;
-	const avg = (films.reduce((s, f) => s + f.rating, 0) / total).toFixed(1);
-	const lastUpdated = films.reduce(
-		(a, f) => (f.watchedOn > a ? f.watchedOn : a),
-		films[0].watchedOn
+	const total = $derived(personal.length);
+	const avg = $derived((personal.reduce((s, f) => s + f.rating, 0) / total).toFixed(1));
+	const lastUpdated = $derived(
+		personal.reduce((a, f) => (f.watchedOn > a ? f.watchedOn : a), personal[0]?.watchedOn ?? '')
 	);
 
-	const facts = [
+	const movieCount = $derived(personal.filter((f) => f.type === 'movie').length);
+	const showCount = $derived(personal.filter((f) => f.type === 'tv').length);
+
+	const facts = $derived([
 		{ label: 'Titles rated', value: String(total) },
 		{ label: 'Average rating', value: `${avg} / 10` }
-	];
+	]);
 
 	// --- Type filter -----------------------------------------------------
 	type Filter = 'all' | 'movies' | 'shows';
 	let filter = $state<Filter>('all');
 
-	const filterOptions: { value: Filter; label: string; count: number }[] = [
+	const filterOptions = $derived<{ value: Filter; label: string; count: number }[]>([
 		{ value: 'all', label: 'All', count: total },
 		{ value: 'movies', label: 'Movies', count: movieCount },
 		{ value: 'shows', label: 'Shows', count: showCount }
-	];
+	]);
 
-	const matchesFilter = (f: Film): boolean =>
-		filter === 'all' || (filter === 'shows' ? isShow(f) : !isShow(f));
+	const matchesFilter = (f: Personal): boolean => {
+		if (filter === 'all') return true;
+		return filter === 'shows' ? isShow(f) : !isShow(f);
+	};
 
 	// --- Sort ------------------------------------------------------------
 	type Sort = 'rating' | 'year' | 'recent';
@@ -53,11 +103,16 @@
 		{ value: 'recent', label: 'Recent' }
 	];
 
-	// Flat, sorted list used when sort ≠ 'rating' (year / recently rated).
+	// Flat, sorted list used when sort ≠ 'rating' (year / recently watched).
 	const sortedFlat = $derived.by(() => {
-		const arr = films.filter(matchesFilter);
+		const arr = personal.filter(matchesFilter);
 		if (sort === 'year') {
-			arr.sort((a, b) => b.year - a.year || b.rating - a.rating || a.title.localeCompare(b.title));
+			arr.sort(
+				(a, b) =>
+					(md(b)?.year ?? 0) - (md(a)?.year ?? 0) ||
+					b.rating - a.rating ||
+					(md(a)?.title ?? '').localeCompare(md(b)?.title ?? '')
+			);
 		} else if (sort === 'recent') {
 			arr.sort((a, b) => b.watchedOn.localeCompare(a.watchedOn) || b.rating - a.rating);
 		}
@@ -101,23 +156,25 @@
 		2: 'Terrible',
 		1: 'Absolute Garbage'
 	};
-	const ratings = [...new Set(films.map((f) => f.rating))].sort((a, b) => b - a);
+	const ratings = $derived([...new Set(personal.map((f) => f.rating))].sort((a, b) => b - a));
 	const tiers = $derived(
 		ratings
 			.map((rating) => ({
 				rating,
 				label: tierLabel[rating] ?? '',
-				items: films.filter((f) => f.rating === rating && matchesFilter(f))
+				items: personal.filter((f) => f.rating === rating && matchesFilter(f))
 			}))
 			.filter((t) => t.items.length > 0)
 	);
 
-	// Credits line under each title: director(s) and, for non-films, the format.
-	function meta(f: Film): string {
-		const parts: string[] = [];
-		if (f.directors.length) parts.push(f.directors.join(', '));
-		if (f.type !== 'Movie') parts.push(f.type);
-		return parts.join('  ·  ');
+	// Credits line under each title: the director (films) or creator(s) (TV).
+	// Falls back to the format label only when no creator/director is known.
+	function meta(f: Personal): string {
+		const m = md(f);
+		if (!m) return '';
+		if (m.directors.length) return m.directors.join(', ');
+		if (m.type !== 'Movie') return m.type;
+		return '';
 	}
 
 	// A compact "watched on" date (e.g. 24 Oct 2021) for the log.
@@ -131,7 +188,7 @@
 				})
 			: '';
 
-	const schema = {
+	const schema = $derived({
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
 		'@id': `${site.url}/films#page`,
@@ -148,7 +205,7 @@
 				{ '@type': 'ListItem', position: 2, name: 'Films', item: `${site.url}/films` }
 			]
 		}
-	};
+	});
 </script>
 
 <Seo
@@ -168,53 +225,66 @@
 </PageHeader>
 
 {#snippet rewatch(n: number)}
-	<span class="rewatch" role="img" aria-label={`seen ${n} times`} data-tip={`seen ${n} times`}>
-		<span class="rewatch-count">X{n}</span>
-	</span>
+	<span
+		class="inline-flex items-center gap-[0.2rem] text-[0.75rem] leading-none text-[var(--ink-dim)]"
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 256 256"
+			><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+				fill="currentColor"
+				d="M224 48v48a8 8 0 0 1-8 8h-48a8 8 0 0 1 0-16h28.69l-14.63-14.63a79.56 79.56 0 0 0-56.13-23.43h-.45a79.52 79.52 0 0 0-55.89 22.77a8 8 0 0 1-11.18-11.44a96 96 0 0 1 135 .79L208 76.69V48a8 8 0 0 1 16 0m-37.59 135.29a80 80 0 0 1-112.47-.66L59.31 168H88a8 8 0 0 0 0-16H40a8 8 0 0 0-8 8v48a8 8 0 0 0 16 0v-28.69l14.63 14.63A95.43 95.43 0 0 0 130 222.06h.53a95.36 95.36 0 0 0 67.07-27.33a8 8 0 0 0-11.18-11.44Z"
+			/></svg
+		>
+		{n}</span
+	>
 {/snippet}
 
-{#snippet filmRow(f: Film, showRating: boolean)}
+{#snippet filmRow(f: Personal, showRating: boolean)}
+	{@const m = md(f)}
 	<li class="group py-3">
 		<div class="flex gap-4">
 			<div class="shrink-0">
-				<Poster posterPath={f.posterPath} alt={`${f.title} poster`} width={52} />
+				<Poster posterPath={m?.posterPath ?? null} alt={m ? `${m.title} poster` : ''} width={52} />
 			</div>
 			<div class="min-w-0 flex-1">
 				<div class="flex items-baseline justify-between gap-6">
 					<span
-						class="italic text-[var(--ink)]"
-						style="font-family: var(--font-display); font-size: 1.25rem; line-height: 1.2;"
+						class="italic text-[var(--ink)] [font-family:var(--font-display)] text-[1.25rem] leading-[1.2]"
 					>
-						{f.title}{#if f.id === FAVOURITE_ID}<span
-								style="color: var(--accent);"
-								title="My favourite">&nbsp;★</span
-							>{/if}
+						{#if m}{m.title}{#if isFavourite(f)}<span
+									class="text-[var(--accent)]"
+									title="My favourite">&nbsp;★</span
+								>{/if}{:else}<span
+								class="inline-block h-[0.8em] w-36 max-w-[58vw] animate-pulse rounded bg-[color-mix(in_oklab,var(--ink-dim)_22%,var(--bg-soft))] align-middle motion-reduce:animate-none"
+							></span>{/if}
 					</span>
-					<span class="flex shrink-0 flex-col items-end gap-1">
-						<span class="flex items-baseline gap-2">
-							{#if showRating}<span class="rating-chip" title="My rating">{f.rating}</span>{/if}
-							<span class="smallcaps">{f.year}</span>
-						</span>
-						{#if f.watchedOn}
-							<time
-								class="watched-date"
-								datetime={f.watchedOn}
-								title={`Watched ${fmtWatched(f.watchedOn)}`}>{fmtWatched(f.watchedOn)}</time
-							>
-						{/if}
+					<span class="flex shrink-0 items-baseline gap-2">
+						{#if showRating}<span
+								class="inline-grid h-6 min-w-6 place-items-center rounded-full border border-[color-mix(in_oklab,var(--accent)_38%,transparent)] bg-[color-mix(in_oklab,var(--accent)_16%,transparent)] px-[0.4rem] text-[0.78rem] font-semibold leading-none text-[var(--accent)] tabular-nums"
+								title="My rating">{f.rating}</span
+							>{/if}
+						{#if m}<span class="smallcaps">{m.year}</span>{/if}
 					</span>
 				</div>
-				{#if meta(f) || f.watched > 1}
-					<p class="mt-1 text-sm text-[var(--ink-muted)]">
-						{meta(
-							f
-						)}{#if meta(f) && f.watched > 1}&nbsp;·&nbsp;{/if}{#if f.watched > 1}{@render rewatch(
-								f.watched
-							)}{/if}
-					</p>
+				{#if meta(f)}
+					<p class="mt-1 text-sm text-[var(--ink-muted)]">{meta(f)}</p>
+				{/if}
+				{#if f.watchedOn || f.watched > 1}
+					<div class="mt-1 text-[0.72rem] leading-[1.4] text-[var(--ink-dim)]">
+						{#if f.watchedOn}<time
+								class="whitespace-nowrap text-[0.75rem] leading-none tracking-[0.04em] text-[var(--ink-dim)] tabular-nums [font-family:var(--font-body)]"
+								datetime={f.watchedOn}
+								title={`Watched ${fmtWatched(f.watchedOn)}`}>{fmtWatched(f.watchedOn)}</time
+							>{/if}{#if f.watchedOn && f.watched > 1}<span class="text-[var(--ink-dim)]"
+								>&nbsp;·&nbsp;</span
+							>{/if}{#if f.watched > 1}{@render rewatch(f.watched)}{/if}
+					</div>
 				{/if}
 				{#if f.notes}
-					<p class="film-note mt-1.5">{f.notes}</p>
+					<div
+						class="mt-1.5 border-l-2 border-[color-mix(in_oklab,var(--accent)_50%,var(--rule))] pl-[0.7rem] text-[0.95rem] italic leading-[1.55] text-[var(--ink)] [font-family:var(--font-display)]"
+					>
+						{f.notes}
+					</div>
 				{/if}
 			</div>
 		</div>
@@ -236,21 +306,30 @@
 
 	<!-- Favourite spotlight: the one thing above the ratings -->
 	{#if favourite}
+		{@const m = md(favourite)}
 		<section class="rise-2 mt-8">
 			<div
-				class="fave flex flex-col items-center gap-5 text-center sm:flex-row sm:gap-7 sm:text-left"
+				class="flex flex-col items-center gap-5 rounded-2xl border border-[color-mix(in_oklab,var(--accent)_38%,var(--rule))] p-6 text-center shadow-[0_10px_34px_rgba(0,0,0,0.34)] [background:radial-gradient(130%_130%_at_0%_0%,color-mix(in_oklab,var(--accent)_13%,transparent),transparent_58%),var(--bg-soft)] sm:flex-row sm:gap-7 sm:text-left"
 			>
-				<div class="shrink-0">
-					<Poster
-						posterPath={favourite.posterPath}
-						alt={`${favourite.title} poster`}
-						width={132}
-						vivid
-					/>
-				</div>
 				<div class="min-w-0">
-					<div class="fave-label smallcaps">★ The best thing I have ever watched.</div>
-					<h2 class="fave-title mt-2">{favourite.title}</h2>
+					<div
+						class="text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-[var(--accent)] [font-family:var(--font-body)]"
+					>
+						★ The best thing I have ever watched.
+					</div>
+					<div class="flex items-center gap-2">
+						<Poster
+							posterPath={m?.posterPath ?? null}
+							alt={m ? `${m.title} poster` : ''}
+							width={40}
+							vivid
+						/>
+						<h2 class="mt-3 italic">
+							{#if m}{m.title}{:else}<span
+									class="inline-block h-[0.8em] w-48 max-w-[58vw] animate-pulse rounded bg-[color-mix(in_oklab,var(--ink-dim)_22%,var(--bg-soft))] align-middle motion-reduce:animate-none"
+								></span>{/if}
+						</h2>
+					</div>
 					{#if meta(favourite)}
 						<p class="mt-2 text-sm text-[var(--ink-muted)]">{meta(favourite)}</p>
 					{/if}
@@ -258,7 +337,11 @@
 						<p class="mt-3">{@render rewatch(favourite.watched)}</p>
 					{/if}
 					{#if favourite.notes}
-						<p class="film-note mt-3 text-left">{favourite.notes}</p>
+						<div
+							class="mt-3 border-l-2 border-[color-mix(in_oklab,var(--accent)_50%,var(--rule))] pl-[0.7rem] text-left text-[0.95rem] italic leading-[1.55] text-[var(--ink)] [font-family:var(--font-display)]"
+						>
+							{favourite.notes}
+						</div>
 					{/if}
 				</div>
 			</div>
@@ -283,26 +366,38 @@
 
 	<!-- Controls: filter + sort -->
 	<div class="rise flex flex-col items-center gap-4">
-		<div class="seg" role="group" aria-label="Filter titles by type">
+		<div
+			class="inline-flex gap-1 rounded-full border border-[var(--rule)] bg-[var(--bg-soft)] p-[0.3rem]"
+			role="group"
+			aria-label="Filter titles by type"
+		>
 			{#each filterOptions as opt (opt.value)}
 				<button
 					type="button"
-					class="seg-opt"
-					class:is-active={filter === opt.value}
+					class="inline-flex cursor-pointer items-baseline gap-[0.45rem] rounded-full px-[1.3rem] py-[0.6rem] text-[0.78rem] font-semibold uppercase tracking-[0.12em] transition-colors duration-[250ms] [font-family:var(--font-body)] {filter ===
+					opt.value
+						? 'bg-[var(--accent)] text-[var(--bg)]'
+						: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 					aria-pressed={filter === opt.value}
 					onclick={() => (filter = opt.value)}
 				>
 					{opt.label}
-					<span class="seg-count">{opt.count}</span>
+					{#if opt.count != null}<span class="text-[0.72rem] tabular-nums">{opt.count}</span>{/if}
 				</button>
 			{/each}
 		</div>
-		<div class="seg" role="group" aria-label="Sort titles">
+		<div
+			class="inline-flex gap-1 rounded-full border border-[var(--rule)] bg-[var(--bg-soft)] p-[0.3rem]"
+			role="group"
+			aria-label="Sort titles"
+		>
 			{#each sortOptions as opt (opt.value)}
 				<button
 					type="button"
-					class="seg-opt"
-					class:is-active={sort === opt.value}
+					class="inline-flex cursor-pointer items-baseline gap-[0.45rem] rounded-full px-[1.3rem] py-[0.6rem] text-[0.78rem] font-semibold uppercase tracking-[0.12em] transition-colors duration-[250ms] [font-family:var(--font-body)] {sort ===
+					opt.value
+						? 'bg-[var(--accent)] text-[var(--bg)]'
+						: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 					aria-pressed={sort === opt.value}
 					onclick={() => (sort = opt.value)}
 				>
@@ -328,14 +423,14 @@
 		{#each tiers as t (t.rating)}
 			<section id={`r${t.rating}`} class="rise mt-16 scroll-mt-8">
 				<div class="flex items-baseline justify-between gap-6 border-b border-[var(--rule)] pb-3">
-					<h2 class="italic" style="margin:0;">
+					<h2 class="italic">
 						{t.rating} <span class="text-[var(--ink-dim)]">/ 10</span>
 					</h2>
 					<span class="smallcaps shrink-0">{t.label} · {t.items.length}</span>
 				</div>
 
 				<ul class="mt-2 divide-y divide-[var(--rule)]">
-					{#each t.items as f (f.id)}
+					{#each t.items as f (key(f))}
 						{@render filmRow(f, false)}
 					{/each}
 				</ul>
@@ -345,14 +440,14 @@
 		<!-- The ledger, flat (by year / recently rated) -->
 		<section class="rise mt-12">
 			<div class="flex items-baseline justify-between gap-6 border-b border-[var(--rule)] pb-3">
-				<h2 class="italic" style="margin:0;">
+				<h2 class="italic">
 					{sort === 'year' ? 'By year' : 'Recently watched'}
 				</h2>
 				<span class="smallcaps shrink-0">{sortedFlat.length} titles</span>
 			</div>
 
 			<ul class="mt-2 divide-y divide-[var(--rule)]">
-				{#each sortedFlat as f (f.id)}
+				{#each sortedFlat as f (key(f))}
 					{@render filmRow(f, true)}
 				{/each}
 			</ul>
@@ -372,139 +467,11 @@
 		>
 			<img src="/logos/tmdb.svg" alt="The Movie Database (TMDB)" width="80" height="58" />
 		</a>
-		<p class="smallcaps max-w-sm" style="text-transform: none; letter-spacing: 0.04em;">
+		<p
+			class="max-w-sm text-[0.72rem] font-semibold tracking-[0.04em] text-[var(--ink-muted)] [font-family:var(--font-body)]"
+		>
 			Posters and metadata via The Movie Database. This product uses the TMDB API but is not
 			endorsed or certified by TMDB.
 		</p>
 	</div>
 </Container>
-
-<style>
-	.seg {
-		display: inline-flex;
-		gap: 0.25rem;
-		padding: 0.3rem;
-		border: 1px solid var(--rule);
-		border-radius: 9999px;
-		background: var(--bg-soft);
-	}
-
-	.seg-opt {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 0.45rem;
-		padding: 0.6rem 1.3rem;
-		border-radius: 9999px;
-		font-family: var(--font-body);
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		font-size: 0.78rem;
-		font-weight: 600;
-		color: var(--ink-muted);
-		cursor: pointer;
-		transition:
-			color 250ms ease,
-			background-color 250ms ease;
-	}
-
-	.seg-opt:hover {
-		color: var(--ink);
-	}
-
-	.seg-opt.is-active {
-		color: var(--bg);
-		background: var(--accent);
-	}
-
-	.seg-count {
-		font-size: 0.72rem;
-		font-variant-numeric: tabular-nums;
-		opacity: 0.65;
-	}
-
-	.seg-opt.is-active .seg-count {
-		opacity: 0.85;
-	}
-
-	.fave {
-		padding: 1.5rem;
-		border: 1px solid color-mix(in oklab, var(--accent) 38%, var(--rule));
-		border-radius: 1rem;
-		background:
-			radial-gradient(
-				130% 130% at 0% 0%,
-				color-mix(in oklab, var(--accent) 13%, transparent),
-				transparent 58%
-			),
-			var(--bg-soft);
-		box-shadow: 0 10px 34px rgba(0, 0, 0, 0.34);
-	}
-
-	.fave-label {
-		color: var(--accent);
-	}
-
-	/* Rewatch badge: rotation icon + count; reveals "seen N times" on hover. */
-	.rewatch {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.225rem;
-		color: var(--ink-muted);
-		cursor: default;
-	}
-
-	.rewatch-count {
-		font-size: 0.85rem;
-		line-height: 1;
-	}
-
-	/* A very small, faint "watched on" date in the log. */
-	.watched-date {
-		font-family: var(--font-body);
-		font-size: 0.65rem;
-		letter-spacing: 0.04em;
-		line-height: 1;
-		color: var(--ink-dim);
-		opacity: 0.6;
-		font-variant-numeric: tabular-nums;
-		white-space: nowrap;
-	}
-
-	/* A personal margin note on a title — the public `notes` field. */
-	.film-note {
-		font-family: var(--font-display);
-		font-style: italic;
-		font-size: 0.95rem;
-		line-height: 1.55;
-		color: var(--ink);
-		border-left: 2px solid color-mix(in oklab, var(--accent) 50%, var(--rule));
-		padding-left: 0.7rem;
-	}
-
-	.rating-chip {
-		display: inline-grid;
-		place-items: center;
-		min-width: 1.5rem;
-		height: 1.5rem;
-		padding: 0 0.4rem;
-		border-radius: 9999px;
-		background: color-mix(in oklab, var(--accent) 16%, transparent);
-		border: 1px solid color-mix(in oklab, var(--accent) 38%, transparent);
-		color: var(--accent);
-		font-size: 0.78rem;
-		font-weight: 600;
-		font-variant-numeric: tabular-nums;
-		line-height: 1;
-	}
-
-	.fave-title {
-		margin: 0;
-		font-family: var(--font-display);
-		font-style: italic;
-		font-weight: 400;
-		font-size: clamp(1.7rem, 3vw + 1rem, 2.5rem);
-		line-height: 1.08;
-		color: var(--ink);
-	}
-</style>

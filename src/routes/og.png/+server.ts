@@ -144,8 +144,7 @@ export const GET: RequestHandler = async () => {
 	);
 
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
-	if (interRegular)
-		fonts.push({ name: 'Inter', data: interRegular, weight: 400, style: 'normal' });
+	if (interRegular) fonts.push({ name: 'Inter', data: interRegular, weight: 400, style: 'normal' });
 	if (frauncesItalic)
 		fonts.push({ name: 'Fraunces', data: frauncesItalic, weight: 400, style: 'italic' });
 

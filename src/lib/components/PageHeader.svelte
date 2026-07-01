@@ -130,7 +130,7 @@
 		font-family: var(--font-body);
 		font-size: 1.2rem;
 		font-style: normal;
-		color: var(--ink-muted);
+		color: var(--ink);
 		line-height: 1.7;
 	}
 </style>

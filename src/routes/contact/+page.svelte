@@ -12,14 +12,11 @@
 	description="Get in touch with Khaled Waleed — senior software engineer in Baghdad. Available for select consulting and contract work."
 />
 
-<PageHeader
-	room="contact"
-	eyebrow="how to reach me"
-	title="Contact"
->
+<PageHeader room="contact" eyebrow="how to reach me" title="Contact">
 	{#snippet lede()}
 		<p>
-			The fastest way is a call, or you can email, I read everything, and I reply within a day or two. 
+			The fastest way is a call, or you can email, I read everything, and I reply within a day or
+			two.
 		</p>
 	{/snippet}
 </PageHeader>

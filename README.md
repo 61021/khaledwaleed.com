@@ -60,16 +60,16 @@ bun run format   # prettier --write
 
 ## Environment variables
 
-Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everything works without them — the `/music` page and poster art simply fall back to empty/placeholder states.
+Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everything renders without them — but `/music` shows an empty state and `/films` can't fetch titles/posters (rows stay as skeletons) until `TMDB_API_KEY` is set.
 
-| Variable                | Used for                                                              |
-| ----------------------- | --------------------------------------------------------------------- |
-| `TMDB_API_KEY`          | Film metadata & posters when adding titles (`scripts/build-films.ts`) |
-| `SPOTIFY_CLIENT_ID`     | Live `/music` page — top tracks & artists                             |
-| `SPOTIFY_CLIENT_SECRET` | Live `/music` page                                                    |
-| `SPOTIFY_REFRESH_TOKEN` | Live `/music` page (obtain via `bun run scripts/spotify-auth.ts`)     |
+| Variable                | Used for                                                          |
+| ----------------------- | ----------------------------------------------------------------- |
+| `TMDB_API_KEY`          | Film metadata & posters, fetched live by `/api/tmdb/[type]/[id]`  |
+| `SPOTIFY_CLIENT_ID`     | Live `/music` page — top tracks & artists                         |
+| `SPOTIFY_CLIENT_SECRET` | Live `/music` page                                                |
+| `SPOTIFY_REFRESH_TOKEN` | Live `/music` page (obtain via `bun run scripts/spotify-auth.ts`) |
 
-In production the three `SPOTIFY_*` values are set as Cloudflare Pages environment variables.
+In production, `TMDB_API_KEY` and the three `SPOTIFY_*` values are set as Cloudflare Pages environment variables.
 
 ## Project structure
 
@@ -80,8 +80,8 @@ src/
 ├─ lib/
 │  ├─ site.ts             # ← central config: bio, socials, paintings, room map
 │  ├─ posts.ts            # typed index of writing posts
-│  ├─ films.json          # ← your data: rating, watched, dates, public/private notes
-│  ├─ films.ts            # auto-generated: films.json + TMDB metadata & poster paths
+│  ├─ pocketbase.ts       # PocketBase client + Film record types (ratings live in PB)
+│  ├─ tmdb.ts             # shared TMDB types (search results, film metadata)
 │  ├─ index.ts            # barrel exports
 │  └─ components/         # Seo, JsonLd, Container, Button, CommandPalette, …
 ├─ posts/                 # writing, as .svx (mdsvex)
@@ -99,33 +99,31 @@ static/                   # paintings, logos, manifest, etc.
 
 ## Pages
 
-| Route      | What it is                                                        |
-| ---------- | ----------------------------------------------------------------- |
-| `/`        | Home / hero — the canonical profile page                          |
-| `/about`   | Longer bio                                                        |
-| `/now`     | A [now page](https://nownownow.com): current focus                |
-| `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]`              |
-| `/library` | Books                                                             |
-| `/films`   | A ledger of ~220 rated films & shows, with hotlinked TMDB posters |
-| `/music`   | **Live** top tracks & artists from Spotify (edge-rendered)        |
-| `/likes`   | A grab-bag of recommendations                                     |
-| `/contact` | Ways to get in touch                                              |
+| Route      | What it is                                                                           |
+| ---------- | ------------------------------------------------------------------------------------ |
+| `/`        | Home / hero — the canonical profile page                                             |
+| `/about`   | Longer bio                                                                           |
+| `/now`     | A [now page](https://nownownow.com): current focus                                   |
+| `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]`                                 |
+| `/library` | Books                                                                                |
+| `/films`   | A ledger of ~220 rated films & shows; ratings in PocketBase, metadata live from TMDB |
+| `/music`   | **Live** top tracks & artists from Spotify (edge-rendered)                           |
+| `/likes`   | A grab-bag of recommendations                                                        |
+| `/contact` | Ways to get in touch                                                                 |
 
 ## Data & content tooling
 
 The `scripts/` folder holds small Bun scripts for maintaining content:
 
-| Script               | Purpose                                                                   |
-| -------------------- | ------------------------------------------------------------------------- |
-| `add-film.ts`        | Add/update a title's rating & watched count in `films.json`, then rebuild |
-| `build-films.ts`     | Bake TMDB metadata + poster paths from `films.json` into `films.ts`       |
-| `fetch-paintings.ts` | Download & convert room paintings to AVIF/WebP (via `sharp`)              |
-| `spotify-auth.ts`    | One-time OAuth flow to mint a Spotify refresh token                       |
+| Script               | Purpose                                                      |
+| -------------------- | ------------------------------------------------------------ |
+| `fetch-paintings.ts` | Download & convert room paintings to AVIF/WebP (via `sharp`) |
+| `spotify-auth.ts`    | One-time OAuth flow to mint a Spotify refresh token          |
 
 Run any of them with `bun run scripts/<name>.ts`.
 
 - **Writing** — add a `.svx` file under `src/posts/` and register it in `src/lib/posts.ts`.
-- **Films** — edit `src/lib/films.json` directly (it's the single source of truth), or use `add-film.ts`.
+- **Films** — add & rate titles from **`/manage`** (a noindex admin page, PocketBase-backed): sign in, search TMDB, pick a title, set rating / watch dates / notes. Records are keyed by TMDB id + media type; title, poster, year and cast are fetched live from TMDB via `/api/tmdb/[type]/[id]`.
 - **A new room** — add a painting to the `paintings` map in `site.ts`, map it in `roomForPath`, add a `[data-room]` palette in `app.css`, and drop the image in `static/paintings/`.
 
 ## Deployment

@@ -67,7 +67,7 @@
 
 <PageHeader room="about" eyebrow="a brief portrait" title="About">
 	{#snippet lede()}
-		<p>A curious person who happens to build software.</p>
+		<p>A little bit more about me and where I work</p>
 	{/snippet}
 </PageHeader>
 
@@ -110,7 +110,7 @@
 	<Fleuron />
 
 	<section class="rise mt-8">
-		<h2 class="text-center italic">Where I have been</h2>
+		<h2 class="text-center italic">Where I work</h2>
 		<ol class="mt-10 space-y-10">
 			{#each experiences as exp}
 				<li class="border-l-2 border-[var(--accent)] pl-6">
