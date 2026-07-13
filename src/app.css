@@ -51,7 +51,7 @@
 }
 
 :root[data-room='films'] {
-	/* the orrery: a dark room lit by one warm lamp — amber faces, gold glow */
+	/* la tour's magdalen: a pitch-dark room, one oil flame — amber skin, deep umber */
 	--bg: #120d0a;
 	--bg-soft: #1c1411;
 	--ink: #efdcbd;
@@ -100,16 +100,6 @@
 	--ink-dim: #75704a;
 	--rule: #2a2e22;
 	--accent: #d4af4e;
-}
-
-:root[data-room='now'] {
-	--bg: #d8d0c2;
-	--bg-soft: #e8e1d1;
-	--ink: #2a2820;
-	--ink-muted: #585040;
-	--ink-dim: #807866;
-	--rule: #b5ac9b;
-	--accent: #6f5d3e;
 }
 
 :root[data-room='likes'] {
@@ -210,12 +200,12 @@ h6 {
 }
 
 h1 {
-	font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+	font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem);
 	font-style: italic;
 }
 
 h2 {
-	font-size: clamp(1.75rem, 2.5vw + 0.5rem, 2.5rem);
+	font-size: clamp(1.6rem, 2.5vw + 0.5rem, 2.5rem);
 }
 
 h3 {
@@ -372,11 +362,18 @@ a.link-quiet:hover {
 	font-family: var(--font-display);
 	font-style: italic;
 	font-weight: 400;
-	font-size: 4.5em;
+	font-size: 3.4em;
 	line-height: 0.85;
 	float: left;
-	padding: 0.05em 0.12em 0 0;
+	padding: 0.08em 0.14em 0 0;
 	color: var(--ink);
+}
+
+@media (min-width: 640px) {
+	.dropcap::first-letter {
+		font-size: 4.5em;
+		padding: 0.05em 0.12em 0 0;
+	}
 }
 
 /* ---------- Fleuron divider ---------- */
@@ -385,8 +382,14 @@ a.link-quiet:hover {
 	align-items: center;
 	justify-content: center;
 	gap: 1.5rem;
-	margin: 4rem 0;
+	margin: 2.75rem 0;
 	color: var(--ink-dim);
+}
+
+@media (min-width: 640px) {
+	.fleuron {
+		margin: 4rem 0;
+	}
 }
 
 .fleuron::before,
@@ -501,11 +504,18 @@ a.link-quiet:hover {
 	font-family: var(--font-display);
 	font-style: italic;
 	font-weight: 400;
-	font-size: 4.5em;
+	font-size: 3.4em;
 	line-height: 0.85;
 	float: left;
-	padding: 0.05em 0.12em 0 0;
+	padding: 0.08em 0.14em 0 0;
 	color: var(--ink);
+}
+
+@media (min-width: 640px) {
+	.prose-romantic > p:first-child::first-letter {
+		font-size: 4.5em;
+		padding: 0.05em 0.12em 0 0;
+	}
 }
 
 .prose-romantic h2 {

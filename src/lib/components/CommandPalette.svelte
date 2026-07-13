@@ -22,14 +22,6 @@
 		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{
-			id: 'now',
-			title: 'Now',
-			subtitle: 'What I am at, right now',
-			href: '/now',
-			kind: 'page',
-			keywords: 'current today recent'
-		},
-		{
 			id: 'likes',
 			title: 'Likes',
 			subtitle: 'A catalogue of obsessions',

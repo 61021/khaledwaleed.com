@@ -36,11 +36,11 @@
 </PageHeader>
 
 <Container size="prose">
-	<section class="rise mt-10 space-y-6 text-center">
-		<p class="mx-auto max-w-md italic text-[var(--ink-muted)]">
+	<section class="rise mt-6 space-y-6 text-left sm:mt-10 sm:text-center">
+		<p class="max-w-md italic text-[var(--ink-muted)] sm:mx-auto">
 			This website is a record of some of that.
 		</p>
-		<div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+		<div class="flex flex-wrap items-center justify-start gap-4 pt-2 sm:justify-center">
 			<Button href="/writing" size="lg">Read the essays</Button>
 			<Button href="/contact" variant="outline" size="lg">Write to me</Button>
 		</div>

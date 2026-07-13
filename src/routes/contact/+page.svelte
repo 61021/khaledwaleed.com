@@ -5,12 +5,27 @@
 		{ label: 'Email', value: site.email, href: `mailto:${site.email}` },
 		...site.socials.map((s) => ({ label: s.label, value: s.handle, href: s.href }))
 	];
+
+	const contactSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'ContactPage',
+		'@id': `${site.url}/contact#contactpage`,
+		url: `${site.url}/contact`,
+		name: `Contact — ${site.name}`,
+		about: { '@id': `${site.url}/#person` },
+		isPartOf: { '@id': `${site.url}/#website` },
+		inLanguage: 'en'
+	};
 </script>
 
 <Seo
 	title="Contact"
 	description="Get in touch with Khaled Waleed — senior software engineer in Baghdad. Available for select consulting and contract work."
 />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(contactSchema)}</script>`}
+</svelte:head>
 
 <PageHeader room="contact" eyebrow="how to reach me" title="Contact">
 	{#snippet lede()}
@@ -42,11 +57,11 @@
 
 	<Fleuron />
 
-	<section class="rise text-center">
-		<p class="mx-auto max-w-md italic text-[var(--ink-muted)]">
+	<section class="rise text-left sm:text-center">
+		<p class="max-w-md italic text-[var(--ink-muted)] sm:mx-auto">
 			Or come look around the rest of the place.
 		</p>
-		<div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+		<div class="mt-6 flex flex-wrap items-center justify-start gap-4 sm:justify-center">
 			<Button href="/writing" size="lg">Read the essays</Button>
 			<Button href="/" variant="outline" size="lg">Back to the front</Button>
 		</div>

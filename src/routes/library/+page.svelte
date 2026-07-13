@@ -74,7 +74,9 @@
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each reading as b (b.title)}
 					<li class="py-3">
-						<div class="flex items-baseline justify-between gap-6">
+						<div
+							class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+						>
 							<span class="italic text-[var(--ink)]">{b.title}</span>
 							<span class="smallcaps shrink-0">{b.author}</span>
 						</div>
@@ -97,7 +99,9 @@
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each queue as b (b.title)}
 					<li class="py-3">
-						<div class="flex items-baseline justify-between gap-6">
+						<div
+							class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+						>
 							<span class="italic text-[var(--ink)]">{b.title}</span>
 							<span class="smallcaps shrink-0">{b.author}</span>
 						</div>
@@ -120,7 +124,9 @@
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each loved as b (b.title)}
 					<li class="py-3">
-						<div class="flex items-baseline justify-between gap-6">
+						<div
+							class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+						>
 							<span class="italic text-[var(--ink)]">{b.title}</span>
 							<span class="smallcaps shrink-0">{b.author}</span>
 						</div>

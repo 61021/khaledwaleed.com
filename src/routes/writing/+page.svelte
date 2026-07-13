@@ -2,12 +2,38 @@
 	import { Container, Seo, PageHeader, Fleuron, site } from '$lib';
 	import { posts, formatDate } from '$lib/posts';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+
+	const description =
+		'Essays on people, ideas, art, and philosophy — with the occasional piece on software.';
+
+	const blogSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'Blog',
+		'@id': `${site.url}/writing#blog`,
+		url: `${site.url}/writing`,
+		name: `${site.name} — Writing`,
+		description,
+		inLanguage: 'en',
+		author: { '@id': `${site.url}/#person` },
+		publisher: { '@id': `${site.url}/#person` },
+		isPartOf: { '@id': `${site.url}/#website` },
+		blogPost: posts.map((p) => ({
+			'@type': 'BlogPosting',
+			'@id': `${site.url}/writing/${p.slug}#article`,
+			headline: p.title,
+			description: p.description,
+			datePublished: p.date,
+			url: `${site.url}/writing/${p.slug}`,
+			author: { '@id': `${site.url}/#person` }
+		}))
+	};
 </script>
 
-<Seo
-	title="Writing"
-	description="Essays on people, ideas, art, and philosophy — with the occasional piece on software."
-/>
+<Seo title="Writing" {description} />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(blogSchema)}</script>`}
+</svelte:head>
 
 <PageHeader room="writing" eyebrow="essays · notes" title="Writing">
 	{#snippet lede()}

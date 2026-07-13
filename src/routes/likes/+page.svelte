@@ -256,6 +256,11 @@
 						<a href="/films" class="link">Every film and show I have rated →</a>
 					</p>
 				{/if}
+				{#if s.name === 'Music'}
+					<p class="mt-5">
+						<a href="/music" class="link">What I am listening to lately →</a>
+					</p>
+				{/if}
 				{#if i < sections.length - 1}
 					<div class="mt-12 rule-fine"></div>
 				{/if}

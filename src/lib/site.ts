@@ -41,8 +41,8 @@ export const site = {
 	],
 
 	companies: [
-		{ name: 'Qi', url: 'https://qi.iq', role: 'Senior Software Engineer' },
-		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Senior Software Engineer' }
+		{ name: 'QiCard', url: 'https://qi.iq', role: 'Lead Software Engineer' },
+		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Founder & Software Engineer' }
 	],
 
 	socials: [
@@ -51,11 +51,6 @@ export const site = {
 			label: 'LinkedIn',
 			href: 'https://www.linkedin.com/in/kwaleedkhalid/',
 			handle: 'kwaleedkhalid'
-		},
-		{
-			label: 'Bluesky',
-			href: 'https://bsky.app/profile/khaledwaleed.com',
-			handle: '@khaledwaleed.com'
 		},
 		{ label: 'Telegram', href: 'https://t.me/x61021', handle: '@x61021' },
 		{ label: 'Instagram', href: 'https://www.instagram.com/khaled.jsx/', handle: '@khaled.jsx' },
@@ -81,6 +76,8 @@ export type Painting = {
 	source: string;
 	/** Alt text for accessibility */
 	alt: string;
+	/** CSS object-position for hero cover-crops (defaults to center) */
+	focal?: string;
 };
 
 export const paintings: Record<string, Painting> = {
@@ -113,16 +110,6 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/',
 		source: 'https://en.wikipedia.org/wiki/The_Abbey_in_the_Oakwood',
 		alt: 'The ruined gothic facade of an abbey rising out of bare oaks under a pale winter sky; small dark figures process toward it.'
-	},
-	now: {
-		key: 'now',
-		title: 'Riesengebirge Landscape with Rising Fog',
-		artist: 'Caspar David Friedrich',
-		year: 'c. 1820',
-		museum: 'Bayerische Staatsgemäldesammlungen, Munich',
-		museumUrl: 'https://www.pinakothek.de/en',
-		source: 'https://en.wikipedia.org/wiki/Caspar_David_Friedrich',
-		alt: 'A succession of mountain ridges fading into pale fog, the valleys still hidden, daylight just arriving.'
 	},
 	likes: {
 		key: 'likes',
@@ -166,13 +153,15 @@ export const paintings: Record<string, Painting> = {
 	},
 	films: {
 		key: 'films',
-		title: 'A Philosopher Lecturing on the Orrery',
-		artist: 'Joseph Wright of Derby',
-		year: 'c. 1766',
-		museum: 'Derby Museum and Art Gallery',
-		museumUrl: 'https://www.derbymuseums.org/',
-		source: 'https://en.wikipedia.org/wiki/A_Philosopher_Lecturing_on_the_Orrery',
-		alt: 'A lecturer demonstrates a mechanical model of the solar system in a darkened room; a single lamp at its centre stands in for the sun, lighting the rapt faces gathered around it in warm gold.'
+		title: 'The Magdalen with the Smoking Flame',
+		artist: 'Georges de La Tour',
+		year: 'c. 1640',
+		museum: 'Los Angeles County Museum of Art',
+		museumUrl: 'https://www.lacma.org/',
+		source: 'https://en.wikipedia.org/wiki/Magdalene_with_the_Smoking_Flame',
+		alt: 'A young woman sits in profile in a pitch-dark room, a skull resting on her lap, her face lit only by the single smoking flame of an oil lamp she watches.',
+		// portrait canvas: keep the face and flame in the wide desktop crop
+		focal: '50% 30%'
 	},
 	music: {
 		key: 'music',
@@ -190,7 +179,6 @@ export const paintings: Record<string, Painting> = {
 export function roomForPath(pathname: string): string {
 	if (pathname === '/' || pathname === '') return 'home';
 	if (pathname === '/about') return 'about';
-	if (pathname === '/now') return 'now';
 	if (pathname === '/likes') return 'likes';
 	if (pathname === '/library') return 'library';
 	if (pathname === '/films') return 'films';

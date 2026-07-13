@@ -9,26 +9,29 @@
 - Name: Khaled Waleed
 - Role: Senior Software Engineer
 - Location: Baghdad, Iraq
-- Working at: Qi (qi.iq), Vitex (vitex.dev)
+- Working at: QiCard (qi.iq), Vitex (vitex.dev)
 - Stack: SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux
 - Email: contact@khaledwaleed.com
 
 ## Pages
 
-- / — Home. Bio, current work, what I build.
-- /about — Background, experience, toolkit.
+- / — Home. The front door.
+- /about — Background, work history, toolkit.
 - /writing — Essays and notes.
-- /writing/in-defense-of-melancholy — On Friedrich, tragedy, and the room sadness opens.
+- /writing/the-thin-line — How small the difference between a good person and a bad one really is.
+- /writing/life-is-interesting — On meaning, and why we keep asking about it.
+- /writing/bun-on-cloudflare-pages — Deploying Bun projects to Cloudflare Pages.
 - /writing/sitting-in-discomfort-on-purpose — The small, private habit of voluntary difficulty.
-- /writing/absurdism-without-nihilism — Camus, the rock, and meaning as a verb.
-- /now — What I'm working on, building, reading, learning right now. Updated periodically.
 - /likes — A scattered catalogue of obsessions: cinema, music, art, style, food, philosophy.
+- /library — Books.
+- /films — Every film and show I've rated, tiered.
+- /music — What I'm listening to, live from Spotify.
 - /contact — Email, LinkedIn, Telegram, WhatsApp, GitHub.
 - /rss.xml — RSS feed for the writing.
 
 ## Style note
 
 Each page is paired with one public-domain Northern Romantic painting
-(Friedrich, Dahl, Spitzweg). The site is set in EB Garamond and Cormorant
-Garamond. There is no JavaScript framework chrome on display — only text,
+(Friedrich, Dahl, Vermeer, Wright of Derby). The site is set in Inter and
+Fraunces. There is no JavaScript framework chrome on display — only text,
 paintings, and quiet rules.

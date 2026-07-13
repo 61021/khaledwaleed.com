@@ -35,6 +35,8 @@
 		},
 		mainEntityOfPage: { '@type': 'WebPage', '@id': url },
 		keywords: post.tags.join(', '),
+		articleSection: post.tags[0],
+		timeRequired: `PT${Number.parseInt(post.readingTime, 10) || 3}M`,
 		image: `${site.url}/og.png`,
 		isPartOf: { '@id': `${site.url}/#website` }
 	});

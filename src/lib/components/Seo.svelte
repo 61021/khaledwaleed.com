@@ -6,6 +6,7 @@
 		title?: string;
 		description?: string;
 		image?: string;
+		imageAlt?: string;
 		type?: 'website' | 'article' | 'profile';
 		keywords?: readonly string[];
 		noindex?: boolean;
@@ -17,6 +18,7 @@
 		title,
 		description = site.tagline,
 		image = site.ogImage,
+		imageAlt = `${site.name} — ${site.role}`,
 		type = 'website',
 		keywords = site.keywords,
 		noindex = false,
@@ -54,7 +56,18 @@
 	<meta property="og:image" content={imageUrl} />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={imageAlt} />
 	<meta property="og:locale" content={site.location.locale} />
+	{#if type === 'article'}
+		<meta property="article:author" content={site.url} />
+		{#each keywords as tag (tag)}
+			<meta property="article:tag" content={tag} />
+		{/each}
+	{/if}
+	{#if type === 'profile'}
+		<meta property="profile:first_name" content={site.name.split(' ')[0]} />
+		<meta property="profile:last_name" content={site.name.split(' ').slice(1).join(' ')} />
+	{/if}
 	{#if publishedTime}<meta property="article:published_time" content={publishedTime} />{/if}
 	{#if modifiedTime}<meta property="article:modified_time" content={modifiedTime} />{/if}
 
@@ -63,6 +76,7 @@
 	<meta name="twitter:title" content={fullTitle} />
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:image" content={imageUrl} />
+	<meta name="twitter:image:alt" content={imageAlt} />
 
 	<!-- Geo -->
 	<meta name="geo.region" content="IQ-BG" />

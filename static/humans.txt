@@ -4,7 +4,8 @@ Site: https://khaledwaleed.com
 Location: Baghdad, Iraq
 
 /* SITE */
-Last update: 2026-05
+Last update: 2026-07
 Standards: HTML5, CSS3
 Components: SvelteKit 5, Tailwind 4
-Software: Bun, Vite, Netlify
+Software: Bun, Vite, Cloudflare Pages
+Fonts: Inter, Fraunces

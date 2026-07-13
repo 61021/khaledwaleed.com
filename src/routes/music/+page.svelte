@@ -188,7 +188,7 @@
 	}
 
 	.seg-opt {
-		padding: 0.55rem 1.1rem;
+		padding: 0.55rem 0.85rem;
 		border-radius: 9999px;
 		font-family: var(--font-body);
 		text-transform: uppercase;
@@ -196,9 +196,16 @@
 		font-size: 0.72rem;
 		font-weight: 600;
 		color: var(--ink-muted);
+		white-space: nowrap;
 		transition:
 			color 250ms ease,
 			background-color 250ms ease;
+	}
+
+	@media (min-width: 640px) {
+		.seg-opt {
+			padding: 0.55rem 1.1rem;
+		}
 	}
 
 	.seg-opt:hover {

@@ -45,7 +45,6 @@
 	const nav = [
 		{ name: 'About', href: '/about' },
 		{ name: 'Writing', href: '/writing' },
-		// { name: 'Now', href: '/now' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Library', href: '/library' },
 		{ name: 'Films', href: '/films' },
@@ -171,10 +170,10 @@
 	</main>
 
 	<!-- Footer: equally quiet -->
-	<footer class="mt-24 border-t border-[var(--rule)] py-10 sm:mt-32">
+	<footer class="mt-16 border-t border-[var(--rule)] py-8 sm:mt-32 sm:py-10">
 		<Container size="wide">
 			<div
-				class="flex flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left"
+				class="flex flex-col items-start justify-between gap-6 text-left sm:flex-row sm:items-center"
 			>
 				<div class="space-y-1">
 					<div class="italic text-[var(--ink-muted)]">
@@ -184,7 +183,7 @@
 				</div>
 				<nav
 					aria-label="Elsewhere"
-					class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+					class="flex flex-wrap items-center justify-start gap-x-5 gap-y-2 sm:justify-center"
 				>
 					{#each site.socials as s}
 						<a

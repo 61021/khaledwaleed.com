@@ -60,12 +60,7 @@
 		name: site.name,
 		description: site.tagline,
 		inLanguage: 'en',
-		publisher: { '@id': `${site.url}/#person` },
-		potentialAction: {
-			'@type': 'SearchAction',
-			target: `${site.url}/?q={search_term_string}`,
-			'query-input': 'required name=search_term_string'
-		}
+		publisher: { '@id': `${site.url}/#person` }
 	};
 </script>
 

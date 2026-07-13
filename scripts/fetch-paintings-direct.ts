@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
-/** Fetch the 4 paintings that lack Wikipedia summary articles. */
+/** Fetch the paintings that need a specific Commons file (no usable Wikipedia summary image). */
 import { writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -44,6 +45,13 @@ const items: Item[] = [
 		avifQuality: 68,
 		webpQuality: 86,
 		sharpen: true
+	},
+	{
+		// Portrait canvas; keep extra width so the desktop hero's wide cover-crop stays crisp.
+		slug: 'films',
+		file: 'Georges_de_La_Tour_-_The_Magdalen_with_the_Smoking_Flame_-_Google_Art_Project.jpg',
+		srcWidth: 3200,
+		outWidth: 2800
 	}
 ];
 
@@ -59,6 +67,10 @@ for (const item of items) {
 		webpQuality = 78,
 		sharpen
 	} = item;
+	if (existsSync(path.join(OUT, `${slug}.avif`))) {
+		console.log(`skip ${slug} (exists)`);
+		continue;
+	}
 	// Special:FilePath redirects to the actual uploaded file.
 	const widthParam = srcWidth
 		? `?width=${srcWidth}`

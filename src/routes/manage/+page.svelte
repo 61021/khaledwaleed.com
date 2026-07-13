@@ -2,12 +2,18 @@
 	import { onMount } from 'svelte';
 	import { Container } from '$lib';
 	import Poster from '$lib/components/Poster.svelte';
-	import { pb, type FilmRecord } from '$lib/pocketbase';
+	import {
+		metaToFields,
+		pb,
+		type FilmInput,
+		type FilmMetaFields,
+		type FilmRecord
+	} from '$lib/pocketbase';
 	import type { FilmMeta, MediaType, SearchResult } from '$lib/tmdb';
 
 	// --- Auth ------------------------------------------------------------
 	let authed = $state(false);
-	let email = $state('master@khaledwaleed.com');
+	let email = $state('master@khaled waleed.com');
 	let password = $state('');
 	let authError = $state('');
 
@@ -34,8 +40,18 @@
 		authed = false;
 		films = [];
 		selected = null;
+		editing = null;
 		query = '';
 		results = [];
+	}
+
+	/** A 401/403 from PB means the token lapsed — drop back to the gate. */
+	function expired(err: unknown): boolean {
+		const status = (err as { status?: number }).status;
+		if (status !== 401 && status !== 403) return false;
+		logout();
+		authError = 'Session expired — sign in again.';
+		return true;
 	}
 
 	// --- Search ----------------------------------------------------------
@@ -43,11 +59,14 @@
 	let results = $state<SearchResult[]>([]);
 	let searching = $state(false);
 	let searchTimer: ReturnType<typeof setTimeout>;
+	let searchCtl: AbortController | null = null;
 
 	function onQuery() {
 		clearTimeout(searchTimer);
 		const q = query.trim();
 		if (!q) {
+			searchCtl?.abort();
+			searching = false;
 			results = [];
 			return;
 		}
@@ -55,14 +74,19 @@
 	}
 
 	async function runSearch(q: string) {
+		// Abort the in-flight request so a slow response can never overwrite a
+		// newer one (the classic stale-search race).
+		searchCtl?.abort();
+		const ctl = (searchCtl = new AbortController());
 		searching = true;
 		try {
-			const r = await fetch(`/api/tmdb/search?q=${encodeURIComponent(q)}`);
+			const r = await fetch(`/api/tmdb/search?q=${encodeURIComponent(q)}`, { signal: ctl.signal });
+			if (ctl !== searchCtl) return;
 			results = r.ok ? ((await r.json()).results ?? []) : [];
-		} catch {
-			results = [];
+		} catch (err) {
+			if ((err as Error).name !== 'AbortError') results = [];
 		} finally {
-			searching = false;
+			if (ctl === searchCtl) searching = false;
 		}
 	}
 
@@ -81,7 +105,15 @@
 		return new Date().toISOString().slice(0, 10);
 	}
 
+	/** The record already holding this search result, if any. */
+	const existing = (r: SearchResult): FilmRecord | undefined =>
+		films.find((f) => f.tmdbId === r.tmdbId && f.type === r.mediaType);
+
 	function pick(r: SearchResult) {
+		// Already in the collection? Jump straight to editing that record —
+		// saving a duplicate would only bounce off the unique index.
+		const dupe = existing(r);
+		if (dupe) return edit(dupe);
 		selected = r;
 		editing = null;
 		rating = 8;
@@ -94,20 +126,21 @@
 	}
 
 	function edit(f: FilmRecord) {
-		const m = meta[metaKey(f)];
 		editing = f;
 		selected = {
 			tmdbId: f.tmdbId,
 			mediaType: f.type,
-			title: m?.title ?? `#${f.tmdbId}`,
-			year: m?.year ?? 0,
-			posterPath: m?.posterPath ?? null
+			title: f.title || `#${f.tmdbId}`,
+			year: f.year ?? 0,
+			posterPath: f.posterPath || null
 		};
 		rating = f.rating;
 		watched = f.watched;
 		watchedOn = f.watchedOn?.slice(0, 10) || today();
 		notes = f.notes ?? '';
 		privateNotes = f.privateNotes ?? '';
+		results = [];
+		query = '';
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 
@@ -117,19 +150,48 @@
 		saveError = '';
 	}
 
+	/** Fetch the TMDB snapshot for one title; null when TMDB is unreachable. */
+	async function fetchMeta(type: MediaType, tmdbId: number): Promise<FilmMeta | null> {
+		try {
+			const r = await fetch(`/api/tmdb/${type}/${tmdbId}`);
+			return r.ok ? ((await r.json()) as FilmMeta) : null;
+		} catch {
+			return null;
+		}
+	}
+
 	async function save(e: Event) {
 		e.preventDefault();
 		if (!selected) return;
 		saving = true;
 		saveError = '';
-		const data = {
+		// Denormalize the TMDB snapshot into the record, so the public page
+		// renders everything from PocketBase in one request.
+		const m = await fetchMeta(selected.mediaType, selected.tmdbId);
+		const snapshot: Partial<FilmMetaFields> = m
+			? metaToFields(m)
+			: editing
+				? {} // TMDB is down — keep the stored snapshot rather than degrade it
+				: {
+						// TMDB is down — keep the essentials from the search pick;
+						// the ↻ refresh can fill in directors/genres later.
+						title: selected.title,
+						year: selected.year,
+						format: selected.mediaType === 'tv' ? 'TV Series' : 'Movie',
+						runtime: 0,
+						genres: [],
+						directors: [],
+						posterPath: selected.posterPath ?? ''
+					};
+		const data: FilmInput = {
 			tmdbId: selected.tmdbId,
 			type: selected.mediaType,
 			rating,
 			watched,
 			watchedOn,
 			notes,
-			privateNotes
+			privateNotes,
+			...snapshot
 		};
 		try {
 			if (editing) await pb.collection('films').update(editing.id, data);
@@ -137,7 +199,7 @@
 			cancel();
 			await loadFilms();
 		} catch (err) {
-			saveError = (err as Error).message || 'Could not save.';
+			if (!expired(err)) saveError = (err as Error).message || 'Could not save.';
 		} finally {
 			saving = false;
 		}
@@ -146,25 +208,13 @@
 	// --- Collection list -------------------------------------------------
 	let films = $state<FilmRecord[]>([]);
 	let listError = $state('');
-	let meta = $state<Record<string, FilmMeta>>({});
-	const metaKey = (f: { type: MediaType; tmdbId: number }) => `${f.type}/${f.tmdbId}`;
 
 	async function loadFilms() {
 		listError = '';
 		try {
 			films = await pb.collection('films').getFullList<FilmRecord>({ sort: '-rating,-watchedOn' });
-			for (const f of films) {
-				const k = metaKey(f);
-				if (meta[k]) continue;
-				fetch(`/api/tmdb/${f.type}/${f.tmdbId}`)
-					.then((r) => (r.ok ? r.json() : null))
-					.then((m) => {
-						if (m) meta[k] = m as FilmMeta;
-					})
-					.catch(() => {});
-			}
 		} catch (err) {
-			listError = (err as Error).message || 'Could not load your collection.';
+			if (!expired(err)) listError = (err as Error).message || 'Could not load your collection.';
 		}
 	}
 
@@ -174,8 +224,61 @@
 			await pb.collection('films').delete(f.id);
 			films = films.filter((x) => x.id !== f.id);
 		} catch (err) {
-			listError = (err as Error).message || 'Could not remove.';
+			if (!expired(err)) listError = (err as Error).message || 'Could not remove.';
 		}
+	}
+
+	// --- TMDB snapshot sync ----------------------------------------------
+	// Records saved before snapshots existed (or while TMDB was down) have no
+	// title; fill them in with a small worker pool.
+	const missing = $derived(films.filter((f) => !f.title));
+	let syncing = $state(false);
+	let syncDone = $state(0);
+	let syncTotal = $state(0);
+
+	async function syncMissing() {
+		const targets = [...missing];
+		syncing = true;
+		syncTotal = targets.length;
+		syncDone = 0;
+		let next = 0;
+		async function worker() {
+			while (next < targets.length && pb.authStore.isValid) {
+				const f = targets[next++];
+				const m = await fetchMeta(f.type, f.tmdbId);
+				if (m) {
+					try {
+						await pb.collection('films').update(f.id, metaToFields(m));
+					} catch (err) {
+						expired(err);
+					}
+				}
+				syncDone++;
+			}
+		}
+		await Promise.all(Array.from({ length: 6 }, worker));
+		syncing = false;
+		if (pb.authStore.isValid) await loadFilms();
+	}
+
+	// Re-fetch one title's snapshot (poster swaps, corrected credits, …).
+	let refreshingId = $state<string | null>(null);
+	async function refreshMeta(f: FilmRecord) {
+		refreshingId = f.id;
+		listError = '';
+		const m = await fetchMeta(f.type, f.tmdbId);
+		if (m) {
+			try {
+				await pb.collection('films').update(f.id, metaToFields(m));
+				const i = films.findIndex((x) => x.id === f.id);
+				if (i !== -1) films[i] = { ...films[i], ...metaToFields(m) };
+			} catch (err) {
+				if (!expired(err)) listError = (err as Error).message || 'Could not refresh.';
+			}
+		} else {
+			listError = 'TMDB is unreachable — try again shortly.';
+		}
+		refreshingId = null;
 	}
 
 	const kind = (t: MediaType) => (t === 'tv' ? 'TV' : 'Film');
@@ -225,6 +328,7 @@
 					{#if results.length}
 						<ul class="results mt-3">
 							{#each results as r (r.mediaType + r.tmdbId)}
+								{@const dupe = existing(r)}
 								<li>
 									<button class="result" type="button" onclick={() => pick(r)}>
 										<Poster posterPath={r.posterPath} alt="" width={42} />
@@ -232,7 +336,9 @@
 											<span class="result-title">{r.title}</span>
 											<span class="muted">{r.year || '—'} · {kind(r.mediaType)}</span>
 										</span>
-										<span class="result-add">Add</span>
+										<span class="result-add" class:always={dupe}
+											>{dupe ? 'In collection · Edit' : 'Add'}</span
+										>
 									</button>
 								</li>
 							{/each}
@@ -254,11 +360,19 @@
 					<div class="mt-5 grid gap-4 sm:grid-cols-3">
 						<label class="lbl"
 							>Rating
-							<input class="field" type="number" min="1" max="10" bind:value={rating} required />
+							<input
+								class="field"
+								type="number"
+								min="1"
+								max="10"
+								step="1"
+								bind:value={rating}
+								required
+							/>
 						</label>
 						<label class="lbl"
 							>Times watched
-							<input class="field" type="number" min="1" bind:value={watched} />
+							<input class="field" type="number" min="1" step="1" bind:value={watched} />
 						</label>
 						<label class="lbl"
 							>Watched on
@@ -288,15 +402,26 @@
 			<!-- The collection -->
 			<h2 class="m-sub mt-4">In your collection · {films.length}</h2>
 			{#if listError}<p class="err mt-2">{listError}</p>{/if}
-			<ul class="mt-3 divide-y divide-[var(--rule)]">
+			{#if syncing || missing.length}
+				<div class="banner mt-3">
+					{#if syncing}
+						<span class="muted">Syncing TMDB snapshots… {syncDone}/{syncTotal}</span>
+					{:else}
+						<span class="muted"
+							>{missing.length} title{missing.length === 1 ? ' is' : 's are'} missing the TMDB snapshot.</span
+						>
+						<button class="btn-sm" type="button" onclick={syncMissing}>Sync now</button>
+					{/if}
+				</div>
+			{/if}
+			<ul class="mt-3 divide-y 097 divide-[var(--rule)]">
 				{#each films as f (f.id)}
-					{@const m = meta[metaKey(f)]}
 					<li class="row">
-						<Poster posterPath={m?.posterPath ?? null} alt="" width={40} />
+						<Poster posterPath={f.posterPath || null} alt="" width={40} />
 						<div class="row-main">
-							<div class="result-title">{m?.title ?? `#${f.tmdbId}`}</div>
+							<div class="result-title">{f.title || `#${f.tmdbId}`}</div>
 							<div class="muted">
-								{m?.year || ''} · rating {f.rating} · seen {f.watched}× · {f.watchedOn?.slice(
+								{f.year ? `${f.year} · ` : ''}rating {f.rating} · seen {f.watched}× · {f.watchedOn?.slice(
 									0,
 									10
 								)}
@@ -304,6 +429,14 @@
 						</div>
 						<div class="row-actions">
 							<button class="link-quiet" type="button" onclick={() => edit(f)}>Edit</button>
+							<button
+								class="link-quiet"
+								type="button"
+								onclick={() => refreshMeta(f)}
+								disabled={refreshingId === f.id}
+								title="Re-fetch TMDB metadata"
+								aria-label="Refresh metadata">{refreshingId === f.id ? '…' : '↻'}</button
+							>
 							<button class="del" type="button" onclick={() => remove(f)} aria-label="Remove"
 								>✕</button
 							>
@@ -446,6 +579,42 @@
 	}
 	.result:hover .result-add {
 		opacity: 1;
+	}
+	/* Titles already in the collection announce it before hover. */
+	.result-add.always {
+		opacity: 1;
+		color: var(--ink-muted);
+	}
+	.result:hover .result-add.always {
+		color: var(--accent);
+	}
+
+	.banner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.7rem 1rem;
+		border: 1px solid color-mix(in oklab, var(--accent) 32%, var(--rule));
+		border-radius: 0.7rem;
+		background: color-mix(in oklab, var(--accent) 7%, var(--bg-soft));
+	}
+
+	.btn-sm {
+		flex-shrink: 0;
+		padding: 0.4rem 0.9rem;
+		border-radius: 0.6rem;
+		background: var(--accent);
+		color: var(--bg);
+		font-family: var(--font-body);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		cursor: pointer;
+		transition: opacity 200ms ease;
+	}
+	.btn-sm:hover {
+		opacity: 0.9;
 	}
 
 	.row {
