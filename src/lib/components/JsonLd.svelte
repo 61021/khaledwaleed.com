@@ -12,15 +12,17 @@
 		nationality: { '@type': 'Country', name: 'Iraq' },
 		url: site.url,
 		mainEntityOfPage: site.url,
-		image: `${site.url}${site.avatar}`,
+		// Raster first — image search and knowledge panels skip SVGs.
+		image: [`${site.url}${site.ogImage}`, `${site.url}${site.avatar}`],
 		jobTitle: site.role,
+		disambiguatingDescription: `${site.role} based in Baghdad, Iraq (QiCard, Vitex)`,
 		hasOccupation: {
 			'@type': 'Occupation',
-			name: 'Senior Software Engineer',
-			occupationLocation: {
-				'@type': 'Country',
-				name: 'Iraq'
-			},
+			name: site.role,
+			occupationLocation: [
+				{ '@type': 'City', name: 'Baghdad' },
+				{ '@type': 'Country', name: 'Iraq' }
+			],
 			skills: 'SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux'
 		},
 		email: `mailto:${site.email}`,
@@ -31,8 +33,17 @@
 			addressLocality: site.location.city,
 			addressCountry: site.location.countryCode
 		},
+		homeLocation: {
+			'@type': 'Place',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: site.location.city,
+				addressCountry: site.location.countryCode
+			}
+		},
 		worksFor: site.companies.map((c) => ({
 			'@type': 'Organization',
+			'@id': c.url,
 			name: c.name,
 			url: c.url
 		})),
@@ -58,8 +69,10 @@
 		'@id': `${site.url}/#website`,
 		url: site.url,
 		name: site.name,
+		alternateName: 'khaledwaleed.com',
 		description: site.tagline,
 		inLanguage: 'en',
+		author: { '@id': `${site.url}/#person` },
 		publisher: { '@id': `${site.url}/#person` }
 	};
 </script>
@@ -67,4 +80,9 @@
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(personSchema)}</script>`}
 	{@html `<script type="application/ld+json">${JSON.stringify(websiteSchema)}</script>`}
+	<!-- rel=me identity links: tie the site to the profiles listed in the
+	     Person schema's sameAs (and vice versa where the profile links back). -->
+	{#each site.socials as s (s.href)}
+		<link rel="me" href={s.href} />
+	{/each}
 </svelte:head>

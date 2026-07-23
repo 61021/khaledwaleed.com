@@ -17,6 +17,15 @@
 	const src = $derived(`/paintings/${p.key}`);
 </script>
 
+<!-- The hero painting is the LCP element — let the preload scanner find it
+     before layout. Browsers without AVIF ignore the typed preload and fall
+     back to the <picture> webp source as usual. -->
+<svelte:head>
+	{#if priority}
+		<link rel="preload" as="image" href={`${src}.avif`} type="image/avif" fetchpriority="high" />
+	{/if}
+</svelte:head>
+
 {#snippet pic()}
 	<picture>
 		<source type="image/avif" srcset={`${src}.avif`} />

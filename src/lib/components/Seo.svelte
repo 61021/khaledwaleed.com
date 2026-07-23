@@ -29,7 +29,7 @@
 	const fullTitle = $derived(
 		title
 			? `${title} — ${site.name}`
-			: `${site.name} — ${site.role} (${site.location.city}, ${site.location.country})`
+			: `${site.name} — ${site.role} in ${site.location.city}, ${site.location.country}`
 	);
 	const url = $derived(`${site.url}${$page.url.pathname}`);
 	const imageUrl = $derived(image.startsWith('http') ? image : `${site.url}${image}`);

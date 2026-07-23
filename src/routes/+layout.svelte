@@ -177,7 +177,7 @@
 			>
 				<div class="space-y-1">
 					<div class="italic text-[var(--ink-muted)]">
-						{site.name} · {site.location.city}, {site.location.country}
+						{site.name} · {site.role} · {site.location.city}, {site.location.country}
 					</div>
 					<div class="smallcaps">mmxxvi · set in inter &amp; fraunces</div>
 				</div>
@@ -189,7 +189,7 @@
 						<a
 							href={s.href}
 							target="_blank"
-							rel="noopener noreferrer"
+							rel="me noopener noreferrer"
 							class="text-sm italic text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
 						>
 							{s.label}

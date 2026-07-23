@@ -1,0 +1,16 @@
+# Cloudflare Pages headers (adapter copies this from the project root).
+# Security headers only — no CSP, deliberately.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Paintings and logos never change in place (new art = new filename).
+/paintings/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/logos/*
+  Cache-Control: public, max-age=31536000, immutable

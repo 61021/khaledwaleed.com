@@ -172,7 +172,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-06-23',
+		dateModified: '2026-07-23',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -186,7 +186,7 @@
 
 <Seo
 	title="About"
-	description="Khaled Waleed is a software engineer in Baghdad, Iraq — five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go."
+	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq — five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go."
 />
 
 <svelte:head>
@@ -203,8 +203,9 @@
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
 			I build software for a living, but curiosity is probably the more accurate description. For
-			the last five years I have worked as a software engineer here in Baghdad, mostly building web
-			applications that have to survive contact with real users.
+			the last five years I have worked as a software engineer here in Baghdad, Iraq — a senior
+			software engineer these days — mostly building web applications that have to survive contact
+			with real users.
 		</p>
 		<p>
 			Most of that work has been in Iraq, which I have come to treat as an advantage rather than a

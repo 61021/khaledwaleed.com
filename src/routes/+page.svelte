@@ -11,7 +11,7 @@
 		url: site.url,
 		name: `${site.name} — ${site.role}`,
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-06-23',
+		dateModified: '2026-07-23',
 		primaryImageOfPage: `${site.url}${site.avatar}`,
 		mainEntity: { '@id': `${site.url}/#person` }
 	};
@@ -26,7 +26,11 @@
 	{@html `<script type="application/ld+json">${JSON.stringify(profilePageSchema)}</script>`}
 </svelte:head>
 
-<PageHeader room="home" eyebrow="Entrance" title="Khaled Waleed">
+<PageHeader
+	room="home"
+	eyebrow={`${site.role} · ${site.location.city}, ${site.location.country}`}
+	title="Khaled Waleed"
+>
 	{#snippet lede()}
 		<p>
 			I build software, write occasionally, and spend an unreasonable amount of time thinking about

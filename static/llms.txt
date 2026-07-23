@@ -1,8 +1,8 @@
 # khaledwaleed.com
 
 > A small, hand-built site by Khaled Waleed — senior software engineer in
-> Baghdad. Quiet pages, one painting each, plain serif text. SvelteKit & Go
-> for the day job; essays, notes, and lists for the rest.
+> Baghdad, Iraq. Quiet pages, one painting each, plain serif text. SvelteKit
+> & Go for the day job; essays, notes, and lists for the rest.
 
 ## About
 
