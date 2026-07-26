@@ -26,7 +26,7 @@
 					period: 'Aug 2025 — present',
 					highlights: [
 						'Lead the front-end team behind 6+ large-scale governmental applications serving millions of citizens — owning architecture, code reviews, and engineering standards across the portfolio.',
-						'Scaled the Oil Coupon mini-app past 1 million families, one of the most widely used public-sector digital services in Iraq.',
+						'Scaled the Oil Coupon mini-app past 2 million families, one of the most widely used public-sector digital services in Iraq.',
 						'Drive modernization of legacy codebases to current Vue and Nuxt standards while keeping mission-critical systems stable in production.'
 					]
 				},
