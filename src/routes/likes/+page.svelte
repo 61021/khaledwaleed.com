@@ -22,6 +22,9 @@
 				'What makes a life worthwhile',
 				"Why some relationships survive and others don't",
 				'How much of personality is choice',
+				'Why we tell stories',
+				'What attention is',
+				'Where taste comes from',
 				'What curiosity itself is'
 			]
 		},
@@ -44,6 +47,8 @@
 				'Northern Romantic painting',
 				'Caspar David Friedrich',
 				'Johan Christian Dahl',
+				'John Atkinson Grimshaw',
+				'Ivan Aivazovsky',
 				'Moonlit landscapes',
 				'Shakespearean tragedy',
 				'Ballet, especially Swan Lake',
@@ -59,10 +64,13 @@
 			kicker: 'Listening rooms in my head',
 			items: [
 				'Classical, all of it',
+				'Tchaikovsky, for Swan Lake',
+				"Chopin's nocturnes",
 				'Progressive metal',
 				'Britpop',
 				'Garage rock revival',
-				'Moody Americana'
+				'Moody Americana',
+				'The tuning note before the first note'
 			],
 			link: { href: '/music', label: 'What I am listening to lately →' }
 		},
@@ -72,18 +80,21 @@
 			items: [
 				'Oversized English trousers',
 				'Crisp dress shirts',
+				'Waistcoats',
 				'Tall coats & capes',
 				'Eyes Wide Shut masks',
 				'Glasses, always',
 				'Artistic rings shaped like animals',
 				'Silver necklaces',
 				'Silver lapel pins & cufflinks',
+				'Pocket watches',
 				'Victorian-patterned ties',
 				'Fedora hats',
 				'Textured leather belts',
 				'Wooden-soled leather shoes',
 				'Long boots',
-				'Raincoats'
+				'Raincoats',
+				'A proper black umbrella'
 			]
 		},
 		{
@@ -123,7 +134,14 @@
 		{
 			name: 'Places',
 			kicker: "Rooms I don't own",
-			items: ['Libraries', 'Old train stations', 'Hotel bars at midnight']
+			items: [
+				'Libraries',
+				'Bookshops with ladders',
+				'Museum halls near closing',
+				'Grand old cinemas',
+				'Old train stations',
+				'Hotel bars at midnight'
+			]
 		},
 		{
 			name: 'Food',
@@ -156,7 +174,14 @@
 		{
 			name: 'Road',
 			kicker: 'Engines worth the silence after',
-			items: ['Porsche 911 Turbo S', 'Aston Martin DB11', 'Ferrari 488 Pista']
+			items: [
+				'Porsche 911 Turbo S',
+				'Aston Martin DB11',
+				'Ferrari 488 Pista',
+				'Manual gearboxes',
+				'Night drives, windows down',
+				'Empty highways at 3am'
+			]
 		},
 		{
 			name: 'Wander',
@@ -178,10 +203,13 @@
 				'Endurance past the point of reason',
 				'Strength as a default state',
 				'Sitting in discomfort, on purpose',
+				'Cold water, on purpose',
 				'Breathing exercises',
 				'Stretching & mobility',
 				'Balance',
-				'Meditation'
+				'Long walks as thinking',
+				'Meditation',
+				'Sleep, defended'
 			]
 		},
 		{
@@ -191,8 +219,12 @@
 				'Total control over my stack',
 				'Linux, always',
 				'Suckless philosophy',
+				'Software you can leave alone',
+				'Programs that start instantly',
+				'Plain text, forever',
 				'Go, Rust, Svelte',
 				'Self-hosted everything',
+				'IBM Plex, everywhere',
 				'Sorting files and data like a maniac'
 			]
 		}
