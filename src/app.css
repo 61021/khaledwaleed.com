@@ -420,6 +420,17 @@ a.link-quiet:hover {
 	background: color-mix(in oklab, var(--rule) 70%, transparent);
 }
 
+/* ---------- Dotted catalogue leader ----------
+   Fills the space between a row's title and its right-hand label,
+   like an index or auction-catalogue line. Use inside a flex row. */
+.leader {
+	flex: 1;
+	min-width: 2.5rem;
+	align-self: flex-end;
+	margin-bottom: 0.45em;
+	border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 55%, transparent);
+}
+
 /* ---------- Painterly view transitions (ink-wash) ---------- */
 ::view-transition-old(root),
 ::view-transition-new(root) {

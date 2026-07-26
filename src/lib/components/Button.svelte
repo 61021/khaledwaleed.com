@@ -26,7 +26,7 @@
 	const sizes = { md: 'px-5 py-2 text-[1.05rem]', lg: 'px-7 py-3 text-[1.15rem]' };
 	const variants = {
 		primary:
-			'border border-[var(--accent)] text-[var(--ink)] bg-transparent hover:bg-[color-mix(in_oklab,var(--accent)_18%,transparent)] hover:text-[var(--accent)]',
+			'border border-[color-mix(in_oklab,var(--accent)_60%,transparent)] bg-[color-mix(in_oklab,var(--accent)_10%,transparent)] text-[var(--ink)] hover:border-[var(--accent)] hover:bg-[color-mix(in_oklab,var(--accent)_20%,transparent)] hover:text-[var(--accent)]',
 		outline:
 			'border border-[var(--rule)] text-[var(--ink-muted)] hover:text-[var(--ink)] hover:border-[var(--ink-muted)]',
 		ghost: 'text-[var(--ink-muted)] hover:text-[var(--accent)]'

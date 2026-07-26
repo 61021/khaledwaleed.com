@@ -39,9 +39,10 @@
 <Container size="prose">
 	<dl class="rise-3 mt-12 divide-y divide-[var(--rule)]">
 		{#each channels as c}
-			<div class="flex items-baseline justify-between gap-6 py-5">
-				<dt class="smallcaps">{c.label}</dt>
-				<dd>
+			<div class="flex items-baseline gap-4 py-5">
+				<dt class="smallcaps shrink-0">{c.label}</dt>
+				<dd class="flex min-w-0 flex-1 items-baseline gap-4">
+					<span class="leader" aria-hidden="true"></span>
 					<a
 						href={c.href}
 						target={c.href.startsWith('http') ? '_blank' : undefined}

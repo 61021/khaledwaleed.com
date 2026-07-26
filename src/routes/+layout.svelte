@@ -10,18 +10,24 @@
 	import { onNavigate } from '$app/navigation';
 	import { slide } from 'svelte/transition';
 	import { JsonLd, Container, CommandPalette, site } from '$lib';
-	import { roomForPath } from '$lib/site';
+	import { roomBg, roomForPath } from '$lib/site';
 
 	let { children } = $props();
 
 	// Mobile nav menu (collapsible on phones).
 	let mobileOpen = $state(false);
 
-	// Set the per-page palette on <html data-room="...">.
+	// Set the per-page palette on <html data-room="..."> and keep the
+	// browser-chrome tint in step. SSR stamps the same values via
+	// hooks.server.ts; this covers client-side navigations.
 	$effect(() => {
 		if (typeof document === 'undefined') return;
-		const room = roomForPath($page.url.pathname);
+		const room = $page.status >= 400 ? '404' : roomForPath($page.url.pathname);
 		document.documentElement.setAttribute('data-room', room);
+		const themeColor = roomBg[room];
+		if (themeColor) {
+			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
+		}
 	});
 
 	onNavigate((navigation) => {

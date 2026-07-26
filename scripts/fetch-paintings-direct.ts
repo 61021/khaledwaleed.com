@@ -19,22 +19,19 @@ type Item = {
 };
 
 const items: Item[] = [
-	{
-		slug: 'now',
-		file: 'Caspar_David_Friedrich_-_Riesengebirge_Landscape_with_Rising_Fog_-_WGA8257.jpg'
-	},
+	// NOTE: keep outWidth ≤ 2000. Larger AVIFs (2400/2800 tried before) decode
+	// but fail to composite in software-rendered/embedded Chromium and risk
+	// decoded-size limits on mobile — the hero shows them as a blank wash.
 	{
 		slug: 'contact',
 		file: 'JC_Dahl,_Frederiksborg_slot_i_måneskin,_1817,_KMS967,_Statens_Museum_for_Kunst.jpg',
-		srcWidth: 3200,
-		outWidth: 2400
+		srcWidth: 3200
 	},
 	{
 		// Google Art Project scan from Alte Nationalgalerie — 3543×2710, sharp.
 		slug: 'likes',
 		file: 'Caspar_David_Friedrich_-_Mondaufgang_am_Meer_-_Google_Art_Project.jpg',
-		srcWidth: 3200,
-		outWidth: 2400
+		srcWidth: 3200
 	},
 	{
 		// Tiny oak panel (28×34 cm), only 1013×841 scan available on Commons.
@@ -47,11 +44,9 @@ const items: Item[] = [
 		sharpen: true
 	},
 	{
-		// Portrait canvas; keep extra width so the desktop hero's wide cover-crop stays crisp.
 		slug: 'films',
 		file: 'Georges_de_La_Tour_-_The_Magdalen_with_the_Smoking_Flame_-_Google_Art_Project.jpg',
-		srcWidth: 3200,
-		outWidth: 2800
+		srcWidth: 3200
 	}
 ];
 

@@ -47,6 +47,19 @@
 	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
 </svelte:head>
 
+{#snippet bookRow(b: Book)}
+	<li class="py-3">
+		<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
+			<span class="italic text-[var(--ink)]">{b.title}</span>
+			<span class="leader hidden sm:block" aria-hidden="true"></span>
+			<span class="smallcaps shrink-0">{b.author}</span>
+		</div>
+		{#if b.note}
+			<p class="mt-1 text-sm text-[var(--ink-muted)]">{b.note}</p>
+		{/if}
+	</li>
+{/snippet}
+
 <PageHeader room="library" eyebrow="a quiet shelf" title="Library">
 	{#snippet lede()}
 		<p>Books on the desk, books on the queue, books I return to. still in progress.</p>
@@ -73,17 +86,7 @@
 		{#if reading.length}
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each reading as b (b.title)}
-					<li class="py-3">
-						<div
-							class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-						>
-							<span class="italic text-[var(--ink)]">{b.title}</span>
-							<span class="smallcaps shrink-0">{b.author}</span>
-						</div>
-						{#if b.note}
-							<p class="mt-1 text-sm text-[var(--ink-muted)]">{b.note}</p>
-						{/if}
-					</li>
+					{@render bookRow(b)}
 				{/each}
 			</ul>
 		{:else}
@@ -98,17 +101,7 @@
 		{#if queue.length}
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each queue as b (b.title)}
-					<li class="py-3">
-						<div
-							class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-						>
-							<span class="italic text-[var(--ink)]">{b.title}</span>
-							<span class="smallcaps shrink-0">{b.author}</span>
-						</div>
-						{#if b.note}
-							<p class="mt-1 text-sm text-[var(--ink-muted)]">{b.note}</p>
-						{/if}
-					</li>
+					{@render bookRow(b)}
 				{/each}
 			</ul>
 		{:else}
@@ -123,17 +116,7 @@
 			<h2 class="italic">Books I keep returning to</h2>
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each loved as b (b.title)}
-					<li class="py-3">
-						<div
-							class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-						>
-							<span class="italic text-[var(--ink)]">{b.title}</span>
-							<span class="smallcaps shrink-0">{b.author}</span>
-						</div>
-						{#if b.note}
-							<p class="mt-1 text-sm text-[var(--ink-muted)]">{b.note}</p>
-						{/if}
-					</li>
+					{@render bookRow(b)}
 				{/each}
 			</ul>
 		</section>

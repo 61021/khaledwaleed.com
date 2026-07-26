@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { replaceState } from '$app/navigation';
+	import { afterNavigate, replaceState } from '$app/navigation';
 	import { Container, Seo, PageHeader, Fleuron, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import Poster from '$lib/components/Poster.svelte';
@@ -91,6 +91,11 @@
 		if (t === 'movies' || t === 'shows') filter = t;
 		const s = sp.get('sort');
 		if (s === 'year' || s === 'recent') sort = s;
+	});
+
+	// replaceState may only run once the router is initialized; afterNavigate
+	// fires after the initial navigation, which is exactly that point.
+	afterNavigate(() => {
 		ready = true;
 	});
 

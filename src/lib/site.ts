@@ -119,7 +119,9 @@ export const paintings: Record<string, Painting> = {
 		museum: 'Alte Nationalgalerie, Berlin',
 		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/home/',
 		source: 'https://en.wikipedia.org/wiki/Moonrise_by_the_Sea',
-		alt: 'Three figures on a rocky shore at dusk watch two ships return under a violet-blue sky tinged with the warm glow of the rising moon.'
+		alt: 'Three figures on a rocky shore at dusk watch two ships return under a violet-blue sky tinged with the warm glow of the rising moon.',
+		// keep the moonlit sky and the watchers in the wide desktop crop
+		focal: '50% 30%'
 	},
 	contact: {
 		key: 'contact',
@@ -188,3 +190,17 @@ export function roomForPath(pathname: string): string {
 	if (pathname.startsWith('/writing/')) return 'writing';
 	return 'home';
 }
+
+/** The --bg of each [data-room] palette — keep in sync with app.css.
+    Used for the <meta name="theme-color"> so browser chrome matches the room. */
+export const roomBg: Record<string, string> = {
+	home: '#0a1220',
+	about: '#1a1612',
+	writing: '#1c1a17',
+	library: '#1a1814',
+	films: '#120d0a',
+	music: '#141017',
+	likes: '#0a0e1a',
+	contact: '#0c121e',
+	'404': '#232b30'
+};
