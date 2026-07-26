@@ -28,7 +28,7 @@
 
 <PageHeader
 	room="home"
-	eyebrow={`${site.role} · ${site.location.city}, ${site.location.country}`}
+	eyebrow={`${site.role} · ${site.location.city}, ${site.location.country}`}
 	title="Khaled Waleed"
 >
 	{#snippet lede()}
@@ -40,10 +40,14 @@
 </PageHeader>
 
 <Container size="prose">
-	<section class="rise mt-6 space-y-6 text-left sm:mt-10 sm:text-center">
-		<div class="flex flex-wrap items-center justify-start gap-4 pt-2 sm:justify-center">
-			<Button href="/writing" size="lg">Read the essays</Button>
-			<Button href="/contact" variant="outline" size="lg">Write to me</Button>
+	<section class="rise mt-4 text-left sm:mt-10 sm:text-center">
+		<div
+			class="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4"
+		>
+			<Button href="/writing" size="lg" class="w-full sm:w-auto">Read the essays</Button>
+			<Button href="/contact" variant="outline" size="lg" class="w-full sm:w-auto"
+				>Write to me</Button
+			>
 		</div>
 	</section>
 </Container>

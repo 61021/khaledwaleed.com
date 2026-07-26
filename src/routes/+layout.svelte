@@ -189,7 +189,7 @@
 				</div>
 				<nav
 					aria-label="Elsewhere"
-					class="flex flex-wrap items-center justify-start gap-x-5 gap-y-2 sm:justify-center"
+					class="grid grid-cols-3 gap-x-4 gap-y-2.5 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5 sm:gap-y-2"
 				>
 					{#each site.socials as s}
 						<a
