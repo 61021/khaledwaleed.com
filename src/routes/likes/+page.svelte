@@ -1,30 +1,31 @@
 <script lang="ts">
-	import { Seo, Container, PageHeader, Fleuron } from '$lib';
+	import { Seo, Container, PageHeader, Fleuron, site } from '$lib';
+	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+
+	const lastUpdated = '2026-07-26';
 
 	type Section = {
-		num: string;
 		name: string;
 		kicker: string;
-		items?: string[];
+		items: string[];
+		link?: { href: string; label: string };
 	};
 
 	const sections: Section[] = [
 		{
-			num: '01',
 			name: 'Mind',
-			kicker: 'Philosophy I keep returning to.',
+			kicker: 'Philosophy I keep returning to',
 			items: [
-				`Why people suffer`,
-				`Whether meaning is discovered or invented`,
-				`The line between good and evil`,
-				`What makes a life worthwhile`,
-				`Why some relationships survive and others don't`,
-				`How much of personality is choice`,
-				`What curiosity itself is`
+				'Why people suffer',
+				'Whether meaning is discovered or invented',
+				'The line between good and evil',
+				'What makes a life worthwhile',
+				"Why some relationships survive and others don't",
+				'How much of personality is choice',
+				'What curiosity itself is'
 			]
 		},
 		{
-			num: '02',
 			name: 'Cinema',
 			kicker: 'Directors I rewatch on principle',
 			items: [
@@ -33,10 +34,10 @@
 				'Studio Ghibli',
 				'Beautiful failures',
 				'Films that trust the audience'
-			]
+			],
+			link: { href: '/films', label: 'Every film and show I have rated →' }
 		},
 		{
-			num: '03',
 			name: 'Art',
 			kicker: 'Paintings & prose I live inside',
 			items: [
@@ -50,10 +51,10 @@
 				'Lonely figures in vast landscapes',
 				'Storms at sea',
 				'Melancholy without despair'
-			]
+			],
+			link: { href: '/library', label: "What's on the shelf →" }
 		},
 		{
-			num: '04',
 			name: 'Music',
 			kicker: 'Listening rooms in my head',
 			items: [
@@ -62,10 +63,10 @@
 				'Britpop',
 				'Garage rock revival',
 				'Moody Americana'
-			]
+			],
+			link: { href: '/music', label: 'What I am listening to lately →' }
 		},
 		{
-			num: '05',
 			name: 'Style',
 			kicker: 'A dark, tailored world',
 			items: [
@@ -86,7 +87,6 @@
 			]
 		},
 		{
-			num: '06',
 			name: 'Space',
 			kicker: 'How a room should feel',
 			items: [
@@ -117,16 +117,17 @@
 				'Wall-sized mirrors in the dressing room',
 				'A big mirrored bathroom',
 				'An oversized shower head',
-				'Libraries',
-				'Old train stations',
-				'Hotel bars at midnight',
 				'Rain against windows'
 			]
 		},
 		{
-			num: '07',
+			name: 'Places',
+			kicker: "Rooms I don't own",
+			items: ['Libraries', 'Old train stations', 'Hotel bars at midnight']
+		},
+		{
 			name: 'Food',
-			kicker: 'Foods that are worth the effort.',
+			kicker: 'Foods that are worth the effort',
 			items: [
 				'Pancakes, flawless and faintly divine',
 				'Quzi, slow-cooked',
@@ -140,7 +141,6 @@
 			]
 		},
 		{
-			num: '08',
 			name: 'Drink',
 			kicker: 'What ends up in the glass',
 			items: [
@@ -154,13 +154,11 @@
 			]
 		},
 		{
-			num: '09',
 			name: 'Road',
 			kicker: 'Engines worth the silence after',
 			items: ['Porsche 911 Turbo S', 'Aston Martin DB11', 'Ferrari 488 Pista']
 		},
 		{
-			num: '10',
 			name: 'Wander',
 			kicker: 'Travel, weather, slight danger',
 			items: [
@@ -173,7 +171,6 @@
 			]
 		},
 		{
-			num: '11',
 			name: 'Body',
 			kicker: 'A Greek-god frame, and tolerance for pain',
 			items: [
@@ -182,13 +179,12 @@
 				'Strength as a default state',
 				'Sitting in discomfort, on purpose',
 				'Breathing exercises',
-				'Streching & mobility',
+				'Stretching & mobility',
 				'Balance',
 				'Meditation'
 			]
 		},
 		{
-			num: '12',
 			name: 'Craft',
 			kicker: 'The software taste behind the day job',
 			items: [
@@ -201,12 +197,34 @@
 			]
 		}
 	];
+
+	const description = `A scattered, evolving catalogue of Khaled Waleed's obsessions — cinema, music, art, style, food, philosophy, and everything in between. Updated ${lastUpdated}.`;
+
+	const schema = {
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		'@id': `${site.url}/likes#page`,
+		url: `${site.url}/likes`,
+		name: `${site.name}'s Likes`,
+		description,
+		dateModified: lastUpdated,
+		isPartOf: { '@id': `${site.url}/#website` },
+		about: { '@id': `${site.url}/#person` },
+		breadcrumb: {
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+				{ '@type': 'ListItem', position: 2, name: 'Likes', item: `${site.url}/likes` }
+			]
+		}
+	};
 </script>
 
-<Seo
-	title="Likes"
-	description="A scattered, evolving catalogue of Khaled Waleed's obsessions — cinema, music, art, style, food, philosophy, and everything in between."
-/>
+<Seo title="Likes" {description} />
+
+<svelte:head>
+	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
+</svelte:head>
 
 <PageHeader room="likes" eyebrow="a catalogue of obsessions" title="Likes">
 	{#snippet lede()}
@@ -219,10 +237,22 @@
 </PageHeader>
 
 <Container size="prose">
+	<div class="rise-3 mt-10">
+		<Breadcrumb
+			items={[
+				{ name: 'Home', href: '/' },
+				{ name: 'Likes', href: '/likes' }
+			]}
+		/>
+		<div class="mt-4 smallcaps">
+			updated <time datetime={lastUpdated}>{lastUpdated}</time>
+		</div>
+	</div>
+
 	<!-- Section index -->
-	<nav aria-label="Sections" class="rise-3 mt-10">
+	<nav aria-label="Sections" class="rise-3 mt-8">
 		<ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 smallcaps">
-			{#each sections as s}
+			{#each sections as s (s.name)}
 				<li>
 					<a href={`#${s.name.toLowerCase()}`} class="link-quiet">{s.name}</a>
 				</li>
@@ -233,32 +263,27 @@
 	<Fleuron />
 
 	<div class="rise space-y-16">
-		{#each sections as s, i}
+		{#each sections as s, i (s.name)}
 			<section id={s.name.toLowerCase()} class="scroll-mt-20">
-				<div class="smallcaps">{s.num} · {s.kicker}</div>
+				<div class="smallcaps">{String(i + 1).padStart(2, '0')} · {s.kicker}</div>
 				<h2
 					class="mt-2 italic text-[var(--ink)]"
 					style="font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;"
 				>
 					{s.name}.
 				</h2>
-				{#if s.items && s.items.length}
-					<ul class="mt-5 flex flex-wrap gap-x-3 gap-y-1 leading-relaxed text-[var(--ink-muted)]">
-						{#each s.items as it, j}
-							<li>
-								{it}{#if j < s.items.length - 1}<span class="ml-3 text-[var(--rule)]">·</span>{/if}
-							</li>
-						{/each}
-					</ul>
-				{/if}
-				{#if s.name === 'Cinema'}
+				<!-- The separator leads each item (except the first) so it wraps with it
+				     and never dangles at the end of a line. -->
+				<ul class="mt-5 flex flex-wrap gap-x-3 gap-y-1 leading-relaxed text-[var(--ink-muted)]">
+					{#each s.items as it, j (it)}
+						<li>
+							{#if j > 0}<span class="mr-3 text-[var(--rule)]" aria-hidden="true">·</span>{/if}{it}
+						</li>
+					{/each}
+				</ul>
+				{#if s.link}
 					<p class="mt-5">
-						<a href="/films" class="link">Every film and show I have rated →</a>
-					</p>
-				{/if}
-				{#if s.name === 'Music'}
-					<p class="mt-5">
-						<a href="/music" class="link">What I am listening to lately →</a>
+						<a href={s.link.href} class="link">{s.link.label}</a>
 					</p>
 				{/if}
 				{#if i < sections.length - 1}
