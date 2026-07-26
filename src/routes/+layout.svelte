@@ -176,20 +176,20 @@
 	</main>
 
 	<!-- Footer: equally quiet -->
-	<footer class="mt-16 border-t border-[var(--rule)] py-8 sm:mt-32 sm:py-10">
+	<footer class="mt-12 border-t border-[var(--rule)] py-6 sm:mt-32 sm:py-10">
 		<Container size="wide">
 			<div
-				class="flex flex-col items-start justify-between gap-6 text-left sm:flex-row sm:items-center"
+				class="flex flex-col items-start justify-between gap-4 text-left sm:flex-row sm:items-center sm:gap-6"
 			>
 				<div class="space-y-1">
-					<div class="italic text-[var(--ink-muted)]">
-						{site.name} · {site.role} · {site.location.city}, {site.location.country}
+					<div class="italic text-[var(--ink-muted)] max-sm:text-sm">
+						{site.name} · {site.role} ·&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
 					<div class="smallcaps">mmxxvi · set in inter &amp; fraunces</div>
 				</div>
 				<nav
 					aria-label="Elsewhere"
-					class="grid grid-cols-3 gap-x-4 gap-y-2.5 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5 sm:gap-y-2"
+					class="grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5"
 				>
 					{#each site.socials as s}
 						<a
