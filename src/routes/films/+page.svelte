@@ -427,16 +427,22 @@
 		<section class="rise">
 			<p class="colophon">
 				{#each facts as f, i (f.label)}
-					<span class="whitespace-nowrap"><span class="colophon-v">{f.value}</span> {f.label}</span
-					>{#if i < facts.length - 1}<span class="mx-2 text-[var(--rule)]">·</span>{/if}
+					<span class="whitespace-nowrap"
+						><span class="colophon-v">{f.value}</span>
+						{f.label}{#if i < facts.length - 1}&ensp;<span class="text-[var(--rule)]">·</span
+							>{/if}</span
+					>
 				{/each}
 			</p>
 			{#if topGenres.length}
 				<p class="mt-3 text-center smallcaps">
 					{#each topGenres as [g, n], i (g)}
 						<span class="whitespace-nowrap"
-							>{g.toLowerCase()} <span class="text-[var(--ink-dim)] tabular-nums">{n}</span></span
-						>{#if i < topGenres.length - 1}<span class="mx-2 text-[var(--rule)]">·</span>{/if}
+							>{g.toLowerCase()}
+							<span class="text-[var(--ink-dim)] tabular-nums">{n}</span
+							>{#if i < topGenres.length - 1}&ensp;<span class="text-[var(--rule)]">·</span
+								>{/if}</span
+						>
 					{/each}
 				</p>
 			{/if}
