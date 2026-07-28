@@ -1,5 +1,14 @@
 <script lang="ts">
-	import { Container, Seo, PageHeader, Fleuron, ReadingProgress, site, paintings } from '$lib';
+	import {
+		Container,
+		Seo,
+		PageHeader,
+		Fleuron,
+		ReadingProgress,
+		SchemaOrg,
+		site,
+		paintings
+	} from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import { formatDate } from '$lib/posts';
 
@@ -8,6 +17,7 @@
 	const Content = $derived(data.Content);
 
 	const url = $derived(`${site.url}/writing/${post.slug}`);
+	const ogImage = $derived(`${site.url}/writing/${post.slug}/og.png`);
 	const room = $derived('writing');
 	const painting = $derived(paintings[room as keyof typeof paintings]);
 
@@ -37,7 +47,7 @@
 		keywords: post.tags.join(', '),
 		articleSection: post.tags[0],
 		timeRequired: `PT${Number.parseInt(post.readingTime, 10) || 3}M`,
-		image: `${site.url}/og.png`,
+		image: ogImage,
 		isPartOf: { '@id': `${site.url}/#website` }
 	});
 </script>
@@ -46,14 +56,14 @@
 	title={post.title}
 	description={post.description}
 	type="article"
+	image={ogImage}
+	imageAlt={`“${post.title}” — an essay by ${site.name}`}
 	keywords={post.tags}
 	publishedTime={post.date}
 	modifiedTime={post.date}
 />
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(articleSchema)}</script>`}
-</svelte:head>
+<SchemaOrg schema={articleSchema} />
 
 <ReadingProgress />
 
@@ -75,6 +85,9 @@
 		<div class="mt-4 smallcaps">
 			by <a href="/about" class="link-quiet" rel="author">Khaled Waleed</a> ·
 			<time datetime={post.date}>{formatDate(post.date)}</time>
+			{#if post.tags.length}
+				· <span class="text-[var(--ink-dim)]">{post.tags.join(' · ')}</span>
+			{/if}
 		</div>
 	</div>
 
@@ -86,7 +99,39 @@
 
 	<Fleuron />
 
-	<footer class="rise flex items-baseline justify-between">
+	<!-- Neighbouring essays -->
+	{#if data.older || data.newer}
+		<nav aria-label="More essays" class="rise">
+			<div class="grid gap-6 sm:grid-cols-2">
+				{#if data.older}
+					<a href={`/writing/${data.older.slug}`} class="group block text-left">
+						<div class="smallcaps">← older</div>
+						<div
+							class="mt-2 italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
+						>
+							{data.older.title}
+						</div>
+					</a>
+				{:else}
+					<div aria-hidden="true"></div>
+				{/if}
+				{#if data.newer}
+					<a href={`/writing/${data.newer.slug}`} class="group block text-left sm:text-right">
+						<div class="smallcaps">newer →</div>
+						<div
+							class="mt-2 italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
+						>
+							{data.newer.title}
+						</div>
+					</a>
+				{/if}
+			</div>
+		</nav>
+
+		<div class="mt-10 rule-fine"></div>
+	{/if}
+
+	<footer class="rise mt-10 flex items-baseline justify-between">
 		<a href="/writing" class="link-quiet italic">← All writing</a>
 		<a
 			href={`mailto:${site.email}?subject=Re: ${encodeURIComponent(post.title)}`}

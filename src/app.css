@@ -72,36 +72,6 @@
 	--accent: #d8b25a;
 }
 
-:root[data-room='post-baghdad'] {
-	--bg: #ede2cf;
-	--bg-soft: #f6edd8;
-	--ink: #2a1f12;
-	--ink-muted: #5b4a35;
-	--ink-dim: #837762;
-	--rule: #c9b896;
-	--accent: #8b5e3a;
-}
-
-:root[data-room='post-slow'] {
-	--bg: #1b2127;
-	--bg-soft: #232a31;
-	--ink: #d8d5cb;
-	--ink-muted: #9da39e;
-	--ink-dim: #6e7472;
-	--rule: #2c343c;
-	--accent: #a7b0a4;
-}
-
-:root[data-room='post-hiring'] {
-	--bg: #181c14;
-	--bg-soft: #1f241b;
-	--ink: #e6d39a;
-	--ink-muted: #a89863;
-	--ink-dim: #75704a;
-	--rule: #2a2e22;
-	--accent: #d4af4e;
-}
-
 :root[data-room='likes'] {
 	/* moonrise over the sea: dark indigo night, pale silver ink, warm moon accent */
 	--bg: #0a0e1a;
@@ -197,6 +167,7 @@ h6 {
 	font-weight: 400;
 	letter-spacing: 0;
 	line-height: 1.15;
+	text-wrap: balance;
 }
 
 h1 {
@@ -501,6 +472,7 @@ a.link-quiet:hover {
 	font-size: 1.125rem;
 	line-height: 1.78;
 	max-width: 38rem;
+	text-wrap: pretty;
 }
 
 .prose-romantic > p {
@@ -593,4 +565,51 @@ a.link-quiet:hover {
 	font-style: italic;
 	background: color-mix(in oklab, var(--accent) 12%, transparent);
 	padding: 0 0.3em;
+}
+
+/* ---------- Print: essays as clean paper ---------- */
+@media print {
+	:root,
+	:root[data-room] {
+		--bg: #ffffff;
+		--bg-soft: #ffffff;
+		--ink: #111111;
+		--ink-muted: #444444;
+		--ink-dim: #666666;
+		--rule: #dddddd;
+		--accent: #806a30;
+	}
+
+	header,
+	footer,
+	.skip-link,
+	.frontispiece,
+	.hero-veil,
+	.hero-plate {
+		display: none !important;
+	}
+
+	.hero {
+		min-height: auto !important;
+	}
+
+	.hero-content {
+		text-shadow: none !important;
+		padding-block: 0 !important;
+	}
+
+	body {
+		font-size: 11.5pt;
+	}
+
+	.prose-romantic a {
+		border-bottom: none;
+		text-decoration: underline;
+	}
+
+	.rise,
+	.rise-2,
+	.rise-3 {
+		animation: none !important;
+	}
 }

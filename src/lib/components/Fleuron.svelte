@@ -1,4 +1,4 @@
-<div class="fleuron" role="separator" aria-hidden="true">
+<div class="fleuron" aria-hidden="true">
 	<span class="fleuron-mark">
 		<!-- Hedera (printer's ivy leaf) — drawn inline because U+2766/U+2767
 		     are missing from Fraunces and from many system serifs. -->

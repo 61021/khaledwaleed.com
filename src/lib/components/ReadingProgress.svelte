@@ -8,7 +8,10 @@
 		const article = document.querySelector('article');
 		if (!article) return;
 
+		let frame = 0;
+
 		function update() {
+			frame = 0;
 			const el = article as HTMLElement;
 			const top = el.getBoundingClientRect().top + window.scrollY;
 			const height = el.offsetHeight - window.innerHeight;
@@ -16,12 +19,18 @@
 			progress = Math.max(0, Math.min(1, scrolled / Math.max(height, 1)));
 		}
 
+		// Coalesce scroll events into one update per frame.
+		function schedule() {
+			if (!frame) frame = requestAnimationFrame(update);
+		}
+
 		update();
-		window.addEventListener('scroll', update, { passive: true });
-		window.addEventListener('resize', update);
+		window.addEventListener('scroll', schedule, { passive: true });
+		window.addEventListener('resize', schedule);
 		return () => {
-			window.removeEventListener('scroll', update);
-			window.removeEventListener('resize', update);
+			if (frame) cancelAnimationFrame(frame);
+			window.removeEventListener('scroll', schedule);
+			window.removeEventListener('resize', schedule);
 		};
 	});
 </script>
