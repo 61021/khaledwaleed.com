@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Seo, Container, PageHeader, Fleuron, site } from '$lib';
+	import { Seo, Container, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 
 	const lastUpdated = '2026-07-26';
@@ -254,9 +254,7 @@
 
 <Seo title="Likes" {description} />
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
-</svelte:head>
+<SchemaOrg {schema} />
 
 <PageHeader room="likes" eyebrow="a catalogue of obsessions" title="Likes">
 	{#snippet lede()}

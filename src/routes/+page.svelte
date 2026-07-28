@@ -29,7 +29,7 @@
 
 <PageHeader
 	room="home"
-	eyebrow={`${site.role} · ${site.location.city}, ${site.location.country}`}
+	eyebrow={`${site.role} ·\u00A0${site.location.city},\u00A0${site.location.country}`}
 	title="Khaled Waleed"
 >
 	{#snippet lede()}
