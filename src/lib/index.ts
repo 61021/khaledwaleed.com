@@ -11,3 +11,4 @@ export { default as Painting } from './components/Painting.svelte';
 export { default as Poster } from './components/Poster.svelte';
 export { default as Fleuron } from './components/Fleuron.svelte';
 export { default as PageHeader } from './components/PageHeader.svelte';
+export { default as SchemaOrg } from './components/SchemaOrg.svelte';

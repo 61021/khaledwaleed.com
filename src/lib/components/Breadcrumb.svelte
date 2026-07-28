@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { site } from '$lib/site';
+	import SchemaOrg from './SchemaOrg.svelte';
 
 	interface Crumb {
 		name: string;
@@ -20,9 +21,7 @@
 	});
 </script>
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
-</svelte:head>
+<SchemaOrg {schema} />
 
 <nav aria-label="Breadcrumb" class="smallcaps">
 	<ol class="flex flex-wrap items-center gap-x-2">

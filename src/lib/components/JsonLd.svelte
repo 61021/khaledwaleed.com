@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { site } from '$lib/site';
+	import SchemaOrg from './SchemaOrg.svelte';
 
 	const personSchema = {
 		'@context': 'https://schema.org',
@@ -77,9 +78,10 @@
 	};
 </script>
 
+<SchemaOrg schema={personSchema} />
+<SchemaOrg schema={websiteSchema} />
+
 <svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(personSchema)}</script>`}
-	{@html `<script type="application/ld+json">${JSON.stringify(websiteSchema)}</script>`}
 	<!-- rel=me identity links: tie the site to the profiles listed in the
 	     Person schema's sameAs (and vice versa where the profile links back). -->
 	{#each site.socials as s (s.href)}
