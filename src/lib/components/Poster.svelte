@@ -7,9 +7,11 @@
 		width?: number;
 		/** render full-colour with a richer shadow (for the spotlight) */
 		vivid?: boolean;
+		/** fill the parent's width (keeps the 2:3 ratio); `width` then only sizes the intrinsic attrs */
+		fluid?: boolean;
 	};
 
-	let { posterPath, alt, width = 52, vivid = false }: Props = $props();
+	let { posterPath, alt, width = 52, vivid = false, fluid = false }: Props = $props();
 
 	const TMDB = 'https://image.tmdb.org/t/p';
 	const height = $derived(Math.round((width * 3) / 2));
@@ -22,12 +24,35 @@
 				: `${TMDB}/w185${posterPath} 1x, ${TMDB}/w342${posterPath} 2x`
 			: null
 	);
+
+	// A poster that 404s (or a blocked CDN) degrades to the same quiet
+	// placeholder as a missing path — never a broken-image glyph.
+	let failedPath = $state<string | null>(null);
+	const failed = $derived(posterPath !== null && failedPath === posterPath);
 </script>
 
-{#if src}
-	<img {src} {srcset} {alt} {width} {height} class:vivid loading="lazy" decoding="async" />
+{#if src && !failed}
+	<img
+		{src}
+		{srcset}
+		{alt}
+		{width}
+		{height}
+		class:vivid
+		class:fluid
+		loading="lazy"
+		decoding="async"
+		onerror={() => (failedPath = posterPath)}
+	/>
 {:else}
-	<div class="ghost" style={`width:${width}px;height:${height}px;`} aria-hidden="true">✦</div>
+	<div
+		class="ghost"
+		class:fluid
+		style={fluid ? undefined : `width:${width}px;height:${height}px;`}
+		aria-hidden="true"
+	>
+		✦
+	</div>
 {/if}
 
 <style>
@@ -54,6 +79,11 @@
 		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 	}
 
+	img.fluid {
+		width: 100%;
+		aspect-ratio: 2 / 3;
+	}
+
 	.ghost {
 		flex: none;
 		display: grid;
@@ -65,6 +95,11 @@
 		color: var(--ink-dim);
 		font-family: var(--font-display);
 		font-style: italic;
+	}
+
+	.ghost.fluid {
+		width: 100%;
+		aspect-ratio: 2 / 3;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

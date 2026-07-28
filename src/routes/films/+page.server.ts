@@ -11,7 +11,7 @@ export const prerender = false;
 
 const PB_URL = 'https://api.khaledwaleed.com';
 const PUBLIC_FIELDS =
-	'tmdbId,type,rating,watched,watchedOn,notes,title,year,format,directors,posterPath';
+	'tmdbId,type,rating,watched,watchedOn,notes,title,year,format,directors,posterPath,runtime,genres';
 
 type PbItem = {
 	tmdbId: number;
@@ -25,6 +25,8 @@ type PbItem = {
 	format?: string;
 	directors?: string[] | null;
 	posterPath?: string;
+	runtime?: number;
+	genres?: string[] | null;
 };
 
 export type PersonalFilm = {
@@ -39,6 +41,9 @@ export type PersonalFilm = {
 	format: string;
 	directors: string[];
 	posterPath: string | null;
+	/** minutes; movie runtime or TV episode runtime; 0 = unknown */
+	runtime: number;
+	genres: string[];
 };
 
 export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
@@ -84,7 +89,9 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 		year: f.year ?? 0,
 		format: f.format ?? '',
 		directors: Array.isArray(f.directors) ? f.directors : [],
-		posterPath: f.posterPath || null
+		posterPath: f.posterPath || null,
+		runtime: f.runtime ?? 0,
+		genres: Array.isArray(f.genres) ? f.genres : []
 		// privateNotes is never requested, so it is never included
 	}));
 
