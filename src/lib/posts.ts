@@ -40,15 +40,9 @@ export const posts: Post[] = Object.entries(metaModules)
 
 export const getPost = (slug: string) => posts.find((p) => p.slug === slug);
 
-/** Format a yyyy-mm-dd date as e.g. "24 May 2026" (UTC, locale-stable). */
-export function formatDate(date: string): string {
-	return new Date(date).toLocaleDateString('en-GB', {
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric',
-		timeZone: 'UTC'
-	});
-}
+// Pure date helper lives in ./dates so it can be unit-tested without
+// dragging in the Vite import.meta.glob above.
+export { formatDate } from './dates';
 
 export const loadPostComponent = async (slug: string): Promise<Component | null> => {
 	const entry = Object.entries(componentLoaders).find(([path]) => slugFromPath(path) === slug);
