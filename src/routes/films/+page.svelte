@@ -427,21 +427,19 @@
 		<section class="rise">
 			<p class="colophon">
 				{#each facts as f, i (f.label)}
-					<span class="whitespace-nowrap"
+					<span
 						><span class="colophon-v">{f.value}</span>
-						{f.label}{#if i < facts.length - 1}&ensp;<span class="text-[var(--rule)]">·</span
-							>{/if}</span
+						{f.label}{#if i < facts.length - 1}<span class="tally-sep">·</span>{/if}</span
 					>
 				{/each}
 			</p>
 			{#if topGenres.length}
-				<p class="mt-3 text-center smallcaps">
+				<p class="tally smallcaps">
 					{#each topGenres as [g, n], i (g)}
-						<span class="whitespace-nowrap"
+						<span
 							>{g.toLowerCase()}
 							<span class="text-[var(--ink-dim)] tabular-nums">{n}</span
-							>{#if i < topGenres.length - 1}&ensp;<span class="text-[var(--rule)]">·</span
-								>{/if}</span
+							>{#if i < topGenres.length - 1}<span class="tally-sep">·</span>{/if}</span
 						>
 					{/each}
 				</p>
@@ -676,15 +674,34 @@
 	}
 
 	/* ---------- Colophon ---------- */
+	/* Both tally lines are flex-wrap rows: each fact is one unbreakable item
+	   (its trailing dot included), so they wrap cleanly on narrow screens. */
+	.colophon,
+	.tally {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		column-gap: 0.6rem;
+		row-gap: 0.25rem;
+	}
+
 	.colophon {
 		margin-top: 0.5rem;
-		text-align: center;
 		font-family: var(--font-body);
 		font-size: 0.72rem;
 		font-weight: 600;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		color: var(--ink-muted);
+	}
+
+	.tally {
+		margin-top: 0.75rem;
+	}
+
+	.tally-sep {
+		margin-left: 0.6rem;
+		color: var(--rule);
 	}
 
 	.colophon-v {
