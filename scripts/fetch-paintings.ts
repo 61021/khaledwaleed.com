@@ -17,8 +17,7 @@ const paintings: Painting[] = [
 	{ slug: 'home', wiki: 'View_of_Dresden_by_Moonlight' },
 	{ slug: 'about', wiki: 'Two_Men_Contemplating_the_Moon' },
 	{ slug: 'writing', wiki: 'The_Abbey_in_the_Oakwood' },
-	{ slug: 'now', wiki: 'Riesengebirge_Landscape_with_Rising_Fog' },
-	{ slug: 'likes', wiki: 'The_Bookworm_(Spitzweg)' },
+	{ slug: 'likes', wiki: 'Moonrise_by_the_Sea' },
 	{ slug: 'contact', wiki: 'Frederiksborg_Castle_by_Moonlight' },
 	// films lives in fetch-paintings-direct.ts (Google Art Project scan — the
 	// Wikipedia summary image is only 900px).
