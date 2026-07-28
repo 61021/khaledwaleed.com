@@ -54,22 +54,27 @@ bun run dev -- --open  # …and open it in the browser
 bun run build    # production build (static + edge functions)
 bun run preview  # preview the production build locally
 bun run check    # type-check with svelte-check
+bun run test     # unit tests (bun test)
 bun run lint     # prettier --check + eslint
 bun run format   # prettier --write
 ```
 
+CI (GitHub Actions) runs lint → check → test → build on every push and PR to `main`.
+
 ## Environment variables
 
-Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everything renders without them — but `/music` shows an empty state and `/films` can't fetch titles/posters (rows stay as skeletons) until `TMDB_API_KEY` is set.
+Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everything renders without them — but `/music` shows an empty state, and `/manage` can't save TMDB snapshots until `TMDB_API_KEY` is set. The public `/films` page reads its data (including the TMDB snapshot) straight from PocketBase and needs no keys.
 
-| Variable                | Used for                                                          |
-| ----------------------- | ----------------------------------------------------------------- |
-| `TMDB_API_KEY`          | Film metadata & posters, fetched live by `/api/tmdb/[type]/[id]`  |
-| `SPOTIFY_CLIENT_ID`     | Live `/music` page — top tracks & artists                         |
-| `SPOTIFY_CLIENT_SECRET` | Live `/music` page                                                |
-| `SPOTIFY_REFRESH_TOKEN` | Live `/music` page (obtain via `bun run scripts/spotify-auth.ts`) |
+| Variable                | Used for                                                                    |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `TMDB_API_KEY`          | `/manage` saves & the `/api/tmdb/*` endpoints (search + metadata snapshots) |
+| `SPOTIFY_CLIENT_ID`     | Live `/music` page — top tracks, artists, recently played                   |
+| `SPOTIFY_CLIENT_SECRET` | Live `/music` page                                                          |
+| `SPOTIFY_REFRESH_TOKEN` | Live `/music` page (obtain via `bun run scripts/spotify-auth.ts`)           |
 
 In production, `TMDB_API_KEY` and the three `SPOTIFY_*` values are set as Cloudflare Pages environment variables.
+
+**Analytics** are optional and off by default: paste a [Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/) beacon token into `cloudflareAnalyticsToken` in `src/lib/site.ts` to enable the cookieless beacon in production builds.
 
 ## Project structure
 
@@ -79,18 +84,19 @@ src/
 ├─ app.html               # document shell
 ├─ lib/
 │  ├─ site.ts             # ← central config: bio, socials, paintings, room map
-│  ├─ posts.ts            # typed index of writing posts
+│  ├─ posts.ts            # typed index of writing posts (auto-discovered)
 │  ├─ pocketbase.ts       # PocketBase client + Film record types (ratings live in PB)
 │  ├─ tmdb.ts             # shared TMDB types (search results, film metadata)
+│  ├─ server/og.ts        # shared satori → PNG renderer for Open Graph cards
 │  ├─ index.ts            # barrel exports
-│  └─ components/         # Seo, JsonLd, Container, Button, CommandPalette, …
+│  └─ components/         # Seo, JsonLd, SchemaOrg, Container, CommandPalette, …
 ├─ posts/                 # writing, as .svx (mdsvex)
 └─ routes/
    ├─ +layout.svelte      # shell: nav, footer, room/painting, command palette
    ├─ +page.svelte        # home
-   ├─ about · now · likes · library · films · music · contact · writing
-   ├─ og.png/             # generated Open Graph image
-   └─ sitemap.xml · robots.txt · rss.xml
+   ├─ about · likes · library · films · music · contact · writing
+   ├─ og.png/             # site-wide OG card · per-essay cards at writing/[slug]/og.png
+   └─ sitemap.xml · robots.txt · rss.xml (styled by static/rss.xsl)
 scripts/                  # data tooling (see below)
 static/                   # paintings, logos, manifest, etc.
 ```
@@ -99,32 +105,32 @@ static/                   # paintings, logos, manifest, etc.
 
 ## Pages
 
-| Route      | What it is                                                                           |
-| ---------- | ------------------------------------------------------------------------------------ |
-| `/`        | Home / hero — the canonical profile page                                             |
-| `/about`   | Longer bio                                                                           |
-| `/now`     | A [now page](https://nownownow.com): current focus                                   |
-| `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]`                                 |
-| `/library` | Books                                                                                |
-| `/films`   | A ledger of ~220 rated films & shows; ratings in PocketBase, metadata live from TMDB |
-| `/music`   | **Live** top tracks & artists from Spotify (edge-rendered)                           |
-| `/likes`   | A grab-bag of recommendations                                                        |
-| `/contact` | Ways to get in touch                                                                 |
+| Route      | What it is                                                                                     |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| `/`        | Home / hero — the canonical profile page                                                       |
+| `/about`   | Longer bio, career history, toolkit                                                            |
+| `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                    |
+| `/library` | Books                                                                                          |
+| `/films`   | A ledger of ~225 rated films & shows — server-rendered from PocketBase, searchable, with stats |
+| `/music`   | **Live** top tracks, artists & recently played from Spotify (edge-rendered)                    |
+| `/likes`   | A catalogue of obsessions                                                                      |
+| `/contact` | Ways to get in touch                                                                           |
 
 ## Data & content tooling
 
 The `scripts/` folder holds small Bun scripts for maintaining content:
 
-| Script               | Purpose                                                      |
-| -------------------- | ------------------------------------------------------------ |
-| `fetch-paintings.ts` | Download & convert room paintings to AVIF/WebP (via `sharp`) |
-| `spotify-auth.ts`    | One-time OAuth flow to mint a Spotify refresh token          |
+| Script                       | Purpose                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------ |
+| `fetch-paintings.ts`         | Download & convert room paintings to AVIF/WebP (via `sharp`)             |
+| `generate-painting-sizes.ts` | Emit 720/1280px responsive variants + the `painting-sizes.json` manifest |
+| `spotify-auth.ts`            | One-time OAuth flow to mint a Spotify refresh token                      |
 
 Run any of them with `bun run scripts/<name>.ts`.
 
-- **Writing** — add a `.svx` file under `src/posts/` and register it in `src/lib/posts.ts`.
-- **Films** — add & rate titles from **`/manage`** (a noindex admin page, PocketBase-backed): sign in, search TMDB, pick a title, set rating / watch dates / notes. Records are keyed by TMDB id + media type; title, poster, year and cast are fetched live from TMDB via `/api/tmdb/[type]/[id]`.
-- **A new room** — add a painting to the `paintings` map in `site.ts`, map it in `roomForPath`, add a `[data-room]` palette in `app.css`, and drop the image in `static/paintings/`.
+- **Writing** — drop a `.svx` file under `src/posts/`; it is auto-discovered (list, RSS, sitemap, palette, OG card, prev/next all follow).
+- **Films** — add & rate titles from **`/manage`** (a noindex admin page, PocketBase-backed): sign in, search TMDB, pick a title, set rating / watch dates / notes. A denormalized TMDB snapshot (title, year, directors, poster, runtime, genres) is written to PocketBase at save time, so the public page needs no TMDB at request time.
+- **A new room** — add a painting to the `paintings` map in `site.ts`, map it in `roomForPath`, add a `[data-room]` palette in `app.css`, drop the image in `static/paintings/`, and run `generate-painting-sizes.ts`.
 
 ## Deployment
 
