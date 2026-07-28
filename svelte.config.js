@@ -22,8 +22,12 @@ const config = {
 					'/.well-known/*',
 					'/avatar.svg',
 					'/favicon.svg',
+					'/apple-touch-icon.png',
+					'/icon-192.png',
+					'/icon-512.png',
 					'/humans.txt',
 					'/llms.txt',
+					'/rss.xsl',
 					'/manifest.webmanifest'
 				]
 			}
