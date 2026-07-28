@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { posts } from '$lib/posts';
+	import { paletteSignal } from '$lib/palette.svelte';
 
 	type Item = {
 		id: string;
@@ -84,6 +85,17 @@
 	let activeIndex = $state(0);
 	let inputEl = $state<HTMLInputElement | null>(null);
 	let listEl = $state<HTMLUListElement | null>(null);
+	let dialogEl = $state<HTMLDivElement | null>(null);
+	let lastFocused: HTMLElement | null = null;
+
+	// The header search button (or anything else) can ask us to open.
+	let handledRequests = 0;
+	$effect(() => {
+		if (paletteSignal.requests > handledRequests) {
+			handledRequests = paletteSignal.requests;
+			if (!open) openPalette();
+		}
+	});
 
 	const filtered = $derived.by(() => {
 		const q = query.trim().toLowerCase();
@@ -100,6 +112,7 @@
 	});
 
 	function openPalette() {
+		lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 		open = true;
 		query = '';
 		activeIndex = 0;
@@ -108,6 +121,8 @@
 
 	function closePalette() {
 		open = false;
+		lastFocused?.focus();
+		lastFocused = null;
 	}
 
 	function select(item: Item) {
@@ -123,7 +138,8 @@
 		const isMod = e.metaKey || e.ctrlKey;
 		if (isMod && e.key.toLowerCase() === 'k') {
 			e.preventDefault();
-			open ? closePalette() : openPalette();
+			if (open) closePalette();
+			else openPalette();
 			return;
 		}
 		if (!open) {
@@ -140,6 +156,23 @@
 		if (e.key === 'Escape') {
 			e.preventDefault();
 			closePalette();
+		} else if (e.key === 'Tab') {
+			// Trap focus inside the dialog while it is open. Options are
+			// tabindex=-1 (arrow keys drive them), so the only tab stops are
+			// the input and any real buttons.
+			const focusables = [
+				...(dialogEl?.querySelectorAll<HTMLElement>('input, button:not([tabindex="-1"])') ?? [])
+			];
+			if (!focusables.length) return;
+			const first = focusables[0];
+			const last = focusables[focusables.length - 1];
+			if (focusables.length === 1 || (e.shiftKey && document.activeElement === first)) {
+				e.preventDefault();
+				(e.shiftKey ? last : first).focus();
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault();
+				first.focus();
+			}
 		} else if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			activeIndex = Math.min(activeIndex + 1, filtered.length - 1);
@@ -178,6 +211,7 @@
 		></button>
 
 		<div
+			bind:this={dialogEl}
 			class="relative w-full max-w-xl overflow-hidden border border-[var(--rule)] bg-[var(--bg-soft)] shadow-2xl"
 			role="dialog"
 			aria-modal="true"
@@ -193,6 +227,11 @@
 					class="flex-1 bg-transparent text-[1.05rem] italic text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none"
 					autocomplete="off"
 					spellcheck="false"
+					role="combobox"
+					aria-expanded="true"
+					aria-controls="palette-results"
+					aria-activedescendant={filtered.length ? `palette-opt-${activeIndex}` : undefined}
+					aria-label="Search pages and essays"
 				/>
 				<span class="smallcaps">esc</span>
 			</div>
@@ -202,12 +241,20 @@
 					Nothing matches <em class="text-[var(--ink-muted)]">{query}</em>.
 				</div>
 			{:else}
-				<ul bind:this={listEl} class="max-h-[55vh] overflow-y-auto py-2" role="listbox">
+				<ul
+					bind:this={listEl}
+					id="palette-results"
+					class="max-h-[55vh] overflow-y-auto py-2"
+					role="listbox"
+					aria-label="Results"
+				>
 					{#each filtered as item, i (item.id)}
-						<li>
+						<li role="presentation">
 							<button
 								type="button"
+								id={`palette-opt-${i}`}
 								data-index={i}
+								tabindex={-1}
 								onclick={() => select(item)}
 								onmousemove={() => (activeIndex = i)}
 								class="flex w-full items-baseline justify-between gap-5 px-5 py-2.5 text-left transition-colors {i ===

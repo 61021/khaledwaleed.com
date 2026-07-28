@@ -8,11 +8,26 @@
 
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
+	import { dev } from '$app/environment';
+	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import { JsonLd, Container, CommandPalette, site } from '$lib';
 	import { roomBg, roomForPath } from '$lib/site';
+	import { paletteSignal } from '$lib/palette.svelte';
 
 	let { children } = $props();
+
+	// A calling card for the curious.
+	onMount(() => {
+		console.log(
+			'%c☾ khaledwaleed.com',
+			'font-family: Georgia, serif; font-style: italic; font-size: 16px;',
+			'\n\nYou opened the console. I approve.\n' +
+				'The paintings are public domain; the rest is mine.\n\n' +
+				'Source — https://github.com/61021/khaledwaleed.com\n' +
+				'Hello — contact@khaledwaleed.com'
+		);
+	});
 
 	// Mobile nav menu (collapsible on phones).
 	let mobileOpen = $state(false);
@@ -67,6 +82,16 @@
 <JsonLd />
 <CommandPalette />
 
+<svelte:head>
+	{#if !dev && site.cloudflareAnalyticsToken}
+		<script
+			defer
+			src="https://static.cloudflareinsights.com/beacon.min.js"
+			data-cf-beacon={JSON.stringify({ token: site.cloudflareAnalyticsToken })}
+		></script>
+	{/if}
+</svelte:head>
+
 <svelte:window
 	onkeydown={(e) => {
 		if (e.key === 'Escape') mobileOpen = false;
@@ -101,6 +126,15 @@
 						{item.name}
 					</a>
 				{/each}
+				<button
+					type="button"
+					class="smallcaps cursor-pointer rounded border border-[var(--rule)] px-2 py-1 transition-colors hover:border-[var(--ink-dim)] hover:text-[var(--ink)]"
+					aria-label="Search the site (Ctrl+K)"
+					title="Search — Ctrl+K"
+					onclick={() => paletteSignal.request()}
+				>
+					⌘K
+				</button>
 			</nav>
 
 			<!-- Phone: hamburger toggle -->
@@ -166,6 +200,18 @@
 							</a>
 						</li>
 					{/each}
+					<li>
+						<button
+							type="button"
+							class="block w-full py-3 text-left font-[var(--font-display)] text-lg italic text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]"
+							onclick={() => {
+								mobileOpen = false;
+								paletteSignal.request();
+							}}
+						>
+							Search…
+						</button>
+					</li>
 				</ul>
 			</nav>
 		{/if}
@@ -185,13 +231,21 @@
 					<div class="italic text-[var(--ink-muted)] max-sm:text-sm">
 						{site.name} · {site.role} ·&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
-					<div class="smallcaps">mmxxvi · set in inter &amp; fraunces</div>
+					<div class="smallcaps">
+						mmxxvi · set in inter &amp; fraunces · <a
+							href="https://github.com/61021/khaledwaleed.com"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="link-quiet">source</a
+						>
+						· <a href="/rss.xml" class="link-quiet">rss</a>
+					</div>
 				</div>
 				<nav
 					aria-label="Elsewhere"
 					class="grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-5"
 				>
-					{#each site.socials as s}
+					{#each site.socials as s (s.label)}
 						<a
 							href={s.href}
 							target="_blank"

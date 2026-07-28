@@ -21,6 +21,14 @@ export const site = {
 	ogImage: '/og.png',
 	twitter: undefined as string | undefined,
 
+	/**
+	 * Cloudflare Web Analytics beacon token — cookieless, no fingerprinting,
+	 * free. Grab it from dash.cloudflare.com → Analytics & Logs → Web Analytics
+	 * → add khaledwaleed.com → copy the token from the JS snippet. Leave empty
+	 * to ship no analytics at all.
+	 */
+	cloudflareAnalyticsToken: '',
+
 	keywords: [
 		'Khaled Waleed',
 		'Khaled Waleed software engineer',
