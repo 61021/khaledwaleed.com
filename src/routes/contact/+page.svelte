@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Seo, Container, PageHeader, Fleuron, Button, site } from '$lib';
+	import { Seo, Container, PageHeader, Fleuron, Button, SchemaOrg, site } from '$lib';
 
 	const channels = [
+		{ label: 'Phone', value: site.phone, href: `tel:${site.phone}` },
 		{ label: 'Email', value: site.email, href: `mailto:${site.email}` },
 		...site.socials.map((s) => ({ label: s.label, value: s.handle, href: s.href }))
 	];
@@ -23,9 +24,7 @@
 	description="Get in touch with Khaled Waleed — senior software engineer in Baghdad. Available for select consulting and contract work."
 />
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(contactSchema)}</script>`}
-</svelte:head>
+<SchemaOrg schema={contactSchema} />
 
 <PageHeader room="contact" eyebrow="how to reach me" title="Contact">
 	{#snippet lede()}
@@ -38,7 +37,7 @@
 
 <Container size="prose">
 	<dl class="rise-3 mt-12 divide-y divide-[var(--rule)]">
-		{#each channels as c}
+		{#each channels as c (c.label)}
 			<div class="flex items-baseline gap-4 py-5">
 				<dt class="smallcaps shrink-0">{c.label}</dt>
 				<dd class="flex min-w-0 flex-1 items-baseline gap-4">

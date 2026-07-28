@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { Seo, Container, Button, PageHeader, site } from '$lib';
+	import { Seo, Container, Button, PageHeader, SchemaOrg, site } from '$lib';
+	import { posts, formatDate } from '$lib/posts';
+
+	const latest = posts[0];
 
 	// The homepage is the canonical profile page for the person entity.
 	// This tells Google that "/" — not "/about" — is the primary page for
@@ -22,9 +25,7 @@
 	type="profile"
 />
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(profilePageSchema)}</script>`}
-</svelte:head>
+<SchemaOrg schema={profilePageSchema} />
 
 <PageHeader
 	room="home"
@@ -49,5 +50,11 @@
 				>Write to me</Button
 			>
 		</div>
+		{#if latest}
+			<p class="pt-6 smallcaps">
+				latest · <a href={`/writing/${latest.slug}`} class="link-quiet">{latest.title}</a>
+				<span class="text-[var(--ink-dim)]">· {formatDate(latest.date)}</span>
+			</p>
+		{/if}
 	</section>
 </Container>

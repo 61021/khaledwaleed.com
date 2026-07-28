@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Seo, Container, Button, PageHeader, Fleuron, site } from '$lib';
+	import { Seo, Container, Button, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 
 	type Role = {
 		title: string;
@@ -189,9 +189,7 @@
 	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq — five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go."
 />
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(aboutPageSchema)}</script>`}
-</svelte:head>
+<SchemaOrg schema={aboutPageSchema} />
 
 <PageHeader room="about" eyebrow="a brief portrait" title="About">
 	{#snippet lede()}
@@ -238,6 +236,20 @@
 
 	<Fleuron />
 
+	<!-- At a glance -->
+	<section class="rise">
+		<dl class="grid grid-cols-2 gap-x-6 gap-y-6 text-left sm:gap-x-10 sm:text-center">
+			{#each facts as f (f.label)}
+				<div>
+					<dt class="smallcaps">{f.label}</dt>
+					<dd class="mt-1 italic text-[var(--ink)]">{f.value}</dd>
+				</div>
+			{/each}
+		</dl>
+	</section>
+
+	<Fleuron />
+
 	<section class="rise mt-8">
 		<h2 class="text-center italic">Where I’ve worked</h2>
 		<ol class="mt-12 space-y-14">
@@ -272,6 +284,31 @@
 			The same story, in corporate dress, on
 			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a>.
 		</p>
+	</section>
+
+	<Fleuron />
+
+	<!-- The toolkit -->
+	<section class="rise mt-8">
+		<h2 class="text-center italic">The toolkit</h2>
+		<p class="mx-auto mt-4 max-w-md text-center text-sm italic text-[var(--ink-muted)]">
+			The instruments I reach for without thinking.
+		</p>
+		<dl class="mt-10 space-y-7">
+			{#each Object.entries(skills) as [group, list] (group)}
+				<div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-6">
+					<dt class="smallcaps sm:w-28 sm:shrink-0 sm:text-right">{group}</dt>
+					<dd class="flex flex-wrap gap-x-3 gap-y-1 text-[0.95rem] text-[var(--ink-muted)]">
+						{#each list as tool, j (tool)}
+							<span
+								>{tool}{#if j < list.length - 1}<span class="ml-3 text-[var(--rule)]">·</span
+									>{/if}</span
+							>
+						{/each}
+					</dd>
+				</div>
+			{/each}
+		</dl>
 	</section>
 
 	<Fleuron />

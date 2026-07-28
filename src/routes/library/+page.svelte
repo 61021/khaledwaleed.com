@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Container, Seo, PageHeader, Fleuron, site } from '$lib';
+	import { Container, Seo, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 
-	const lastUpdated = '2026-05-24';
+	const lastUpdated = '2026-07-13';
 
 	type Book = { title: string; author: string; note?: string };
 
@@ -14,7 +14,24 @@
 		}
 	];
 
-	const queue: Book[] = [{ title: 'Relationships', author: 'The School of Life' }];
+	const queue: Book[] = [
+		{ title: 'Relationships', author: 'The School of Life' },
+		{
+			title: 'Designing Data-Intensive Applications',
+			author: 'Martin Kleppmann',
+			note: 'The distributed-systems education I keep promising myself.'
+		},
+		{
+			title: 'The Myth of Sisyphus',
+			author: 'Albert Camus',
+			note: 'I keep circling the absurd; time to read the source.'
+		},
+		{
+			title: 'Meditations',
+			author: 'Marcus Aurelius',
+			note: 'Notes to self from an emperor — the original private journal.'
+		}
+	];
 
 	const loved: Book[] = [];
 
@@ -43,9 +60,7 @@
 	description={`Books Khaled Waleed is reading, wants to read, and keeps returning to. Updated ${lastUpdated}.`}
 />
 
-<svelte:head>
-	{@html `<script type="application/ld+json">${JSON.stringify(schema)}</script>`}
-</svelte:head>
+<SchemaOrg {schema} />
 
 {#snippet bookRow(b: Book)}
 	<li class="py-3">
