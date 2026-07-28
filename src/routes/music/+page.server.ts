@@ -15,9 +15,11 @@ type SpotTrack = {
 	album?: { images?: SpotImg[] };
 };
 type SpotArtist = { name: string; external_urls?: { spotify?: string }; images?: SpotImg[] };
+type SpotPlayed = { track?: SpotTrack; played_at?: string };
 
 export type Track = { name: string; artists: string; url: string; image: string | null };
 export type Artist = { name: string; url: string; image: string | null };
+export type Played = Track & { playedAt: string };
 
 // Access tokens last ~1h; reuse within a warm isolate.
 let tokenCache: { value: string; expires: number } | null = null;
@@ -53,6 +55,15 @@ async function fetchTop<T>(
 	return json.items ?? [];
 }
 
+async function fetchRecent(token: string, limit: number): Promise<SpotPlayed[]> {
+	const res = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
+	if (!res.ok) return [];
+	const json = (await res.json()) as { items?: SpotPlayed[] };
+	return json.items ?? [];
+}
+
 export const load: PageServerLoad = async ({ url, platform, setHeaders }) => {
 	const requested = (url.searchParams.get('range') ?? 'medium') as RangeKey;
 	const rangeKey: RangeKey = requested in RANGES ? requested : 'medium';
@@ -64,15 +75,22 @@ export const load: PageServerLoad = async ({ url, platform, setHeaders }) => {
 	const secret = cf.SPOTIFY_CLIENT_SECRET ?? env.SPOTIFY_CLIENT_SECRET;
 	const refresh = cf.SPOTIFY_REFRESH_TOKEN ?? env.SPOTIFY_REFRESH_TOKEN;
 
-	const empty = { ok: false, range: rangeKey, tracks: [] as Track[], artists: [] as Artist[] };
+	const empty = {
+		ok: false,
+		range: rangeKey,
+		tracks: [] as Track[],
+		artists: [] as Artist[],
+		recent: [] as Played[]
+	};
 	if (!id || !secret || !refresh) return empty;
 
 	const token = await accessToken(id, secret, refresh);
 	if (!token) return empty;
 
-	const [rawTracks, rawArtists] = await Promise.all([
+	const [rawTracks, rawArtists, rawRecent] = await Promise.all([
 		fetchTop<SpotTrack>(token, 'tracks', range, 12),
-		fetchTop<SpotArtist>(token, 'artists', range, 8)
+		fetchTop<SpotArtist>(token, 'artists', range, 8),
+		fetchRecent(token, 8)
 	]);
 
 	const tracks: Track[] = rawTracks.map((t) => ({
@@ -86,9 +104,24 @@ export const load: PageServerLoad = async ({ url, platform, setHeaders }) => {
 		url: a.external_urls?.spotify ?? 'https://open.spotify.com',
 		image: a.images?.[1]?.url ?? a.images?.[0]?.url ?? null
 	}));
+	const recent: Played[] = rawRecent
+		.filter((r) => r.track && r.played_at)
+		.map((r) => ({
+			name: r.track!.name,
+			artists: (r.track!.artists ?? []).map((a) => a.name).join(', '),
+			url: r.track!.external_urls?.spotify ?? 'https://open.spotify.com',
+			image: r.track!.album?.images?.[2]?.url ?? r.track!.album?.images?.[0]?.url ?? null,
+			playedAt: r.played_at!
+		}));
 
-	// Top lists change slowly — let the edge cache the response for an hour.
-	setHeaders({ 'cache-control': 'public, max-age=3600' });
+	// Fresh enough for "last spins" without hammering Spotify: ten minutes.
+	setHeaders({ 'cache-control': 'public, max-age=600' });
 
-	return { ok: tracks.length > 0 || artists.length > 0, range: rangeKey, tracks, artists };
+	return {
+		ok: tracks.length > 0 || artists.length > 0 || recent.length > 0,
+		range: rangeKey,
+		tracks,
+		artists,
+		recent
+	};
 };

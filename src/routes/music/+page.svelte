@@ -15,6 +15,17 @@
 		{ key: 'medium', label: '6 months' },
 		{ key: 'long', label: 'all time' }
 	];
+
+	// A quiet relative timestamp for the "last spins" list.
+	function ago(iso: string): string {
+		const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60_000));
+		if (mins < 2) return 'just now';
+		if (mins < 60) return `${mins} min ago`;
+		const hours = Math.round(mins / 60);
+		if (hours < 24) return `${hours} h ago`;
+		const days = Math.round(hours / 24);
+		return days === 1 ? 'yesterday' : `${days} days ago`;
+	}
 </script>
 
 <Seo
@@ -130,6 +141,39 @@
 						</li>
 					{/each}
 				</ul>
+			</section>
+		{/if}
+
+		<!-- Recently played -->
+		{#if data.recent.length}
+			<Fleuron />
+
+			<section class="rise">
+				<h2 class="italic">Last spins</h2>
+				<p class="mt-1 text-sm italic text-[var(--ink-muted)]">
+					The turntable's short-term memory.
+				</p>
+				<ol class="mt-4 divide-y divide-[var(--rule)]">
+					{#each data.recent as t, i (`${t.url}-${t.playedAt}-${i}`)}
+						<li class="group flex items-center gap-4 py-2.5">
+							{#if t.image}
+								<img src={t.image} alt="" width="36" height="36" class="art" loading="lazy" />
+							{/if}
+							<a href={t.url} target="_blank" rel="noopener noreferrer" class="min-w-0 flex-1">
+								<span class="flex items-baseline justify-between gap-4">
+									<span
+										class="truncate italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+										style="font-family: var(--font-display); font-size: 1.05rem;"
+									>
+										{t.name}
+									</span>
+									<time datetime={t.playedAt} class="shrink-0 smallcaps">{ago(t.playedAt)}</time>
+								</span>
+								<span class="block truncate text-sm text-[var(--ink-muted)]">{t.artists}</span>
+							</a>
+						</li>
+					{/each}
+				</ol>
 			</section>
 		{/if}
 	{/if}
