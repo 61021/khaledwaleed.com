@@ -10,14 +10,14 @@
 		"height": 1603
 	},
 	"contact": {
-		"widths": [720, 1280, 2400],
-		"width": 2400,
-		"height": 1652
+		"widths": [720, 1280, 2000],
+		"width": 2000,
+		"height": 1377
 	},
 	"films": {
-		"widths": [720, 1280, 2197],
-		"width": 2197,
-		"height": 2800
+		"widths": [720, 1280, 1569],
+		"width": 1569,
+		"height": 2000
 	},
 	"home": {
 		"widths": [720, 1280, 2000],
@@ -30,9 +30,9 @@
 		"height": 841
 	},
 	"likes": {
-		"widths": [720, 1280, 2400],
-		"width": 2400,
-		"height": 1836
+		"widths": [720, 1280, 2000],
+		"width": 2000,
+		"height": 1530
 	},
 	"music": {
 		"widths": [720, 1280, 1747],
