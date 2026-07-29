@@ -14,24 +14,7 @@
 		}
 	];
 
-	const queue: Book[] = [
-		{ title: 'Relationships', author: 'The School of Life' },
-		{
-			title: 'Designing Data-Intensive Applications',
-			author: 'Martin Kleppmann',
-			note: 'The distributed-systems education I keep promising myself.'
-		},
-		{
-			title: 'The Myth of Sisyphus',
-			author: 'Albert Camus',
-			note: 'I keep circling the absurd; time to read the source.'
-		},
-		{
-			title: 'Meditations',
-			author: 'Marcus Aurelius',
-			note: 'Notes to self from an emperor — the original private journal.'
-		}
-	];
+	const queue: Book[] = [{ title: 'Relationships', author: 'The School of Life' }];
 
 	const loved: Book[] = [];
 
