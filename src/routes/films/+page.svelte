@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
-	import { page } from '$app/stores';
-	import { afterNavigate, replaceState } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { replaceState } from '$app/navigation';
 	import { Container, Seo, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import Poster from '$lib/components/Poster.svelte';
@@ -20,73 +19,54 @@
 	// poster) — arrives server-rendered from PocketBase in one request. No
 	// client fetching, no skeletons, no reshuffling.
 	const personal = $derived(data.films);
-	const favourite = $derived(personal.find(isFavourite));
 
 	// Keyed by "type/tmdbId" — a tmdb id can repeat across a movie and a show.
 	const key = (f: Personal): string => `${f.type}/${f.tmdbId}`;
 	const title = (f: Personal): string => f.title || `#${f.tmdbId}`;
 
-	// --- Type classification (authoritative, from your data) -------------
-	const isShow = (f: Personal): boolean => f.type === 'tv';
+	// Posters link out to the title's TMDB page — TMDB is where all the
+	// metadata comes from, and no IMDb ids are stored.
+	const tmdbUrl = (f: Personal): string => `https://www.themoviedb.org/${f.type}/${f.tmdbId}`;
 
 	// --- Summary numbers -------------------------------------------------
 	const total = $derived(personal.length);
-	const avg = $derived(
-		total ? (personal.reduce((s, f) => s + f.rating, 0) / total).toFixed(1) : '—'
-	);
+	const movieCount = $derived(personal.filter((f) => f.type === 'movie').length);
+	const showCount = $derived(personal.filter((f) => f.type === 'tv').length);
+	const notesCount = $derived(personal.filter((f) => f.notes).length);
+	// Every sitting, rewatches included — the closest thing to a diary count.
+	const viewings = $derived(personal.reduce((s, f) => s + Math.max(1, f.watched), 0));
 	const lastUpdated = $derived(
 		personal.reduce((a, f) => (f.watchedOn > a ? f.watchedOn : a), personal[0]?.watchedOn ?? '')
 	);
 
-	const movieCount = $derived(personal.filter((f) => f.type === 'movie').length);
-	const showCount = $derived(personal.filter((f) => f.type === 'tv').length);
-
-	// Hours of cinema: movie runtimes × times watched. TV runtimes are per
-	// episode, so counting them would be dishonest — movies only, clearly
-	// labelled.
-	const filmHours = $derived(
-		Math.round(
-			personal
-				.filter((f) => f.type === 'movie' && f.runtime > 0)
-				.reduce((s, f) => s + f.runtime * Math.max(1, f.watched), 0) / 60
-		)
+	// --- Favourite strips --------------------------------------------------
+	// The shrine at the top: everything scored a perfect 10, films and series
+	// each on their own shelf. The one favourite leads its shelf.
+	const favFilms = $derived(personal.filter((f) => f.rating === 10 && f.type === 'movie'));
+	const favSeries = $derived(
+		personal
+			.filter((f) => f.rating === 10 && f.type === 'tv')
+			.sort((a, b) => Number(isFavourite(b)) - Number(isFavourite(a)))
 	);
 
-	// The genres that keep showing up.
-	const topGenres = $derived.by(() => {
-		const counts: Record<string, number> = {};
-		for (const f of personal) {
-			for (const g of f.genres) counts[g] = (counts[g] ?? 0) + 1;
-		}
-		return Object.entries(counts)
-			.sort((a, b) => b[1] - a[1])
-			.slice(0, 6);
-	});
-
-	const facts = $derived([
-		{ value: String(total), label: 'titles' },
-		{ value: `${avg} / 10`, label: 'average' },
-		{ value: String(movieCount), label: 'movies' },
-		{ value: String(showCount), label: 'shows' },
-		...(filmHours > 0 ? [{ value: `~${filmHours}`, label: 'hours of film' }] : [])
-	]);
-
 	// --- Type filter -----------------------------------------------------
-	type Filter = 'all' | 'movies' | 'shows';
+	type Filter = 'all' | 'films' | 'series' | 'notes';
 	let filter = $state<Filter>('all');
 
 	const filterOptions = $derived<{ value: Filter; label: string; count: number }[]>([
 		{ value: 'all', label: 'All', count: total },
-		{ value: 'movies', label: 'Movies', count: movieCount },
-		{ value: 'shows', label: 'Shows', count: showCount }
+		{ value: 'films', label: 'Films', count: movieCount },
+		{ value: 'series', label: 'Series', count: showCount },
+		{ value: 'notes', label: 'Notes', count: notesCount }
 	]);
 
 	const matchesFilter = (f: Personal): boolean => {
 		if (filter === 'all') return true;
-		return filter === 'shows' ? isShow(f) : !isShow(f);
+		if (filter === 'notes') return Boolean(f.notes);
+		return filter === 'series' ? f.type === 'tv' : f.type === 'movie';
 	};
 
-	// --- Wall search -------------------------------------------------------
+	// --- Search ------------------------------------------------------------
 	let query = $state('');
 	const matchesQuery = (f: Personal): boolean => {
 		const q = query.trim().toLowerCase();
@@ -98,193 +78,135 @@
 	const visible = (f: Personal): boolean => matchesFilter(f) && matchesQuery(f);
 
 	// --- Sort ------------------------------------------------------------
-	type Sort = 'rating' | 'year' | 'recent';
-	let sort = $state<Sort>('rating');
+	type Sort = 'watched' | 'release' | 'mine' | 'az';
+	type Dir = 'asc' | 'desc';
+	const DEFAULT_DIR: Record<Sort, Dir> = {
+		watched: 'desc',
+		release: 'desc',
+		mine: 'desc',
+		az: 'asc'
+	};
 
-	const sortOptions: { value: Sort; label: string }[] = [
-		{ value: 'rating', label: 'Rating' },
-		{ value: 'year', label: 'Year' },
-		{ value: 'recent', label: 'Recent' }
+	let sort = $state<Sort>('watched');
+	let dir = $state<Dir>('desc');
+
+	const sortOptions: { value: Sort; label: string; star?: boolean; by: string }[] = [
+		{ value: 'watched', label: 'Watched', by: 'watch date' },
+		{ value: 'release', label: 'Release', by: 'release year' },
+		{ value: 'mine', label: 'Mine', star: true, by: 'my rating' },
+		{ value: 'az', label: 'A–Z', by: 'title' }
 	];
 
-	// --- URL persistence (?type=&sort=) ----------------------------------
-	let ready = $state(false);
+	// Picking the active sort again flips its direction.
+	function setSort(v: Sort): void {
+		if (sort === v) dir = dir === 'desc' ? 'asc' : 'desc';
+		else {
+			sort = v;
+			dir = DEFAULT_DIR[v];
+		}
+		syncUrl();
+	}
+
+	const collator = new Intl.Collator('en', { sensitivity: 'base' });
+
+	const sorted = $derived.by<Personal[]>(() => {
+		const m = dir === 'asc' ? 1 : -1;
+		const byTitle = (a: Personal, b: Personal): number => collator.compare(title(a), title(b));
+		const arr = personal.filter(visible);
+
+		if (sort === 'watched') {
+			// Undated titles sink to the end whichever way the arrow points.
+			arr.sort((a, b) => {
+				if (!a.watchedOn || !b.watchedOn)
+					return Number(!a.watchedOn) - Number(!b.watchedOn) || byTitle(a, b);
+				return m * a.watchedOn.localeCompare(b.watchedOn) || b.rating - a.rating || byTitle(a, b);
+			});
+		} else if (sort === 'release') {
+			arr.sort((a, b) => {
+				if (!a.year || !b.year) return Number(!a.year) - Number(!b.year) || byTitle(a, b);
+				return m * (a.year - b.year) || b.rating - a.rating || byTitle(a, b);
+			});
+		} else if (sort === 'mine') {
+			arr.sort(
+				(a, b) =>
+					m * (a.rating - b.rating) || b.watchedOn.localeCompare(a.watchedOn) || byTitle(a, b)
+			);
+		} else {
+			arr.sort((a, b) => m * byTitle(a, b));
+		}
+		return arr;
+	});
+
+	// --- View (list ↔ grid) -------------------------------------------------
+	type View = 'list' | 'grid';
+	let view = $state<View>('list');
+
+	function setFilter(v: Filter): void {
+		filter = v;
+		syncUrl();
+	}
+
+	function setView(v: View): void {
+		view = v;
+		syncUrl();
+	}
+
+	// --- URL persistence (?type=&sort=&dir=&view=) --------------------------
+	// Written from the handlers above — never from an $effect: SvelteKit's
+	// replaceState mutates the router's page state, which is not allowed
+	// mid-flush and would take the whole reactive graph down with it.
+	function syncUrl(): void {
+		const url = new URL(location.href);
+		if (filter === 'all') url.searchParams.delete('type');
+		else url.searchParams.set('type', filter);
+		if (sort === 'watched') url.searchParams.delete('sort');
+		else url.searchParams.set('sort', sort);
+		if (dir === DEFAULT_DIR[sort]) url.searchParams.delete('dir');
+		else url.searchParams.set('dir', dir);
+		if (view === 'list') url.searchParams.delete('view');
+		else url.searchParams.set('view', view);
+		replaceState(`${url.pathname}${url.search}`, {});
+	}
 
 	onMount(() => {
 		const sp = new URLSearchParams(location.search);
 		const t = sp.get('type');
-		if (t === 'movies' || t === 'shows') filter = t;
+		// Legacy names (movies/shows) keep working.
+		if (t === 'films' || t === 'movies') filter = 'films';
+		else if (t === 'series' || t === 'shows') filter = 'series';
+		else if (t === 'notes') filter = 'notes';
 		const s = sp.get('sort');
-		if (s === 'year' || s === 'recent') sort = s;
+		// Legacy values: year → release, rating → mine, recent → watched.
+		if (s === 'release' || s === 'year') sort = 'release';
+		else if (s === 'mine' || s === 'rating') sort = 'mine';
+		else if (s === 'az') sort = 'az';
+		dir = DEFAULT_DIR[sort];
+		const d = sp.get('dir');
+		if (d === 'asc' || d === 'desc') dir = d;
+		if (sp.get('view') === 'grid') view = 'grid';
 	});
 
-	// replaceState may only run once the router is initialized; afterNavigate
-	// fires after the initial navigation, which is exactly that point.
-	afterNavigate(() => {
-		ready = true;
-	});
+	// --- Row copy ----------------------------------------------------------
+	const kindLabel = (f: Personal): string =>
+		f.type === 'tv' ? (/mini/i.test(f.format) ? 'Mini series' : 'Series') : 'Film';
 
-	$effect(() => {
-		const f = filter;
-		const s = sort;
-		if (!ready) return;
-		const url = new URL($page.url);
-		if (f === 'all') url.searchParams.delete('type');
-		else url.searchParams.set('type', f);
-		if (s === 'rating') url.searchParams.delete('sort');
-		else url.searchParams.set('sort', s);
-		replaceState(`${url.pathname}${url.search}`, {});
-	});
-
-	// --- Rating tiers ----------------------------------------------------
-	const tierLabel: Record<number, string> = {
-		10: 'Perfect',
-		9: 'Loved it',
-		8: 'Liked it',
-		7: 'Fun to watch',
-		6: 'Mixed Feelings',
-		5: 'Meh',
-		4: 'Poor',
-		3: 'Bad',
-		2: 'Terrible',
-		1: 'Absolute Garbage'
-	};
-	const ratings = $derived([...new Set(personal.map((f) => f.rating))].sort((a, b) => b - a));
-
-	// --- Shelves -----------------------------------------------------------
-	// The wall hangs in shelves. Rating sort groups by tier (10 → 1), year
-	// sort by decade, recent sort by the year a thing was watched — one
-	// consistent shape, three readings of the same collection.
-	type Shelf = { id: string; main: string; dim: string; aside: string; items: Personal[] };
-
-	const shelves = $derived.by<Shelf[]>(() => {
-		const vis = personal.filter(visible);
-
-		if (sort === 'rating') {
-			return ratings
-				.map((rating) => ({ rating, items: vis.filter((f) => f.rating === rating) }))
-				.filter((t) => t.items.length > 0)
-				.map(({ rating, items }) => ({
-					id: `r${rating}`,
-					main: String(rating),
-					dim: ' / 10',
-					aside: [tierLabel[rating], String(items.length)].filter(Boolean).join(' · '),
-					items
-				}));
-		}
-
-		if (sort === 'year') {
-			const groups: Record<string, Personal[]> = {};
-			for (const f of vis) {
-				const k = f.year ? String(Math.floor(f.year / 10) * 10) : 'undated';
-				(groups[k] ??= []).push(f);
-			}
-			return Object.entries(groups)
-				.sort(([a], [b]) => {
-					if (a === 'undated') return 1;
-					if (b === 'undated') return -1;
-					return Number(b) - Number(a);
-				})
-				.map(([decade, items]) => {
-					items.sort(
-						(a, b) => b.year - a.year || b.rating - a.rating || a.title.localeCompare(b.title)
-					);
-					return {
-						id: `d${decade}`,
-						main: decade === 'undated' ? 'Undated' : `${decade}s`,
-						dim: '',
-						aside: `${items.length} ${items.length === 1 ? 'title' : 'titles'}`,
-						items
-					};
-				});
-		}
-
-		// recent: grouped by the year it was watched
-		const groups: Record<string, Personal[]> = {};
-		for (const f of vis) {
-			const k = f.watchedOn ? f.watchedOn.slice(0, 4) : 'earlier';
-			(groups[k] ??= []).push(f);
-		}
-		return Object.entries(groups)
-			.sort(([a], [b]) => {
-				if (a === 'earlier') return 1;
-				if (b === 'earlier') return -1;
-				return Number(b) - Number(a);
-			})
-			.map(([year, items]) => {
-				items.sort((a, b) => b.watchedOn.localeCompare(a.watchedOn) || b.rating - a.rating);
-				return {
-					id: `w${year}`,
-					main: year === 'earlier' ? 'Earlier' : year,
-					dim: '',
-					aside: `${items.length} watched`,
-					items
-				};
-			});
-	});
-
-	// The little line under each poster: what changes with the reading.
-	function subline(f: Personal): string {
-		if (sort === 'rating') return f.year ? String(f.year) : '';
-		if (sort === 'year') return [f.year || '', f.rating].filter(Boolean).join(' · ');
-		return [fmtMonth(f.watchedOn), f.rating].filter(Boolean).join(' · ');
-	}
-
-	// --- The plate (per-title detail dialog) -------------------------------
-	let selected = $state<Personal | null>(null);
-	let plateEl = $state<HTMLDialogElement | null>(null);
-
-	async function openPlate(f: Personal): Promise<void> {
-		selected = f;
-		await tick();
-		plateEl?.showModal();
-	}
-
-	// A click that lands on the dialog element itself is a backdrop click.
-	function onPlateClick(e: MouseEvent): void {
-		if (e.target === plateEl) plateEl?.close();
-	}
-
-	// Credits line under each title: the director (films) or creator(s) (TV).
-	// Falls back to the format label only when no creator/director is known.
-	function meta(f: Personal): string {
-		if (f.directors.length) return f.directors.join(', ');
-		if (f.format && f.format !== 'Movie') return f.format;
-		return '';
-	}
-
-	function runtimeLabel(f: Personal): string {
+	// "2h 10m" for films; series carry per-episode runtimes, so "54m".
+	function fmtRuntime(f: Personal): string {
 		if (!f.runtime) return '';
-		if (isShow(f)) return `${f.runtime} min episodes`;
 		const h = Math.floor(f.runtime / 60);
-		const m = f.runtime % 60;
-		if (!h) return `${m} min`;
-		return m ? `${h} h ${m} min` : `${h} h`;
+		const min = f.runtime % 60;
+		if (!h) return `${min}m`;
+		return min ? `${h}h ${min}m` : `${h}h`;
 	}
 
-	const plateMeta = (f: Personal): string =>
-		[f.year || '', f.format, runtimeLabel(f)].filter(Boolean).join(' · ');
+	const subline = (f: Personal): string =>
+		[f.year || '', fmtRuntime(f), kindLabel(f)].filter(Boolean).join(' · ');
 
-	// A compact "watched on" date (e.g. 24 Oct 2021) for the plates.
-	const fmtWatched = (iso: string): string =>
-		iso
-			? new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
-					day: 'numeric',
-					month: 'short',
-					year: 'numeric',
-					timeZone: 'UTC'
-				})
-			: '';
-
-	// Just month + year, small enough for a wall label.
-	const fmtMonth = (iso: string): string =>
-		iso
-			? new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
-					month: 'short',
-					year: 'numeric',
-					timeZone: 'UTC'
-				})
-			: '';
+	// --- Notes (inline, one open at a time) ----------------------------------
+	let openNote = $state<string | null>(null);
+	const toggleNote = (f: Personal): void => {
+		openNote = openNote === key(f) ? null : key(f);
+	};
 
 	const schema = $derived({
 		'@context': 'https://schema.org',
@@ -303,8 +225,8 @@
 				{ '@type': 'ListItem', position: 2, name: 'Films', item: `${site.url}/films` }
 			]
 		},
-		// The full ledger — titles are server-rendered now, so crawlers can see
-		// the same list this describes.
+		// The full ledger — titles are server-rendered, so crawlers see the
+		// same list this describes.
 		mainEntity: {
 			'@type': 'ItemList',
 			numberOfItems: total,
@@ -348,16 +270,29 @@
 	>
 {/snippet}
 
-{#snippet cell(f: Personal)}
-	<li>
-		<button type="button" class="cell" onclick={() => openPlate(f)} title={title(f)}>
-			<Poster posterPath={f.posterPath} alt="" width={104} fluid />
-			<span class="cell-title"
-				>{title(f)}{#if isFavourite(f)}<span class="text-[var(--accent)]"> ★</span>{/if}</span
-			>
-			{#if subline(f)}<span class="cell-sub">{subline(f)}</span>{/if}
-		</button>
-	</li>
+{#snippet strip(label: string, items: Personal[])}
+	<section class="favs rise-2" aria-label={label}>
+		<div class="favs-head">
+			<h2 class="smallcaps favs-label">{label}</h2>
+			<span class="smallcaps favs-count">{items.length}</span>
+		</div>
+		<ul class="favs-strip">
+			{#each items as f (key(f))}
+				<li>
+					<a
+						class="fav"
+						href={tmdbUrl(f)}
+						target="_blank"
+						rel="noopener noreferrer"
+						title={title(f)}
+						aria-label={`${title(f)} on TMDB`}
+					>
+						<Poster posterPath={f.posterPath} alt="" width={112} fluid vivid />
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</section>
 {/snippet}
 
 <Container>
@@ -387,127 +322,191 @@
 			</p>
 		</section>
 	{:else}
-		<!-- Frontispiece: the one thing above everything else -->
-		{#if favourite}
-			<section class="rise-2 mt-10">
-				<div class="fave">
-					<div class="fave-poster">
-						<Poster
-							posterPath={favourite.posterPath}
-							alt={`${title(favourite)} poster`}
-							width={132}
-							vivid
-						/>
-					</div>
-					<div class="fave-body">
-						<p class="fave-eyebrow smallcaps">★ the best thing I have ever watched</p>
-						<h2 class="fave-title italic">{title(favourite)}</h2>
-						{#if meta(favourite)}
-							<p class="mt-2 text-sm text-[var(--ink-muted)]">{meta(favourite)}</p>
-						{/if}
-						<p class="fave-meta smallcaps">
-							{#if favourite.year}<span>{favourite.year}</span>{/if}
-							{#if favourite.format && favourite.format !== 'Movie'}<span class="fave-sep">·</span
-								><span>{favourite.format}</span>{/if}
-							{#if favourite.watched > 1}<span class="fave-sep">·</span>{@render rewatch(
-									favourite.watched
-								)}{/if}
-						</p>
-						{#if favourite.notes}
-							<div class="fave-note">{favourite.notes}</div>
-						{/if}
-					</div>
-				</div>
-			</section>
+		<!-- The shrine: perfect tens, films then series -->
+		{#if favFilms.length}
+			{@render strip('Favourite films', favFilms)}
+		{/if}
+		{#if favSeries.length}
+			{@render strip('Favourite series', favSeries)}
 		{/if}
 
 		<Fleuron />
 
-		<!-- The catalogue head: numbers, then the levers -->
-		<section class="rise">
-			<p class="colophon">
-				{#each facts as f, i (f.label)}
-					<span
-						><span class="colophon-v">{f.value}</span>
-						{f.label}{#if i < facts.length - 1}<span class="tally-sep">·</span>{/if}</span
-					>
-				{/each}
-			</p>
-			{#if topGenres.length}
-				<p class="tally smallcaps">
-					{#each topGenres as [g, n], i (g)}
-						<span
-							>{g.toLowerCase()}
-							<span class="text-[var(--ink-dim)] tabular-nums">{n}</span
-							>{#if i < topGenres.length - 1}<span class="tally-sep">·</span>{/if}</span
-						>
-					{/each}
-				</p>
-			{/if}
+		<section class="rise" aria-label="Viewing log">
+			<!-- The ledger line: how much has passed through the projector -->
+			<div class="ledger">
+				<span class="ledger-item">
+					<span class="smallcaps">Watched</span>
+					<b class="ledger-n">{total}</b>
+				</span>
+				<span class="ledger-item">
+					<span class="smallcaps">Viewings</span>
+					<b class="ledger-n">{viewings}</b>
+				</span>
+			</div>
 
-			<div class="controls">
-				<div class="seg" role="group" aria-label="Filter titles by type">
-					{#each filterOptions as opt (opt.value)}
-						<button
-							type="button"
-							class="seg-opt"
-							class:is-active={filter === opt.value}
-							aria-pressed={filter === opt.value}
-							onclick={() => (filter = opt.value)}
-						>
-							{opt.label}
-							<span class="seg-count tabular-nums">{opt.count}</span>
-						</button>
-					{/each}
-				</div>
-				<div class="seg" role="group" aria-label="Sort titles">
-					{#each sortOptions as opt (opt.value)}
-						<button
-							type="button"
-							class="seg-opt"
-							class:is-active={sort === opt.value}
-							aria-pressed={sort === opt.value}
-							onclick={() => (sort = opt.value)}
-						>
-							{opt.label}
-						</button>
-					{/each}
-				</div>
-				<label class="search-row">
+			<div class="line" role="group" aria-label="Filter titles">
+				{#each filterOptions as opt, i (opt.value)}
+					{#if i}<span class="vsep" aria-hidden="true"></span>{/if}
+					<button
+						type="button"
+						class="line-opt"
+						class:on={filter === opt.value}
+						aria-pressed={filter === opt.value}
+						onclick={() => setFilter(opt.value)}
+					>
+						{opt.label} <b>{opt.count}</b>
+					</button>
+				{/each}
+				<label class="find">
 					<span class="sr-only">Find a title</span>
 					<input
 						type="search"
 						bind:value={query}
-						placeholder="Find a title, a director, a genre…"
+						placeholder="Find a title, a director…"
 						autocomplete="off"
 						spellcheck="false"
 					/>
 				</label>
 			</div>
-		</section>
 
-		{#if query.trim() && shelves.length === 0}
-			<p class="rise mt-14 text-center italic text-[var(--ink-muted)]">
-				Nothing on the wall matches <em class="text-[var(--ink)]">{query}</em>.
-			</p>
-		{/if}
-
-		<!-- The wall, hung in shelves -->
-		{#each shelves as shelf (shelf.id)}
-			<section id={shelf.id} class="rise shelf scroll-mt-8">
-				<div class="flex items-baseline justify-between gap-6 border-b border-[var(--rule)] pb-3">
-					<h2 class="shelf-title italic">
-						{shelf.main}{#if shelf.dim}<span class="text-[var(--ink-dim)]">{shelf.dim}</span>{/if}
-					</h2>
-					<span class="smallcaps shrink-0">{shelf.aside}</span>
+			<div class="line" role="group" aria-label="Sort titles">
+				{#each sortOptions as opt, i (opt.value)}
+					{#if i}<span class="vsep" aria-hidden="true"></span>{/if}
+					<button
+						type="button"
+						class="line-opt"
+						class:on={sort === opt.value}
+						aria-pressed={sort === opt.value}
+						aria-label={`Sort by ${opt.by}${
+							sort === opt.value ? (dir === 'desc' ? ', descending' : ', ascending') : ''
+						}`}
+						onclick={() => setSort(opt.value)}
+					>
+						{#if opt.star}<span class="sort-star" aria-hidden="true">★</span
+							>{/if}{opt.label}{#if sort === opt.value}<span class="dir" aria-hidden="true"
+								>{dir === 'desc' ? '↓' : '↑'}</span
+							>{/if}
+					</button>
+				{/each}
+				<div class="viewtoggle" role="group" aria-label="Layout">
+					<button
+						type="button"
+						class:on={view === 'list'}
+						aria-pressed={view === 'list'}
+						aria-label="List view"
+						title="List view"
+						onclick={() => setView('list')}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 256 256"
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill="currentColor"
+								d="M208 136H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-40a16 16 0 0 0-16-16m0 56H48v-40h160zm0-144H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m0 56H48V64h160z"
+							/></svg
+						>
+					</button>
+					<button
+						type="button"
+						class:on={view === 'grid'}
+						aria-pressed={view === 'grid'}
+						aria-label="Grid view"
+						title="Grid view"
+						onclick={() => setView('grid')}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 256 256"
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill="currentColor"
+								d="M104 40H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64H56V56h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64h-48V56h48zm-96 32H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64H56v-48h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64h-48v-48h48z"
+							/></svg
+						>
+					</button>
 				</div>
-				<ul class="wall">
-					{#each shelf.items as f (key(f))}
-						{@render cell(f)}
+			</div>
+
+			{#if sorted.length === 0}
+				<p class="mt-14 text-center italic text-[var(--ink-muted)]">
+					{#if query.trim()}
+						Nothing here matches <em class="text-[var(--ink)]">{query}</em>.
+					{:else}
+						Nothing in this corner of the log yet.
+					{/if}
+				</p>
+			{:else if view === 'list'}
+				<ul class="list">
+					{#each sorted as f (key(f))}
+						<li class="lrow">
+							<a
+								class="lrow-thumb"
+								href={tmdbUrl(f)}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={`${title(f)} on TMDB`}
+							>
+								<Poster posterPath={f.posterPath} alt="" width={84} fluid />
+							</a>
+							<div class="lrow-main">
+								<h3 class="lrow-title">
+									{title(f)}{#if isFavourite(f)}<span
+											class="text-[var(--accent)]"
+											title="My favourite"
+										>
+											★</span
+										>{/if}
+								</h3>
+								{#if subline(f)}<p class="lrow-sub">{subline(f)}</p>{/if}
+								<p class="lrow-ratings">
+									<span class="r-mine" aria-label={`My rating ${f.rating} out of 10`}>
+										<span class="star" aria-hidden="true">★</span>{f.rating}
+									</span>
+									{#if f.watched > 1}{@render rewatch(f.watched)}{/if}
+									{#if f.notes}
+										<button
+											type="button"
+											class="note-toggle"
+											aria-expanded={openNote === key(f)}
+											onclick={() => toggleNote(f)}
+										>
+											note {openNote === key(f) ? '▴' : '▾'}
+										</button>
+									{/if}
+								</p>
+								{#if f.directors.length}
+									<p class="lrow-by">
+										<span class="by-lbl">{f.type === 'tv' ? 'Created by' : 'Directed by'}</span>
+										{f.directors.join(', ')}
+									</p>
+								{/if}
+								{#if f.notes && openNote === key(f)}
+									<div class="lrow-note">{f.notes}</div>
+								{/if}
+							</div>
+						</li>
 					{/each}
 				</ul>
-			</section>
-		{/each}
+			{:else}
+				<ul class="wall">
+					{#each sorted as f (key(f))}
+						<li>
+							<a
+								class="cell"
+								href={tmdbUrl(f)}
+								target="_blank"
+								rel="noopener noreferrer"
+								title={title(f)}
+							>
+								<Poster posterPath={f.posterPath} alt="" width={104} fluid />
+								<span class="cell-title"
+									>{title(f)}{#if isFavourite(f)}<span class="text-[var(--accent)]">
+											★</span
+										>{/if}</span
+								>
+								<span class="cell-sub">{[f.year || '', `★ ${f.rating}`].join(' · ')}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
 
 		<Fleuron />
 
@@ -532,122 +531,355 @@
 	{/if}
 </Container>
 
-<!-- The plate: a museum label for whichever title was taken off the wall -->
-<dialog
-	bind:this={plateEl}
-	class="plate-dialog"
-	aria-labelledby="plate-title"
-	onclose={() => (selected = null)}
-	onclick={onPlateClick}
->
-	{#if selected}
-		<div class="plate-inner">
-			<button type="button" class="plate-close" onclick={() => plateEl?.close()} aria-label="Close">
-				×
-			</button>
-			<div class="plate-poster">
-				<Poster
-					posterPath={selected.posterPath}
-					alt={`${title(selected)} poster`}
-					width={120}
-					vivid
-				/>
-			</div>
-			<div class="plate-body">
-				<p class="plate-eyebrow smallcaps">
-					{selected.rating} / 10{tierLabel[selected.rating]
-						? ` — ${tierLabel[selected.rating]}`
-						: ''}
-				</p>
-				<h3 class="plate-title italic" id="plate-title">
-					{title(selected)}{#if isFavourite(selected)}<span
-							class="text-[var(--accent)]"
-							title="My favourite"
-						>
-							★</span
-						>{/if}
-				</h3>
-				{#if meta(selected)}
-					<p class="mt-1.5 text-sm text-[var(--ink-muted)]">{meta(selected)}</p>
-				{/if}
-				{#if plateMeta(selected)}
-					<p class="mt-3 smallcaps">{plateMeta(selected)}</p>
-				{/if}
-				{#if selected.genres.length}
-					<p class="plate-genres">{selected.genres.join(' · ').toLowerCase()}</p>
-				{/if}
-				{#if selected.watchedOn || selected.watched > 1}
-					<p class="plate-watched">
-						{#if selected.watchedOn}<time datetime={selected.watchedOn}
-								>Watched {fmtWatched(selected.watchedOn)}</time
-							>{/if}{#if selected.watchedOn && selected.watched > 1}<span
-								class="mx-2 text-[var(--rule)]">·</span
-							>{/if}{#if selected.watched > 1}{@render rewatch(selected.watched)}{/if}
-					</p>
-				{/if}
-				{#if selected.notes}
-					<div class="plate-note">{selected.notes}</div>
-				{/if}
-			</div>
-		</div>
-	{/if}
-</dialog>
-
 <style>
-	/* ---------- Frontispiece ---------- */
-	.fave {
+	/* ---------- Favourite strips ---------- */
+	.favs {
+		margin-top: 2.25rem;
+	}
+
+	.favs + .favs {
+		margin-top: 1.6rem;
+	}
+
+	.favs-head {
 		display: flex;
-		align-items: center;
-		gap: 1.75rem;
-		max-width: 40rem;
-		margin-inline: auto;
-		padding: 1.75rem;
-		border: 1px solid color-mix(in oklab, var(--accent) 38%, var(--rule));
-		border-radius: 1rem;
-		box-shadow: 0 10px 34px rgba(0, 0, 0, 0.34);
-		background:
-			radial-gradient(
-				130% 130% at 0% 0%,
-				color-mix(in oklab, var(--accent) 13%, transparent),
-				transparent 58%
-			),
-			var(--bg-soft);
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		border-bottom: 1px solid var(--rule);
+		padding-bottom: 0.55rem;
 	}
 
-	.fave-poster {
-		flex: none;
+	.favs-label {
+		margin: 0;
+		color: var(--ink);
 	}
 
-	.fave-body {
-		min-width: 0;
+	.favs-count {
+		color: var(--ink-dim);
+		font-variant-numeric: tabular-nums;
 	}
 
-	.fave-eyebrow {
-		color: var(--accent);
+	.favs-strip {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: clamp(6rem, 22vw, 7rem);
+		gap: 0.8rem;
+		margin: 1rem 0 0;
+		padding: 0 0 0.9rem;
+		list-style: none;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x proximity;
+		scrollbar-width: none;
 	}
 
-	.fave-title {
-		margin-top: 0.5rem;
-		font-size: clamp(1.5rem, 3.5vw, 2.1rem);
-		line-height: 1.15;
+	.favs-strip::-webkit-scrollbar {
+		display: none;
 	}
 
-	.fave-meta {
+	.fav {
+		display: block;
+		scroll-snap-align: start;
+	}
+
+	.fav:hover :global(img),
+	.fav:focus-visible :global(img) {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+	}
+
+	/* ---------- The ledger line ---------- */
+	.ledger {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: baseline;
-		gap: 0.15rem 0.5rem;
-		margin-top: 0.8rem;
+		gap: 0.9rem 2.5rem;
+		padding-bottom: 0.8rem;
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.ledger-item {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.6rem;
+	}
+
+	.ledger-n {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 400;
+		font-size: clamp(1.55rem, 3vw, 1.95rem);
+		line-height: 1;
+		color: var(--ink);
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* ---------- Filter & sort lines ---------- */
+	.line {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 0.9rem;
+		margin-top: 0.95rem;
+	}
+
+	.line-opt {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.4rem;
+		padding: 0.3rem 0;
+		border-bottom: 1px solid transparent;
+		font-family: var(--font-body);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+		white-space: nowrap;
+		cursor: pointer;
+		transition:
+			color 250ms ease,
+			border-color 250ms ease;
+	}
+
+	.line-opt:hover {
+		color: var(--ink);
+	}
+
+	.line-opt.on {
+		color: var(--ink);
+		border-bottom-color: var(--accent);
+	}
+
+	.line-opt b {
+		font-weight: 600;
+		font-size: 0.92em;
+		color: var(--ink-dim);
+		font-variant-numeric: tabular-nums;
+		transition: color 250ms ease;
+	}
+
+	.line-opt.on b {
+		color: var(--accent);
+	}
+
+	.vsep {
+		flex: none;
+		width: 1px;
+		height: 0.85em;
+		background: var(--rule);
+	}
+
+	.sort-star {
+		color: var(--accent);
+		margin-right: 0.25rem;
+	}
+
+	.dir {
+		color: var(--accent);
+		margin-left: 0.25rem;
+	}
+
+	.find {
+		display: flex;
+		flex: 1 1 11rem;
+		max-width: 16rem;
+		margin-left: auto;
+	}
+
+	.find input {
+		width: 100%;
+		background: transparent;
+		border: 0;
+		border-bottom: 1px solid var(--rule);
+		padding: 0.3rem 0.1rem;
+		font-family: var(--font-body);
+		font-size: 0.85rem;
+		color: var(--ink);
+		transition: border-color 250ms ease;
+	}
+
+	.find input::placeholder {
+		color: var(--ink-dim);
+		font-style: italic;
+	}
+
+	.find input:focus {
+		outline: none;
+		border-bottom-color: color-mix(in oklab, var(--accent) 65%, transparent);
+	}
+
+	@media (max-width: 560px) {
+		.find {
+			flex-basis: 100%;
+			max-width: none;
+			margin-left: 0;
+		}
+	}
+
+	.viewtoggle {
+		display: flex;
+		gap: 0.4rem;
+		margin-left: auto;
+	}
+
+	.viewtoggle button {
+		display: inline-flex;
+		padding: 0.3rem;
+		color: var(--ink-dim);
+		cursor: pointer;
+		transition: color 250ms ease;
+	}
+
+	.viewtoggle button:hover {
+		color: var(--ink);
+	}
+
+	.viewtoggle button.on {
+		color: var(--accent);
+	}
+
+	/* ---------- The list ---------- */
+	.list {
+		margin-top: 1.9rem;
+		padding: 0;
+		list-style: none;
+		border-top: 1px solid var(--rule);
+	}
+
+	.lrow {
+		display: grid;
+		grid-template-columns: 5.25rem 1fr;
+		gap: 1.2rem;
+		padding: 1.05rem 0.15rem;
+		border-bottom: 1px solid color-mix(in oklab, var(--rule) 80%, transparent);
+		transition: background-color 400ms ease;
+	}
+
+	.lrow:hover {
+		background: linear-gradient(
+			90deg,
+			color-mix(in oklab, var(--accent) 7%, transparent),
+			transparent 62%
+		);
+	}
+
+	.lrow-thumb {
+		display: block;
+		align-self: start;
+		line-height: 0;
+	}
+
+	.lrow-thumb:hover :global(img),
+	.lrow-thumb:focus-visible :global(img) {
+		filter: none;
+		transform: translateY(-3px);
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+	}
+
+	.lrow-main {
+		display: flex;
+		flex-direction: column;
+		gap: 0.32rem;
+		min-width: 0;
+	}
+
+	.lrow-title {
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 400;
+		font-size: 1.14rem;
+		line-height: 1.3;
+		color: var(--ink);
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		overflow: hidden;
+		transition: color 300ms ease;
+	}
+
+	.lrow:hover .lrow-title {
+		color: var(--accent);
+	}
+
+	.lrow-sub {
+		margin: 0;
+		font-family: var(--font-body);
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-dim);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.lrow-ratings {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.35rem 1.05rem;
+		margin: 0.05rem 0 0;
+		font-size: 0.8rem;
+	}
+
+	.r-mine {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		color: var(--accent);
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.r-mine .star {
+		font-size: 1.25em;
+		line-height: 1;
+		transform: translateY(-0.04em);
+	}
+
+	.note-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		padding: 0;
+		font-family: var(--font-body);
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--ink-dim);
+		cursor: pointer;
+		transition: color 250ms ease;
+	}
+
+	.note-toggle:hover {
+		color: var(--ink);
+	}
+
+	.note-toggle[aria-expanded='true'] {
+		color: var(--accent);
+	}
+
+	.lrow-by {
+		margin: 0;
+		font-family: var(--font-body);
+		font-size: 0.64rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--ink-muted);
+	}
+
+	.lrow-by .by-lbl {
 		color: var(--ink-dim);
 	}
 
-	.fave-sep {
-		color: var(--rule);
-	}
-
-	.fave-note,
-	.plate-note {
-		margin-top: 0.9rem;
+	.lrow-note {
+		max-width: 36rem;
+		margin-top: 0.55rem;
 		border-left: 2px solid color-mix(in oklab, var(--accent) 50%, var(--rule));
 		padding-left: 0.7rem;
 		font-family: var(--font-display);
@@ -658,156 +890,18 @@
 	}
 
 	@media (max-width: 479px) {
-		.fave {
-			flex-direction: column;
-			text-align: center;
-			gap: 1.25rem;
-		}
-
-		.fave-meta {
-			justify-content: center;
-		}
-
-		.fave-note {
-			text-align: left;
+		.lrow {
+			grid-template-columns: 4rem 1fr;
+			gap: 0.9rem;
 		}
 	}
 
-	/* ---------- Colophon ---------- */
-	/* Both tally lines are flex-wrap rows: each fact is one unbreakable item
-	   (its trailing dot included), so they wrap cleanly on narrow screens. */
-	.colophon,
-	.tally {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		column-gap: 0.6rem;
-		row-gap: 0.25rem;
-	}
-
-	.colophon {
-		margin-top: 0.5rem;
-		font-family: var(--font-body);
-		font-size: 0.72rem;
-		font-weight: 600;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--ink-muted);
-	}
-
-	.tally {
-		margin-top: 0.75rem;
-	}
-
-	.tally-sep {
-		margin-left: 0.6rem;
-		color: var(--rule);
-	}
-
-	.colophon-v {
-		color: var(--ink);
-		font-variant-numeric: tabular-nums;
-	}
-
-	/* ---------- Controls ---------- */
-	.controls {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		gap: 0.75rem 1rem;
-		margin-top: 2.25rem;
-	}
-
-	.seg {
-		display: inline-flex;
-		gap: 0.25rem;
-		padding: 0.3rem;
-		border: 1px solid var(--rule);
-		border-radius: 9999px;
-		background: var(--bg-soft);
-	}
-
-	.seg-opt {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 0.4rem;
-		padding: 0.5rem 0.85rem;
-		border-radius: 9999px;
-		font-family: var(--font-body);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		font-size: 0.72rem;
-		font-weight: 600;
-		color: var(--ink-muted);
-		white-space: nowrap;
-		cursor: pointer;
-		transition:
-			color 250ms ease,
-			background-color 250ms ease;
-	}
-
-	@media (min-width: 640px) {
-		.seg-opt {
-			padding: 0.5rem 1.05rem;
-		}
-	}
-
-	.seg-opt:hover {
-		color: var(--ink);
-	}
-
-	.seg-opt.is-active {
-		color: var(--bg);
-		background: var(--accent);
-	}
-
-	.seg-count {
-		font-size: 0.66rem;
-	}
-
-	.search-row {
-		display: flex;
-		flex: 0 1 16rem;
-	}
-
-	.search-row input {
-		width: 100%;
-		background: transparent;
-		border: 0;
-		border-bottom: 1px solid var(--rule);
-		padding: 0.55rem 0.25rem;
-		font-family: var(--font-body);
-		font-size: 0.95rem;
-		color: var(--ink);
-		text-align: center;
-		transition: border-color 250ms ease;
-	}
-
-	.search-row input::placeholder {
-		color: var(--ink-dim);
-		font-style: italic;
-	}
-
-	.search-row input:focus {
-		outline: none;
-		border-bottom-color: color-mix(in oklab, var(--accent) 65%, transparent);
-	}
-
-	/* ---------- Shelves & the wall ---------- */
-	.shelf {
-		margin-top: 3.5rem;
-	}
-
-	.shelf-title {
-		font-size: clamp(1.4rem, 2vw + 0.5rem, 1.75rem);
-	}
-
+	/* ---------- The wall (grid view) ---------- */
 	.wall {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
 		gap: 1.5rem 1rem;
-		margin-top: 1.5rem;
+		margin-top: 1.9rem;
 		padding: 0;
 		list-style: none;
 	}
@@ -821,13 +915,8 @@
 	.cell {
 		display: block;
 		width: 100%;
-		padding: 0;
-		background: none;
-		border: 0;
 		color: inherit;
-		font: inherit;
 		text-align: center;
-		cursor: pointer;
 	}
 
 	.cell-title {
@@ -865,120 +954,11 @@
 		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
 	}
 
-	/* ---------- The plate ---------- */
-	.plate-dialog {
-		width: min(32rem, calc(100vw - 2rem));
-		margin: auto;
-		border: 1px solid color-mix(in oklab, var(--accent) 30%, var(--rule));
-		border-radius: 1rem;
-		padding: 0;
-		color: var(--ink);
-		background:
-			radial-gradient(
-				130% 130% at 0% 0%,
-				color-mix(in oklab, var(--accent) 10%, transparent),
-				transparent 58%
-			),
-			var(--bg-soft);
-		box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
-	}
-
-	.plate-dialog[open] {
-		animation: plate-in 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-	}
-
-	.plate-dialog::backdrop {
-		background: rgba(6, 4, 3, 0.66);
-		backdrop-filter: blur(5px);
-	}
-
-	:global(body:has(.plate-dialog[open])) {
-		overflow: hidden;
-	}
-
-	@keyframes plate-in {
-		from {
-			opacity: 0;
-			transform: translateY(12px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.plate-inner {
-		position: relative;
-		display: flex;
-		align-items: flex-start;
-		gap: 1.5rem;
-		padding: 1.75rem;
-	}
-
-	.plate-poster {
-		flex: none;
-	}
-
-	.plate-body {
-		min-width: 0;
-	}
-
-	.plate-eyebrow {
-		color: var(--accent);
-	}
-
-	.plate-title {
-		margin-top: 0.4rem;
-		font-size: clamp(1.35rem, 3vw, 1.7rem);
-		line-height: 1.2;
-	}
-
-	.plate-genres {
-		margin-top: 0.5rem;
-		font-size: 0.72rem;
-		letter-spacing: 0.06em;
-		color: var(--ink-dim);
-	}
-
-	.plate-watched {
-		margin-top: 0.9rem;
-		font-size: 0.78rem;
-		color: var(--ink-dim);
-		font-variant-numeric: tabular-nums;
-	}
-
-	.plate-close {
-		position: absolute;
-		top: 0.6rem;
-		right: 0.85rem;
-		padding: 0.25rem 0.45rem;
-		background: none;
-		border: 0;
-		font-family: var(--font-display);
-		font-size: 1.5rem;
-		line-height: 1;
-		color: var(--ink-dim);
-		cursor: pointer;
-		transition: color 250ms ease;
-	}
-
-	.plate-close:hover {
-		color: var(--accent);
-	}
-
-	@media (max-width: 479px) {
-		.plate-inner {
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
-		}
-
-		.plate-note {
-			text-align: left;
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
+		.fav:hover :global(img),
+		.fav:focus-visible :global(img),
+		.lrow-thumb:hover :global(img),
+		.lrow-thumb:focus-visible :global(img),
 		.cell:hover :global(img),
 		.cell:focus-visible :global(img) {
 			transform: none;
