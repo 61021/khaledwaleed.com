@@ -3,6 +3,7 @@ title: Software you can leave alone
 description: The highest compliment I can pay a system is that nobody thinks about it. Notes on building boring software in a place where everything else is eventful.
 date: 2026-07-13
 readingTime: 3 min read
+draft: true
 tags:
   - software
   - craft

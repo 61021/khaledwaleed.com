@@ -11,6 +11,7 @@ export interface Post {
 	date: string; // ISO yyyy-mm-dd
 	readingTime: string;
 	tags: string[];
+	draft?: boolean;
 }
 
 type PostMeta = Omit<Post, 'slug'>;
@@ -36,6 +37,7 @@ export const posts: Post[] = Object.entries(metaModules)
 		// serializes as a full ISO string — keep just the yyyy-mm-dd part.
 		date: String(meta.date).slice(0, 10)
 	}))
+	.filter((p) => !p.draft)
 	.sort((a, b) => b.date.localeCompare(a.date));
 
 export const getPost = (slug: string) => posts.find((p) => p.slug === slug);

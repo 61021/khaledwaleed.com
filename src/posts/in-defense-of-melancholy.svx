@@ -3,6 +3,7 @@ title: In defense of melancholy
 description: Sadness without a cause gets treated as a malfunction to fix. I think it is closer to weather — and sometimes it is the honest response to things worth taking seriously.
 date: 2026-07-13
 readingTime: 3 min read
+draft: true
 tags:
   - melancholy
   - philosophy
