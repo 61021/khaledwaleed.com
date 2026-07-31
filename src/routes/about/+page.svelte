@@ -61,7 +61,7 @@
 					highlights: [
 						'Risha — Iraq’s leading e-learning platform for baccalaureate students. Designed and built the website, web app, dashboard, mobile app, and backend (Vue, Go).',
 						'Rocca Menu — multi-tenant SaaS for bilingual digital restaurant menus with per-tenant theming, live in production (SvelteKit, Nuxt, PocketBase).',
-						'Al-Nejoum Al-Zahera — vehicle-shipping management system with real-time tracking for US and Canada car imports to Iraq and Dubai.',
+						'Auction Key — car-auction brokerage platform with a built-in ERP and real-time shipping tracking for US and Canada car imports; Al-Nejoum Al-Zahera runs 1,000+ cars and US$3M+ through it monthly.',
 						'Dozens of websites and dashboards for businesses across Iraq.'
 					]
 				}
