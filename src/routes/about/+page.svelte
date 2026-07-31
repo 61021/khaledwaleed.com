@@ -196,35 +196,52 @@
 <Container size="prose">
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
-			I build software for a living, but curiosity is probably the more accurate description. For
-			the last five years I have worked as a software engineer here in Baghdad, Iraq — a lead design
-			engineer these days — mostly building web applications that have to survive contact with real
-			users.
+			Every telling of a life picks a beginning. Mine is 2019: the checkout counter of a supermarket
+			in Al-Harithiya, Baghdad, a fourteen-year-old scanning groceries and counting change. I have
+			been working ever since — first at the register, then in pixels, now on systems that millions
+			of people depend on. This page is the long version of how that happened.
 		</p>
 		<p>
-			Most of that work has been in Iraq, which I have come to treat as an advantage rather than a
-			footnote — government platforms, payment systems, work for democracy organisations, private
-			companies, startups. The constraints are real and the stakes are rarely abstract, and you
-			learn quickly which engineering virtues actually hold up when the thing simply has to work.
+			Design came before code. At seventeen, still in school, I spent a summer making posters for
+			surgeons and beauty brands at a small Baghdad studio — and somewhere in there the designs
+			started wanting to become real, working things. So I taught myself to build them. By the end
+			of 2021 I was designing and building websites for a studio in Amsterdam, under a title I would
+			only grow into years later — design engineer — and I had founded
+			<a href="https://vitex.dev" target="_blank" rel="noopener" class="link">Vitex</a>, my own
+			studio, with the sort of motto only a seventeen-year-old would dare:
+			<em>software, pretty and perfect</em>.
 		</p>
 		<p>
-			The work itself is straightforward to describe: <em>TypeScript</em>, <em>Go</em>, databases,
-			APIs, production systems. But what keeps me interested is less the technology than the long,
-			quiet business of understanding something well enough to make it simple. A page that loads
-			fast. A form that doesn't lose its mind. A backend that doesn't wake anyone at three in the
-			morning. The unglamorous virtues. I do this now at
-			<a href="https://qi.iq" target="_blank" rel="noopener" class="link">Qi</a> and
-			<a href="https://vitex.dev" target="_blank" rel="noopener" class="link">Vitex</a>.
+			Then the work turned serious. At eighteen I was building pieces of the state's digital face —
+			the Iraqi Electronic Passport's public website and booking flow, systems for the ports, an ERP
+			behind the intercity-taxi garages of every governorate — and leading a team of nine while
+			doing it. Building software in Iraq is something I treat as an advantage rather than a
+			footnote: the constraints are real, the stakes are rarely abstract, and you learn early which
+			engineering virtues actually hold up when the thing simply has to work. Somewhere in those
+			years a democracy NGO made me its director of AI and technology, and I found myself applying
+			AI models to research alongside some of Iraq's top researchers — a sentence I could not have
+			predicted from behind the register.
 		</p>
 		<p>
-			Away from the screen I spend an unreasonable amount of time reading, watching films, and
-			wandering through the older parts of cities, chasing questions that never seem to stay
-			answered for very long. Meaning, suffering, morality, love, failure, beauty, why people do
-			what they do. Some people collect stamps. I collect questions.
+			Today I lead frontend at
+			<a href="https://qi.iq" target="_blank" rel="noopener" class="link">Qi</a>, Iraq's largest
+			e-payment company, which I joined as the youngest of its 3,000+ employees and the only
+			frontend engineer on seven government platforms. Within a year I had rebuilt and redesigned
+			all seven; then I recruited and trained the three engineers who now run them with me. The
+			portfolio serves more than four million people — one platform alone reaches three million
+			families. And still, the part I care about most is the part nobody audits — sounds, motion,
+			the small courtesies of an interface — shipped in business dashboards nobody expected to
+			enjoy. I have never accepted that “it works” and “it feels right” should be different
+			standards. Vitex, meanwhile, grew up with me: four people now, with products of its own out in
+			the world. There is a title for all of this — lead design engineer — but it is the same
+			instinct that started with the posters.
 		</p>
 		<p>
+			Away from the screen I read, watch films, and wander the older parts of cities, chasing
+			questions that never seem to stay answered for very long — meaning, suffering, morality, love,
+			failure, beauty, why people do what they do. Some people collect stamps. I collect questions.
 			I <a href="/writing" class="link">write</a> occasionally too, mostly because some thoughts
-			become annoying if you leave them alone for too long. I have found that most things become
+			become annoying if you leave them alone for too long, and I have found that most things become
 			more bearable once they become interesting. Software included. If any of that travels well
 			with yours, <a href="/contact" class="link">let's talk</a>.
 		</p>
