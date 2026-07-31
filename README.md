@@ -94,7 +94,7 @@ src/
 └─ routes/
    ├─ +layout.svelte      # shell: nav, footer, room/painting, command palette
    ├─ +page.svelte        # home
-   ├─ about · cv · likes · library · films · music · contact · writing
+   ├─ about · likes · library · films · music · contact · writing
    ├─ og.png/             # site-wide OG card · per-essay cards at writing/[slug]/og.png
    └─ sitemap.xml · robots.txt · rss.xml (styled by static/rss.xsl)
 scripts/                  # data tooling (see below)
@@ -108,8 +108,7 @@ static/                   # paintings, logos, manifest, etc.
 | Route      | What it is                                                                                     |
 | ---------- | ---------------------------------------------------------------------------------------------- |
 | `/`        | Home / hero — the canonical profile page                                                       |
-| `/about`   | Longer bio, career history, toolkit                                                            |
-| `/cv`      | The CV — view or download the PDF                                                              |
+| `/about`   | Longer bio, career history, toolkit, CV download                                               |
 | `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                    |
 | `/library` | Books                                                                                          |
 | `/films`   | A ledger of ~225 rated films & shows — server-rendered from PocketBase, searchable, with stats |

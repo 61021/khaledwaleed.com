@@ -25,10 +25,11 @@
 					title: 'Lead Frontend Engineer',
 					period: 'Jan 2025 — present',
 					highlights: [
-						'Hired as QiCard’s youngest engineer among 3,000+ employees — the sole frontend engineer for the whole portfolio.',
-						'Lead the front-end team behind seven large-scale governmental applications serving 4+ million users — owning architecture, code reviews, and engineering standards across the portfolio.',
-						'Scaled the Oil Coupon mini-app past 3 million families — Super Qi’s most-used mini-app and one of the most widely used public-sector digital services in Iraq.',
-						'Drive modernization of legacy codebases to current Vue and Nuxt standards while keeping mission-critical systems stable in production.'
+						'Youngest employee among Qi’s 3,000+ staff.',
+						'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app to modern Vue/Nuxt standards within a year.',
+						'Built the frontend team — scouted, interviewed, and trial-task-vetted all three hires, then trained and onboarded them; now lead the four, owning code review, standards, and release quality.',
+						'Portfolio serves 4+ million users — including Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems managing the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
+						'Designed and built the corporate website of Enjaz, Qi’s e-government arm.'
 					]
 				}
 			]
@@ -42,9 +43,9 @@
 					title: 'Director of AI & Technology',
 					period: 'Feb 2024 — present',
 					highlights: [
-						'Center member and technology lead of an Iraqi NGO advancing democracy, civic engagement, and human rights — I own its infrastructure, tooling, and IT operations.',
-						'Work with top Iraqi researchers, applying advanced AI models to conduct and enhance the center’s research.',
-						'Built and operate ishtarcenter.com — a bilingual site with a self-hosted backend — and the center’s conference website.'
+						'Center member of an Iraqi NGO advancing democracy and human rights; own all of its technology.',
+						'Work with Iraq’s top researchers, applying advanced AI models to conduct and enhance the center’s research.',
+						'Built and operate ishtarcenter.com — a bilingual Nuxt site with a self-hosted backend — and the center’s conference website.'
 					]
 				}
 			]
@@ -53,44 +54,17 @@
 			company: 'Vitex',
 			url: 'https://vitex.dev',
 			meta: 'Self-employed · Baghdad · remote',
-			lede: 'Independent software studio delivering complete products for clients across Iraq — design, front-end, backend, and deployment.',
 			roles: [
 				{
 					title: 'Founder & Lead Engineer',
 					period: 'Oct 2021 — present',
 					highlights: [
-						'Risha — Iraq’s leading e-learning platform for baccalaureate students. Designed and built the website, web app, dashboard, mobile app, and backend (Vue, Go).',
-						'Rocca Menu — multi-tenant SaaS for bilingual digital restaurant menus with per-tenant theming, live in production (SvelteKit, Nuxt, PocketBase).',
-						'Auction Key — car-auction brokerage platform with a built-in ERP and real-time shipping tracking for US and Canada car imports; Al-Nejoum Al-Zahera runs 1,000+ cars and US$3M+ through it monthly.',
-						'Dozens of websites and dashboards for businesses across Iraq.'
-					]
-				}
-			]
-		},
-		{
-			company: 'EGi',
-			meta: 'Part-time · Baghdad · hybrid',
-			roles: [
-				{
-					title: 'Software Engineer',
-					period: 'Jun 2024 — Jan 2025',
-					highlights: [
-						'Designed and built the Esports Gaming Iraq platform website with Nuxt.',
-						'Integrated QiCard payments end to end for a smooth gaming and checkout experience.'
-					]
-				}
-			]
-		},
-		{
-			company: 'Digital Logic',
-			meta: 'Full-time · Baghdad · on-site',
-			roles: [
-				{
-					title: 'Frontend Engineer',
-					period: 'Oct 2022 — Dec 2024',
-					highlights: [
-						'Led development of Vue.js applications for Iraqi government agencies — the Iraqi Electronic Passport, the General Company for Ports of Iraq, Scopesky HR, Durrat Al-Muheet ticketing, the Garage System, and Central Connections.',
-						'Mentored interns through their first production projects, from code reviews to shipping features.'
+						'Run a four-person design-engineering studio (“Software, pretty and perfect”) building web platforms and mobile apps for Iraqi enterprises and NGOs.',
+						'Built Risha end to end — mobile app, dashboard, website: e-learning connecting Iraq’s sixth-preparatory students with elite private tutors. 25K+ downloads, custom cross-device DRM; led all design and frontend.',
+						'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations — 1,000+ cars and $3M+ in transactions monthly.',
+						'Built and operate Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, live in 20+ venues.',
+						'Shipped platforms for Afaq Al-Obaidi subsidiaries — Smartic (employment), National Foodstuff, Auto Zone, Golden Lube — and an archiving system for the Al-Amal Association.',
+						'Operate 20+ production client deployments (Cloudflare Pages + self-hosted VPS backends).'
 					]
 				}
 			]
@@ -103,8 +77,23 @@
 					title: 'Senior Software Engineer',
 					period: 'Feb 2024 — Dec 2024',
 					highlights: [
-						'Built Morshed’s website, an accounting ERP, and internal workflow systems — plus websites and ERP systems for Morshed’s clients.',
-						'Owned the digital transformation of the business-development and PR firm end to end.'
+						'Built Morshed’s website, accounting ERP, and internal workflow systems — and shipped websites and ERP systems for Morshed’s clients.',
+						'Owned the digital transformation of the business-development & PR firm end to end.'
+					]
+				}
+			]
+		},
+		{
+			company: 'Digital Logic',
+			meta: 'Full-time · Baghdad · on-site',
+			roles: [
+				{
+					title: 'Frontend Engineer',
+					period: 'Oct 2022 — Dec 2024',
+					highlights: [
+						'Built the Iraqi Electronic Passport platform’s public website and appointment-booking flow, plus Vue.js frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
+						'Led a team of nine developing The Garage System — an ERP managing the intercity-taxi garages of every Iraqi governorate; set code conventions and reviewed all frontend work.',
+						'Mentored three interns through their first production features.'
 					]
 				}
 			]
@@ -117,7 +106,8 @@
 					title: 'Design Engineer',
 					period: 'Oct 2021 — Oct 2022',
 					highlights: [
-						'Designed websites for Dutch brands as part of a fully remote team, collaborating across time zones.'
+						'Designed and built websites for Dutch brands — including Inflexio — plus Speetu’s own site, logo, and brand identity.',
+						'Collaborated remotely with a distributed team across time zones.'
 					]
 				}
 			]
@@ -141,13 +131,10 @@
 			meta: 'Full-time · Baghdad · on-site',
 			roles: [
 				{
-					title: 'Cashier / Store Assistant',
+					title: 'Cashier & Store Assistant',
 					period: 'Apr 2019 — Jun 2021',
 					highlights: [
-						'My first job ever, in a medium-sized supermarket in Al-Harithiya.',
-						'Learned how to deal with impatient adults before I even had a high school ID.',
-						'Managed inventory and restocked shelves.',
-						'Assisted customers and handled basic checkout operations.'
+						'First job ever, in a mid-sized Al-Harithiya supermarket — checkout, inventory, and restocking, learning to handle impatient adults before having a high-school ID.'
 					]
 				}
 			]
@@ -155,6 +142,7 @@
 	];
 
 	const linkedIn = site.socials.find((s) => s.label === 'LinkedIn')?.href;
+	const cvUrl = '/Khaled-Waleed-Resume.pdf';
 
 	const skills: Record<string, string[]> = {
 		Frontend: ['TypeScript', 'SvelteKit', 'Nuxt', 'Vue', 'React', 'Tailwind', 'Vite'],
@@ -290,9 +278,13 @@
 		</ol>
 		<p class="mt-14 text-center text-sm italic text-[var(--ink-muted)]">
 			The same story, in corporate dress, on
-			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a> — or
-			<a href="/cv" class="link">on paper</a>.
+			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a> — or on two quiet pages
+			of paper.
 		</p>
+		<div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+			<Button href={cvUrl} external>View the CV</Button>
+			<Button href={cvUrl} download="Khaled-Waleed-Resume.pdf" variant="outline">Download</Button>
+		</div>
 	</section>
 
 	<Fleuron />

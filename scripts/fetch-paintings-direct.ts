@@ -47,11 +47,6 @@ const items: Item[] = [
 		slug: 'films',
 		file: 'Georges_de_La_Tour_-_The_Magdalen_with_the_Smoking_Flame_-_Google_Art_Project.jpg',
 		srcWidth: 3200
-	},
-	{
-		slug: 'cv',
-		file: 'Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg',
-		srcWidth: 3200
 	}
 ];
 

@@ -24,9 +24,9 @@
 		{
 			id: 'cv',
 			title: 'CV',
-			subtitle: 'Printable one-page summary',
-			href: '/cv',
-			kind: 'page',
+			subtitle: 'The two-page PDF',
+			href: '/Khaled-Waleed-Resume.pdf',
+			kind: 'external',
 			keywords: 'resume pdf download'
 		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },

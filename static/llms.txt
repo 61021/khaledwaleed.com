@@ -17,8 +17,7 @@
 ## Pages
 
 - / — Home. The front door.
-- /about — Background, work history, toolkit.
-- /cv — The CV, two pages as a PDF, viewable and downloadable.
+- /about — Background, work history, toolkit, and the CV as a downloadable PDF.
 - /writing — Essays and notes.
 - /writing/in-defense-of-melancholy — Sadness without a cause is closer to weather than malfunction.
 - /writing/software-you-can-leave-alone — Notes on building boring software in an eventful place.

@@ -182,16 +182,6 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.english-heritage.org.uk/visit/places/kenwood/',
 		source: 'https://en.wikipedia.org/wiki/The_Guitar_Player_(Vermeer)',
 		alt: 'A young woman in a yellow ermine-trimmed jacket plays a guitar, glancing aside with a half-smile, in a sunlit Dutch interior.'
-	},
-	cv: {
-		key: 'cv',
-		title: 'Wanderer above the Sea of Fog',
-		artist: 'Caspar David Friedrich',
-		year: 'c. 1818',
-		museum: 'Kunsthalle Hamburg',
-		museumUrl: 'https://www.hamburger-kunsthalle.de/en',
-		source: 'https://en.wikipedia.org/wiki/Wanderer_above_the_Sea_of_Fog',
-		alt: 'A lone figure in a dark coat stands atop a rocky outcrop, looking out over a sea of fog and distant mountain peaks.'
 	}
 };
 
@@ -206,7 +196,6 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
 	if (pathname.startsWith('/writing/')) return 'writing';
-	if (pathname === '/cv') return 'cv';
 	return 'home';
 }
 
@@ -221,6 +210,5 @@ export const roomBg: Record<string, string> = {
 	music: '#141017',
 	likes: '#0a0e1a',
 	contact: '#0c121e',
-	cv: '#141b1e',
 	'404': '#232b30'
 };

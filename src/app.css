@@ -103,17 +103,6 @@
 	--accent: #b8a87a;
 }
 
-:root[data-room='cv'] {
-	/* wanderer above the sea of fog: cool misty slate, warm gold accent breaking through */
-	--bg: #141b1e;
-	--bg-soft: #1c262a;
-	--ink: #dfe6e2;
-	--ink-muted: #9fb0ac;
-	--ink-dim: #67766f;
-	--rule: #26302f;
-	--accent: #c9a86a;
-}
-
 /* ---------- Typography stack ----------
    Two families, one role each:
    · body    = Inter              (sans — running text, labels, smallcaps)
