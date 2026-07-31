@@ -6,6 +6,7 @@ describe('roomForPath', () => {
 		expect(roomForPath('/')).toBe('home');
 		expect(roomForPath('')).toBe('home');
 		expect(roomForPath('/about')).toBe('about');
+		expect(roomForPath('/cv')).toBe('cv');
 		expect(roomForPath('/likes')).toBe('likes');
 		expect(roomForPath('/library')).toBe('library');
 		expect(roomForPath('/films')).toBe('films');
@@ -23,6 +24,7 @@ describe('roomForPath', () => {
 		const routes = [
 			'/',
 			'/about',
+			'/cv',
 			'/likes',
 			'/library',
 			'/films',

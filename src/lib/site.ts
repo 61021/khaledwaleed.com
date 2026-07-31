@@ -3,9 +3,9 @@
 
 export const site = {
 	name: 'Khaled Waleed',
-	role: 'Senior Software Engineer',
+	role: 'Lead Design Engineer',
 	tagline:
-		'Khaled Waleed — a senior software engineer in Baghdad, Iraq, building quiet, well-made software for the web in SvelteKit and Go.',
+		'Khaled Waleed — a lead design engineer in Baghdad, Iraq, building quiet, well-made software for the web in SvelteKit and Go.',
 	shortBio:
 		'I design and ship modern web apps end to end: SvelteKit and Nuxt on the frontend, Go on the backend.',
 	location: {
@@ -32,8 +32,8 @@ export const site = {
 	keywords: [
 		'Khaled Waleed',
 		'Khaled Waleed software engineer',
-		'senior software engineer Iraq',
-		'senior software engineer Baghdad',
+		'lead design engineer Iraq',
+		'design engineer Baghdad',
 		'senior developer Iraq',
 		'senior dev Iraq',
 		'senior frontend engineer Iraq',
@@ -49,8 +49,8 @@ export const site = {
 	],
 
 	companies: [
-		{ name: 'QiCard', url: 'https://qi.iq', role: 'Lead Software Engineer' },
-		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Founder & Software Engineer' }
+		{ name: 'QiCard', url: 'https://qi.iq', role: 'Lead Frontend Engineer' },
+		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Founder & Lead Engineer' }
 	],
 
 	socials: [
@@ -182,6 +182,16 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.english-heritage.org.uk/visit/places/kenwood/',
 		source: 'https://en.wikipedia.org/wiki/The_Guitar_Player_(Vermeer)',
 		alt: 'A young woman in a yellow ermine-trimmed jacket plays a guitar, glancing aside with a half-smile, in a sunlit Dutch interior.'
+	},
+	cv: {
+		key: 'cv',
+		title: 'Wanderer above the Sea of Fog',
+		artist: 'Caspar David Friedrich',
+		year: 'c. 1818',
+		museum: 'Kunsthalle Hamburg',
+		museumUrl: 'https://www.hamburger-kunsthalle.de/en',
+		source: 'https://en.wikipedia.org/wiki/Wanderer_above_the_Sea_of_Fog',
+		alt: 'A lone figure in a dark coat stands atop a rocky outcrop, looking out over a sea of fog and distant mountain peaks.'
 	}
 };
 
@@ -196,6 +206,7 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
 	if (pathname.startsWith('/writing/')) return 'writing';
+	if (pathname === '/cv') return 'cv';
 	return 'home';
 }
 
@@ -210,5 +221,6 @@ export const roomBg: Record<string, string> = {
 	music: '#141017',
 	likes: '#0a0e1a',
 	contact: '#0c121e',
+	cv: '#141b1e',
 	'404': '#232b30'
 };

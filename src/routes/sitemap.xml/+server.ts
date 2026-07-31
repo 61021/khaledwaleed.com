@@ -6,6 +6,7 @@ export const prerender = true;
 const staticRoutes = [
 	'/',
 	'/about',
+	'/cv',
 	'/likes',
 	'/library',
 	'/films',

@@ -21,7 +21,7 @@
 
 <Seo
 	title="Contact"
-	description="Get in touch with Khaled Waleed — senior software engineer in Baghdad. Available for select consulting and contract work."
+	description="Get in touch with Khaled Waleed — lead design engineer in Baghdad. Available for select consulting and contract work."
 />
 
 <SchemaOrg schema={contactSchema} />

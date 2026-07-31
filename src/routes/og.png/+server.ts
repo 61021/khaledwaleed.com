@@ -8,7 +8,7 @@ export const GET: RequestHandler = async () => {
 	const png = await renderOgPng({
 		palette: homePalette,
 		eyebrow: site.name,
-		headline: ['A senior software engineer', 'in Baghdad.'],
+		headline: ['A lead design engineer', 'in Baghdad.'],
 		sub: 'SvelteKit · Nuxt · Go — quiet, well-made software for the web.',
 		footerLeft: 'khaledwaleed.com',
 		footerRight: 'Baghdad · Iraq'

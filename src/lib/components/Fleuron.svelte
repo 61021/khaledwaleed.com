@@ -1,7 +1,7 @@
 <div class="fleuron" aria-hidden="true">
 	<span class="fleuron-mark">
 		<!-- Hedera (printer's ivy leaf) — drawn inline because U+2766/U+2767
-		     are missing from Fraunces and from many system serifs. -->
+		     are missing from Cormorant Garamond and from many system serifs. -->
 		<svg viewBox="0 0 40 24" fill="currentColor" aria-hidden="true">
 			<circle cx="10.5" cy="7.6" r="4.8" />
 			<circle cx="10.5" cy="16.4" r="4.8" />

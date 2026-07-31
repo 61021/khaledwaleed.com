@@ -1,6 +1,6 @@
 # khaledwaleed.com
 
-The personal website of **Khaled Waleed** — a senior software engineer in Baghdad, Iraq. A quiet, atmospheric site built with SvelteKit and Go-flavoured sensibilities, where every page is its own dimly-lit room hung with a public-domain Northern Romantic painting.
+The personal website of **Khaled Waleed** — a lead design engineer in Baghdad, Iraq. A quiet, atmospheric site built with SvelteKit and Go-flavoured sensibilities, where every page is its own dimly-lit room hung with a public-domain Northern Romantic painting.
 
 🔗 **Live:** [khaledwaleed.com](https://khaledwaleed.com)
 
@@ -23,16 +23,16 @@ Almost everything is **prerendered to static HTML** at build time. The single ex
 
 ## Tech stack
 
-| Concern      | Choice                                                                                                   |
-| ------------ | -------------------------------------------------------------------------------------------------------- |
-| Framework    | [SvelteKit 2](https://svelte.dev/docs/kit) with Svelte 5 runes                                           |
-| Styling      | [Tailwind CSS 4](https://tailwindcss.com) + `@tailwindcss/typography`                                    |
-| Content      | [mdsvex](https://mdsvex.pngwn.io) (`.svx`) for writing                                                   |
-| Language     | TypeScript                                                                                               |
-| OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                  |
-| Fonts        | Self-hosted [Inter](https://rsms.me/inter/) + [Fraunces](https://fraunces.undercase.xyz/) via Fontsource |
-| Runtime / PM | [Bun](https://bun.sh)                                                                                    |
-| Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                        |
+| Concern      | Choice                                                                                                                                  |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework    | [SvelteKit 2](https://svelte.dev/docs/kit) with Svelte 5 runes                                                                          |
+| Styling      | [Tailwind CSS 4](https://tailwindcss.com) + `@tailwindcss/typography`                                                                   |
+| Content      | [mdsvex](https://mdsvex.pngwn.io) (`.svx`) for writing                                                                                  |
+| Language     | TypeScript                                                                                                                              |
+| OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                                                 |
+| Fonts        | Self-hosted [Inter](https://rsms.me/inter/) + [Cormorant Garamond](https://fonts.google.com/specimen/Cormorant+Garamond) via Fontsource |
+| Runtime / PM | [Bun](https://bun.sh)                                                                                                                   |
+| Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                                                       |
 
 ## Getting started
 
@@ -94,7 +94,7 @@ src/
 └─ routes/
    ├─ +layout.svelte      # shell: nav, footer, room/painting, command palette
    ├─ +page.svelte        # home
-   ├─ about · likes · library · films · music · contact · writing
+   ├─ about · cv · likes · library · films · music · contact · writing
    ├─ og.png/             # site-wide OG card · per-essay cards at writing/[slug]/og.png
    └─ sitemap.xml · robots.txt · rss.xml (styled by static/rss.xsl)
 scripts/                  # data tooling (see below)
@@ -109,6 +109,7 @@ static/                   # paintings, logos, manifest, etc.
 | ---------- | ---------------------------------------------------------------------------------------------- |
 | `/`        | Home / hero — the canonical profile page                                                       |
 | `/about`   | Longer bio, career history, toolkit                                                            |
+| `/cv`      | The CV — view or download the PDF                                                              |
 | `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                    |
 | `/library` | Books                                                                                          |
 | `/films`   | A ledger of ~225 rated films & shows — server-rendered from PocketBase, searchable, with stats |

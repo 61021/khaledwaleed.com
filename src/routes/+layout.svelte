@@ -3,8 +3,8 @@
 	import '@fontsource/inter/400.css';
 	import '@fontsource/inter/400-italic.css';
 	import '@fontsource/inter/600.css';
-	import '@fontsource/fraunces/400.css';
-	import '@fontsource/fraunces/400-italic.css';
+	import '@fontsource/cormorant-garamond/400.css';
+	import '@fontsource/cormorant-garamond/400-italic.css';
 
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
@@ -65,6 +65,7 @@
 
 	const nav = [
 		{ name: 'About', href: '/about' },
+		{ name: 'CV', href: '/cv' },
 		{ name: 'Writing', href: '/writing' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Library', href: '/library' },
@@ -118,7 +119,7 @@
 					{@const active = isActive(item.href, $page.url.pathname)}
 					<a
 						href={item.href}
-						class="font-[var(--font-display)] text-[1.05rem] italic transition-colors duration-300 {active
+						class="font-display text-[1.05rem] italic transition-colors duration-300 {active
 							? 'text-[var(--accent)]'
 							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 						aria-current={active ? 'page' : undefined}
@@ -190,7 +191,7 @@
 						<li>
 							<a
 								href={item.href}
-								class="block py-3 font-[var(--font-display)] text-lg italic transition-colors {active
+								class="block py-3 font-display text-lg italic transition-colors {active
 									? 'text-[var(--accent)]'
 									: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 								aria-current={active ? 'page' : undefined}
@@ -203,7 +204,7 @@
 					<li>
 						<button
 							type="button"
-							class="block w-full py-3 text-left font-[var(--font-display)] text-lg italic text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]"
+							class="block w-full py-3 text-left font-display text-lg italic text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]"
 							onclick={() => {
 								mobileOpen = false;
 								paletteSignal.request();
@@ -232,7 +233,7 @@
 						{site.name} · {site.role} ·&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
 					<div class="smallcaps">
-						mmxxvi · set in inter &amp; fraunces · <a
+						mmxxvi · set in inter &amp; cormorant garamond · <a
 							href="https://github.com/61021/khaledwaleed.com"
 							target="_blank"
 							rel="noopener noreferrer"

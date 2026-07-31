@@ -22,21 +22,29 @@
 			meta: 'Full-time · Baghdad · on-site',
 			roles: [
 				{
-					title: 'Lead Software Engineer',
-					period: 'Aug 2025 — present',
+					title: 'Lead Frontend Engineer',
+					period: 'Jan 2025 — present',
 					highlights: [
-						'Lead the front-end team behind 6+ large-scale governmental applications serving millions of citizens — owning architecture, code reviews, and engineering standards across the portfolio.',
-						'Scaled the Oil Coupon mini-app past 2 million families, one of the most widely used public-sector digital services in Iraq.',
+						'Hired as QiCard’s youngest engineer among 3,000+ employees — the sole frontend engineer for the whole portfolio.',
+						'Lead the front-end team behind seven large-scale governmental applications serving 4+ million users — owning architecture, code reviews, and engineering standards across the portfolio.',
+						'Scaled the Oil Coupon mini-app past 3 million families — Super Qi’s most-used mini-app and one of the most widely used public-sector digital services in Iraq.',
 						'Drive modernization of legacy codebases to current Vue and Nuxt standards while keeping mission-critical systems stable in production.'
 					]
-				},
+				}
+			]
+		},
+		{
+			company: 'Ishtar Center for Democracy Support',
+			url: 'https://ishtarcenter.com',
+			meta: 'Part-time · Baghdad · hybrid',
+			roles: [
 				{
-					title: 'Senior Software Engineer',
-					period: 'Jan 2025 — Aug 2025',
+					title: 'Director of AI & Technology',
+					period: 'Feb 2024 — present',
 					highlights: [
-						'Hired as QiCard’s youngest engineer among 3,000+ employees; promoted to Lead Software Engineer within 8 months.',
-						'Built and maintained front-ends for public-sector mini-apps inside the Qi ecosystem (Vue, Nuxt), working in cross-functional Agile squads with product, backend, and QA.',
-						'Delivered features on mission-critical digital transformation projects for government partners.'
+						'Center member and technology lead of an Iraqi NGO advancing democracy, civic engagement, and human rights — I own its infrastructure, tooling, and IT operations.',
+						'Work with top Iraqi researchers, applying advanced AI models to conduct and enhance the center’s research.',
+						'Built and operate ishtarcenter.com — a bilingual site with a self-hosted backend — and the center’s conference website.'
 					]
 				}
 			]
@@ -48,8 +56,8 @@
 			lede: 'Independent software studio delivering complete products for clients across Iraq — design, front-end, backend, and deployment.',
 			roles: [
 				{
-					title: 'Founder & Software Engineer',
-					period: 'Mar 2022 — present',
+					title: 'Founder & Lead Engineer',
+					period: 'Oct 2021 — present',
 					highlights: [
 						'Risha — Iraq’s leading e-learning platform for baccalaureate students. Designed and built the website, web app, dashboard, mobile app, and backend (Vue, Go).',
 						'Rocca Menu — multi-tenant SaaS for bilingual digital restaurant menus with per-tenant theming, live in production (SvelteKit, Nuxt, PocketBase).',
@@ -75,10 +83,10 @@
 		},
 		{
 			company: 'Digital Logic',
-			meta: 'Full-time · Baghdad · hybrid',
+			meta: 'Full-time · Baghdad · on-site',
 			roles: [
 				{
-					title: 'Software Engineer',
+					title: 'Frontend Engineer',
 					period: 'Oct 2022 — Dec 2024',
 					highlights: [
 						'Led development of Vue.js applications for Iraqi government agencies — the Iraqi Electronic Passport, the General Company for Ports of Iraq, Scopesky HR, Durrat Al-Muheet ticketing, the Garage System, and Central Connections.',
@@ -92,12 +100,11 @@
 			meta: 'Part-time · Baghdad · hybrid',
 			roles: [
 				{
-					title: 'Software Engineer',
-					period: 'Jun 2021 — Mar 2024',
+					title: 'Senior Software Engineer',
+					period: 'Feb 2024 — Dec 2024',
 					highlights: [
-						'Designed and implemented digital solutions tailored to streamline operations for a leading PR, business development, and research company in Iraq.',
-						'Collaborated with cross-functional teams to analyze, modernize, and integrate data-driven strategies across large-scale enterprise systems.',
-						'Leveraged modern technologies to optimize workflows, enhance decision-making, and drive measurable business impact.'
+						'Built Morshed’s website, an accounting ERP, and internal workflow systems — plus websites and ERP systems for Morshed’s clients.',
+						'Owned the digital transformation of the business-development and PR firm end to end.'
 					]
 				}
 			]
@@ -107,8 +114,8 @@
 			meta: 'Part-time · Amsterdam · remote',
 			roles: [
 				{
-					title: 'Web Designer',
-					period: 'Aug 2022 — Jul 2023',
+					title: 'Design Engineer',
+					period: 'Oct 2021 — Oct 2022',
 					highlights: [
 						'Designed websites for Dutch brands as part of a fully remote team, collaborating across time zones.'
 					]
@@ -123,7 +130,8 @@
 					title: 'Graphic Designer',
 					period: 'Jun 2021 — Oct 2021',
 					highlights: [
-						'Designed brand identities and print and digital assets — brochures, posters, social media, and web graphics — in collaboration with marketing teams.'
+						'Produced print and digital brand assets — brochures, posters, social-media sets, and web graphics — mostly for beauty and organic brands, doctors, and surgeons.',
+						'Worked with marketing teams to keep design aligned with brand strategy and campaign goals.'
 					]
 				}
 			]
@@ -134,7 +142,7 @@
 			roles: [
 				{
 					title: 'Cashier / Store Assistant',
-					period: 'Apr 2019 — Feb 2021',
+					period: 'Apr 2019 — Jun 2021',
 					highlights: [
 						'My first job ever, in a medium-sized supermarket in Al-Harithiya.',
 						'Learned how to deal with impatient adults before I even had a high school ID.',
@@ -172,7 +180,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-07-23',
+		dateModified: '2026-07-31',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -186,7 +194,7 @@
 
 <Seo
 	title="About"
-	description="Khaled Waleed is a senior software engineer in Baghdad, Iraq — five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go."
+	description="Khaled Waleed is a lead design engineer in Baghdad, Iraq — five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go."
 />
 
 <SchemaOrg schema={aboutPageSchema} />
@@ -201,9 +209,9 @@
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
 			I build software for a living, but curiosity is probably the more accurate description. For
-			the last five years I have worked as a software engineer here in Baghdad, Iraq — a senior
-			software engineer these days — mostly building web applications that have to survive contact
-			with real users.
+			the last five years I have worked as a software engineer here in Baghdad, Iraq — a lead design
+			engineer these days — mostly building web applications that have to survive contact with real
+			users.
 		</p>
 		<p>
 			Most of that work has been in Iraq, which I have come to treat as an advantage rather than a
@@ -282,7 +290,8 @@
 		</ol>
 		<p class="mt-14 text-center text-sm italic text-[var(--ink-muted)]">
 			The same story, in corporate dress, on
-			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a>.
+			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a> — or
+			<a href="/cv" class="link">on paper</a>.
 		</p>
 	</section>
 

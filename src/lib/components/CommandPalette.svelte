@@ -21,6 +21,14 @@
 			href: '/about',
 			kind: 'page'
 		},
+		{
+			id: 'cv',
+			title: 'CV',
+			subtitle: 'Printable one-page summary',
+			href: '/cv',
+			kind: 'page',
+			keywords: 'resume pdf download'
+		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{
 			id: 'likes',

@@ -103,15 +103,27 @@
 	--accent: #b8a87a;
 }
 
+:root[data-room='cv'] {
+	/* wanderer above the sea of fog: cool misty slate, warm gold accent breaking through */
+	--bg: #141b1e;
+	--bg-soft: #1c262a;
+	--ink: #dfe6e2;
+	--ink-muted: #9fb0ac;
+	--ink-dim: #67766f;
+	--rule: #26302f;
+	--accent: #c9a86a;
+}
+
 /* ---------- Typography stack ----------
    Two families, one role each:
-   · body    = Inter    (sans — running text, labels, smallcaps)
-   · display = Fraunces (serif — headings, dropcaps, logo, buttons)
+   · body    = Inter              (sans — running text, labels, smallcaps)
+   · display = Cormorant Garamond (serif — headings, dropcaps, logo, buttons;
+                                   the same serif the CV is set in)
    One weight per family (400); Inter 600 only for smallcaps labels. */
 :root {
 	--font-body:
 		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
-	--font-display: 'Fraunces', Georgia, 'Times New Roman', ui-serif, serif;
+	--font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', ui-serif, serif;
 }
 
 @theme inline {
