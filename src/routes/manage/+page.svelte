@@ -13,7 +13,7 @@
 
 	// --- Auth ------------------------------------------------------------
 	let authed = $state(false);
-	let email = $state('master@khaled waleed.com');
+	let email = $state('master@khaledwaleed.com');
 	let password = $state('');
 	let authError = $state('');
 
