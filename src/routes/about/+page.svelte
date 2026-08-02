@@ -168,7 +168,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-07-31',
+		dateModified: '2026-08-02',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -244,6 +244,10 @@
 			become annoying if you leave them alone for too long, and I have found that most things become
 			more bearable once they become interesting. Software included. If any of that travels well
 			with yours, <a href="/contact" class="link">let's talk</a>.
+		</p>
+		<p class="text-sm italic text-[var(--ink-muted)]">
+			For the record, the name in Arabic is <span lang="ar" class="not-italic">خالد وليد</span> — romanized
+			Khaled Waleed, though Khalid Waleed and Khaled Walid also find their way to me.
 		</p>
 	</section>
 

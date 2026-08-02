@@ -229,7 +229,8 @@
 			>
 				<div class="space-y-1">
 					<div class="italic text-[var(--ink-muted)] max-sm:text-sm">
-						{site.name} · {site.role} ·&nbsp;{site.location.city},&nbsp;{site.location.country}
+						{site.name} · <span lang="ar" class="not-italic">{site.nameArabic}</span> · {site.role}
+						·&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
 					<div class="smallcaps">
 						mmxxvi · set in inter &amp; cormorant garamond · <a

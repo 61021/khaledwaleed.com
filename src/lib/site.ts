@@ -3,6 +3,9 @@
 
 export const site = {
 	name: 'Khaled Waleed',
+	// The name in its own script — rendered in visible text (footer, /about) so
+	// Arabic-script name queries have a literal string to match, not just schema.
+	nameArabic: 'خالد وليد',
 	role: 'Lead Design Engineer',
 	tagline:
 		'Khaled Waleed — a lead design engineer in Baghdad, Iraq, building quiet, well-made software for the web in SvelteKit and Go.',
@@ -31,6 +34,8 @@ export const site = {
 
 	keywords: [
 		'Khaled Waleed',
+		'Khalid Waleed',
+		'خالد وليد',
 		'Khaled Waleed software engineer',
 		'lead design engineer Iraq',
 		'design engineer Baghdad',

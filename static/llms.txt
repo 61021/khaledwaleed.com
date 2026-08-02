@@ -6,8 +6,8 @@
 
 ## About
 
-- Name: Khaled Waleed
-- Also spelled: Khalid Waleed
+- Name: Khaled Waleed (Arabic: خالد وليد)
+- Also spelled: Khalid Waleed · Khaled Walid · Khalid Walid
 - Role: Lead Design Engineer
 - Location: Baghdad, Iraq
 - Working at: QiCard (qi.iq), Vitex (vitex.dev)

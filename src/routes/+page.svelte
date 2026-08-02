@@ -14,7 +14,7 @@
 		url: site.url,
 		name: `${site.name} — ${site.role}`,
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-07-23',
+		dateModified: '2026-08-02',
 		primaryImageOfPage: `${site.url}${site.avatar}`,
 		mainEntity: { '@id': `${site.url}/#person` }
 	};

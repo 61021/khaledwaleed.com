@@ -9,7 +9,17 @@
 		name: site.name,
 		givenName: 'Khaled',
 		familyName: 'Waleed',
-		alternateName: ['Khalid Waleed', 'Khaled', 'Khaled W', 'Khaled Waleed Khalid', 'kwaleedkhalid'],
+		alternateName: [
+			site.nameArabic,
+			'خالد وليد خالد',
+			'Khalid Waleed',
+			'Khaled Walid',
+			'Khalid Walid',
+			'Khaled',
+			'Khaled W',
+			'Khaled Waleed Khalid',
+			'kwaleedkhalid'
+		],
 		nationality: { '@type': 'Country', name: 'Iraq' },
 		url: site.url,
 		mainEntityOfPage: site.url,
