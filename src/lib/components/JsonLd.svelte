@@ -26,7 +26,7 @@
 		// Raster first — image search and knowledge panels skip SVGs.
 		image: [`${site.url}${site.ogImage}`, `${site.url}${site.avatar}`],
 		jobTitle: site.role,
-		disambiguatingDescription: `${site.role} based in Baghdad, Iraq (QiCard, Vitex)`,
+		disambiguatingDescription: `${site.role} based in Baghdad, Iraq (QiCard, Vitex, Ishtar Center)`,
 		hasOccupation: {
 			'@type': 'Occupation',
 			name: site.role,
@@ -71,7 +71,7 @@
 			'Linux'
 		],
 		knowsLanguage: ['en', 'ar'],
-		sameAs: site.socials.map((s) => s.href)
+		sameAs: [...site.socials.map((s) => s.href), ...site.profiles]
 	};
 
 	const websiteSchema = {
@@ -96,5 +96,8 @@
 	     Person schema's sameAs (and vice versa where the profile links back). -->
 	{#each site.socials as s (s.href)}
 		<link rel="me" href={s.href} />
+	{/each}
+	{#each site.profiles as p (p)}
+		<link rel="me" href={p} />
 	{/each}
 </svelte:head>

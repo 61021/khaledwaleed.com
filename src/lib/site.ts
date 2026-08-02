@@ -55,7 +55,12 @@ export const site = {
 
 	companies: [
 		{ name: 'QiCard', url: 'https://qi.iq', role: 'Lead Frontend Engineer' },
-		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Founder & Lead Engineer' }
+		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Founder & Lead Engineer' },
+		{
+			name: 'Ishtar Center for Democracy Support',
+			url: 'https://ishtarcenter.com',
+			role: 'Director of AI & Technology'
+		}
 	],
 
 	socials: [
@@ -68,7 +73,12 @@ export const site = {
 		{ label: 'Telegram', href: 'https://t.me/x61021', handle: '@x61021' },
 		{ label: 'Instagram', href: 'https://www.instagram.com/khaled.jsx/', handle: '@khaled.jsx' },
 		{ label: 'WhatsApp', href: 'https://wa.me/message/6N52L7STPCUJO1', handle: 'Message' }
-	]
+	],
+
+	// Profile pages elsewhere that are also me — fed to the Person schema's
+	// sameAs and the rel=me links, but not rendered in the visible socials
+	// list. Each of these pages links back here (reciprocal identity).
+	profiles: ['https://ishtarcenter.com/team/khaled-waleed']
 } as const;
 
 export type SiteConfig = typeof site;
