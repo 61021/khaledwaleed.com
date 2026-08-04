@@ -19,7 +19,11 @@
 <header class="page-header">
 	<div class="hero-wrap">
 		<div class="hero" style:--focal={p?.focal ?? 'center'}>
-			<Painting {room} priority bare />
+			<!-- Named so the small framed reproductions on the home page can
+			     morph into this hero during view transitions. -->
+			<div class="hero-art" style:view-transition-name={`painting-${p?.key ?? room}`}>
+				<Painting {room} priority bare />
+			</div>
 			<div class="hero-veil" aria-hidden="true"></div>
 
 			<div class="hero-content px-6">
@@ -76,6 +80,12 @@
 		width: 100%;
 		overflow: hidden;
 		isolation: isolate;
+	}
+
+	.hero-art {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
 	}
 
 	.hero :global(.frontispiece) {

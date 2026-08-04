@@ -1,8 +1,70 @@
 <script lang="ts">
-	import { Seo, Container, Button, PageHeader, SchemaOrg, site } from '$lib';
+	import { Seo, Container, Button, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
+	import { paintings } from '$lib/site';
+	import sizes from '$lib/painting-sizes.json';
 	import { posts, formatDate } from '$lib/posts';
 
-	const latest = posts[0];
+	const latest = posts.slice(0, 3);
+
+	// The entrance hall: one card per room, each behind its own painting.
+	// Eyebrows echo each room's own page header; notes echo its lede.
+	const rooms = [
+		{
+			href: '/about',
+			key: 'about',
+			name: 'About',
+			eyebrow: 'a brief portrait',
+			note: 'The story so far — the work, the toolkit, the CV.'
+		},
+		{
+			href: '/writing',
+			key: 'writing',
+			name: 'Writing',
+			eyebrow: 'essays · notes',
+			note: 'Essays on art, philosophy, software, and some others.'
+		},
+		{
+			href: '/likes',
+			key: 'likes',
+			name: 'Likes',
+			eyebrow: 'a catalogue of obsessions',
+			note: 'Cinema, music, art, style, food — the whole drawer.'
+		},
+		{
+			href: '/library',
+			key: 'library',
+			name: 'Library',
+			eyebrow: 'a quiet shelf',
+			note: 'Books on the desk, on the queue, returned to.'
+		},
+		{
+			href: '/films',
+			key: 'films',
+			name: 'Films',
+			eyebrow: 'a viewing log',
+			note: 'Everything watched, scored one to ten, unedited.'
+		},
+		{
+			href: '/music',
+			key: 'music',
+			name: 'Music',
+			eyebrow: 'a listening log',
+			note: 'What has actually been on, live from Spotify.'
+		}
+	] as const;
+
+	// Small framed reproductions: honest srcsets from the size manifest,
+	// like Painting.svelte, but sized for a card instead of a hero.
+	const cardSrcset = (key: string, ext: 'avif' | 'webp') => {
+		const entry = sizes[key as keyof typeof sizes];
+		const src = `/paintings/${key}`;
+		return entry
+			? entry.widths
+					.map((w) => `${w === entry.width ? src : `${src}-${w}`}.${ext} ${w}w`)
+					.join(', ')
+			: `${src}.${ext}`;
+	};
+	const cardSizes = '(min-width: 1088px) 300px, (min-width: 640px) 30vw, 46vw';
 
 	// The homepage is the canonical profile page for the person entity.
 	// This tells Google that "/" — not "/about" — is the primary page for
@@ -14,7 +76,7 @@
 		url: site.url,
 		name: `${site.name} — ${site.role}`,
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-08-02',
+		dateModified: '2026-08-04',
 		primaryImageOfPage: `${site.url}${site.avatar}`,
 		mainEntity: { '@id': `${site.url}/#person` }
 	};
@@ -40,21 +102,377 @@
 	{/snippet}
 </PageHeader>
 
+<!-- Welcome note -->
 <Container size="prose">
-	<section class="rise mt-4 text-left sm:mt-10 sm:text-center">
-		<div
-			class="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-4"
-		>
-			<Button href="/writing" size="lg" class="w-full sm:w-auto">Read the essays</Button>
-			<Button href="/contact" variant="outline" size="lg" class="w-full sm:w-auto"
-				>Write to me</Button
-			>
-		</div>
-		{#if latest}
-			<p class="pt-6 smallcaps">
-				latest · <a href={`/writing/${latest.slug}`} class="link-quiet">{latest.title}</a>
-				<span class="text-[var(--ink-dim)]">· {formatDate(latest.date)}</span>
-			</p>
-		{/if}
+	<section class="welcome rise-3">
+		<p class="dropcap">
+			This is my corner of the web — part portfolio, part commonplace book, part small museum. Each
+			page is a room with one painting on the wall and one obsession inside, and the lights are kept
+			low on purpose.
+		</p>
+		<p class="welcome-aside">
+			If you are here about work, start with <a href="/about" class="link">About</a>. If you are
+			just wandering, wander — the door marked
+			<a href="/contact" class="link">Contact</a> opens quickly.
+		</p>
 	</section>
 </Container>
+
+<Fleuron />
+
+<!-- The rooms: an entrance hall of small framed paintings -->
+<Container>
+	<section aria-labelledby="rooms-heading">
+		<header class="section-head rise">
+			<p class="smallcaps">the floor plan</p>
+			<h2 id="rooms-heading" class="italic">Wander the rooms</h2>
+		</header>
+
+		<ul class="room-grid rise-2" role="list">
+			{#each rooms as r (r.key)}
+				{@const p = paintings[r.key]}
+				{@const entry = sizes[r.key as keyof typeof sizes]}
+				<li>
+					<a href={r.href} class="room-card">
+						<span class="room-art" style:view-transition-name={`painting-${r.key}`}>
+							<picture>
+								<source type="image/avif" srcset={cardSrcset(r.key, 'avif')} sizes={cardSizes} />
+								<source type="image/webp" srcset={cardSrcset(r.key, 'webp')} sizes={cardSizes} />
+								<!-- Decorative here: the visible label names the room; the
+								     painting is credited in full inside the room itself. -->
+								<img
+									src={`/paintings/${r.key}.webp`}
+									alt=""
+									width={entry?.width}
+									height={entry?.height}
+									style:object-position={p.focal ?? 'center'}
+									loading="lazy"
+									decoding="async"
+								/>
+							</picture>
+						</span>
+						<span class="room-label">
+							<span class="smallcaps room-eyebrow">{r.eyebrow}</span>
+							<span class="room-name">{r.name}</span>
+							<span class="room-note">{r.note}</span>
+						</span>
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</section>
+</Container>
+
+<Fleuron />
+
+<!-- Latest essays, catalogue style -->
+<Container size="prose">
+	<section aria-labelledby="desk-heading">
+		<header class="section-head">
+			<p class="smallcaps">from the writing desk</p>
+			<h2 id="desk-heading" class="italic">Latest essays</h2>
+		</header>
+
+		{#if latest.length}
+			<ol class="desk-list" role="list">
+				{#each latest as post (post.slug)}
+					<li>
+						<a href={`/writing/${post.slug}`} class="desk-row">
+							<span class="desk-line">
+								<span class="desk-title">{post.title}</span>
+								<span class="leader" aria-hidden="true"></span>
+								<time class="desk-date smallcaps" datetime={post.date}>{formatDate(post.date)}</time
+								>
+							</span>
+							<span class="desk-desc">{post.description}</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+		{/if}
+
+		<p class="desk-more">
+			<a href="/writing" class="smallcaps link-quiet">all essays →</a>
+			<span class="desk-sep" aria-hidden="true">·</span>
+			<a href="/rss.xml" class="smallcaps link-quiet">rss</a>
+		</p>
+	</section>
+</Container>
+
+<Fleuron />
+
+<!-- Correspondence -->
+<Container size="prose">
+	<section class="closing">
+		<p class="smallcaps">correspondence</p>
+		<p class="closing-line">I read everything, and I reply within a day or two.</p>
+		<div class="closing-actions">
+			<Button href="/contact" size="lg" class="w-full sm:w-auto">Write to me</Button>
+			<Button href="/about" variant="outline" size="lg" class="w-full sm:w-auto"
+				>More about me</Button
+			>
+		</div>
+	</section>
+</Container>
+
+<style>
+	/* ---------- Welcome ---------- */
+	.welcome {
+		margin-top: 1.25rem;
+	}
+
+	.welcome p {
+		font-size: 1.08rem;
+		line-height: 1.75;
+	}
+
+	.welcome-aside {
+		margin-top: 1.1rem;
+		color: var(--ink-muted);
+	}
+
+	/* ---------- Section headers ---------- */
+	.section-head {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	.section-head h2 {
+		margin-top: 0.4rem;
+	}
+
+	/* ---------- Room grid ---------- */
+	/* Phones: a single-column list of horizontal cards — small framed
+	   painting at left, label beside it. Two columns squeeze the notes
+	   into one-word lines at 390px. */
+	.room-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.8rem;
+	}
+
+	@media (min-width: 640px) {
+		.room-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1.4rem;
+		}
+	}
+
+	/* A matted frame: thin rule, soft mount, label beside/beneath the canvas. */
+	.room-card {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1rem;
+		height: 100%;
+		padding: 0.5rem;
+		border: 1px solid var(--rule);
+		background: color-mix(in oklab, var(--bg-soft) 65%, transparent);
+		transition:
+			border-color 400ms ease,
+			background-color 400ms ease,
+			transform 400ms ease;
+	}
+
+	.room-card:hover {
+		border-color: color-mix(in oklab, var(--accent) 45%, var(--rule));
+		background: var(--bg-soft);
+		transform: translateY(-2px);
+	}
+
+	.room-art {
+		display: block;
+		position: relative;
+		overflow: hidden;
+		flex: none;
+		width: 6.75rem;
+		aspect-ratio: 1;
+		background: var(--bg-soft);
+	}
+
+	.room-art img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: brightness(0.9) saturate(0.98);
+		transform: scale(1.02);
+		transition:
+			filter 700ms ease,
+			transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.room-card:hover .room-art img {
+		filter: brightness(1.02) saturate(1);
+		transform: scale(1.06);
+	}
+
+	.room-label {
+		display: block;
+		min-width: 0;
+	}
+
+	.room-eyebrow {
+		display: none;
+		font-size: 0.6rem;
+		color: var(--ink-dim);
+	}
+
+	.room-name {
+		display: block;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 1.35rem;
+		line-height: 1.2;
+		color: var(--ink);
+		transition: color 300ms ease;
+	}
+
+	.room-card:hover .room-name {
+		color: var(--accent);
+	}
+
+	.room-note {
+		display: block;
+		margin-top: 0.3rem;
+		font-size: 0.8rem;
+		line-height: 1.55;
+		color: var(--ink-muted);
+	}
+
+	/* Larger screens: upright cards, painting above the label. */
+	@media (min-width: 640px) {
+		.room-card {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 0;
+			padding: 0.6rem 0.6rem 1rem;
+		}
+
+		.room-art {
+			width: auto;
+			aspect-ratio: 4 / 3;
+		}
+
+		.room-label {
+			padding: 0.75rem 0.35rem 0;
+		}
+
+		.room-eyebrow {
+			display: block;
+			margin-bottom: 0.35rem;
+		}
+
+		.room-name {
+			font-size: 1.45rem;
+		}
+
+		.room-note {
+			font-size: 0.85rem;
+		}
+	}
+
+	/* ---------- Writing desk ---------- */
+	.desk-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.desk-row {
+		display: block;
+	}
+
+	/* Phones: date above title, no leader — a squeezed three-part row
+	   wraps titles one word per line. ≥640px: the catalogue line. */
+	.desk-line {
+		display: flex;
+		flex-direction: column-reverse;
+		align-items: flex-start;
+		gap: 0.35rem;
+	}
+
+	.desk-line .leader {
+		display: none;
+	}
+
+	@media (min-width: 640px) {
+		.desk-line {
+			flex-direction: row;
+			align-items: baseline;
+			gap: 0.65rem;
+		}
+
+		.desk-line .leader {
+			display: block;
+		}
+	}
+
+	.desk-title {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.3rem, 2vw + 0.6rem, 1.65rem);
+		line-height: 1.25;
+		color: var(--ink);
+		transition: color 300ms ease;
+	}
+
+	.desk-row:hover .desk-title {
+		color: var(--accent);
+	}
+
+	.desk-date {
+		white-space: nowrap;
+		color: var(--ink-dim);
+	}
+
+	.desk-desc {
+		display: block;
+		margin-top: 0.45rem;
+		font-size: 0.95rem;
+		line-height: 1.65;
+		color: var(--ink-muted);
+		max-width: 36rem;
+	}
+
+	.desk-more {
+		margin-top: 2.25rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.7rem;
+	}
+
+	.desk-sep {
+		color: var(--ink-dim);
+	}
+
+	/* ---------- Correspondence ---------- */
+	.closing {
+		text-align: center;
+	}
+
+	.closing-line {
+		margin-top: 0.9rem;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.4rem, 2.5vw + 0.5rem, 1.85rem);
+		line-height: 1.35;
+		color: var(--ink-muted);
+		text-wrap: balance;
+	}
+
+	.closing-actions {
+		margin-top: 2rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+	}
+
+	@media (min-width: 640px) {
+		.closing-actions {
+			flex-direction: row;
+			justify-content: center;
+			gap: 1rem;
+		}
+	}
+</style>
