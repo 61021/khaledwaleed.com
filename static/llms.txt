@@ -19,7 +19,6 @@
 - / — Home. The front door.
 - /about — Background, work history, toolkit, and the CV as a downloadable PDF.
 - /writing — Essays and notes.
-- /writing/software-you-can-leave-alone — Notes on building boring software in an eventful place.
 - /writing/the-thin-line — How small the difference between a good person and a bad one really is.
 - /writing/life-is-interesting — On meaning, and why we keep asking about it.
 - /writing/bun-on-cloudflare-pages — Deploying Bun projects to Cloudflare Pages.
