@@ -215,6 +215,11 @@
 				</ul>
 			</nav>
 		{/if}
+
+		<!-- Engraved rule under the masthead -->
+		<div class="rule-engraved mx-auto mt-2 w-full max-w-6xl px-6" aria-hidden="true">
+			<span class="gem"></span>
+		</div>
 	</header>
 
 	<main id="main" class="flex-1">
@@ -222,7 +227,10 @@
 	</main>
 
 	<!-- Footer: equally quiet -->
-	<footer class="mt-12 border-t border-[var(--rule)] py-6 sm:mt-32 sm:py-10">
+	<footer class="mt-12 py-6 sm:mt-32 sm:py-10">
+		<div class="rule-engraved mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10" aria-hidden="true">
+			<span class="moon">☾</span>
+		</div>
 		<Container size="wide">
 			<div
 				class="flex flex-col items-start justify-between gap-4 text-left sm:flex-row sm:items-center sm:gap-6"

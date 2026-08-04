@@ -209,6 +209,22 @@
 
 		.hero-eyebrow {
 			margin-bottom: 1.25rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.8rem;
+		}
+
+		/* Two tiny gilt diamonds flank the eyebrow, echoing the room's
+		   ornamented section labels. */
+		.hero-eyebrow::before,
+		.hero-eyebrow::after {
+			content: '';
+			width: 0.28rem;
+			height: 0.28rem;
+			flex: none;
+			background: color-mix(in oklab, var(--accent) 65%, transparent);
+			transform: rotate(45deg);
 		}
 
 		.page-title {

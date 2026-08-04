@@ -51,7 +51,7 @@
 }
 
 :root[data-room='films'] {
-	/* la tour's magdalen: a pitch-dark room, one oil flame — amber skin, deep umber */
+	/* wright of derby's orrery: a dark lecture room, one hidden lamp — amber faces, deep umber */
 	--bg: #120d0a;
 	--bg-soft: #1c1411;
 	--ink: #efdcbd;
@@ -147,14 +147,48 @@ html {
 
 body {
 	font-family: var(--font-body);
-	background-color: var(--bg);
+	background-color: transparent;
 	color: var(--ink);
 	font-size: 17px;
 	line-height: 1.7;
 	font-feature-settings:
 		'liga' 1,
 		'kern' 1;
+}
+
+/* ---------- Wallpaper & candlelight ----------
+   Two fixed layers behind all content: a damask trellis (an SVG mask
+   filled with the room's accent, so the wallpaper re-colours with each
+   room) and a soft vignette pooling the light toward the centre, like
+   a lamplit room. body is transparent; <html> carries --bg. */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -2;
+	pointer-events: none;
+	background-color: var(--accent);
+	opacity: 0.045;
 	transition: background-color 600ms ease;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23fff' stroke-width='.8'%3E%3Cpath d='M48 0 96 48 48 96 0 48Z'/%3E%3Ccircle cx='48' cy='48' r='7'/%3E%3Cpath d='M48 34 Q52 43 48 48 Q44 43 48 34Z'/%3E%3Cpath d='M48 62 Q52 53 48 48 Q44 53 48 62Z'/%3E%3Cpath d='M34 48 Q43 52 48 48 Q43 44 34 48Z'/%3E%3Cpath d='M62 48 Q53 52 48 48 Q53 44 62 48Z'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='48' cy='0' r='1.6'/%3E%3Ccircle cx='48' cy='96' r='1.6'/%3E%3Ccircle cx='0' cy='48' r='1.6'/%3E%3Ccircle cx='96' cy='48' r='1.6'/%3E%3Ccircle cx='0' cy='0' r='1.1'/%3E%3Ccircle cx='96' cy='0' r='1.1'/%3E%3Ccircle cx='0' cy='96' r='1.1'/%3E%3Ccircle cx='96' cy='96' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23fff' stroke-width='.8'%3E%3Cpath d='M48 0 96 48 48 96 0 48Z'/%3E%3Ccircle cx='48' cy='48' r='7'/%3E%3Cpath d='M48 34 Q52 43 48 48 Q44 43 48 34Z'/%3E%3Cpath d='M48 62 Q52 53 48 48 Q44 53 48 62Z'/%3E%3Cpath d='M34 48 Q43 52 48 48 Q43 44 34 48Z'/%3E%3Cpath d='M62 48 Q53 52 48 48 Q53 44 62 48Z'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='48' cy='0' r='1.6'/%3E%3Ccircle cx='48' cy='96' r='1.6'/%3E%3Ccircle cx='0' cy='48' r='1.6'/%3E%3Ccircle cx='96' cy='48' r='1.6'/%3E%3Ccircle cx='0' cy='0' r='1.1'/%3E%3Ccircle cx='96' cy='0' r='1.1'/%3E%3Ccircle cx='0' cy='96' r='1.1'/%3E%3Ccircle cx='96' cy='96' r='1.1'/%3E%3C/g%3E%3C/svg%3E");
+	-webkit-mask-repeat: repeat;
+	mask-repeat: repeat;
+	-webkit-mask-size: 96px 96px;
+	mask-size: 96px 96px;
+}
+
+body::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: radial-gradient(
+		120% 100% at 50% 24%,
+		transparent 52%,
+		color-mix(in oklab, black 26%, transparent) 100%
+	);
 }
 
 h1,
@@ -246,7 +280,7 @@ a.link-quiet:hover {
 	background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-	background: var(--rule);
+	background: color-mix(in oklab, var(--accent) 16%, var(--rule));
 	border-radius: 0;
 	border: 2px solid var(--bg);
 }
@@ -390,6 +424,69 @@ a.link-quiet:hover {
 .rule-fine {
 	height: 1px;
 	background: color-mix(in oklab, var(--rule) 70%, transparent);
+}
+
+/* ---------- Engraved rule ----------
+   A double hairline fading at both ends, with a small ornament seated
+   in the middle — give it one child: <span class="gem"></span> for a
+   gilt diamond, or a glyph like ☾. Used under the masthead and above
+   the colophon. */
+.rule-engraved {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	color: color-mix(in oklab, var(--accent) 60%, var(--ink-dim));
+}
+
+.rule-engraved::before,
+.rule-engraved::after {
+	content: '';
+	flex: 1;
+	height: 4px;
+	border-top: 1px solid var(--rule);
+	border-bottom: 1px solid color-mix(in oklab, var(--rule) 55%, transparent);
+}
+
+.rule-engraved::before {
+	-webkit-mask-image: linear-gradient(to right, transparent, black 30%);
+	mask-image: linear-gradient(to right, transparent, black 30%);
+}
+
+.rule-engraved::after {
+	-webkit-mask-image: linear-gradient(to left, transparent, black 30%);
+	mask-image: linear-gradient(to left, transparent, black 30%);
+}
+
+.rule-engraved .gem {
+	width: 0.32rem;
+	height: 0.32rem;
+	background: currentColor;
+	transform: rotate(45deg);
+}
+
+.rule-engraved .moon {
+	font-family: var(--font-display);
+	font-style: normal;
+	font-size: 1rem;
+	line-height: 1;
+}
+
+/* ---------- Ornamented label ----------
+   Flanks a smallcaps eyebrow with two tiny gilt diamonds. */
+.orn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.8rem;
+}
+
+.orn::before,
+.orn::after {
+	content: '';
+	width: 0.28rem;
+	height: 0.28rem;
+	background: color-mix(in oklab, var(--accent) 55%, transparent);
+	transform: rotate(45deg);
 }
 
 /* ---------- Dotted catalogue leader ----------
@@ -568,6 +665,24 @@ a.link-quiet:hover {
 	padding: 0 0.3em;
 }
 
+.prose-romantic hr {
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.65rem;
+	margin: 2.75rem 0;
+}
+
+.prose-romantic hr::before,
+.prose-romantic hr::after {
+	content: '';
+	width: 0.26rem;
+	height: 0.26rem;
+	background: color-mix(in oklab, var(--accent) 50%, transparent);
+	transform: rotate(45deg);
+}
+
 /* ---------- Print: essays as clean paper ---------- */
 @media print {
 	:root,
@@ -587,6 +702,11 @@ a.link-quiet:hover {
 	.frontispiece,
 	.hero-veil,
 	.hero-plate {
+		display: none !important;
+	}
+
+	body::before,
+	body::after {
 		display: none !important;
 	}
 

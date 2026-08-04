@@ -124,7 +124,7 @@
 <Container>
 	<section aria-labelledby="rooms-heading">
 		<header class="section-head rise">
-			<p class="smallcaps">the floor plan</p>
+			<p class="smallcaps orn">the floor plan</p>
 			<h2 id="rooms-heading" class="italic">Wander the rooms</h2>
 		</header>
 
@@ -169,7 +169,7 @@
 <Container size="prose">
 	<section aria-labelledby="desk-heading">
 		<header class="section-head">
-			<p class="smallcaps">from the writing desk</p>
+			<p class="smallcaps orn">from the writing desk</p>
 			<h2 id="desk-heading" class="italic">Latest essays</h2>
 		</header>
 
@@ -204,7 +204,7 @@
 <!-- Correspondence -->
 <Container size="prose">
 	<section class="closing">
-		<p class="smallcaps">correspondence</p>
+		<p class="smallcaps orn">correspondence</p>
 		<p class="closing-line">I read everything, and I reply within a day or two.</p>
 		<div class="closing-actions">
 			<Button href="/contact" size="lg" class="w-full sm:w-auto">Write to me</Button>
@@ -288,6 +288,22 @@
 		width: 6.75rem;
 		aspect-ratio: 1;
 		background: var(--bg-soft);
+		/* A gilt frame: gold fillet, dark mat, outer gilt moulding. */
+		margin: 5px;
+		box-shadow:
+			0 0 0 1px color-mix(in oklab, var(--accent) 45%, transparent),
+			0 0 0 4px color-mix(in oklab, var(--bg) 55%, var(--bg-soft)),
+			0 0 0 5px color-mix(in oklab, var(--accent) 22%, transparent),
+			0 14px 30px -16px rgb(0 0 0 / 0.55);
+		transition: box-shadow 400ms ease;
+	}
+
+	.room-card:hover .room-art {
+		box-shadow:
+			0 0 0 1px color-mix(in oklab, var(--accent) 75%, transparent),
+			0 0 0 4px color-mix(in oklab, var(--bg) 55%, var(--bg-soft)),
+			0 0 0 5px color-mix(in oklab, var(--accent) 40%, transparent),
+			0 18px 34px -16px rgb(0 0 0 / 0.65);
 	}
 
 	.room-art img {
@@ -414,6 +430,23 @@
 		line-height: 1.25;
 		color: var(--ink);
 		transition: color 300ms ease;
+	}
+
+	/* A small gilt diamond marks each entry, like a catalogue pilcrow. */
+	.desk-title::before {
+		content: '';
+		display: inline-block;
+		width: 0.28rem;
+		height: 0.28rem;
+		margin-right: 0.6rem;
+		vertical-align: 0.18em;
+		background: color-mix(in oklab, var(--accent) 45%, transparent);
+		transform: rotate(45deg);
+		transition: background-color 300ms ease;
+	}
+
+	.desk-row:hover .desk-title::before {
+		background: var(--accent);
 	}
 
 	.desk-row:hover .desk-title {
