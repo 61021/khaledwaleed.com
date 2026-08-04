@@ -15,9 +15,9 @@
 		"height": 1377
 	},
 	"films": {
-		"widths": [720, 1280, 1569],
-		"width": 1569,
-		"height": 2000
+		"widths": [720, 1280, 2000],
+		"width": 2000,
+		"height": 1404
 	},
 	"home": {
 		"widths": [720, 1280, 2000],

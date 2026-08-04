@@ -178,15 +178,13 @@ export const paintings: Record<string, Painting> = {
 	},
 	films: {
 		key: 'films',
-		title: 'The Magdalen with the Smoking Flame',
-		artist: 'Georges de La Tour',
-		year: 'c. 1640',
-		museum: 'Los Angeles County Museum of Art',
-		museumUrl: 'https://www.lacma.org/',
-		source: 'https://en.wikipedia.org/wiki/Magdalene_with_the_Smoking_Flame',
-		alt: 'A young woman sits in profile in a pitch-dark room, a skull resting on her lap, her face lit only by the single smoking flame of an oil lamp she watches.',
-		// portrait canvas: keep the face and flame in the wide desktop crop
-		focal: '50% 30%'
+		title: 'A Philosopher Lecturing on the Orrery',
+		artist: 'Joseph Wright of Derby',
+		year: 'c. 1766',
+		museum: 'Derby Museum and Art Gallery',
+		museumUrl: 'https://www.derbymuseums.org/',
+		source: 'https://en.wikipedia.org/wiki/A_Philosopher_Lecturing_on_the_Orrery',
+		alt: 'Figures gathered in a dark room around a brass orrery, their faces lit by the hidden lamp at its centre — children leaning in close, the philosopher presiding above.'
 	},
 	music: {
 		key: 'music',

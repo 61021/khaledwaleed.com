@@ -44,8 +44,10 @@ const items: Item[] = [
 		sharpen: true
 	},
 	{
+		// 6527×4581 scan from Derby Museum — an audience lit by the orrery's
+		// lamp in a dark room: cinema, two centuries early.
 		slug: 'films',
-		file: 'Georges_de_La_Tour_-_The_Magdalen_with_the_Smoking_Flame_-_Google_Art_Project.jpg',
+		file: 'Wright_of_Derby,_The_Orrery.jpg',
 		srcWidth: 3200
 	}
 ];

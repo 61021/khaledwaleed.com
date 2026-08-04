@@ -33,6 +33,6 @@
 ## Style note
 
 Each page is paired with one public-domain Northern Romantic painting
-(Friedrich, Dahl, Rembrandt, Vermeer, de La Tour). The site is set in Inter
+(Friedrich, Dahl, Rembrandt, Vermeer, Wright of Derby). The site is set in Inter
 and Cormorant Garamond. There is no JavaScript framework chrome on display —
 only text, paintings, and quiet rules.
