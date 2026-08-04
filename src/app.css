@@ -382,38 +382,6 @@ a.link-quiet:hover {
 	}
 }
 
-/* ---------- Fleuron divider ---------- */
-.fleuron {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 1.5rem;
-	margin: 2.75rem 0;
-	color: var(--ink-dim);
-}
-
-@media (min-width: 640px) {
-	.fleuron {
-		margin: 4rem 0;
-	}
-}
-
-.fleuron::before,
-.fleuron::after {
-	content: '';
-	height: 1px;
-	flex: 0 0 4rem;
-	background: var(--rule);
-}
-
-.fleuron-mark {
-	font-family: var(--font-display);
-	font-style: italic;
-	font-size: 1.5rem;
-	color: var(--ink-muted);
-	line-height: 1;
-}
-
 /* ---------- Rules ---------- */
 .rule-thin {
 	height: 1px;

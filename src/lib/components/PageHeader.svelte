@@ -7,11 +7,13 @@
 		room: keyof typeof paintings | string;
 		eyebrow?: string;
 		title: string;
+		/* Entrance-hall scale: the home page name, larger than a room label. */
+		grand?: boolean;
 		lede?: Snippet;
 		children?: Snippet;
 	};
 
-	let { room, eyebrow, title, lede, children }: Props = $props();
+	let { room, eyebrow, title, grand = false, lede, children }: Props = $props();
 
 	const p = $derived(paintings[room as keyof typeof paintings]);
 </script>
@@ -30,7 +32,7 @@
 				{#if eyebrow}
 					<div class="smallcaps hero-eyebrow rise-2">{eyebrow}</div>
 				{/if}
-				<h1 class="rise-2 page-title">{title}</h1>
+				<h1 class="rise-2 page-title" class:page-title-grand={grand}>{title}</h1>
 				{#if lede}
 					<div class="lede rise-3">
 						{@render lede()}
@@ -148,6 +150,10 @@
 		margin: 0;
 	}
 
+	.page-title-grand {
+		font-size: clamp(2.7rem, 12vw, 3.5rem);
+	}
+
 	.lede {
 		margin-top: 0.9rem;
 		max-width: 34rem;
@@ -230,6 +236,11 @@
 		.page-title {
 			font-size: clamp(2.5rem, 6vw + 0.5rem, 5rem);
 			line-height: 1.05;
+		}
+
+		.page-title-grand {
+			font-size: clamp(3.4rem, 8.5vw + 0.5rem, 7rem);
+			line-height: 1.02;
 		}
 
 		.lede {

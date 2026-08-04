@@ -1,29 +1,63 @@
+<!-- Section divider: three gilt diamonds seated between engraved
+     hairlines fading at their outer ends — the same ornament language
+     as .rule-engraved, .orn, and the catalogue diamonds. -->
 <div class="fleuron" aria-hidden="true">
-	<span class="fleuron-mark">
-		<!-- Hedera (printer's ivy leaf) — drawn inline because U+2766/U+2767
-		     are missing from Cormorant Garamond and from many system serifs. -->
-		<svg viewBox="0 0 40 24" fill="currentColor" aria-hidden="true">
-			<circle cx="10.5" cy="7.6" r="4.8" />
-			<circle cx="10.5" cy="16.4" r="4.8" />
-			<ellipse cx="12.5" cy="12" rx="4.2" ry="3" />
-			<path
-				d="M 10.5 2.8 C 16 4 21.5 8 24.5 12 C 21.5 16 16 20 10.5 21.2 C 14.5 16.5 14.5 7.5 10.5 2.8 Z"
-			/>
-			<path
-				d="M 23 12 C 28.5 12.2 31.8 10.6 33.3 7.6 C 34.6 10.8 32.8 14.6 27.8 15.5"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="1.8"
-				stroke-linecap="round"
-			/>
-		</svg>
+	<span class="gems">
+		<span class="gem"></span>
+		<span class="gem gem-mid"></span>
+		<span class="gem"></span>
 	</span>
 </div>
 
 <style>
-	.fleuron-mark svg {
-		display: block;
-		width: 1.7em;
-		height: 1.02em;
+	.fleuron {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.1rem;
+		margin: 2.75rem 0;
+	}
+
+	@media (min-width: 640px) {
+		.fleuron {
+			margin: 4rem 0;
+		}
+	}
+
+	.fleuron::before,
+	.fleuron::after {
+		content: '';
+		height: 1px;
+		flex: 0 0 5.5rem;
+		background: var(--rule);
+	}
+
+	.fleuron::before {
+		-webkit-mask-image: linear-gradient(to right, transparent, black 65%);
+		mask-image: linear-gradient(to right, transparent, black 65%);
+	}
+
+	.fleuron::after {
+		-webkit-mask-image: linear-gradient(to left, transparent, black 65%);
+		mask-image: linear-gradient(to left, transparent, black 65%);
+	}
+
+	.gems {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+	}
+
+	.gem {
+		width: 0.26rem;
+		height: 0.26rem;
+		background: color-mix(in oklab, var(--accent) 38%, transparent);
+		transform: rotate(45deg);
+	}
+
+	.gem-mid {
+		width: 0.38rem;
+		height: 0.38rem;
+		background: color-mix(in oklab, var(--accent) 62%, transparent);
 	}
 </style>

@@ -91,6 +91,7 @@
 
 <PageHeader
 	room="home"
+	grand
 	eyebrow={`${site.role} ·\u00A0${site.location.city},\u00A0${site.location.country}`}
 	title="Khaled Waleed"
 >
