@@ -103,11 +103,13 @@
 			items: [
 				{
 					name: 'Morshed',
+					url: 'https://morshed-bdc.com',
 					measure: '2024',
 					note: 'The business-development firm’s website, accounting ERP, and internal workflow systems — plus websites and ERPs for its clients.'
 				},
 				{
 					name: 'Speetu',
+					url: 'https://speetu.com',
 					measure: 'Amsterdam',
 					note: 'Websites for Dutch brands, Inflexio among them — and Speetu’s own site, logo, and brand identity.'
 				}
