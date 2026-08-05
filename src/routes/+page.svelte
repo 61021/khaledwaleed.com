@@ -6,56 +6,57 @@
 
 	const latest = posts.slice(0, 3);
 
-	// The entrance hall: one card per room, each behind its own painting.
-	// Eyebrows echo each room's own page header; notes echo its lede.
+	// The entrance hall: one card per room, each behind its own painting,
+	// hung salon-style. `span` is a card's width in sixths of the wall:
+	// two wide frames, three upright, two wide. Notes echo each room's lede.
 	const rooms = [
 		{
 			href: '/about',
 			key: 'about',
 			name: 'About',
-			eyebrow: 'a brief portrait',
-			note: 'The story so far — the work, the toolkit, the CV.'
+			span: 3,
+			note: 'The story so far: the work, the toolkit, the CV.'
 		},
 		{
 			href: '/projects',
 			key: 'projects',
 			name: 'Projects',
-			eyebrow: 'a catalogue raisonné',
-			note: 'Products, client work, government platforms — with their numbers.'
+			span: 3,
+			note: 'Products, client work, government platforms, with their numbers.'
 		},
 		{
 			href: '/writing',
 			key: 'writing',
 			name: 'Writing',
-			eyebrow: 'essays · notes',
+			span: 2,
 			note: 'Essays on art, philosophy, software, and whatever else won’t leave me alone.'
 		},
 		{
 			href: '/likes',
 			key: 'likes',
 			name: 'Likes',
-			eyebrow: 'a catalogue of obsessions',
-			note: 'Cinema, music, art, style, food — the whole drawer.'
+			span: 2,
+			note: 'Cinema, music, art, style, food: the whole drawer.'
 		},
 		{
 			href: '/library',
 			key: 'library',
 			name: 'Library',
-			eyebrow: 'a quiet shelf',
+			span: 2,
 			note: 'Books on the desk, in the queue, returned to.'
 		},
 		{
 			href: '/films',
 			key: 'films',
 			name: 'Films',
-			eyebrow: 'a viewing log',
+			span: 3,
 			note: 'Everything watched, scored one to ten.'
 		},
 		{
 			href: '/music',
 			key: 'music',
 			name: 'Music',
-			eyebrow: 'a listening log',
+			span: 3,
 			note: 'What has been playing, live from Spotify.'
 		}
 	] as const;
@@ -71,7 +72,12 @@
 					.join(', ')
 			: `${src}.${ext}`;
 	};
-	const cardSizes = '(min-width: 1088px) 300px, (min-width: 640px) 30vw, 46vw';
+	// Wide frames take half the wall, upright ones a third; phones show a
+	// fixed 6.75rem thumbnail.
+	const cardSizes = (span: number) =>
+		span === 3
+			? '(min-width: 1088px) 470px, (min-width: 640px) 46vw, 108px'
+			: '(min-width: 1088px) 300px, (min-width: 640px) 30vw, 108px';
 
 	// The homepage is the canonical profile page for the person entity.
 	// This tells Google that "/" — not "/about" — is the primary page for
@@ -81,7 +87,7 @@
 		'@type': 'ProfilePage',
 		'@id': `${site.url}/#profilepage`,
 		url: site.url,
-		name: `${site.name} — ${site.role}`,
+		name: `${site.name}, ${site.role}`,
 		isPartOf: { '@id': `${site.url}/#website` },
 		dateModified: '2026-08-04',
 		primaryImageOfPage: `${site.url}${site.avatar}`,
@@ -114,11 +120,11 @@
 <Container size="prose">
 	<section class="welcome rise-3">
 		<p class="dropcap">
-			My corner of the web — part portfolio, part commonplace book. Each room keeps one painting and
+			My corner of the web: part portfolio, part commonplace book. Each room keeps one painting and
 			one obsession.
 		</p>
 		<p class="welcome-aside">
-			If you are here about work, start with <a href="/about" class="link">About</a> — seven
+			If you are here about work, start with <a href="/about" class="link">About</a>: seven
 			government platforms, four million users, and one studio of my own. If you are just looking
 			around, the door marked <a href="/contact" class="link">Contact</a> opens quickly.
 		</p>
@@ -139,12 +145,20 @@
 			{#each rooms as r (r.key)}
 				{@const p = paintings[r.key]}
 				{@const entry = sizes[r.key as keyof typeof sizes]}
-				<li>
+				<li class="room-slot" class:wide={r.span === 3}>
 					<a href={r.href} class="room-card">
 						<span class="room-art lamp-lit">
 							<picture>
-								<source type="image/avif" srcset={cardSrcset(r.key, 'avif')} sizes={cardSizes} />
-								<source type="image/webp" srcset={cardSrcset(r.key, 'webp')} sizes={cardSizes} />
+								<source
+									type="image/avif"
+									srcset={cardSrcset(r.key, 'avif')}
+									sizes={cardSizes(r.span)}
+								/>
+								<source
+									type="image/webp"
+									srcset={cardSrcset(r.key, 'webp')}
+									sizes={cardSizes(r.span)}
+								/>
 								<!-- Decorative here: the visible label names the room; the
 								     painting is credited in full inside the room itself. -->
 								<img
@@ -159,7 +173,6 @@
 							</picture>
 						</span>
 						<span class="room-label">
-							<span class="smallcaps room-eyebrow">{r.eyebrow}</span>
 							<span class="room-name">{r.name}</span>
 							<span class="room-note">{r.note}</span>
 						</span>
@@ -176,7 +189,6 @@
 <Container size="prose">
 	<section aria-labelledby="desk-heading">
 		<header class="section-head">
-			<p class="smallcaps orn">from the writing desk</p>
 			<h2 id="desk-heading" class="italic">Latest essays</h2>
 		</header>
 
@@ -211,13 +223,9 @@
 <!-- Correspondence -->
 <Container size="prose">
 	<section class="closing">
-		<p class="smallcaps orn">correspondence</p>
 		<p class="closing-line">Every letter gets a reply.</p>
 		<div class="closing-actions">
 			<Button href="/contact" size="lg" class="w-full sm:w-auto">Write to me</Button>
-			<Button href="/about" variant="outline" size="lg" class="w-full sm:w-auto"
-				>More about me</Button
-			>
 		</div>
 	</section>
 </Container>
@@ -258,10 +266,20 @@
 		gap: 0.8rem;
 	}
 
+	/* ≥640px: a salon hang on a six-column wall — two wide frames, three
+	   upright, two wide. Seven paintings, no straggler. */
 	@media (min-width: 640px) {
 		.room-grid {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(6, minmax(0, 1fr));
 			gap: 1.4rem;
+		}
+
+		.room-slot {
+			grid-column: span 2;
+		}
+
+		.room-slot.wide {
+			grid-column: span 3;
 		}
 	}
 
@@ -334,12 +352,6 @@
 		min-width: 0;
 	}
 
-	.room-eyebrow {
-		display: none;
-		font-size: 0.6rem;
-		color: var(--ink-dim);
-	}
-
 	.room-name {
 		display: block;
 		font-family: var(--font-display);
@@ -376,13 +388,13 @@
 			aspect-ratio: 4 / 3;
 		}
 
-		.room-label {
-			padding: 0.75rem 0.35rem 0;
+		/* Wide frames crop to an overmantel landscape, matching row heights. */
+		.room-slot.wide .room-art {
+			aspect-ratio: 2 / 1;
 		}
 
-		.room-eyebrow {
-			display: block;
-			margin-bottom: 0.35rem;
+		.room-label {
+			padding: 0.75rem 0.35rem 0;
 		}
 
 		.room-name {
@@ -492,7 +504,6 @@
 	}
 
 	.closing-line {
-		margin-top: 0.9rem;
 		font-family: var(--font-display);
 		font-style: italic;
 		font-size: clamp(1.4rem, 2.5vw + 0.5rem, 1.85rem);
