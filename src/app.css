@@ -603,6 +603,17 @@ a.link-quiet:hover {
 	animation: rise 1100ms cubic-bezier(0.2, 0.7, 0.2, 1) 360ms both;
 }
 
+/* The rises are a first-arrival flourish only. Once the visitor starts
+   walking the house (+layout.svelte stamps data-navigated on the first
+   client-side navigation), each room change is one ink-wash view
+   transition — content that rose up afterwards read as the room
+   straggling in behind its painting. */
+html[data-navigated] .rise,
+html[data-navigated] .rise-2,
+html[data-navigated] .rise-3 {
+	animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,

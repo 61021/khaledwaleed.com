@@ -48,6 +48,10 @@
 	onNavigate((navigation) => {
 		mobileOpen = false;
 		if (typeof document === 'undefined') return;
+		// After the first arrival, the entry rises sit out (see app.css):
+		// navigations animate as one view transition, and text fading up
+		// AFTER it made every room seem to straggle in behind its painting.
+		document.documentElement.setAttribute('data-navigated', '');
 		if (!document.startViewTransition) return;
 		if (
 			typeof window !== 'undefined' &&
