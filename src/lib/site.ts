@@ -197,6 +197,18 @@ export const paintings: Record<string, Painting> = {
 		museumUrl: 'https://www.english-heritage.org.uk/visit/places/kenwood/',
 		source: 'https://en.wikipedia.org/wiki/The_Guitar_Player_(Vermeer)',
 		alt: 'A young woman in a yellow ermine-trimmed jacket plays a guitar, glancing aside with a half-smile, in a sunlit Dutch interior.'
+	},
+	projects: {
+		key: 'projects',
+		title: 'The Alchemist Discovering Phosphorus',
+		artist: 'Joseph Wright of Derby',
+		year: '1771',
+		museum: 'Derby Museum and Art Gallery',
+		museumUrl: 'https://www.derbymuseums.org/',
+		source: 'https://en.wikipedia.org/wiki/The_Alchemist_Discovering_Phosphorus',
+		alt: 'An alchemist kneels in his vaulted workshop as the vessel before him erupts in white light, two apprentices at their work in the shadows behind.',
+		// keep the erupting vessel and the kneeling alchemist in the wide crop
+		focal: '50% 68%'
 	}
 };
 
@@ -208,6 +220,7 @@ export function roomForPath(pathname: string): string {
 	if (pathname === '/library') return 'library';
 	if (pathname === '/films') return 'films';
 	if (pathname === '/music') return 'music';
+	if (pathname === '/projects') return 'projects';
 	if (pathname === '/contact') return 'contact';
 	if (pathname === '/writing') return 'writing';
 	if (pathname.startsWith('/writing/')) return 'writing';
@@ -223,6 +236,7 @@ export const roomBg: Record<string, string> = {
 	library: '#1a1814',
 	films: '#121319',
 	music: '#141017',
+	projects: '#131010',
 	likes: '#0a0e1a',
 	contact: '#0c121e',
 	'404': '#232b30'

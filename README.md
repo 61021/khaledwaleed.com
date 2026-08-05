@@ -23,16 +23,16 @@ Almost everything is **prerendered to static HTML** at build time. The single ex
 
 ## Tech stack
 
-| Concern      | Choice                                                                                                                                  |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework    | [SvelteKit 2](https://svelte.dev/docs/kit) with Svelte 5 runes                                                                          |
-| Styling      | [Tailwind CSS 4](https://tailwindcss.com) + `@tailwindcss/typography`                                                                   |
-| Content      | [mdsvex](https://mdsvex.pngwn.io) (`.svx`) for writing                                                                                  |
-| Language     | TypeScript                                                                                                                              |
-| OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                                                 |
-| Fonts        | Self-hosted [Inter](https://rsms.me/inter/) + [Cormorant Garamond](https://fonts.google.com/specimen/Cormorant+Garamond) via Fontsource |
-| Runtime / PM | [Bun](https://bun.sh)                                                                                                                   |
-| Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                                                       |
+| Concern      | Choice                                                                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Framework    | [SvelteKit 2](https://svelte.dev/docs/kit) with Svelte 5 runes                                                            |
+| Styling      | [Tailwind CSS 4](https://tailwindcss.com) + `@tailwindcss/typography`                                                     |
+| Content      | [mdsvex](https://mdsvex.pngwn.io) (`.svx`) for writing                                                                    |
+| Language     | TypeScript                                                                                                                |
+| OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                                   |
+| Fonts        | Self-hosted [Inter](https://rsms.me/inter/) + [EB Garamond](https://fonts.google.com/specimen/EB+Garamond) via Fontsource |
+| Runtime / PM | [Bun](https://bun.sh)                                                                                                     |
+| Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                                         |
 
 ## Getting started
 
@@ -94,7 +94,7 @@ src/
 └─ routes/
    ├─ +layout.svelte      # shell: nav, footer, room/painting, command palette
    ├─ +page.svelte        # home
-   ├─ about · likes · library · films · music · contact · writing
+   ├─ about · projects · likes · library · films · music · contact · writing
    ├─ og.png/             # site-wide OG card · per-essay cards at writing/[slug]/og.png
    └─ sitemap.xml · robots.txt · rss.xml (styled by static/rss.xsl)
 scripts/                  # data tooling (see below)
@@ -105,16 +105,17 @@ static/                   # paintings, logos, manifest, etc.
 
 ## Pages
 
-| Route      | What it is                                                                                     |
-| ---------- | ---------------------------------------------------------------------------------------------- |
-| `/`        | Home / hero — the canonical profile page                                                       |
-| `/about`   | Longer bio, career history, toolkit, CV download                                               |
-| `/writing` | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                    |
-| `/library` | Books                                                                                          |
-| `/films`   | A ledger of ~225 rated films & shows — server-rendered from PocketBase, searchable, with stats |
-| `/music`   | **Live** top tracks, artists & recently played from Spotify (edge-rendered)                    |
-| `/likes`   | A catalogue of obsessions                                                                      |
-| `/contact` | Ways to get in touch                                                                           |
+| Route       | What it is                                                                                     |
+| ----------- | ---------------------------------------------------------------------------------------------- |
+| `/`         | Home / hero — the canonical profile page                                                       |
+| `/about`    | Longer bio, career history, toolkit, CV download                                               |
+| `/projects` | The catalogue of shipped work — products, client work, government platforms, open source       |
+| `/writing`  | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                    |
+| `/library`  | Books                                                                                          |
+| `/films`    | A ledger of ~225 rated films & shows — server-rendered from PocketBase, searchable, with stats |
+| `/music`    | **Live** top tracks, artists & recently played from Spotify (edge-rendered)                    |
+| `/likes`    | A catalogue of obsessions                                                                      |
+| `/contact`  | Ways to get in touch                                                                           |
 
 ## Data & content tooling
 

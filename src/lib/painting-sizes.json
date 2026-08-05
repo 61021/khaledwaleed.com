@@ -39,6 +39,11 @@
 		"width": 1747,
 		"height": 2000
 	},
+	"projects": {
+		"widths": [720, 1280, 1542],
+		"width": 1542,
+		"height": 2000
+	},
 	"writing": {
 		"widths": [720, 1280, 2000],
 		"width": 2000,

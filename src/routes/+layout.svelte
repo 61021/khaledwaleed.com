@@ -69,6 +69,7 @@
 
 	const nav = [
 		{ name: 'About', href: '/about' },
+		{ name: 'Projects', href: '/projects' },
 		{ name: 'Writing', href: '/writing' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Library', href: '/library' },

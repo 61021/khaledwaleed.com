@@ -22,6 +22,7 @@ const paintings: Painting[] = [
 	// films lives in fetch-paintings-direct.ts (Google Art Project scan — the
 	// Wikipedia summary image is only 900px).
 	{ slug: 'music', wiki: 'The_Guitar_Player_(Vermeer)' },
+	{ slug: 'projects', wiki: 'The_Alchemist_Discovering_Phosphorus' },
 	{ slug: '404', wiki: 'The_Monk_by_the_Sea' }
 ];
 

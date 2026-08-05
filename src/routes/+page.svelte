@@ -17,6 +17,13 @@
 			note: 'The story so far — the work, the toolkit, the CV.'
 		},
 		{
+			href: '/projects',
+			key: 'projects',
+			name: 'Projects',
+			eyebrow: 'a catalogue raisonné',
+			note: 'Products, client work, government platforms — with their numbers.'
+		},
+		{
 			href: '/writing',
 			key: 'writing',
 			name: 'Writing',

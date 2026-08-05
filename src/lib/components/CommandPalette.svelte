@@ -29,6 +29,14 @@
 			kind: 'external',
 			keywords: 'resume pdf download'
 		},
+		{
+			id: 'projects',
+			title: 'Projects',
+			subtitle: 'Products, client work, government platforms',
+			href: '/projects',
+			kind: 'page',
+			keywords: 'work portfolio products auction key rocca menu risha oil coupon vitex open source'
+		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{
 			id: 'likes',

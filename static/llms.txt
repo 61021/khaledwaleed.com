@@ -18,6 +18,7 @@
 
 - / — Home. The front door.
 - /about — Background, work history, toolkit, and the CV as a downloadable PDF.
+- /projects — Everything built and shipped: products, client work, government platforms, open source.
 - /writing — Essays and notes.
 - /writing/the-thin-line — How small the difference between a good person and a bad one really is.
 - /writing/life-is-interesting — On meaning, and why we keep asking about it.
@@ -33,6 +34,6 @@
 ## Style note
 
 Each page is paired with one public-domain Northern Romantic painting
-(Friedrich, Dahl, Rembrandt, Vermeer, Wright of Derby). The site is set in Inter
-and Cormorant Garamond. There is no JavaScript framework chrome on display —
-only text, paintings, and quiet rules.
+(Friedrich, Dahl, Rembrandt, Vermeer, Daguerre, Wright of Derby). The site is
+set in Inter and EB Garamond. There is no JavaScript framework chrome on
+display — only text, paintings, and quiet rules.

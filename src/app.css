@@ -72,6 +72,17 @@
 	--accent: #d8b25a;
 }
 
+:root[data-room='projects'] {
+	/* wright of derby's alchemist: umber workshop dark, parchment ink, the phosphorus flask for an accent */
+	--bg: #131010;
+	--bg-soft: #1c1714;
+	--ink: #eae0cd;
+	--ink-muted: #ab9d86;
+	--ink-dim: #77695a;
+	--rule: #2a221c;
+	--accent: #e3c377;
+}
+
 :root[data-room='likes'] {
 	/* moonrise over the sea: dark indigo night, pale silver ink, warm moon accent */
 	--bg: #0a0e1a;
