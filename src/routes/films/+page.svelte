@@ -33,8 +33,6 @@
 	const movieCount = $derived(personal.filter((f) => f.type === 'movie').length);
 	const showCount = $derived(personal.filter((f) => f.type === 'tv').length);
 	const notesCount = $derived(personal.filter((f) => f.notes).length);
-	// Every sitting, rewatches included — the closest thing to a diary count.
-	const viewings = $derived(personal.reduce((s, f) => s + Math.max(1, f.watched), 0));
 	const lastUpdated = $derived(
 		personal.reduce((a, f) => (f.watchedOn > a ? f.watchedOn : a), personal[0]?.watchedOn ?? '')
 	);
@@ -333,18 +331,6 @@
 		<Fleuron />
 
 		<section class="rise" aria-label="Viewing log">
-			<!-- The ledger line: how much has passed through the projector -->
-			<div class="ledger">
-				<span class="ledger-item">
-					<span class="smallcaps">Watched</span>
-					<b class="ledger-n">{total}</b>
-				</span>
-				<span class="ledger-item">
-					<span class="smallcaps">Viewings</span>
-					<b class="ledger-n">{viewings}</b>
-				</span>
-			</div>
-
 			<div class="line" role="group" aria-label="Filter titles">
 				{#each filterOptions as opt, i (opt.value)}
 					{#if i}<span class="vsep" aria-hidden="true"></span>{/if}
@@ -587,32 +573,6 @@
 	.fav:focus-visible :global(img) {
 		transform: translateY(-4px);
 		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
-	}
-
-	/* ---------- The ledger line ---------- */
-	.ledger {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		gap: 0.9rem 2.5rem;
-		padding-bottom: 0.8rem;
-		border-bottom: 1px solid var(--rule);
-	}
-
-	.ledger-item {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 0.6rem;
-	}
-
-	.ledger-n {
-		font-family: var(--font-display);
-		font-style: italic;
-		font-weight: 400;
-		font-size: clamp(1.55rem, 3vw, 1.95rem);
-		line-height: 1;
-		color: var(--ink);
-		font-variant-numeric: tabular-nums;
 	}
 
 	/* ---------- Filter & sort lines ---------- */
