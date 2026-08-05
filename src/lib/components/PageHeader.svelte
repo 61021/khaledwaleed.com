@@ -55,9 +55,9 @@
 <header class="page-header">
 	<div class="hero-wrap">
 		<div class="hero" style:--focal={p?.focal ?? 'center'}>
-			<!-- Named so the small framed reproductions on the home page can
-			     morph into this hero during view transitions. -->
-			<div class="hero-art lamp-lit" style:view-transition-name={`painting-${p?.key ?? room}`}>
+			<!-- Every page names its one hero `hero-painting` (see the style
+			     block), so navigations swap the canvas inside the frame. -->
+			<div class="hero-art lamp-lit">
 				<div class="hero-parallax" class:live={living} use:parallax={living}>
 					<Painting {room} priority bare />
 				</div>
@@ -136,6 +136,11 @@
 		position: absolute;
 		inset: 0;
 		z-index: 0;
+		/* One name shared by every page's hero: the old and new frames sit on
+		   the same rect, so the transition is a crossfade of the two canvases
+		   in place. Per-painting names turned each navigation into flying
+		   full-bleed snapshots stacked over the page. */
+		view-transition-name: hero-painting;
 	}
 
 	.hero-parallax {

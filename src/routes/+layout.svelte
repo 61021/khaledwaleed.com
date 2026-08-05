@@ -52,6 +52,17 @@
 		// navigations animate as one view transition, and text fading up
 		// AFTER it made every room seem to straggle in behind its painting.
 		document.documentElement.setAttribute('data-navigated', '');
+		// Route changes must land at the top as an instant jump hidden inside
+		// the transition — html's smooth scrolling turned the router's scroll
+		// reset into an eased scroll still running when the new room appeared.
+		// Same-page hash jumps keep the smoothness.
+		if (navigation.from?.url.pathname !== navigation.to?.url.pathname) {
+			const html = document.documentElement;
+			html.style.scrollBehavior = 'auto';
+			const restore = () => setTimeout(() => html.style.removeProperty('scroll-behavior'), 150);
+			// `complete` rejects when a navigation is aborted — restore either way.
+			navigation.complete.then(restore, restore);
+		}
 		if (!document.startViewTransition) return;
 		if (
 			typeof window !== 'undefined' &&

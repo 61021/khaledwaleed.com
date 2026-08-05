@@ -562,32 +562,19 @@ a.link-quiet:hover {
 	border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 55%, transparent);
 }
 
-/* ---------- Painterly view transitions (ink-wash) ---------- */
+/* ---------- Painterly view transitions ----------
+   Two crossfades per navigation: the room (root) and the canvas hanging
+   in the hero frame (`hero-painting`, one per page — see PageHeader).
+   Opacity only, and no per-painting names: animating a 6px blur across
+   two viewport-sized snapshots janked every navigation on big screens,
+   and uniquely-named paintings flew as full-bleed snapshots over the
+   page while the rooms changed. */
 ::view-transition-old(root),
-::view-transition-new(root) {
-	animation-duration: 600ms;
+::view-transition-new(root),
+::view-transition-old(hero-painting),
+::view-transition-new(hero-painting) {
+	animation-duration: 400ms;
 	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-::view-transition-old(root) {
-	animation-name: ink-out;
-}
-::view-transition-new(root) {
-	animation-name: ink-in;
-}
-
-@keyframes ink-out {
-	to {
-		opacity: 0;
-		filter: blur(6px) brightness(0.95);
-	}
-}
-
-@keyframes ink-in {
-	from {
-		opacity: 0;
-		filter: blur(6px) brightness(1.05);
-	}
 }
 
 /* ---------- Slow rising fade ---------- */
