@@ -24,7 +24,7 @@
 	--bg-soft: #221c17;
 	--ink: #e8dcc4;
 	--ink-muted: #b3a78d;
-	--ink-dim: #7d7361;
+	--ink-dim: #8a806d;
 	--rule: #2e2620;
 	--accent: #c9b27a;
 }
@@ -34,7 +34,7 @@
 	--bg-soft: #25221d;
 	--ink: #d8cdb8;
 	--ink-muted: #99917f;
-	--ink-dim: #6a6353;
+	--ink-dim: #8b8371;
 	--rule: #2c2922;
 	--accent: #b4a16f;
 }
@@ -45,7 +45,7 @@
 	--bg-soft: #221f1a;
 	--ink: #e2d6bd;
 	--ink-muted: #a89c84;
-	--ink-dim: #756b58;
+	--ink-dim: #8b806c;
 	--rule: #2a2620;
 	--accent: #c9a464;
 }
@@ -56,7 +56,7 @@
 	--bg-soft: #1a1c25;
 	--ink: #e6e2d6;
 	--ink-muted: #a5a5ad;
-	--ink-dim: #70707d;
+	--ink-dim: #7e7e88;
 	--rule: #242631;
 	--accent: #d3c48e;
 }
@@ -67,7 +67,7 @@
 	--bg-soft: #1d1620;
 	--ink: #ead8c0;
 	--ink-muted: #ad9fb0;
-	--ink-dim: #786a7c;
+	--ink-dim: #887986;
 	--rule: #2a2230;
 	--accent: #d8b25a;
 }
@@ -78,7 +78,7 @@
 	--bg-soft: #1c1714;
 	--ink: #eae0cd;
 	--ink-muted: #ab9d86;
-	--ink-dim: #77695a;
+	--ink-dim: #897c6c;
 	--rule: #2a221c;
 	--accent: #e3c377;
 }
@@ -89,7 +89,7 @@
 	--bg-soft: #121829;
 	--ink: #e4e3d6;
 	--ink-muted: #8a93a8;
-	--ink-dim: #555d72;
+	--ink-dim: #777d8a;
 	--rule: #1c2238;
 	--accent: #d9b070;
 }
@@ -99,7 +99,7 @@
 	--bg-soft: #141a28;
 	--ink: #e2e6e0;
 	--ink-muted: #8e9bb3;
-	--ink-dim: #5a6478;
+	--ink-dim: #757e8d;
 	--rule: #1d2336;
 	--accent: #e9b878;
 }
@@ -109,19 +109,19 @@
 	--bg-soft: #2d3539;
 	--ink: #d8d4c8;
 	--ink-muted: #a09f95;
-	--ink-dim: #6d6e69;
+	--ink-dim: #94938b;
 	--rule: #353d42;
 	--accent: #b8a87a;
 }
 
 /* ---------- Typography stack ----------
    Two families, one role each:
-   · body    = Inter       (sans — running text, labels, smallcaps)
-   · display = EB Garamond (serif — headings, dropcaps, logo, buttons)
-   One weight per family (400); Inter 600 only for smallcaps labels. */
+   · body    = IBM Plex Sans (sans: labels, notes, smallcaps, UI)
+   · display = EB Garamond   (serif: headings, dropcaps, logo, buttons, essay prose)
+   One weight per family (400); Plex 600 only for smallcaps labels. */
 :root {
 	--font-body:
-		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+		'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
 	--font-display: 'EB Garamond', Georgia, 'Times New Roman', ui-serif, serif;
 }
 
@@ -451,12 +451,6 @@ a.link-quiet:hover {
 	color: var(--ink-muted);
 }
 
-.plate-sep {
-	margin: 0 0.6em;
-	color: var(--rule);
-	font-style: normal;
-}
-
 /* ---------- Drop cap ---------- */
 .dropcap::first-letter {
 	font-family: var(--font-display);
@@ -577,6 +571,12 @@ a.link-quiet:hover {
 	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* The Alchemist hangs in the darkest room; give the canvas more light
+   so the phosphorus flask reads through the veil. */
+[data-room='projects'] .hero-art img {
+	filter: brightness(1.22) contrast(1.02);
+}
+
 /* ---------- Slow rising fade ---------- */
 @keyframes rise {
 	from {
@@ -623,12 +623,14 @@ html[data-navigated] .rise-3 {
 	}
 }
 
-/* ---------- Prose for posts ---------- */
+/* ---------- Prose for posts ----------
+   Essays are set in the display serif, book-size: the room is a reading
+   room. Labels and UI around them stay in the sans. */
 .prose-romantic {
 	color: var(--ink);
-	font-family: var(--font-body);
-	font-size: 1.125rem;
-	line-height: 1.78;
+	font-family: var(--font-display);
+	font-size: 1.22rem;
+	line-height: 1.7;
 	max-width: 38rem;
 	text-wrap: pretty;
 }
@@ -719,8 +721,10 @@ html[data-navigated] .rise-3 {
 }
 
 .prose-romantic code {
-	font-family: var(--font-display);
-	font-style: italic;
+	font-family:
+		'JetBrainsMono Nerd Font', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-style: normal;
+	font-size: 0.82em;
 	background: color-mix(in oklab, var(--accent) 12%, transparent);
 	padding: 0 0.3em;
 }

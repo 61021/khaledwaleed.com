@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '../app.css';
-	import '@fontsource/inter/400.css';
-	import '@fontsource/inter/400-italic.css';
-	import '@fontsource/inter/600.css';
+	import '@fontsource/ibm-plex-sans/400.css';
+	import '@fontsource/ibm-plex-sans/400-italic.css';
+	import '@fontsource/ibm-plex-sans/600.css';
 	import '@fontsource/eb-garamond/400.css';
 	import '@fontsource/eb-garamond/400-italic.css';
 
@@ -19,18 +19,22 @@
 
 	// A calling card for the curious.
 	onMount(() => {
+		isMac = /Mac|iP(hone|ad|od)/.test(navigator.platform);
 		console.log(
 			'%c☾ khaledwaleed.com',
 			'font-family: Georgia, serif; font-style: italic; font-size: 16px;',
 			'\n\nYou opened the console. I approve.\n' +
 				'The paintings are public domain; the rest is mine.\n\n' +
-				'Source — https://github.com/61021/khaledwaleed.com\n' +
-				'Hello — contact@khaledwaleed.com'
+				'Source: https://github.com/61021/khaledwaleed.com\n' +
+				'Hello: contact@khaledwaleed.com'
 		);
 	});
 
 	// Mobile nav menu (collapsible on phones).
 	let mobileOpen = $state(false);
+
+	// The search chip shows the visitor's own keys.
+	let isMac = $state(false);
 
 	// Set the per-page palette on <html data-room="..."> and keep the
 	// browser-chrome tint in step. SSR stamps the same values via
@@ -124,7 +128,7 @@
 			<a
 				href="/"
 				class="font-display text-2xl italic text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
-				aria-label="Khaled Waleed — home"
+				aria-label="Khaled Waleed, home"
 			>
 				KW<span class="sr-only">Khaled Waleed</span>
 			</a>
@@ -145,19 +149,19 @@
 				{/each}
 				<button
 					type="button"
-					class="smallcaps cursor-pointer rounded border border-[var(--rule)] px-2 py-1 transition-colors hover:border-[var(--ink-dim)] hover:text-[var(--ink)]"
-					aria-label="Search the site (Ctrl+K)"
-					title="Search — Ctrl+K"
+					class="smallcaps cursor-pointer border border-[var(--rule)] px-2 py-1 transition-colors hover:border-[var(--ink-dim)] hover:text-[var(--ink)]"
+					aria-label="Search the site"
+					title={isMac ? 'Search (⌘K)' : 'Search (Ctrl K)'}
 					onclick={() => paletteSignal.request()}
 				>
-					⌘K
+					{isMac ? '⌘K' : 'Ctrl K'}
 				</button>
 			</nav>
 
 			<!-- Phone: hamburger toggle -->
 			<button
 				type="button"
-				class="-mr-2 inline-flex items-center justify-center rounded-lg p-2 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden"
+				class="-mr-2 inline-flex items-center justify-center p-2 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden"
 				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
 				aria-expanded={mobileOpen}
 				aria-controls="mobile-nav"
@@ -254,18 +258,10 @@
 			>
 				<div class="space-y-1">
 					<div class="italic text-[var(--ink-muted)] max-sm:text-sm">
-						{site.name} · <span lang="ar" class="not-italic">{site.nameArabic}</span> · {site.role}
-						·&nbsp;{site.location.city},&nbsp;{site.location.country}
+						{site.name} <span lang="ar" class="not-italic">{site.nameArabic}</span> ·
+						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
-					<div class="smallcaps">
-						mmxxvi · set in inter &amp; eb garamond · <a
-							href="https://github.com/61021/khaledwaleed.com"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="link-quiet">source</a
-						>
-						· <a href="/rss.xml" class="link-quiet">rss</a>
-					</div>
+					<div class="smallcaps">mmxxvi · set in eb garamond &amp; ibm plex</div>
 				</div>
 				<nav
 					aria-label="Elsewhere"
@@ -281,6 +277,20 @@
 							{s.label}
 						</a>
 					{/each}
+					<a
+						href="https://github.com/61021/khaledwaleed.com"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-sm italic text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
+					>
+						Source
+					</a>
+					<a
+						href="/rss.xml"
+						class="text-sm italic text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
+					>
+						RSS
+					</a>
 				</nav>
 			</div>
 		</Container>

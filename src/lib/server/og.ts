@@ -18,9 +18,8 @@ function loadFont(...candidates: string[]): Buffer | null {
 	return null;
 }
 
-const interRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/inter/files/inter-latin-400-normal.woff'),
-	join(ROOT, 'node_modules/@fontsource/inter/files/inter-latin-all-400-normal.woff')
+const plexRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff')
 );
 const garamondItalic = loadFont(
 	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff')
@@ -91,7 +90,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				justifyContent: 'space-between',
 				background: `linear-gradient(180deg, ${c.bg} 0%, ${c.bgSoft} 100%)`,
 				padding: '80px 100px',
-				fontFamily: '"Inter", sans-serif',
+				fontFamily: '"IBM Plex Sans", sans-serif',
 				color: c.ink
 			}
 		},
@@ -113,7 +112,13 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				'KW'
 			),
 			el('div', {
-				style: { display: 'flex', height: '1px', width: '80px', background: c.accent, opacity: 0.6 }
+				style: {
+					display: 'flex',
+					height: '1px',
+					width: '80px',
+					background: c.accent,
+					opacity: 0.6
+				}
 			}),
 			el(
 				'div',
@@ -177,7 +182,8 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	);
 
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
-	if (interRegular) fonts.push({ name: 'Inter', data: interRegular, weight: 400, style: 'normal' });
+	if (plexRegular)
+		fonts.push({ name: 'IBM Plex Sans', data: plexRegular, weight: 400, style: 'normal' });
 	if (garamondItalic)
 		fonts.push({
 			name: 'EB Garamond',

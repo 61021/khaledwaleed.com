@@ -75,6 +75,11 @@
 			box-shadow 450ms ease;
 	}
 
+	/* A physical press: the plate gives by a pixel. */
+	.btn:active {
+		transform: translateY(1px);
+	}
+
 	.btn-md {
 		padding: 0.5rem 1.5rem;
 		font-size: 1.05rem;
