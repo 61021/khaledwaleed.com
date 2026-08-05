@@ -8,7 +8,7 @@ export const site = {
 	nameArabic: 'خالد وليد',
 	role: 'Lead Design Engineer',
 	tagline:
-		'Khaled Waleed — a lead design engineer in Baghdad, Iraq, building quiet, well-made software for the web in SvelteKit and Go.',
+		'Khaled Waleed — a lead design engineer in Baghdad, Iraq, building well-made software for the web in SvelteKit and Go.',
 	shortBio:
 		'I design and ship modern web apps end to end: SvelteKit and Nuxt on the frontend, Go on the backend.',
 	location: {

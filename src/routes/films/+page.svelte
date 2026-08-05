@@ -225,7 +225,7 @@
 
 <Seo
 	title="Films"
-	description={`Every film and series Khaled Waleed has rated — ${total} titles, scored 1–10. A lifelong cinema obsession, logged honestly.`}
+	description={`Every film and series Khaled Waleed has rated — ${total} titles, scored 1–10. A lifelong cinema obsession in a single log.`}
 />
 
 <SchemaOrg {schema} />
@@ -301,8 +301,8 @@
 				The projector is dark.
 			</p>
 			<p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
-				The viewing log lives on a little server that is not answering right now. Give it a moment,
-				then try again.
+				The viewing log lives on a server that is not answering right now. Give it a moment, then
+				try again.
 			</p>
 		</section>
 	{:else}

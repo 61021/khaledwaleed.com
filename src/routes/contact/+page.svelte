@@ -29,8 +29,7 @@
 <PageHeader room="contact" eyebrow="how to reach me" title="Contact">
 	{#snippet lede()}
 		<p>
-			The fastest way is a call, or you can email, I read everything, and I reply within a day or
-			two.
+			Call if it’s urgent; write if it can wait. I read everything and reply within a day or two.
 		</p>
 	{/snippet}
 </PageHeader>

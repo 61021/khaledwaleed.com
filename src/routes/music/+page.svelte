@@ -39,7 +39,7 @@
 
 <PageHeader room="music" eyebrow="a listening log" title="Music">
 	{#snippet lede()}
-		<p>What I have actually had on — top tracks and artists, pulled live from Spotify.</p>
+		<p>What I have been listening to — top tracks and artists, pulled live from Spotify.</p>
 	{/snippet}
 </PageHeader>
 
@@ -56,7 +56,7 @@
 	{#if !data.ok}
 		<Fleuron />
 		<p class="rise text-center italic text-[var(--ink-muted)]">
-			The turntable is quiet right now — check back soon.
+			The turntable has stopped — check back soon.
 		</p>
 	{:else}
 		<!-- Time-range switcher (server-rendered; each is a plain link) -->

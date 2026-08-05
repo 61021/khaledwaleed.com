@@ -77,7 +77,7 @@
 
 <PageHeader room="library" eyebrow="a quiet shelf" title="Library">
 	{#snippet lede()}
-		<p>Books on the desk, books on the queue, books I return to. still in progress.</p>
+		<p>Books on the desk, books in the queue, books I keep returning to.</p>
 	{/snippet}
 </PageHeader>
 

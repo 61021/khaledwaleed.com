@@ -21,7 +21,7 @@
 			key: 'writing',
 			name: 'Writing',
 			eyebrow: 'essays · notes',
-			note: 'Essays on art, philosophy, software, and some others.'
+			note: 'Essays on art, philosophy, software, and whatever else won’t leave me alone.'
 		},
 		{
 			href: '/likes',
@@ -35,21 +35,21 @@
 			key: 'library',
 			name: 'Library',
 			eyebrow: 'a quiet shelf',
-			note: 'Books on the desk, on the queue, returned to.'
+			note: 'Books on the desk, in the queue, returned to.'
 		},
 		{
 			href: '/films',
 			key: 'films',
 			name: 'Films',
 			eyebrow: 'a viewing log',
-			note: 'Everything watched, scored one to ten, unedited.'
+			note: 'Everything watched, scored one to ten.'
 		},
 		{
 			href: '/music',
 			key: 'music',
 			name: 'Music',
 			eyebrow: 'a listening log',
-			note: 'What has actually been on, live from Spotify.'
+			note: 'What has been playing, live from Spotify.'
 		}
 	] as const;
 
@@ -107,14 +107,13 @@
 <Container size="prose">
 	<section class="welcome rise-3">
 		<p class="dropcap">
-			This is my corner of the web — part portfolio, part commonplace book, part small museum. Each
-			page is a room with one painting on the wall and one obsession inside, and the lights are kept
-			low on purpose.
+			My corner of the web — part portfolio, part commonplace book. Each room keeps one painting and
+			one obsession.
 		</p>
 		<p class="welcome-aside">
-			If you are here about work, start with <a href="/about" class="link">About</a>. If you are
-			just wandering, wander — the door marked
-			<a href="/contact" class="link">Contact</a> opens quickly.
+			If you are here about work, start with <a href="/about" class="link">About</a> — seven
+			government platforms, four million users, and one studio of my own. If you are just looking
+			around, the door marked <a href="/contact" class="link">Contact</a> opens quickly.
 		</p>
 	</section>
 </Container>
@@ -206,7 +205,7 @@
 <Container size="prose">
 	<section class="closing">
 		<p class="smallcaps orn">correspondence</p>
-		<p class="closing-line">I read everything, and I reply within a day or two.</p>
+		<p class="closing-line">Every letter gets a reply.</p>
 		<div class="closing-actions">
 			<Button href="/contact" size="lg" class="w-full sm:w-auto">Write to me</Button>
 			<Button href="/about" variant="outline" size="lg" class="w-full sm:w-auto"

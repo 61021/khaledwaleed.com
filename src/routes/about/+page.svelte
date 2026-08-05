@@ -189,7 +189,7 @@
 
 <PageHeader room="about" eyebrow="a brief portrait" title="About">
 	{#snippet lede()}
-		<p>A little bit more about me and where I work</p>
+		<p>The story at full length — the CV waits at the end.</p>
 	{/snippet}
 </PageHeader>
 
@@ -240,10 +240,10 @@
 			instinct that started with the posters.
 		</p>
 		<p>
-			Away from the screen I read, watch films, and wander the older parts of cities, chasing
+			Away from the screen I read, watch films, and walk the older parts of cities, chasing
 			questions that never seem to stay answered for very long — meaning, suffering, morality, love,
-			failure, beauty, why people do what they do. Some people collect stamps. I collect questions.
-			I <a href="/writing" class="link">write</a> occasionally too, mostly because some thoughts
+			failure, beauty, why people do what they do. I
+			<a href="/writing" class="link">write</a> occasionally too, mostly because some thoughts
 			become annoying if you leave them alone for too long, and I have found that most things become
 			more bearable once they become interesting. Software included. If any of that travels well
 			with yours, <a href="/contact" class="link">let's talk</a>.
@@ -302,8 +302,8 @@
 		</ol>
 		<p class="mt-14 text-center text-sm italic text-[var(--ink-muted)]">
 			The same story, in corporate dress, on
-			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a> — or on two quiet pages
-			of paper.
+			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a> — or on two pages of
+			paper.
 		</p>
 		<div class="mt-6 flex flex-wrap items-center justify-center gap-4">
 			<Button href={cvUrl} external>View the CV</Button>

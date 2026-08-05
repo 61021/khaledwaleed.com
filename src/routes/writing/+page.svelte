@@ -35,7 +35,7 @@
 
 <PageHeader room="writing" eyebrow="essays · notes" title="Writing">
 	{#snippet lede()}
-		<p>Essays on the things that occupy my mind, art, philosophy, software, and some others.</p>
+		<p>Essays on art, philosophy, software, and whatever else won’t leave me alone.</p>
 	{/snippet}
 </PageHeader>
 

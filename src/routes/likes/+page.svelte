@@ -259,9 +259,8 @@
 <PageHeader room="likes" eyebrow="a catalogue of obsessions" title="Likes">
 	{#snippet lede()}
 		<p>
-			A scattered, unfinished sketch, not a manifesto, certainly not a polished self-portrait.
-			Random by design, immature on purpose. Updated whenever something earns its place or quietly
-			loses it.
+			An unfinished catalogue, in no particular order. Things earn their place here, or quietly lose
+			it.
 		</p>
 	{/snippet}
 </PageHeader>
