@@ -372,6 +372,7 @@
 		font-size: 0.8rem;
 		line-height: 1.55;
 		color: var(--ink-muted);
+		text-wrap: pretty;
 	}
 
 	/* Larger screens: upright cards, painting above the label. */
@@ -484,6 +485,7 @@
 		line-height: 1.65;
 		color: var(--ink-muted);
 		max-width: 36rem;
+		text-wrap: pretty;
 	}
 
 	.desk-more {

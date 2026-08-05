@@ -60,10 +60,11 @@
 		display: block;
 		flex: none;
 		height: auto;
-		border-radius: 3px;
 		object-fit: cover;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
-		outline: 1px solid var(--rule);
+		/* Neutral white edge, not a tinted one: a tinted outline picks up
+		   the wall colour and reads as dirt on the poster's rim. */
+		outline: 1px solid oklch(1 0 0 / 0.1);
 		outline-offset: -1px;
 		/* sit quietly in the Romantic palette until attended to */
 		filter: saturate(0.82) brightness(0.92);
@@ -88,9 +89,8 @@
 		flex: none;
 		display: grid;
 		place-items: center;
-		border-radius: 3px;
 		background: var(--bg-soft);
-		outline: 1px solid var(--rule);
+		outline: 1px solid oklch(1 0 0 / 0.1);
 		outline-offset: -1px;
 		color: var(--ink-dim);
 		font-family: var(--font-display);

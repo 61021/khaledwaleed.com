@@ -139,7 +139,7 @@
 					{@const active = isActive(item.href, $page.url.pathname)}
 					<a
 						href={item.href}
-						class="font-display text-[1.05rem] italic transition-colors duration-300 {active
+						class="-my-2 py-2 font-display text-[1.05rem] italic transition-colors duration-300 {active
 							? 'text-[var(--accent)]'
 							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 						aria-current={active ? 'page' : undefined}
@@ -149,7 +149,7 @@
 				{/each}
 				<button
 					type="button"
-					class="smallcaps cursor-pointer border border-[var(--rule)] px-2 py-1 transition-colors hover:border-[var(--ink-dim)] hover:text-[var(--ink)]"
+					class="smallcaps relative cursor-pointer border border-[var(--rule)] px-2 py-1 transition-colors after:absolute after:-inset-2 after:content-[''] hover:border-[var(--ink-dim)] hover:text-[var(--ink)]"
 					aria-label="Search the site"
 					title={isMac ? 'Search (⌘K)' : 'Search (Ctrl K)'}
 					onclick={() => paletteSignal.request()}
@@ -161,14 +161,16 @@
 			<!-- Phone: hamburger toggle -->
 			<button
 				type="button"
-				class="-mr-2 inline-flex items-center justify-center p-2 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden"
+				class="menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden"
+				class:open={mobileOpen}
 				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
 				aria-expanded={mobileOpen}
 				aria-controls="mobile-nav"
 				onclick={() => (mobileOpen = !mobileOpen)}
 			>
-				{#if mobileOpen}
+				<span class="menu-icon" aria-hidden="true">
 					<svg
+						class="icon-bars"
 						width="24"
 						height="24"
 						viewBox="0 0 24 24"
@@ -176,24 +178,22 @@
 						stroke="currentColor"
 						stroke-width="1.75"
 						stroke-linecap="round"
-						aria-hidden="true"
-					>
-						<path d="M18 6 6 18M6 6l12 12" />
-					</svg>
-				{:else}
-					<svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.75"
-						stroke-linecap="round"
-						aria-hidden="true"
 					>
 						<path d="M3.5 7h17M3.5 12h17M3.5 17h17" />
 					</svg>
-				{/if}
+					<svg
+						class="icon-x"
+						width="24"
+						height="24"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.75"
+						stroke-linecap="round"
+					>
+						<path d="M18 6 6 18M6 6l12 12" />
+					</svg>
+				</span>
 			</button>
 		</div>
 
@@ -296,3 +296,33 @@
 		</Container>
 	</footer>
 </div>
+
+<style>
+	/* Hamburger ↔ X: both glyphs stay in the DOM and cross-fade with
+	   opacity/scale/blur instead of swapping instantly. */
+	.menu-icon {
+		display: inline-grid;
+		place-items: center;
+	}
+
+	.menu-icon svg {
+		grid-area: 1 / 1;
+		transition:
+			opacity 200ms cubic-bezier(0.2, 0, 0, 1),
+			scale 200ms cubic-bezier(0.2, 0, 0, 1),
+			filter 200ms cubic-bezier(0.2, 0, 0, 1);
+	}
+
+	.icon-x,
+	.menu-toggle.open .icon-bars {
+		opacity: 0;
+		scale: 0.25;
+		filter: blur(4px);
+	}
+
+	.menu-toggle.open .icon-x {
+		opacity: 1;
+		scale: 1;
+		filter: blur(0px);
+	}
+</style>

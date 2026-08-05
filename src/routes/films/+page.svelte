@@ -550,10 +550,11 @@
 	}
 
 	.line-opt {
+		position: relative;
 		display: inline-flex;
 		align-items: baseline;
 		gap: 0.4rem;
-		padding: 0.3rem 0;
+		padding: 0.5rem 0;
 		border-bottom: 1px solid transparent;
 		font-family: var(--font-body);
 		font-size: 0.72rem;
@@ -566,6 +567,14 @@
 		transition:
 			color 250ms ease,
 			border-color 250ms ease;
+	}
+
+	/* Small type, full-size target: extend the hit area past the glyphs
+	   without touching the neighbouring row. */
+	.line-opt::after {
+		content: '';
+		position: absolute;
+		inset: -5px 0;
 	}
 
 	.line-opt:hover {
@@ -618,7 +627,7 @@
 		background: transparent;
 		border: 0;
 		border-bottom: 1px solid var(--rule);
-		padding: 0.3rem 0.1rem;
+		padding: 0.5rem 0.1rem;
 		font-family: var(--font-body);
 		font-size: 0.85rem;
 		color: var(--ink);
@@ -652,13 +661,17 @@
 
 	.viewtoggle {
 		display: flex;
-		gap: 0.4rem;
+		gap: 0.15rem;
 		margin-left: auto;
 	}
 
+	/* 40px boxes: the icons are small, the targets are not. */
 	.viewtoggle button {
 		display: inline-flex;
-		padding: 0.3rem;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
 		color: var(--ink-dim);
 		cursor: pointer;
 		transition: color 250ms ease;

@@ -314,6 +314,7 @@ h3 {
 
 p {
 	line-height: 1.7;
+	text-wrap: pretty;
 }
 
 em,

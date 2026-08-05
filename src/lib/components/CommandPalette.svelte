@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { fade, fly } from 'svelte/transition';
 	import { posts } from '$lib/posts';
 	import { paletteSignal } from '$lib/palette.svelte';
 
@@ -224,14 +225,19 @@
 			aria-label="Close"
 			class="absolute inset-0 bg-black/55 backdrop-blur-sm"
 			onclick={closePalette}
+			transition:fade={{ duration: 150 }}
 		></button>
 
+		<!-- Surfaces with a small rise, leaves with a smaller one: exits
+		     stay softer than enters. -->
 		<div
 			bind:this={dialogEl}
 			class="relative w-full max-w-xl overflow-hidden border border-[var(--rule)] bg-[var(--bg-soft)] shadow-2xl"
 			role="dialog"
 			aria-modal="true"
 			aria-label="Find a page"
+			in:fly={{ y: 8, duration: 200 }}
+			out:fly={{ y: 4, duration: 150 }}
 		>
 			<div class="flex items-center gap-3 border-b border-[var(--rule)] px-5 py-4">
 				<span class="italic text-[var(--accent)]" aria-hidden="true">·</span>

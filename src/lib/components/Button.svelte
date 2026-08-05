@@ -72,7 +72,8 @@
 			color 300ms ease,
 			border-color 300ms ease,
 			background-color 300ms ease,
-			box-shadow 450ms ease;
+			box-shadow 450ms ease,
+			transform 150ms ease;
 	}
 
 	/* A physical press: the plate gives by a pixel. */

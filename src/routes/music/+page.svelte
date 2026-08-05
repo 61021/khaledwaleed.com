@@ -78,7 +78,7 @@
 				<ol class="mt-4 divide-y divide-[var(--rule)]">
 					{#each data.tracks as t, i (t.url)}
 						<li class="group flex items-center gap-4 py-3">
-							<span class="w-5 shrink-0 text-right smallcaps">{i + 1}</span>
+							<span class="w-5 shrink-0 text-right smallcaps tabular-nums">{i + 1}</span>
 							{#if t.image}
 								<img src={t.image} alt="" width="48" height="48" class="art" loading="lazy" />
 							{/if}
@@ -155,7 +155,9 @@
 									>
 										{t.name}
 									</span>
-									<time datetime={t.playedAt} class="shrink-0 smallcaps">{ago(t.playedAt)}</time>
+									<time datetime={t.playedAt} class="shrink-0 smallcaps tabular-nums"
+										>{ago(t.playedAt)}</time
+									>
 								</span>
 								<span class="block truncate text-sm text-[var(--ink-muted)]">{t.artists}</span>
 							</a>
@@ -180,6 +182,8 @@
 		display: block;
 		object-fit: cover;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+		outline: 1px solid oklch(1 0 0 / 0.1);
+		outline-offset: -1px;
 		filter: saturate(0.85) brightness(0.95);
 		transition: filter 400ms ease;
 	}
@@ -196,7 +200,7 @@
 		border-radius: 9999px;
 		object-fit: cover;
 		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-		outline: 1px solid var(--rule);
+		outline: 1px solid oklch(1 0 0 / 0.1);
 		outline-offset: -1px;
 		filter: saturate(0.85) brightness(0.95);
 		transition:
@@ -218,7 +222,8 @@
 	}
 
 	.line-opt {
-		padding: 0.3rem 0;
+		position: relative;
+		padding: 0.5rem 0;
 		border-bottom: 1px solid transparent;
 		font-family: var(--font-body);
 		font-size: 0.72rem;
@@ -230,6 +235,13 @@
 		transition:
 			color 250ms ease,
 			border-color 250ms ease;
+	}
+
+	/* Small type, full-size target. */
+	.line-opt::after {
+		content: '';
+		position: absolute;
+		inset: -5px 0;
 	}
 
 	.line-opt:hover {
