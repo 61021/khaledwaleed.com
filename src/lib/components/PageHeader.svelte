@@ -16,6 +16,38 @@
 	let { room, eyebrow, title, grand = false, lede, children }: Props = $props();
 
 	const p = $derived(paintings[room as keyof typeof paintings]);
+
+	// The entrance hall painting alone is alive: drifting cloudlight, a
+	// breathing moon, and a slow parallax behind the frame.
+	const living = $derived(p?.key === 'home');
+
+	// Scroll parallax: the painting lags the page just enough to sit behind
+	// the frame. The .live class bakes the zoom at SSR time, so no-JS
+	// visitors simply keep a still, slightly tighter crop.
+	function parallax(node: HTMLElement, enabled: boolean) {
+		if (!enabled) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		let raf = 0;
+		const place = () => {
+			raf = 0;
+			const slack = node.offsetHeight * 0.055;
+			const y = Math.min(Math.max(scrollY, 0) * 0.06, slack);
+			node.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.12)`;
+		};
+		const onScroll = () => {
+			if (!raf) raf = requestAnimationFrame(place);
+		};
+		addEventListener('scroll', onScroll, { passive: true });
+		addEventListener('resize', onScroll, { passive: true });
+		place();
+		return {
+			destroy() {
+				removeEventListener('scroll', onScroll);
+				removeEventListener('resize', onScroll);
+				if (raf) cancelAnimationFrame(raf);
+			}
+		};
+	}
 </script>
 
 <header class="page-header">
@@ -24,8 +56,20 @@
 			<!-- Named so the small framed reproductions on the home page can
 			     morph into this hero during view transitions. -->
 			<div class="hero-art lamp-lit" style:view-transition-name={`painting-${p?.key ?? room}`}>
-				<Painting {room} priority bare />
+				<div class="hero-parallax" class:live={living} use:parallax={living}>
+					<Painting {room} priority bare />
+				</div>
 			</div>
+			{#if living}
+				<!-- Atmosphere over the Dahl: two cloud layers drifting at
+				     different speeds, and the moon's halo slowly breathing.
+				     All compositor work; reduced motion stills every layer. -->
+				<div class="atmo" aria-hidden="true">
+					<div class="atmo-clouds atmo-a"></div>
+					<div class="atmo-clouds atmo-b"></div>
+					<div class="atmo-moon"></div>
+				</div>
+			{/if}
 			<div class="hero-veil" aria-hidden="true"></div>
 
 			<div class="hero-content px-6">
@@ -88,6 +132,85 @@
 		position: absolute;
 		inset: 0;
 		z-index: 0;
+	}
+
+	.hero-parallax {
+		position: absolute;
+		inset: 0;
+	}
+
+	/* The zoom leaves 6% slack each side for the scroll lag to spend. */
+	.hero-parallax.live {
+		transform: scale(1.12);
+	}
+
+	/* ---------- The living painting (home only) ---------- */
+	.atmo {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	/* Cloudlight: soft luminance blobs over the painting's own sky,
+	   faded out well before the title zone. Whisper-quiet by design. */
+	.atmo-clouds {
+		position: absolute;
+		inset: -25% -35% 30% -35%;
+		mix-blend-mode: soft-light;
+		opacity: 0.55;
+		-webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 92%);
+		mask-image: linear-gradient(to bottom, black 45%, transparent 92%);
+	}
+
+	.atmo-a {
+		background:
+			radial-gradient(36% 44% at 24% 32%, rgb(228 222 200 / 0.16), transparent 70%),
+			radial-gradient(28% 36% at 58% 20%, rgb(212 208 192 / 0.13), transparent 72%),
+			radial-gradient(42% 38% at 84% 42%, rgb(222 216 196 / 0.11), transparent 70%);
+		animation: cloud-drift 110s ease-in-out infinite alternate;
+	}
+
+	.atmo-b {
+		background:
+			radial-gradient(30% 36% at 38% 24%, rgb(220 214 194 / 0.12), transparent 72%),
+			radial-gradient(40% 42% at 72% 34%, rgb(230 224 204 / 0.1), transparent 70%),
+			radial-gradient(26% 30% at 10% 22%, rgb(214 210 192 / 0.1), transparent 74%);
+		animation: cloud-drift 160s ease-in-out infinite alternate-reverse;
+	}
+
+	@keyframes cloud-drift {
+		from {
+			transform: translate3d(-3.5%, 0, 0);
+		}
+		to {
+			transform: translate3d(3.5%, 0.6%, 0);
+		}
+	}
+
+	/* The moon's halo, breathing. Rest state equals the keyframe start,
+	   so a stilled animation looks intended. */
+	.atmo-moon {
+		position: absolute;
+		inset: 0;
+		mix-blend-mode: screen;
+		opacity: 0.5;
+		background: radial-gradient(
+			22% 30% at 58% 30%,
+			rgb(238 226 188 / 0.14),
+			rgb(238 226 188 / 0.05) 55%,
+			transparent 78%
+		);
+		animation: moon-breathe 8.5s ease-in-out infinite alternate;
+	}
+
+	@keyframes moon-breathe {
+		from {
+			opacity: 0.5;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	.hero :global(.frontispiece) {
