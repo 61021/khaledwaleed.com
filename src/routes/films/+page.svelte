@@ -234,9 +234,9 @@
 	<link rel="preconnect" href="https://image.tmdb.org" />
 </svelte:head>
 
-<PageHeader room="films" eyebrow="a viewing log" title="Films">
+<PageHeader room="films" title="Films">
 	{#snippet lede()}
-		<p>Every film and series I have watched, scored one to ten and left unedited.</p>
+		<p>Every film and series I have watched, scored 1 to 10.</p>
 	{/snippet}
 </PageHeader>
 
@@ -290,11 +290,10 @@
 		<!-- PocketBase is unreachable (or the log is empty) — say so honestly. -->
 		<section class="rise mt-20 mb-12 text-center">
 			<p class="italic text-[1.4rem] text-[var(--ink)] [font-family:var(--font-display)]">
-				The projector is dark.
+				The log isn’t loading.
 			</p>
 			<p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
-				The viewing log lives on a server that is not answering right now. Give it a moment, then
-				try again.
+				It lives on a server that is not answering right now. Give it a moment, then try again.
 			</p>
 		</section>
 	{:else}

@@ -42,7 +42,7 @@
 		},
 		{
 			name: 'Art',
-			kicker: 'Paintings & prose I live inside',
+			kicker: 'Art I never get tired of',
 			items: [
 				'Northern Romantic painting',
 				'Caspar David Friedrich',
@@ -61,7 +61,7 @@
 		},
 		{
 			name: 'Music',
-			kicker: 'Listening rooms in my head',
+			kicker: 'What I actually listen to',
 			items: [
 				'Classical, all of it',
 				'Tchaikovsky, for Swan Lake',
@@ -173,7 +173,7 @@
 		},
 		{
 			name: 'Road',
-			kicker: 'Engines worth the silence after',
+			kicker: 'Fast cars, empty roads',
 			items: [
 				'Porsche 911 Turbo S',
 				'Aston Martin DB11',
@@ -258,10 +258,7 @@
 
 <PageHeader room="likes" eyebrow="a catalogue of obsessions" title="Likes">
 	{#snippet lede()}
-		<p>
-			An unfinished catalogue, in no particular order. Things earn their place here, or quietly lose
-			it.
-		</p>
+		<p>In no particular order, and never finished. Things get added and removed as I change.</p>
 	{/snippet}
 </PageHeader>
 

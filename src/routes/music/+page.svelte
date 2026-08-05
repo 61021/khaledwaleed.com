@@ -36,9 +36,9 @@
 	<link rel="preconnect" href="https://i.scdn.co" />
 </svelte:head>
 
-<PageHeader room="music" eyebrow="a listening log" title="Music">
+<PageHeader room="music" title="Music">
 	{#snippet lede()}
-		<p>What I have been listening to: top tracks and artists, pulled live from Spotify.</p>
+		<p>What I’ve been listening to: top tracks and artists, live from Spotify.</p>
 	{/snippet}
 </PageHeader>
 
@@ -46,7 +46,7 @@
 	{#if !data.ok}
 		<Fleuron />
 		<p class="rise text-center italic text-[var(--ink-muted)]">
-			The turntable has stopped. Check back soon.
+			Spotify is not answering right now. Check back soon.
 		</p>
 	{:else}
 		<!-- Time-range switcher (server-rendered; each is a plain link) -->

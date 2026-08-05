@@ -187,43 +187,38 @@
 
 <SchemaOrg schema={aboutPageSchema} />
 
-<PageHeader room="about" eyebrow="a brief portrait" title="About">
+<PageHeader room="about" title="About">
 	{#snippet lede()}
-		<p>The story at full length; the CV waits at the end.</p>
+		<p>The full story, with the CV at the end.</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
-			Every telling of a life picks a beginning. Mine is 2014, the year my father died. I was the
-			eldest son in a family of five, and the arithmetic was unsentimental: someone had to provide.
-			So 2019 finds a fourteen-year-old behind the checkout counter of a supermarket in
-			Al-Harithiya, Baghdad, scanning groceries and counting change. I have been working ever since,
-			first at the register, then in pixels, now on systems that millions of people depend on. And
-			providing ever since, too. Some responsibilities you don’t outgrow; you just learn to carry
-			them better. This page is the long version of how that happened.
+			My father died in 2014. I was the eldest son in a family of five, so someone had to provide:
+			at fourteen, a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries and counting
+			change. I have been working ever since, first at the register, then in pixels, now on systems
+			that millions of people depend on. And providing ever since, too. This page is the long
+			version.
 		</p>
 		<p>
 			Design came before code. At seventeen, still in school, I spent a summer making posters for
-			surgeons and beauty brands at a small Baghdad studio, and somewhere in there the designs
-			started wanting to become real, working things. So I taught myself to build them. By the end
-			of 2021 I was designing and building websites for a studio in Amsterdam, under a title I would
-			only grow into years later (design engineer), and I had founded
+			surgeons and beauty brands at a small Baghdad studio, and I wanted the designs to work, not
+			just sit there. So I taught myself to build them. By the end of 2021 I was designing and
+			building websites for a studio in Amsterdam, under the same title I use today (design
+			engineer), and I had founded
 			<a href="https://vitex.dev" target="_blank" rel="noopener" class="link">Vitex</a>, my own
-			studio, with the sort of motto only a seventeen-year-old would dare:
-			<em>software, pretty and perfect</em>.
+			studio, with the motto it still carries: <em>software, pretty and perfect</em>.
 		</p>
 		<p>
-			Then the work turned serious. At eighteen I was building pieces of the state's digital face:
-			the Iraqi Electronic Passport's public website and booking flow, systems for the ports, an ERP
-			behind the intercity-taxi garages of every governorate. And I was leading a team of nine while
-			doing it. Building software in Iraq is something I treat as an advantage rather than a
-			footnote: the constraints are real, the stakes are rarely abstract, and you learn early which
-			engineering virtues actually hold up when the thing simply has to work. Somewhere in those
-			years a democracy NGO made me its director of AI and technology, and I found myself applying
-			AI models to research alongside some of Iraq's top researchers, a sentence I could not have
-			predicted from behind the register.
+			Then the work turned serious. At eighteen I was building government systems: the Iraqi
+			Electronic Passport's public website and booking flow, systems for the ports, an ERP behind
+			the intercity-taxi garages of every governorate, and I led a team of nine while doing it.
+			Building software in Iraq is an advantage, not a footnote: the constraints are real, the
+			stakes are rarely abstract, and you learn early what holds up when the thing simply has to
+			work. In those years the Ishtar Center, a democracy NGO, made me its director of AI and
+			technology, where I apply AI models to research alongside some of Iraq's top researchers.
 		</p>
 		<p>
 			Today I lead frontend at
@@ -240,13 +235,12 @@
 			with the posters.
 		</p>
 		<p>
-			Away from the screen I read, watch films, and walk the older parts of cities, chasing
-			questions that never seem to stay answered for very long: meaning, suffering, morality, love,
-			failure, beauty, why people do what they do. I
-			<a href="/writing" class="link">write</a> occasionally too, mostly because some thoughts
-			become annoying if you leave them alone for too long, and I have found that most things become
-			more bearable once they become interesting. Software included. If any of that travels well
-			with yours, <a href="/contact" class="link">let's talk</a>.
+			Away from the screen I read, watch films, and walk the older parts of cities. The questions I
+			care about never stay answered: why people suffer, where taste comes from, what makes a life
+			worthwhile. I <a href="/writing" class="link">write</a> occasionally, mostly because some
+			thoughts become annoying if you leave them alone for too long, and I have found that most
+			things become more bearable once they become interesting. Software included. If some of that
+			overlaps with your world, <a href="/contact" class="link">let's talk</a>.
 		</p>
 		<p class="text-sm italic text-[var(--ink-muted)]">
 			For the record, the name in Arabic is <span lang="ar" class="not-italic">خالد وليد</span>,
@@ -301,9 +295,9 @@
 			{/each}
 		</ol>
 		<p class="mt-14 text-center text-sm italic text-[var(--ink-muted)]">
-			The same story, in corporate dress, on
-			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a>, or on two pages
-			of paper.
+			The same history on
+			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a>, or as a two-page
+			PDF.
 		</p>
 		<div class="mt-6 flex flex-wrap items-center justify-center gap-4">
 			<Button href={cvUrl} external>View the CV</Button>
@@ -317,7 +311,7 @@
 	<section class="rise mt-8">
 		<h2 class="text-center italic">The toolkit</h2>
 		<p class="mx-auto mt-4 max-w-md text-center text-sm italic text-[var(--ink-muted)]">
-			The instruments I reach for without thinking.
+			The tools I reach for without thinking.
 		</p>
 		<dl class="mt-10 space-y-7">
 			{#each Object.entries(skills) as [group, list] (group)}
@@ -340,11 +334,11 @@
 
 	<section class="rise mt-8 text-left sm:text-center">
 		<p class="max-w-md italic text-[var(--ink-muted)] sm:mx-auto">
-			A question, an idea, a collaboration: my inbox is open.
+			If you want to talk, about work or anything else, I am easy to reach.
 		</p>
 		<div class="mt-6 flex flex-wrap items-center justify-start gap-4 sm:justify-center">
-			<Button href="/contact" size="lg">Write to me</Button>
-			<Button href="/" variant="outline" size="lg">Back to the front</Button>
+			<Button href="/contact" size="lg">Get in touch</Button>
+			<Button href="/" variant="outline" size="lg">Home</Button>
 		</div>
 	</section>
 </Container>

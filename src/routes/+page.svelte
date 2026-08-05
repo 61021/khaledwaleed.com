@@ -8,56 +8,56 @@
 
 	// The entrance hall: one card per room, each behind its own painting,
 	// hung salon-style. `span` is a card's width in sixths of the wall:
-	// two wide frames, three upright, two wide. Notes echo each room's lede.
+	// two wide frames, three upright, two wide.
 	const rooms = [
 		{
 			href: '/about',
 			key: 'about',
 			name: 'About',
 			span: 3,
-			note: 'The story so far: the work, the toolkit, the CV.'
+			note: 'The full story, the work history, and the CV.'
 		},
 		{
 			href: '/projects',
 			key: 'projects',
 			name: 'Projects',
 			span: 3,
-			note: 'Products, client work, government platforms, with their numbers.'
+			note: 'Products, client work, and government platforms, with the numbers.'
 		},
 		{
 			href: '/writing',
 			key: 'writing',
 			name: 'Writing',
 			span: 2,
-			note: 'Essays on art, philosophy, software, and whatever else won’t leave me alone.'
+			note: 'Essays on people, ideas, art, and software.'
 		},
 		{
 			href: '/likes',
 			key: 'likes',
 			name: 'Likes',
 			span: 2,
-			note: 'Cinema, music, art, style, food: the whole drawer.'
+			note: 'Cinema, music, art, style, food, and the rest of my obsessions.'
 		},
 		{
 			href: '/library',
 			key: 'library',
 			name: 'Library',
 			span: 2,
-			note: 'Books on the desk, in the queue, returned to.'
+			note: 'What I’m reading and what’s next.'
 		},
 		{
 			href: '/films',
 			key: 'films',
 			name: 'Films',
 			span: 3,
-			note: 'Everything watched, scored one to ten.'
+			note: 'Everything I’ve watched, scored 1 to 10.'
 		},
 		{
 			href: '/music',
 			key: 'music',
 			name: 'Music',
 			span: 3,
-			note: 'What has been playing, live from Spotify.'
+			note: 'What I’ve been listening to, live from Spotify.'
 		}
 	] as const;
 
@@ -120,13 +120,13 @@
 <Container size="prose">
 	<section class="welcome rise-3">
 		<p class="dropcap">
-			My corner of the web: part portfolio, part commonplace book. Each room keeps one painting and
-			one obsession.
+			Part portfolio, part personal record. If you are here about work,
+			<a href="/about" class="link">About</a> has the story and the CV: seven government platforms, four
+			million users, and one studio of my own.
 		</p>
 		<p class="welcome-aside">
-			If you are here about work, start with <a href="/about" class="link">About</a>: seven
-			government platforms, four million users, and one studio of my own. If you are just looking
-			around, the door marked <a href="/contact" class="link">Contact</a> opens quickly.
+			The rest is what I read, watch, listen to, and think about. Anything else,
+			<a href="/contact" class="link">Contact</a> is one click away.
 		</p>
 	</section>
 </Container>
@@ -137,8 +137,7 @@
 <Container>
 	<section aria-labelledby="rooms-heading">
 		<header class="section-head rise">
-			<p class="smallcaps orn">the floor plan</p>
-			<h2 id="rooms-heading" class="italic">Wander the rooms</h2>
+			<h2 id="rooms-heading" class="italic">Around the site</h2>
 		</header>
 
 		<ul class="room-grid rise-2" role="list">
@@ -220,12 +219,12 @@
 
 <Fleuron />
 
-<!-- Correspondence -->
+<!-- Contact -->
 <Container size="prose">
 	<section class="closing">
-		<p class="closing-line">Every letter gets a reply.</p>
+		<p class="closing-line">I reply to everything.</p>
 		<div class="closing-actions">
-			<Button href="/contact" size="lg" class="w-full sm:w-auto">Write to me</Button>
+			<Button href="/contact" size="lg" class="w-full sm:w-auto">Get in touch</Button>
 		</div>
 	</section>
 </Container>

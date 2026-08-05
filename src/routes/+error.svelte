@@ -5,15 +5,11 @@
 
 <Seo title="Page not found" noindex />
 
-<PageHeader
-	room="404"
-	eyebrow="not found"
-	title={$page.status === 404 ? 'A page that isn’t' : 'Something went wrong'}
->
+<PageHeader room="404" title={$page.status === 404 ? 'Page not found' : 'Something went wrong'}>
 	{#snippet lede()}
 		<p>
 			{$page.status === 404
-				? 'The page you were looking for is not here. Perhaps it never was.'
+				? 'Nothing lives at this address. The link may be old, or the page may have moved.'
 				: ($page.error?.message ?? 'An unexpected error occurred.')}
 		</p>
 	{/snippet}
@@ -29,7 +25,7 @@
 			{$page.status}
 		</div>
 		<div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-			<Button href="/" size="lg">Back to the front</Button>
+			<Button href="/" size="lg">Home</Button>
 			<Button href="/writing" variant="outline" size="lg">Read something instead</Button>
 		</div>
 	</div>

@@ -134,7 +134,7 @@
 					name: 'khaledwaleed.com',
 					url: 'https://github.com/61021/khaledwaleed.com',
 					measure: 'this site',
-					note: 'Hand-built, one painting to a room. The paintings are public domain; the rest is mine.'
+					note: 'Hand-built, one painting to a page. The paintings are public domain; the rest is mine.'
 				}
 			]
 		}
@@ -196,12 +196,9 @@
 	</li>
 {/snippet}
 
-<PageHeader room="projects" eyebrow="a catalogue raisonné" title="Projects">
+<PageHeader room="projects" title="Projects">
 	{#snippet lede()}
-		<p>
-			Products of my own, a studio’s worth of client work, and platforms at national scale: the
-			shipped things, with their numbers.
-		</p>
+		<p>What I have shipped, with the numbers.</p>
 	{/snippet}
 </PageHeader>
 
@@ -237,7 +234,7 @@
 	<Fleuron />
 
 	<p class="rise text-center">
-		<a href="/about" class="link">The same work, told as a career: About →</a>
+		<a href="/about" class="link">All of this as a work history: About →</a>
 	</p>
 
 	<Fleuron />
@@ -246,6 +243,6 @@
 		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.35rem; line-height: 1.5;">
 			Software, pretty and perfect.
 		</blockquote>
-		<figcaption class="mt-4 smallcaps">Vitex’s motto, set at seventeen</figcaption>
+		<figcaption class="mt-4 smallcaps">Vitex’s motto, since 2021</figcaption>
 	</figure>
 </Container>

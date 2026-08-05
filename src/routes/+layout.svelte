@@ -23,8 +23,7 @@
 		console.log(
 			'%c☾ khaledwaleed.com',
 			'font-family: Georgia, serif; font-style: italic; font-size: 16px;',
-			'\n\nYou opened the console. I approve.\n' +
-				'The paintings are public domain; the rest is mine.\n\n' +
+			'\n\nThe paintings are public domain; the rest is mine.\n\n' +
 				'Source: https://github.com/61021/khaledwaleed.com\n' +
 				'Hello: contact@khaledwaleed.com'
 		);

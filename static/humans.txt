@@ -1,11 +1,11 @@
 /* TEAM */
-Khaled Waleed — Lead Design Engineer
+Khaled Waleed: Lead Design Engineer
 Site: https://khaledwaleed.com
 Location: Baghdad, Iraq
 
 /* SITE */
-Last update: 2026-07
+Last update: 2026-08
 Standards: HTML5, CSS3
 Components: SvelteKit 5, Tailwind 4
 Software: Bun, Vite, Cloudflare Pages
-Fonts: Inter, Cormorant Garamond
+Fonts: EB Garamond, IBM Plex Sans

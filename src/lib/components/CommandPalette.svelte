@@ -14,7 +14,7 @@
 	};
 
 	const items: Item[] = [
-		{ id: 'home', title: 'Home', subtitle: 'Entrance', href: '/', kind: 'page' },
+		{ id: 'home', title: 'Home', subtitle: 'The front page', href: '/', kind: 'page' },
 		{
 			id: 'about',
 			title: 'About',
@@ -49,7 +49,7 @@
 		{
 			id: 'library',
 			title: 'Library',
-			subtitle: 'What I am reading, and what is waiting',
+			subtitle: 'Reading now and up next',
 			href: '/library',
 			kind: 'page',
 			keywords: 'books reading shelf'
@@ -83,7 +83,7 @@
 		),
 		{
 			id: 'email',
-			title: 'Write to Khaled',
+			title: 'Email Khaled',
 			subtitle: 'contact@khaledwaleed.com',
 			href: 'mailto:contact@khaledwaleed.com',
 			kind: 'external'
@@ -245,7 +245,7 @@
 					bind:this={inputEl}
 					bind:value={query}
 					type="text"
-					placeholder="A page, an essay, a thought…"
+					placeholder="Search pages and essays…"
 					class="flex-1 bg-transparent text-[1.05rem] italic text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none"
 					autocomplete="off"
 					spellcheck="false"

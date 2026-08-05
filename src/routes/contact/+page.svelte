@@ -26,7 +26,7 @@
 
 <SchemaOrg schema={contactSchema} />
 
-<PageHeader room="contact" eyebrow="how to reach me" title="Contact">
+<PageHeader room="contact" title="Contact">
 	{#snippet lede()}
 		<p>
 			Call if it’s urgent; write if it can wait. I read everything and reply within a day or two.
@@ -57,12 +57,9 @@
 	<Fleuron />
 
 	<section class="rise text-left sm:text-center">
-		<p class="max-w-md italic text-[var(--ink-muted)] sm:mx-auto">
-			Or come look around the rest of the place.
-		</p>
-		<div class="mt-6 flex flex-wrap items-center justify-start gap-4 sm:justify-center">
+		<div class="flex flex-wrap items-center justify-start gap-4 sm:justify-center">
 			<Button href="/writing" size="lg">Read the essays</Button>
-			<Button href="/" variant="outline" size="lg">Back to the front</Button>
+			<Button href="/" variant="outline" size="lg">Home</Button>
 		</div>
 	</section>
 </Container>

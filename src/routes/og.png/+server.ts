@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
 		palette: homePalette,
 		eyebrow: site.name,
 		headline: ['A lead design engineer', 'in Baghdad.'],
-		sub: 'SvelteKit · Nuxt · Go — quiet, well-made software for the web.',
+		sub: 'Well-made software for the web, in SvelteKit, Nuxt, and Go.',
 		footerLeft: 'khaledwaleed.com',
 		footerRight: 'Baghdad · Iraq'
 	});

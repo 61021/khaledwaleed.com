@@ -32,9 +32,9 @@
 
 <SchemaOrg schema={blogSchema} />
 
-<PageHeader room="writing" eyebrow="essays &amp; notes" title="Writing">
+<PageHeader room="writing" title="Writing">
 	{#snippet lede()}
-		<p>Essays on art, philosophy, software, and whatever else won’t leave me alone.</p>
+		<p>Essays on people, ideas, art, and philosophy, with the occasional piece on software.</p>
 	{/snippet}
 </PageHeader>
 

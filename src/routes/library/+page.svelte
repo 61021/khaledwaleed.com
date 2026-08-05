@@ -75,9 +75,9 @@
 	</li>
 {/snippet}
 
-<PageHeader room="library" eyebrow="a quiet shelf" title="Library">
+<PageHeader room="library" title="Library">
 	{#snippet lede()}
-		<p>Books on the desk, books in the queue, books I keep returning to.</p>
+		<p>What I’m reading, what’s queued, and what I return to.</p>
 	{/snippet}
 </PageHeader>
 

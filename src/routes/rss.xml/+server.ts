@@ -28,7 +28,7 @@ export const GET = async () => {
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
-		<title>${escape(site.name)} — Writing</title>
+		<title>${escape(site.name)} · Writing</title>
 		<link>${site.url}/writing</link>
 		<atom:link href="${site.url}/rss.xml" rel="self" type="application/rss+xml" />
 		<description>${escape(site.tagline)}</description>
