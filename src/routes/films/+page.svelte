@@ -188,8 +188,11 @@
 		return min ? `${h}h ${min}m` : `${h}h`;
 	}
 
+	// With a type filter on, every row is that type — the label is noise.
 	const subline = (f: Personal): string =>
-		[f.year || '', fmtRuntime(f), kindLabel(f)].filter(Boolean).join(' · ');
+		[f.year || '', fmtRuntime(f), filter === 'all' ? kindLabel(f) : '']
+			.filter(Boolean)
+			.join(' · ');
 
 	const schema = $derived({
 		'@context': 'https://schema.org',
@@ -316,7 +319,7 @@
 		<Fleuron />
 
 		<section class="rise" aria-label="Viewing log">
-			<div class="line" role="group" aria-label="Filter titles">
+			<div class="line line-fill" role="group" aria-label="Filter titles">
 				{#each filterOptions as opt, i (opt.value)}
 					{#if i}<span class="vsep" aria-hidden="true"></span>{/if}
 					<button
@@ -647,6 +650,13 @@
 			flex-basis: 100%;
 			max-width: none;
 			margin-left: 0;
+		}
+
+		/* Once the search wraps to its own row, spread the type switcher
+		   across the full width instead of leaving it huddled left. */
+		.line-fill .line-opt {
+			flex: 1 1 0;
+			justify-content: center;
 		}
 	}
 
