@@ -168,7 +168,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-08-02',
+		dateModified: '2026-08-05',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -196,10 +196,13 @@
 <Container size="prose">
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
-			Every telling of a life picks a beginning. Mine is 2019: the checkout counter of a supermarket
-			in Al-Harithiya, Baghdad, a fourteen-year-old scanning groceries and counting change. I have
-			been working ever since — first at the register, then in pixels, now on systems that millions
-			of people depend on. This page is the long version of how that happened.
+			Every telling of a life picks a beginning. Mine is 2014, the year my father died. I was the
+			eldest son in a family of five, and the arithmetic was unsentimental: someone had to provide.
+			So 2019 finds a fourteen-year-old behind the checkout counter of a supermarket in
+			Al-Harithiya, Baghdad, scanning groceries and counting change. I have been working ever since
+			— first at the register, then in pixels, now on systems that millions of people depend on —
+			and providing ever since, too. Some responsibilities you don’t outgrow; you just learn to
+			carry them better. This page is the long version of how that happened.
 		</p>
 		<p>
 			Design came before code. At seventeen, still in school, I spent a summer making posters for
