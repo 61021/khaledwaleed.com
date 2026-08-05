@@ -134,7 +134,7 @@
 				{@const entry = sizes[r.key as keyof typeof sizes]}
 				<li>
 					<a href={r.href} class="room-card">
-						<span class="room-art" style:view-transition-name={`painting-${r.key}`}>
+						<span class="room-art lamp-lit" style:view-transition-name={`painting-${r.key}`}>
 							<picture>
 								<source type="image/avif" srcset={cardSrcset(r.key, 'avif')} sizes={cardSizes} />
 								<source type="image/webp" srcset={cardSrcset(r.key, 'webp')} sizes={cardSizes} />

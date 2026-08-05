@@ -11,7 +11,7 @@
 	import { dev } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
-	import { JsonLd, Container, CommandPalette, site } from '$lib';
+	import { JsonLd, Container, CommandPalette, Lamp, site } from '$lib';
 	import { roomBg, roomForPath } from '$lib/site';
 	import { paletteSignal } from '$lib/palette.svelte';
 
@@ -81,6 +81,7 @@
 
 <JsonLd />
 <CommandPalette />
+<Lamp />
 
 <svelte:head>
 	{#if !dev && site.cloudflareAnalyticsToken}

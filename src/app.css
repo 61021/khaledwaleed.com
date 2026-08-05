@@ -155,6 +155,67 @@ body {
 		'kern' 1;
 }
 
+/* ---------- The lamp ----------
+   One pair of coordinates for the light the visitor carries: set per
+   frame from Lamp.svelte on fine pointers, drifted here by keyframes on
+   coarse ones. Registered so the drift interpolates. Consumers: the
+   vignette below, the .lamp glow layer, and .lamp-lit painting reveals. */
+@property --lamp-x {
+	syntax: '<length-percentage>';
+	inherits: true;
+	initial-value: 50%;
+}
+
+@property --lamp-y {
+	syntax: '<length-percentage>';
+	inherits: true;
+	initial-value: 30%;
+}
+
+@media (pointer: coarse) {
+	html {
+		animation: lamp-drift 52s ease-in-out infinite alternate;
+	}
+}
+
+@keyframes lamp-drift {
+	from {
+		--lamp-x: 32vw;
+		--lamp-y: 22vh;
+	}
+	33% {
+		--lamp-x: 66vw;
+		--lamp-y: 42vh;
+	}
+	66% {
+		--lamp-x: 42vw;
+		--lamp-y: 58vh;
+	}
+	to {
+		--lamp-x: 60vw;
+		--lamp-y: 26vh;
+	}
+}
+
+/* Paintings under the lamp: the pool brightens the canvas it crosses.
+   attachment:fixed pins the gradient to the viewport, so the same
+   coordinates serve every frame in the house. (Browsers that treat
+   fixed attachment as scroll simply keep the plain veil.) */
+.lamp-lit::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	mix-blend-mode: overlay;
+	background: radial-gradient(
+		circle 24rem at var(--lamp-x, 50%) var(--lamp-y, 30%),
+		rgb(255 233 189 / 0.55),
+		rgb(255 233 189 / 0.18) 48%,
+		transparent 74%
+	);
+	background-attachment: fixed;
+}
+
 /* ---------- Wallpaper & candlelight ----------
    Two fixed layers behind all content: a damask trellis (an SVG mask
    filled with the room's accent, so the wallpaper re-colours with each
@@ -184,9 +245,9 @@ body::after {
 	z-index: -1;
 	pointer-events: none;
 	background: radial-gradient(
-		120% 100% at 50% 24%,
-		transparent 52%,
-		color-mix(in oklab, black 26%, transparent) 100%
+		circle 70vmax at var(--lamp-x, 50%) var(--lamp-y, 30%),
+		transparent 34%,
+		color-mix(in oklab, black 27%, transparent) 100%
 	);
 }
 

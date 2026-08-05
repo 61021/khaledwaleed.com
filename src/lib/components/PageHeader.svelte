@@ -23,7 +23,7 @@
 		<div class="hero" style:--focal={p?.focal ?? 'center'}>
 			<!-- Named so the small framed reproductions on the home page can
 			     morph into this hero during view transitions. -->
-			<div class="hero-art" style:view-transition-name={`painting-${p?.key ?? room}`}>
+			<div class="hero-art lamp-lit" style:view-transition-name={`painting-${p?.key ?? room}`}>
 				<Painting {room} priority bare />
 			</div>
 			<div class="hero-veil" aria-hidden="true"></div>
