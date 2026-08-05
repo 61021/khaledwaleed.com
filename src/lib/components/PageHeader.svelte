@@ -30,9 +30,11 @@
 		let raf = 0;
 		const place = () => {
 			raf = 0;
-			const slack = node.offsetHeight * 0.055;
-			const y = Math.min(Math.max(scrollY, 0) * 0.06, slack);
-			node.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.12)`;
+			// The 1.16 zoom leaves (0.16 / 2) / 1.16 ≈ 6.9% of the frame in
+			// slack above the crop; stay just inside it.
+			const slack = node.offsetHeight * 0.065;
+			const y = Math.min(Math.max(scrollY, 0) * 0.09, slack);
+			node.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0) scale(1.16)`;
 		};
 		const onScroll = () => {
 			if (!raf) raf = requestAnimationFrame(place);
@@ -62,11 +64,13 @@
 			</div>
 			{#if living}
 				<!-- Atmosphere over the Dahl: two cloud layers drifting at
-				     different speeds, and the moon's halo slowly breathing.
-				     All compositor work; reduced motion stills every layer. -->
+				     different speeds, moonlight glinting off the Elbe, and the
+				     moon's halo slowly breathing. All compositor work; reduced
+				     motion stills every layer. -->
 				<div class="atmo" aria-hidden="true">
 					<div class="atmo-clouds atmo-a"></div>
 					<div class="atmo-clouds atmo-b"></div>
+					<div class="atmo-water"></div>
 					<div class="atmo-moon"></div>
 				</div>
 			{/if}
@@ -139,9 +143,9 @@
 		inset: 0;
 	}
 
-	/* The zoom leaves 6% slack each side for the scroll lag to spend. */
+	/* The zoom leaves 8% slack each side for the scroll lag to spend. */
 	.hero-parallax.live {
-		transform: scale(1.12);
+		transform: scale(1.16);
 	}
 
 	/* ---------- The living painting (home only) ---------- */
@@ -153,38 +157,69 @@
 	}
 
 	/* Cloudlight: soft luminance blobs over the painting's own sky,
-	   faded out well before the title zone. Whisper-quiet by design. */
+	   faded out well before the title zone. Slow cinema, not weather. */
 	.atmo-clouds {
 		position: absolute;
 		inset: -25% -35% 30% -35%;
 		mix-blend-mode: soft-light;
-		opacity: 0.55;
+		opacity: 0.8;
 		-webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 92%);
 		mask-image: linear-gradient(to bottom, black 45%, transparent 92%);
 	}
 
 	.atmo-a {
 		background:
-			radial-gradient(36% 44% at 24% 32%, rgb(228 222 200 / 0.16), transparent 70%),
-			radial-gradient(28% 36% at 58% 20%, rgb(212 208 192 / 0.13), transparent 72%),
-			radial-gradient(42% 38% at 84% 42%, rgb(222 216 196 / 0.11), transparent 70%);
-		animation: cloud-drift 110s ease-in-out infinite alternate;
+			radial-gradient(36% 44% at 24% 32%, rgb(228 222 200 / 0.26), transparent 70%),
+			radial-gradient(28% 36% at 58% 20%, rgb(212 208 192 / 0.2), transparent 72%),
+			radial-gradient(42% 38% at 84% 42%, rgb(222 216 196 / 0.18), transparent 70%);
+		animation: cloud-drift 70s ease-in-out infinite alternate;
 	}
 
 	.atmo-b {
 		background:
-			radial-gradient(30% 36% at 38% 24%, rgb(220 214 194 / 0.12), transparent 72%),
-			radial-gradient(40% 42% at 72% 34%, rgb(230 224 204 / 0.1), transparent 70%),
-			radial-gradient(26% 30% at 10% 22%, rgb(214 210 192 / 0.1), transparent 74%);
-		animation: cloud-drift 160s ease-in-out infinite alternate-reverse;
+			radial-gradient(30% 36% at 38% 24%, rgb(220 214 194 / 0.19), transparent 72%),
+			radial-gradient(40% 42% at 72% 34%, rgb(230 224 204 / 0.16), transparent 70%),
+			radial-gradient(26% 30% at 10% 22%, rgb(214 210 192 / 0.16), transparent 74%);
+		animation: cloud-drift 110s ease-in-out infinite alternate-reverse;
 	}
 
 	@keyframes cloud-drift {
 		from {
-			transform: translate3d(-3.5%, 0, 0);
+			transform: translate3d(-5%, 0, 0);
 		}
 		to {
-			transform: translate3d(3.5%, 0.6%, 0);
+			transform: translate3d(5%, 1%, 0);
+		}
+	}
+
+	/* Moonlight on the Elbe: low, squashed glints sliding along the
+	   river band, against the clouds' direction. */
+	.atmo-water {
+		position: absolute;
+		inset: 0 -12%;
+		mix-blend-mode: screen;
+		opacity: 0.75;
+		background:
+			radial-gradient(34% 5% at 34% 66%, rgb(240 230 200 / 0.16), transparent 70%),
+			radial-gradient(26% 4% at 58% 72%, rgb(238 228 198 / 0.13), transparent 72%),
+			radial-gradient(40% 6% at 76% 62%, rgb(236 226 196 / 0.1), transparent 70%);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 52%,
+			black 62%,
+			black 84%,
+			transparent 96%
+		);
+		mask-image: linear-gradient(to bottom, transparent 52%, black 62%, black 84%, transparent 96%);
+		animation: water-drift 46s ease-in-out infinite alternate;
+	}
+
+	@keyframes water-drift {
+		from {
+			transform: translate3d(-2.5%, 0, 0);
+		}
+		to {
+			transform: translate3d(2.5%, 0, 0);
 		}
 	}
 
@@ -194,19 +229,19 @@
 		position: absolute;
 		inset: 0;
 		mix-blend-mode: screen;
-		opacity: 0.5;
+		opacity: 0.4;
 		background: radial-gradient(
-			22% 30% at 58% 30%,
-			rgb(238 226 188 / 0.14),
-			rgb(238 226 188 / 0.05) 55%,
+			26% 34% at 58% 30%,
+			rgb(238 226 188 / 0.26),
+			rgb(238 226 188 / 0.1) 55%,
 			transparent 78%
 		);
-		animation: moon-breathe 8.5s ease-in-out infinite alternate;
+		animation: moon-breathe 7s ease-in-out infinite alternate;
 	}
 
 	@keyframes moon-breathe {
 		from {
-			opacity: 0.5;
+			opacity: 0.4;
 		}
 		to {
 			opacity: 1;
