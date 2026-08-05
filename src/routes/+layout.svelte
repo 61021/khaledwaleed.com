@@ -3,8 +3,8 @@
 	import '@fontsource/inter/400.css';
 	import '@fontsource/inter/400-italic.css';
 	import '@fontsource/inter/600.css';
-	import '@fontsource/cormorant-garamond/400.css';
-	import '@fontsource/cormorant-garamond/400-italic.css';
+	import '@fontsource/eb-garamond/400.css';
+	import '@fontsource/eb-garamond/400-italic.css';
 
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
@@ -241,7 +241,7 @@
 						·&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
 					<div class="smallcaps">
-						mmxxvi · set in inter &amp; cormorant garamond · <a
+						mmxxvi · set in inter &amp; eb garamond · <a
 							href="https://github.com/61021/khaledwaleed.com"
 							target="_blank"
 							rel="noopener noreferrer"

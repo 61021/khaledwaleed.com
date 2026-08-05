@@ -22,15 +22,8 @@ const interRegular = loadFont(
 	join(ROOT, 'node_modules/@fontsource/inter/files/inter-latin-400-normal.woff'),
 	join(ROOT, 'node_modules/@fontsource/inter/files/inter-latin-all-400-normal.woff')
 );
-const cormorantItalic = loadFont(
-	join(
-		ROOT,
-		'node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff'
-	),
-	join(
-		ROOT,
-		'node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-all-400-italic.woff'
-	)
+const garamondItalic = loadFont(
+	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff')
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,7 +66,7 @@ export type OgCard = {
 	palette: OgPalette;
 	/** small uppercase line above the headline */
 	eyebrow?: string;
-	/** the big Cormorant Garamond italic lines */
+	/** the big EB Garamond italic lines */
 	headline: string[];
 	/** normal-weight line under the headline */
 	sub?: string;
@@ -110,7 +103,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				{
 					style: {
 						display: 'flex',
-						fontFamily: '"Cormorant Garamond", serif',
+						fontFamily: '"EB Garamond", serif',
 						fontStyle: 'italic',
 						fontSize: '56px',
 						color: c.accent,
@@ -145,7 +138,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"Cormorant Garamond", serif',
+						fontFamily: '"EB Garamond", serif',
 						fontStyle: 'italic',
 						fontSize: `${size}px`,
 						lineHeight: 1.08,
@@ -185,10 +178,10 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
 	if (interRegular) fonts.push({ name: 'Inter', data: interRegular, weight: 400, style: 'normal' });
-	if (cormorantItalic)
+	if (garamondItalic)
 		fonts.push({
-			name: 'Cormorant Garamond',
-			data: cormorantItalic,
+			name: 'EB Garamond',
+			data: garamondItalic,
 			weight: 400,
 			style: 'italic'
 		});
@@ -200,9 +193,9 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 /** Break a title into 1–3 lines that fit the card, and pick a size. */
 export function layoutHeadline(title: string): { lines: string[]; size: number } {
 	const size = title.length > 70 ? 60 : title.length > 45 ? 68 : title.length > 26 ? 80 : 96;
-	// Rough character budget per line at each size (Cormorant Garamond italic,
-	// 1000px box — it runs narrower than Fraunces did, so these stay safe).
-	const budget = size >= 96 ? 24 : size >= 80 ? 29 : size >= 68 ? 34 : 39;
+	// Rough character budget per line at each size (EB Garamond italic,
+	// 1000px box — it sets wider than Cormorant did, hence the tight caps).
+	const budget = size >= 96 ? 21 : size >= 80 ? 26 : size >= 68 ? 30 : 35;
 
 	const words = title.split(' ');
 	const lines: string[] = [];
