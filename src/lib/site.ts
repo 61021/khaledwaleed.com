@@ -178,13 +178,15 @@ export const paintings: Record<string, Painting> = {
 	},
 	films: {
 		key: 'films',
-		title: 'A Philosopher Lecturing on the Orrery',
-		artist: 'Joseph Wright of Derby',
-		year: 'c. 1766',
-		museum: 'Derby Museum and Art Gallery',
-		museumUrl: 'https://www.derbymuseums.org/',
-		source: 'https://en.wikipedia.org/wiki/A_Philosopher_Lecturing_on_the_Orrery',
-		alt: 'Figures gathered in a dark room around a brass orrery, their faces lit by the hidden lamp at its centre — children leaning in close, the philosopher presiding above.'
+		title: 'The Ruins of Holyrood Chapel',
+		artist: 'Louis Daguerre',
+		year: '1824',
+		museum: 'Walker Art Gallery, Liverpool',
+		museumUrl: 'https://www.liverpoolmuseums.org.uk/walker-art-gallery',
+		source: 'https://en.wikipedia.org/wiki/The_Ruins_of_Holyrood_Chapel',
+		alt: 'Moonlight pours through the bare gothic east window of a roofless chapel, silvering the broken columns and gravestones inside the ruin.',
+		// keep the moonlit window and the lit nave in the wide desktop crop
+		focal: '50% 35%'
 	},
 	music: {
 		key: 'music',
@@ -219,7 +221,7 @@ export const roomBg: Record<string, string> = {
 	about: '#1a1612',
 	writing: '#1c1a17',
 	library: '#1a1814',
-	films: '#120d0a',
+	films: '#121319',
 	music: '#141017',
 	likes: '#0a0e1a',
 	contact: '#0c121e',

@@ -51,14 +51,14 @@
 }
 
 :root[data-room='films'] {
-	/* wright of derby's orrery: a dark lecture room, one hidden lamp — amber faces, deep umber */
-	--bg: #120d0a;
-	--bg-soft: #1c1411;
-	--ink: #efdcbd;
-	--ink-muted: #b39a78;
-	--ink-dim: #7d6a52;
-	--rule: #2b2018;
-	--accent: #dca34e;
+	/* daguerre's holyrood chapel: slate-violet night, silvered stone, moonlight through the bare east window */
+	--bg: #121319;
+	--bg-soft: #1a1c25;
+	--ink: #e6e2d6;
+	--ink-muted: #a5a5ad;
+	--ink-dim: #70707d;
+	--rule: #242631;
+	--accent: #d3c48e;
 }
 
 :root[data-room='music'] {

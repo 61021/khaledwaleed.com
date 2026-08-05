@@ -1,46 +1,81 @@
 {
 	"404": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
 		"height": 1272
 	},
 	"about": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
 		"height": 1603
 	},
 	"contact": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
 		"height": 1377
 	},
 	"films": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
-		"height": 1404
+		"height": 1633
 	},
 	"home": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
 		"height": 1186
 	},
 	"library": {
-		"widths": [720, 1013],
+		"widths": [
+			720,
+			1013
+		],
 		"width": 1013,
 		"height": 841
 	},
 	"likes": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
 		"height": 1530
 	},
 	"music": {
-		"widths": [720, 1280, 1747],
+		"widths": [
+			720,
+			1280,
+			1747
+		],
 		"width": 1747,
 		"height": 2000
 	},
 	"writing": {
-		"widths": [720, 1280, 2000],
+		"widths": [
+			720,
+			1280,
+			2000
+		],
 		"width": 2000,
 		"height": 1281
 	}

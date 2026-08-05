@@ -44,10 +44,11 @@ const items: Item[] = [
 		sharpen: true
 	},
 	{
-		// 6527×4581 scan from Derby Museum — an audience lit by the orrery's
-		// lamp in a dark room: cinema, two centuries early.
+		// 3481×2843 Google Art Project scan from the Walker Art Gallery.
+		// Painted by the Diorama's inventor — and itself a Diorama subject:
+		// a surviving still from cinema's prehistory.
 		slug: 'films',
-		file: 'Wright_of_Derby,_The_Orrery.jpg',
+		file: 'The_Ruins_of_Holyrood_Chapel_(Louis_Daguerre),_1824_(Google_Art_Project).jpg',
 		srcWidth: 3200
 	}
 ];
