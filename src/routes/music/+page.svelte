@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Seo, Container, PageHeader, Fleuron } from '$lib';
-	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 
 	let { data } = $props();
 
@@ -30,7 +29,7 @@
 
 <Seo
 	title="Music"
-	description="What Khaled Waleed has been listening to — top tracks and artists, pulled live from Spotify."
+	description="What Khaled Waleed has been listening to: top tracks and artists, pulled live from Spotify."
 />
 
 <svelte:head>
@@ -39,34 +38,26 @@
 
 <PageHeader room="music" eyebrow="a listening log" title="Music">
 	{#snippet lede()}
-		<p>What I have been listening to — top tracks and artists, pulled live from Spotify.</p>
+		<p>What I have been listening to: top tracks and artists, pulled live from Spotify.</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10">
-		<Breadcrumb
-			items={[
-				{ name: 'Home', href: '/' },
-				{ name: 'Music', href: '/music' }
-			]}
-		/>
-	</div>
-
 	{#if !data.ok}
 		<Fleuron />
 		<p class="rise text-center italic text-[var(--ink-muted)]">
-			The turntable has stopped — check back soon.
+			The turntable has stopped. Check back soon.
 		</p>
 	{:else}
 		<!-- Time-range switcher (server-rendered; each is a plain link) -->
-		<div class="rise mt-6 flex justify-center">
-			<div class="seg" role="group" aria-label="Time range">
-				{#each ranges as r (r.key)}
+		<div class="rise mt-8 flex justify-center">
+			<div class="line" role="group" aria-label="Time range">
+				{#each ranges as r, i (r.key)}
+					{#if i}<span class="vsep" aria-hidden="true"></span>{/if}
 					<a
 						href={`?range=${r.key}`}
-						class="seg-opt"
-						class:is-active={data.range === r.key}
+						class="line-opt"
+						class:on={data.range === r.key}
 						aria-current={data.range === r.key ? 'page' : undefined}
 						data-sveltekit-noscroll
 					>
@@ -150,9 +141,6 @@
 
 			<section class="rise">
 				<h2 class="italic">Last spins</h2>
-				<p class="mt-1 text-sm italic text-[var(--ink-muted)]">
-					The turntable's short-term memory.
-				</p>
 				<ol class="mt-4 divide-y divide-[var(--rule)]">
 					{#each data.recent as t, i (`${t.url}-${t.playedAt}-${i}`)}
 						<li class="group flex items-center gap-4 py-2.5">
@@ -190,7 +178,6 @@
 <style>
 	.art {
 		display: block;
-		border-radius: 3px;
 		object-fit: cover;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
 		filter: saturate(0.85) brightness(0.95);
@@ -222,43 +209,43 @@
 		transform: translateY(-3px);
 	}
 
-	.seg {
-		display: inline-flex;
-		gap: 0.25rem;
-		padding: 0.3rem;
-		border: 1px solid var(--rule);
-		border-radius: 9999px;
-		background: var(--bg-soft);
+	/* The range switcher speaks the same underline language as the films
+	   filters — one control voice across the log rooms. */
+	.line {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
 	}
 
-	.seg-opt {
-		padding: 0.55rem 0.85rem;
-		border-radius: 9999px;
+	.line-opt {
+		padding: 0.3rem 0;
+		border-bottom: 1px solid transparent;
 		font-family: var(--font-body);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
 		font-size: 0.72rem;
 		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
 		color: var(--ink-muted);
 		white-space: nowrap;
 		transition:
 			color 250ms ease,
-			background-color 250ms ease;
+			border-color 250ms ease;
 	}
 
-	@media (min-width: 640px) {
-		.seg-opt {
-			padding: 0.55rem 1.1rem;
-		}
-	}
-
-	.seg-opt:hover {
+	.line-opt:hover {
 		color: var(--ink);
 	}
 
-	.seg-opt.is-active {
-		color: var(--bg);
-		background: var(--accent);
+	.line-opt.on {
+		color: var(--ink);
+		border-bottom-color: var(--accent);
+	}
+
+	.vsep {
+		flex: none;
+		width: 1px;
+		height: 0.85em;
+		background: var(--rule);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

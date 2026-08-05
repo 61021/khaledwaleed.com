@@ -13,7 +13,7 @@
 	{#snippet lede()}
 		<p>
 			{$page.status === 404
-				? 'The page you were looking for is not here — perhaps it never was.'
+				? 'The page you were looking for is not here. Perhaps it never was.'
 				: ($page.error?.message ?? 'An unexpected error occurred.')}
 		</p>
 	{/snippet}

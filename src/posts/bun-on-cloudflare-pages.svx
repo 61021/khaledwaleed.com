@@ -18,9 +18,9 @@ That was the whole problem. Everything that followed was downstream of that one 
 
 Cloudflare Pages picks a package manager by looking for a lockfile. It knows `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, and `bun.lockb`. If none of those match, it shrugs and runs `npm install`.
 
-The trap is that Bun 1.2 changed the default. The lockfile it writes now is called `bun.lock` — text format, much nicer to diff, and entirely invisible to Cloudflare. A perfectly valid Bun repo, the kind every new project produces, looks lockfile-less to the build image. So npm takes over without telling you, and you start debugging the wrong thing.
+The trap is that Bun 1.2 changed the default. The lockfile it writes now is called `bun.lock`: text format, much nicer to diff, and entirely invisible to Cloudflare. A perfectly valid Bun repo, the kind every new project produces, looks lockfile-less to the build image. So npm takes over without telling you, and you start debugging the wrong thing.
 
-I debugged the wrong thing twice. First the ESLint error — `eslint@10` against `@nuxt/eslint`'s `peer eslint@^9`. Bun is relaxed about that. npm, with strict peer deps, is not. I almost downgraded ESLint. Then, after working around it, Tailwind: *"the PostCSS plugin has moved to a separate package."* I was on v3 deliberately, but npm had hoisted a transitive `tailwindcss@4` to the top of `node_modules`, and `@nuxtjs/tailwindcss@6` picked that up instead of the v3 I had declared. Same code, different hoisting, different runtime.
+I debugged the wrong thing twice. First the ESLint error: `eslint@10` against `@nuxt/eslint`'s `peer eslint@^9`. Bun is relaxed about that. npm, with strict peer deps, is not. I almost downgraded ESLint. Then, after working around it, Tailwind: *"the PostCSS plugin has moved to a separate package."* I was on v3 deliberately, but npm had hoisted a transitive `tailwindcss@4` to the top of `node_modules`, and `@nuxtjs/tailwindcss@6` picked that up instead of the v3 I had declared. Same code, different hoisting, different runtime.
 
 Neither error was real. Both disappeared the moment Bun was actually doing the install.
 

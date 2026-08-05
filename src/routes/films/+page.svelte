@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import { Container, Seo, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
-	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+	import { formatDate } from '$lib/posts';
 	import Poster from '$lib/components/Poster.svelte';
 	import type { PageData } from './$types';
 
@@ -190,7 +190,7 @@
 
 	// With a type filter on, every row is that type — the label is noise.
 	const subline = (f: Personal): string =>
-		[f.year || '', fmtRuntime(f), filter === 'all' ? kindLabel(f) : ''].filter(Boolean).join(' · ');
+		[f.year || '', fmtRuntime(f), filter === 'all' ? kindLabel(f) : ''].filter(Boolean).join(', ');
 
 	const schema = $derived({
 		'@context': 'https://schema.org',
@@ -198,7 +198,7 @@
 		'@id': `${site.url}/films#page`,
 		url: `${site.url}/films`,
 		name: `${site.name}'s Films`,
-		description: `Every film and series Khaled Waleed has rated — ${total} titles, scored 1–10. Updated ${lastUpdated}.`,
+		description: `Every film and series Khaled Waleed has rated: ${total} titles, scored 1 to 10. Updated ${lastUpdated}.`,
 		dateModified: lastUpdated,
 		isPartOf: { '@id': `${site.url}/#website` },
 		about: { '@id': `${site.url}/#person` },
@@ -225,7 +225,7 @@
 
 <Seo
 	title="Films"
-	description={`Every film and series Khaled Waleed has rated — ${total} titles, scored 1–10. A lifelong cinema obsession in a single log.`}
+	description={`Every film and series Khaled Waleed has rated: ${total} titles, scored 1 to 10. A lifelong cinema obsession in a single log.`}
 />
 
 <SchemaOrg {schema} />
@@ -280,19 +280,11 @@
 {/snippet}
 
 <Container>
-	<div class="rise-3 mt-10 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-		<Breadcrumb
-			items={[
-				{ name: 'Home', href: '/' },
-				{ name: 'Films', href: '/films' }
-			]}
-		/>
-		{#if lastUpdated}
-			<div class="smallcaps">
-				updated <time datetime={lastUpdated}>{lastUpdated}</time>
-			</div>
-		{/if}
-	</div>
+	{#if lastUpdated}
+		<div class="rise-3 mt-10 smallcaps">
+			updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
+		</div>
+	{/if}
 
 	{#if total === 0}
 		<!-- PocketBase is unreachable (or the log is empty) — say so honestly. -->

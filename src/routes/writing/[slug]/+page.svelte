@@ -57,7 +57,7 @@
 	description={post.description}
 	type="article"
 	image={ogImage}
-	imageAlt={`“${post.title}” — an essay by ${site.name}`}
+	imageAlt={`“${post.title}”, an essay by ${site.name}`}
 	keywords={post.tags}
 	publishedTime={post.date}
 	modifiedTime={post.date}
@@ -85,10 +85,10 @@
 		<div class="mt-4 smallcaps">
 			by <a href="/about" class="link-quiet" rel="author">Khaled Waleed</a> ·
 			<time datetime={post.date}>{formatDate(post.date)}</time>
-			{#if post.tags.length}
-				· <span class="text-[var(--ink-dim)]">{post.tags.join(' · ')}</span>
-			{/if}
 		</div>
+		{#if post.tags.length}
+			<div class="mt-1 smallcaps text-[var(--ink-dim)]">{post.tags.join(', ')}</div>
+		{/if}
 	</div>
 
 	<Fleuron />

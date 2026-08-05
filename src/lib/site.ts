@@ -8,7 +8,7 @@ export const site = {
 	nameArabic: 'خالد وليد',
 	role: 'Lead Design Engineer',
 	tagline:
-		'Khaled Waleed — a lead design engineer in Baghdad, Iraq, building well-made software for the web in SvelteKit and Go.',
+		'Khaled Waleed is a lead design engineer in Baghdad, Iraq, building well-made software for the web in SvelteKit and Go.',
 	shortBio:
 		'I design and ship modern web apps end to end: SvelteKit and Nuxt on the frontend, Go on the backend.',
 	location: {
@@ -128,7 +128,7 @@ export const paintings: Record<string, Painting> = {
 		key: 'writing',
 		title: 'The Abbey in the Oakwood',
 		artist: 'Caspar David Friedrich',
-		year: '1809–10',
+		year: '1809-10',
 		museum: 'Alte Nationalgalerie, Berlin',
 		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/',
 		source: 'https://en.wikipedia.org/wiki/The_Abbey_in_the_Oakwood',
@@ -160,7 +160,7 @@ export const paintings: Record<string, Painting> = {
 		key: '404',
 		title: 'The Monk by the Sea',
 		artist: 'Caspar David Friedrich',
-		year: '1808–10',
+		year: '1808-10',
 		museum: 'Alte Nationalgalerie, Berlin',
 		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/',
 		source: 'https://en.wikipedia.org/wiki/The_Monk_by_the_Sea',
@@ -196,7 +196,9 @@ export const paintings: Record<string, Painting> = {
 		museum: 'Kenwood House, London',
 		museumUrl: 'https://www.english-heritage.org.uk/visit/places/kenwood/',
 		source: 'https://en.wikipedia.org/wiki/The_Guitar_Player_(Vermeer)',
-		alt: 'A young woman in a yellow ermine-trimmed jacket plays a guitar, glancing aside with a half-smile, in a sunlit Dutch interior.'
+		alt: 'A young woman in a yellow ermine-trimmed jacket plays a guitar, glancing aside with a half-smile, in a sunlit Dutch interior.',
+		// keep her face and the guitar in the wide entrance-hall crop
+		focal: '50% 30%'
 	},
 	projects: {
 		key: 'projects',

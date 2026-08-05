@@ -90,15 +90,12 @@
 		</div>
 
 		{#if p}
+			<!-- A wall label, set like one: artist, title, year, then the house. -->
 			<p class="hero-plate plate rise-3">
-				<em>{p.title}</em><span class="plate-item"><span class="plate-sep">·</span>{p.artist}</span
-				><span class="plate-item"><span class="plate-sep">·</span>{p.year}</span><span
-					class="plate-museum plate-item"
-					><span class="plate-sep">·</span><a
-						href={p.museumUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="link-quiet">{p.museum}</a
+				{p.artist}, <em>{p.title}</em>, {p.year}<span class="plate-museum"
+					>.
+					<a href={p.museumUrl} target="_blank" rel="noopener noreferrer" class="link-quiet"
+						>{p.museum}</a
 					></span
 				>
 			</p>
@@ -343,11 +340,7 @@
 		color: var(--ink-dim);
 	}
 
-	/* Keep each "· segment" glued together so separators never dangle at line ends. */
-	.plate-item {
-		white-space: nowrap;
-	}
-
+	/* Keep the collection off the smallest labels. */
 	.plate-museum {
 		display: none;
 	}

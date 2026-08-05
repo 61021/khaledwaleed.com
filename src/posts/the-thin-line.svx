@@ -1,6 +1,6 @@
 ---
 title: The thin line
-description: How small the difference between a good person and a bad one really is — and why the people worth trusting are the ones who know they could cross the line and choose not to.
+description: How small the difference between a good person and a bad one really is, and why the people worth trusting are the ones who know they could cross the line and choose not to.
 date: 2026-06-22
 readingTime: 2 min read
 tags:

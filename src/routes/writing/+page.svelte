@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { Container, Seo, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import { posts, formatDate } from '$lib/posts';
-	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 
 	const description =
-		'Essays on people, ideas, art, and philosophy — with the occasional piece on software.';
+		'Essays on people, ideas, art, and philosophy, with the occasional piece on software.';
 
 	const blogSchema = {
 		'@context': 'https://schema.org',
 		'@type': 'Blog',
 		'@id': `${site.url}/writing#blog`,
 		url: `${site.url}/writing`,
-		name: `${site.name} — Writing`,
+		name: `${site.name} · Writing`,
 		description,
 		inLanguage: 'en',
 		author: { '@id': `${site.url}/#person` },
@@ -33,22 +32,13 @@
 
 <SchemaOrg schema={blogSchema} />
 
-<PageHeader room="writing" eyebrow="essays · notes" title="Writing">
+<PageHeader room="writing" eyebrow="essays &amp; notes" title="Writing">
 	{#snippet lede()}
 		<p>Essays on art, philosophy, software, and whatever else won’t leave me alone.</p>
 	{/snippet}
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10">
-		<Breadcrumb
-			items={[
-				{ name: 'Home', href: '/' },
-				{ name: 'Writing', href: '/writing' }
-			]}
-		/>
-	</div>
-
 	<Fleuron />
 
 	<ol class="rise space-y-12">
@@ -68,7 +58,7 @@
 					</h2>
 					<p class="mt-3 leading-relaxed text-[var(--ink-muted)]">{post.description}</p>
 					<div class="mt-3 smallcaps">
-						{post.tags.join(' · ')}
+						{post.tags.join(', ')}
 					</div>
 				</a>
 			</li>

@@ -29,7 +29,7 @@
 			<li class="flex items-center gap-2">
 				{#if i < items.length - 1}
 					<a href={item.href} class="link-quiet">{item.name}</a>
-					<span aria-hidden="true" class="text-[var(--rule)]">·</span>
+					<span aria-hidden="true" class="text-[var(--rule)]">/</span>
 				{:else}
 					<span aria-current="page" class="text-[var(--ink-muted)]">{item.name}</span>
 				{/if}

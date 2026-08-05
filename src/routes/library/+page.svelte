@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Container, Seo, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
-	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+	import { formatDate } from '$lib/posts';
 
 	const lastUpdated = '2026-07-13';
 
@@ -29,7 +29,7 @@
 		{
 			title: 'Meditations',
 			author: 'Marcus Aurelius',
-			note: 'Notes to self from an emperor — the original private journal.'
+			note: 'Notes to self from an emperor: the original private journal.'
 		}
 	];
 
@@ -82,16 +82,8 @@
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10">
-		<Breadcrumb
-			items={[
-				{ name: 'Home', href: '/' },
-				{ name: 'Library', href: '/library' }
-			]}
-		/>
-		<div class="mt-4 smallcaps">
-			updated <time datetime={lastUpdated}>{lastUpdated}</time>
-		</div>
+	<div class="rise-3 mt-10 smallcaps">
+		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
 	<Fleuron />
@@ -143,6 +135,6 @@
 		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.25rem; line-height: 1.5;">
 			“When I am attacked by gloomy thoughts, nothing helps me so much as running to my books.”
 		</blockquote>
-		<figcaption class="mt-4 smallcaps">— Montaigne</figcaption>
+		<figcaption class="mt-4 smallcaps">Montaigne</figcaption>
 	</figure>
 </Container>

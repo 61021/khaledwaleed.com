@@ -12,7 +12,7 @@
 		'@type': 'ContactPage',
 		'@id': `${site.url}/contact#contactpage`,
 		url: `${site.url}/contact`,
-		name: `Contact — ${site.name}`,
+		name: `Contact · ${site.name}`,
 		about: { '@id': `${site.url}/#person` },
 		isPartOf: { '@id': `${site.url}/#website` },
 		inLanguage: 'en'
@@ -21,7 +21,7 @@
 
 <Seo
 	title="Contact"
-	description="Get in touch with Khaled Waleed — lead design engineer in Baghdad. Available for select consulting and contract work."
+	description="Get in touch with Khaled Waleed, lead design engineer in Baghdad. Available for select consulting and contract work."
 />
 
 <SchemaOrg schema={contactSchema} />

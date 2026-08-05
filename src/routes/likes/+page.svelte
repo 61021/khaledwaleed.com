@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Seo, Container, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
-	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+	import { formatDate } from '$lib/posts';
 
 	const lastUpdated = '2026-07-26';
 
@@ -123,7 +123,7 @@
 				'Windows onto trees & train tracks',
 				'Fallen leaves indoors',
 				'Easter eggs scattered through the room',
-				'Hand-painted appliances — fridge, TV, the lot',
+				'Hand-painted appliances: fridge, TV, the lot',
 				'Floor-to-ceiling bookshelves',
 				'Wall-sized mirrors in the dressing room',
 				'A big mirrored bathroom',
@@ -230,7 +230,7 @@
 		}
 	];
 
-	const description = `A scattered, evolving catalogue of Khaled Waleed's obsessions — cinema, music, art, style, food, philosophy, and everything in between. Updated ${lastUpdated}.`;
+	const description = `A scattered, evolving catalogue of Khaled Waleed's obsessions: cinema, music, art, style, food, philosophy, and everything in between. Updated ${lastUpdated}.`;
 
 	const schema = {
 		'@context': 'https://schema.org',
@@ -266,16 +266,8 @@
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10">
-		<Breadcrumb
-			items={[
-				{ name: 'Home', href: '/' },
-				{ name: 'Likes', href: '/likes' }
-			]}
-		/>
-		<div class="mt-4 smallcaps">
-			updated <time datetime={lastUpdated}>{lastUpdated}</time>
-		</div>
+	<div class="rise-3 mt-10 smallcaps">
+		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
 	<!-- Section index -->
@@ -294,13 +286,18 @@
 	<div class="rise space-y-16">
 		{#each sections as s, i (s.name)}
 			<section id={s.name.toLowerCase()} class="scroll-mt-20">
-				<div class="smallcaps">{String(i + 1).padStart(2, '0')} · {s.kicker}</div>
 				<h2
-					class="mt-2 italic text-[var(--ink)]"
+					class="italic text-[var(--ink)]"
 					style="font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;"
 				>
-					{s.name}.
+					{s.name}
 				</h2>
+				<!-- The kicker reads as a chapter subtitle, not a filing label. -->
+				<p
+					class="mt-2 text-[1.05rem] italic text-[var(--ink-muted)] [font-family:var(--font-display)]"
+				>
+					{s.kicker}
+				</p>
 				<!-- The separator leads each item (except the first) so it wraps with it
 				     and never dangles at the end of a line. -->
 				<ul class="mt-5 flex flex-wrap gap-x-3 gap-y-1 leading-relaxed text-[var(--ink-muted)]">

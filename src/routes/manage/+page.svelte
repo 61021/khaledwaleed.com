@@ -50,7 +50,7 @@
 		const status = (err as { status?: number }).status;
 		if (status !== 401 && status !== 403) return false;
 		logout();
-		authError = 'Session expired — sign in again.';
+		authError = 'Session expired. Sign in again.';
 		return true;
 	}
 
@@ -276,7 +276,7 @@
 				if (!expired(err)) listError = (err as Error).message || 'Could not refresh.';
 			}
 		} else {
-			listError = 'TMDB is unreachable — try again shortly.';
+			listError = 'TMDB is unreachable. Try again shortly.';
 		}
 		refreshingId = null;
 	}

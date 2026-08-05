@@ -18,7 +18,7 @@
 		title,
 		description = site.tagline,
 		image = site.ogImage,
-		imageAlt = `${site.name} — ${site.role}`,
+		imageAlt = `${site.name}, ${site.role}`,
 		type = 'website',
 		keywords = site.keywords,
 		noindex = false,
@@ -28,8 +28,8 @@
 
 	const fullTitle = $derived(
 		title
-			? `${title} — ${site.name}`
-			: `${site.name} — ${site.role} in ${site.location.city}, ${site.location.country}`
+			? `${title} · ${site.name}`
+			: `${site.name} · ${site.role} in ${site.location.city}, ${site.location.country}`
 	);
 	const url = $derived(`${site.url}${$page.url.pathname}`);
 	const imageUrl = $derived(image.startsWith('http') ? image : `${site.url}${image}`);
