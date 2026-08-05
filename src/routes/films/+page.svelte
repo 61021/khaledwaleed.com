@@ -190,9 +190,7 @@
 
 	// With a type filter on, every row is that type — the label is noise.
 	const subline = (f: Personal): string =>
-		[f.year || '', fmtRuntime(f), filter === 'all' ? kindLabel(f) : '']
-			.filter(Boolean)
-			.join(' · ');
+		[f.year || '', fmtRuntime(f), filter === 'all' ? kindLabel(f) : ''].filter(Boolean).join(' · ');
 
 	const schema = $derived({
 		'@context': 'https://schema.org',
