@@ -3,7 +3,6 @@
 	import { replaceState } from '$app/navigation';
 	import { Container, Seo, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
-	import FilmSky from '$lib/components/FilmSky.svelte';
 	import Poster from '$lib/components/Poster.svelte';
 	import type { PageData } from './$types';
 
@@ -307,12 +306,6 @@
 			</p>
 		</section>
 	{:else}
-		<!-- The chapel has no roof; the log hangs overhead. -->
-		<section class="rise-2 mt-10" aria-label="The viewing log as a night sky">
-			<p class="smallcaps orn mb-5">the sky over the ruin</p>
-			<FilmSky films={personal} />
-		</section>
-
 		<!-- The shrine: perfect tens, films then series -->
 		{#if favFilms.length}
 			{@render strip('Favourite films', favFilms)}
