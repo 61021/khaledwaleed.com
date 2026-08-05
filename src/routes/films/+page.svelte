@@ -32,7 +32,6 @@
 	const total = $derived(personal.length);
 	const movieCount = $derived(personal.filter((f) => f.type === 'movie').length);
 	const showCount = $derived(personal.filter((f) => f.type === 'tv').length);
-	const notesCount = $derived(personal.filter((f) => f.notes).length);
 	const lastUpdated = $derived(
 		personal.reduce((a, f) => (f.watchedOn > a ? f.watchedOn : a), personal[0]?.watchedOn ?? '')
 	);
@@ -48,19 +47,17 @@
 	);
 
 	// --- Type filter -----------------------------------------------------
-	type Filter = 'all' | 'films' | 'series' | 'notes';
+	type Filter = 'all' | 'films' | 'series';
 	let filter = $state<Filter>('all');
 
 	const filterOptions = $derived<{ value: Filter; label: string; count: number }[]>([
 		{ value: 'all', label: 'All', count: total },
 		{ value: 'films', label: 'Films', count: movieCount },
-		{ value: 'series', label: 'Series', count: showCount },
-		{ value: 'notes', label: 'Notes', count: notesCount }
+		{ value: 'series', label: 'Series', count: showCount }
 	]);
 
 	const matchesFilter = (f: Personal): boolean => {
 		if (filter === 'all') return true;
-		if (filter === 'notes') return Boolean(f.notes);
 		return filter === 'series' ? f.type === 'tv' : f.type === 'movie';
 	};
 
@@ -76,13 +73,12 @@
 	const visible = (f: Personal): boolean => matchesFilter(f) && matchesQuery(f);
 
 	// --- Sort ------------------------------------------------------------
-	type Sort = 'watched' | 'release' | 'mine' | 'az';
+	type Sort = 'watched' | 'release' | 'mine';
 	type Dir = 'asc' | 'desc';
 	const DEFAULT_DIR: Record<Sort, Dir> = {
 		watched: 'desc',
 		release: 'desc',
-		mine: 'desc',
-		az: 'asc'
+		mine: 'desc'
 	};
 
 	let sort = $state<Sort>('watched');
@@ -91,8 +87,7 @@
 	const sortOptions: { value: Sort; label: string; star?: boolean; by: string }[] = [
 		{ value: 'watched', label: 'Watched', by: 'watch date' },
 		{ value: 'release', label: 'Release', by: 'release year' },
-		{ value: 'mine', label: 'Mine', star: true, by: 'my rating' },
-		{ value: 'az', label: 'A–Z', by: 'title' }
+		{ value: 'mine', label: 'Mine', star: true, by: 'my rating' }
 	];
 
 	// Picking the active sort again flips its direction.
@@ -129,8 +124,6 @@
 				(a, b) =>
 					m * (a.rating - b.rating) || b.watchedOn.localeCompare(a.watchedOn) || byTitle(a, b)
 			);
-		} else {
-			arr.sort((a, b) => m * byTitle(a, b));
 		}
 		return arr;
 	});
@@ -172,12 +165,10 @@
 		// Legacy names (movies/shows) keep working.
 		if (t === 'films' || t === 'movies') filter = 'films';
 		else if (t === 'series' || t === 'shows') filter = 'series';
-		else if (t === 'notes') filter = 'notes';
 		const s = sp.get('sort');
 		// Legacy values: year → release, rating → mine, recent → watched.
 		if (s === 'release' || s === 'year') sort = 'release';
 		else if (s === 'mine' || s === 'rating') sort = 'mine';
-		else if (s === 'az') sort = 'az';
 		dir = DEFAULT_DIR[sort];
 		const d = sp.get('dir');
 		if (d === 'asc' || d === 'desc') dir = d;
@@ -199,12 +190,6 @@
 
 	const subline = (f: Personal): string =>
 		[f.year || '', fmtRuntime(f), kindLabel(f)].filter(Boolean).join(' · ');
-
-	// --- Notes (inline, one open at a time) ----------------------------------
-	let openNote = $state<string | null>(null);
-	const toggleNote = (f: Personal): void => {
-		openNote = openNote === key(f) ? null : key(f);
-	};
 
 	const schema = $derived({
 		'@context': 'https://schema.org',
@@ -445,25 +430,12 @@
 										<span class="star" aria-hidden="true">★</span>{f.rating}
 									</span>
 									{#if f.watched > 1}{@render rewatch(f.watched)}{/if}
-									{#if f.notes}
-										<button
-											type="button"
-											class="note-toggle"
-											aria-expanded={openNote === key(f)}
-											onclick={() => toggleNote(f)}
-										>
-											note {openNote === key(f) ? '▴' : '▾'}
-										</button>
-									{/if}
 								</p>
 								{#if f.directors.length}
 									<p class="lrow-by">
 										<span class="by-lbl">{f.type === 'tv' ? 'Created by' : 'Directed by'}</span>
 										{f.directors.join(', ')}
 									</p>
-								{/if}
-								{#if f.notes && openNote === key(f)}
-									<div class="lrow-note">{f.notes}</div>
 								{/if}
 							</div>
 						</li>
@@ -800,29 +772,6 @@
 		transform: translateY(-0.04em);
 	}
 
-	.note-toggle {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.3rem;
-		padding: 0;
-		font-family: var(--font-body);
-		font-size: 0.68rem;
-		font-weight: 600;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--ink-dim);
-		cursor: pointer;
-		transition: color 250ms ease;
-	}
-
-	.note-toggle:hover {
-		color: var(--ink);
-	}
-
-	.note-toggle[aria-expanded='true'] {
-		color: var(--accent);
-	}
-
 	.lrow-by {
 		margin: 0;
 		font-family: var(--font-body);
@@ -835,18 +784,6 @@
 
 	.lrow-by .by-lbl {
 		color: var(--ink-dim);
-	}
-
-	.lrow-note {
-		max-width: 36rem;
-		margin-top: 0.55rem;
-		border-left: 2px solid color-mix(in oklab, var(--accent) 50%, var(--rule));
-		padding-left: 0.7rem;
-		font-family: var(--font-display);
-		font-style: italic;
-		font-size: 0.95rem;
-		line-height: 1.55;
-		color: var(--ink);
 	}
 
 	@media (max-width: 479px) {
