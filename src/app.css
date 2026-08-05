@@ -139,6 +139,10 @@ html {
 	scroll-behavior: smooth;
 	background-color: var(--bg);
 	color: var(--ink);
+	/* Where the lamp rests until someone carries it (JS px on fine
+	   pointers, keyframe vw/vh on coarse ones override this). */
+	--lamp-x: 50vw;
+	--lamp-y: 30vh;
 	transition:
 		background-color 600ms ease,
 		color 600ms ease;
@@ -157,19 +161,25 @@ body {
 
 /* ---------- The lamp ----------
    One pair of coordinates for the light the visitor carries: set per
-   frame from Lamp.svelte on fine pointers, drifted here by keyframes on
-   coarse ones. Registered so the drift interpolates. Consumers: the
-   vignette below, the .lamp glow layer, and .lamp-lit painting reveals. */
+   frame from Lamp.svelte on fine pointers (px), drifted here by
+   keyframes on coarse ones (vw/vh), resting at the html defaults
+   otherwise. Registered so the drift interpolates.
+
+   Everything that follows the lamp is painted ONCE and then MOVED by
+   transform — never a gradient whose position tracks the pointer, and
+   no viewport-sized blend layers. The first build repainted the whole
+   viewport on every pointer frame and re-blended it on every scroll
+   frame; that was the lag. */
 @property --lamp-x {
-	syntax: '<length-percentage>';
+	syntax: '<length>';
 	inherits: true;
-	initial-value: 50%;
+	initial-value: 0px;
 }
 
 @property --lamp-y {
-	syntax: '<length-percentage>';
+	syntax: '<length>';
 	inherits: true;
-	initial-value: 30%;
+	initial-value: 0px;
 }
 
 @media (pointer: coarse) {
@@ -197,23 +207,36 @@ body {
 	}
 }
 
-/* Paintings under the lamp: the pool brightens the canvas it crosses.
-   attachment:fixed pins the gradient to the viewport, so the same
-   coordinates serve every frame in the house. (Browsers that treat
-   fixed attachment as scroll simply keep the plain veil.) */
+/* Paintings under the lamp: each .lamp-lit frame owns one pre-painted
+   light disc, anchored in ELEMENT coordinates (--lit-x/--lit-y, inline)
+   by Lamp.svelte, which re-anchors on scroll and navigation. Parked
+   far off-canvas until the lamp is actually carried — coarse pointers
+   and no-JS visitors keep the plain veil, and the glow layer still
+   passes over their paintings. */
+.lamp-lit {
+	overflow: hidden;
+}
+
 .lamp-lit::after {
 	content: '';
 	position: absolute;
-	inset: 0;
+	left: 0;
+	top: 0;
+	width: 36rem;
+	height: 36rem;
 	pointer-events: none;
 	mix-blend-mode: overlay;
 	background: radial-gradient(
-		circle 24rem at var(--lamp-x, 50%) var(--lamp-y, 30%),
+		circle closest-side,
 		rgb(255 233 189 / 0.55),
-		rgb(255 233 189 / 0.18) 48%,
-		transparent 74%
+		rgb(255 233 189 / 0.18) 65%,
+		transparent 100%
 	);
-	background-attachment: fixed;
+	transform: translate3d(
+		calc(var(--lit-x, -999rem) - 18rem),
+		calc(var(--lit-y, -999rem) - 18rem),
+		0
+	);
 }
 
 /* ---------- Wallpaper & candlelight ----------
@@ -245,9 +268,9 @@ body::after {
 	z-index: -1;
 	pointer-events: none;
 	background: radial-gradient(
-		circle 70vmax at var(--lamp-x, 50%) var(--lamp-y, 30%),
-		transparent 34%,
-		color-mix(in oklab, black 27%, transparent) 100%
+		120% 100% at 50% 24%,
+		transparent 52%,
+		color-mix(in oklab, black 26%, transparent) 100%
 	);
 }
 
