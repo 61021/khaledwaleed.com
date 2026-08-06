@@ -3,8 +3,7 @@
 	import '@fontsource/ibm-plex-sans/400.css';
 	import '@fontsource/ibm-plex-sans/400-italic.css';
 	import '@fontsource/ibm-plex-sans/600.css';
-	import '@fontsource-variable/fraunces/standard.css';
-	import '@fontsource-variable/fraunces/standard-italic.css';
+	import '$lib/fonts/zodiak.css';
 
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
@@ -309,7 +308,7 @@
 						{site.name} <span lang="ar" class="not-italic">{site.nameArabic}</span> ·
 						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
-					<div class="smallcaps">mmxxvi · set in fraunces &amp; ibm plex</div>
+					<div class="smallcaps">mmxxvi · set in zodiak &amp; ibm plex</div>
 				</div>
 				<nav
 					aria-label="Elsewhere"

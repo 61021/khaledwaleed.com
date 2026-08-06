@@ -21,9 +21,7 @@ function loadFont(...candidates: string[]): Buffer | null {
 const plexRegular = loadFont(
 	join(ROOT, 'node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff')
 );
-const frauncesItalic = loadFont(
-	join(ROOT, 'node_modules/@fontsource/fraunces/files/fraunces-latin-400-italic.woff')
-);
+const zodiakItalic = loadFont(join(ROOT, 'src/lib/fonts/files/zodiak-400-italic.woff'));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Node = any;
@@ -65,7 +63,7 @@ export type OgCard = {
 	palette: OgPalette;
 	/** small uppercase line above the headline */
 	eyebrow?: string;
-	/** the big Fraunces italic lines */
+	/** the big Zodiak italic lines */
 	headline: string[];
 	/** normal-weight line under the headline */
 	sub?: string;
@@ -102,7 +100,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				{
 					style: {
 						display: 'flex',
-						fontFamily: '"Fraunces", serif',
+						fontFamily: '"Zodiak", serif',
 						fontStyle: 'italic',
 						fontSize: '56px',
 						color: c.accent,
@@ -143,7 +141,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"Fraunces", serif',
+						fontFamily: '"Zodiak", serif',
 						fontStyle: 'italic',
 						fontSize: `${size}px`,
 						lineHeight: 1.08,
@@ -184,10 +182,10 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
 	if (plexRegular)
 		fonts.push({ name: 'IBM Plex Sans', data: plexRegular, weight: 400, style: 'normal' });
-	if (frauncesItalic)
+	if (zodiakItalic)
 		fonts.push({
-			name: 'Fraunces',
-			data: frauncesItalic,
+			name: 'Zodiak',
+			data: zodiakItalic,
 			weight: 400,
 			style: 'italic'
 		});
@@ -199,10 +197,11 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 /** Break a title into 1–3 lines that fit the card, and pick a size. */
 export function layoutHeadline(title: string): { lines: string[]; size: number } {
 	const size = title.length > 70 ? 60 : title.length > 45 ? 68 : title.length > 26 ? 80 : 96;
-	// Rough character budget per line at each size (Fraunces italic,
-	// 1000px box). Measured 2026-08-06: title-case lines fit ~22/26/31/35,
-	// so EB Garamond's budgets carry over unchanged.
-	const budget = size >= 96 ? 21 : size >= 80 ? 26 : size >= 68 ? 30 : 35;
+	// Rough character budget per line at each size (Zodiak italic,
+	// 1000px box). Measured 2026-08-06 from rendered cards: Zodiak sets
+	// ~10% wider than Fraunces (22 title-case chars ≈ 930px at size 80),
+	// so Fraunces' 21/26/30/35 budgets shrink to 19/23/27/32.
+	const budget = size >= 96 ? 19 : size >= 80 ? 23 : size >= 68 ? 27 : 32;
 
 	const words = title.split(' ');
 	const lines: string[] = [];

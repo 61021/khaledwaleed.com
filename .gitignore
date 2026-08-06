@@ -22,3 +22,6 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Fonts (fetched by scripts/fetch-fonts.ts; the ITF EULA forbids committing them)
+/src/lib/fonts/files

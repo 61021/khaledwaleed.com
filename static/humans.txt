@@ -8,4 +8,4 @@ Last update: 2026-08
 Standards: HTML5, CSS3
 Components: SvelteKit 5, Tailwind 4
 Software: Bun, Vite, Cloudflare Pages
-Fonts: Fraunces, IBM Plex Sans
+Fonts: Zodiak, IBM Plex Sans

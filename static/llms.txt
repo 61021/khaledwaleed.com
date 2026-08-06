@@ -35,5 +35,5 @@
 
 Each page is paired with one public-domain Northern Romantic painting
 (Friedrich, Dahl, Rembrandt, Vermeer, Daguerre, Wright of Derby). The site is
-set in Fraunces and IBM Plex Sans, built with SvelteKit, and deployed on
+set in Zodiak and IBM Plex Sans, built with SvelteKit, and deployed on
 Cloudflare Pages.
