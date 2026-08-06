@@ -20,13 +20,14 @@
 }
 
 :root[data-room='about'] {
-	--bg: #1a1612;
-	--bg-soft: #221c17;
-	--ink: #e8dcc4;
-	--ink-muted: #b3a78d;
-	--ink-dim: #8a806d;
-	--rule: #2e2620;
-	--accent: #c9b27a;
+	/* dahl's frederiksborg castle: deep blue night, still water, warm moon accent */
+	--bg: #0c121e;
+	--bg-soft: #141a28;
+	--ink: #e2e6e0;
+	--ink-muted: #8e9bb3;
+	--ink-dim: #757e8d;
+	--rule: #1d2336;
+	--accent: #e9b878;
 }
 
 :root[data-room='writing'] {
@@ -95,13 +96,14 @@
 }
 
 :root[data-room='contact'] {
-	--bg: #0c121e;
-	--bg-soft: #141a28;
-	--ink: #e2e6e0;
-	--ink-muted: #8e9bb3;
-	--ink-dim: #757e8d;
-	--rule: #1d2336;
-	--accent: #e9b878;
+	/* friedrich's two men contemplating the moon: warm umber dusk, parchment ink */
+	--bg: #1a1612;
+	--bg-soft: #221c17;
+	--ink: #e8dcc4;
+	--ink-muted: #b3a78d;
+	--ink-dim: #8a806d;
+	--rule: #2e2620;
+	--accent: #c9b27a;
 }
 
 :root[data-room='404'] {

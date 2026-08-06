@@ -116,13 +116,13 @@ export const paintings: Record<string, Painting> = {
 	},
 	about: {
 		key: 'about',
-		title: 'Two Men Contemplating the Moon',
-		artist: 'Caspar David Friedrich',
-		year: 'c. 1820',
-		museum: 'Galerie Neue Meister, Dresden',
-		museumUrl: 'https://gemaeldegalerie.skd.museum/',
-		source: 'https://en.wikipedia.org/wiki/Two_Men_Contemplating_the_Moon',
-		alt: 'Two figures in coats stand at the edge of a wood beside a leaning fir, looking up at a low evening moon.'
+		title: 'Frederiksborg Castle by Moonlight',
+		artist: 'Johan Christian Dahl',
+		year: '1817',
+		museum: 'Statens Museum for Kunst, Copenhagen',
+		museumUrl: 'https://www.smk.dk/en/',
+		source: 'https://en.wikipedia.org/wiki/Johan_Christian_Dahl',
+		alt: 'A Danish renaissance castle mirrored in still water under a high white moon and quiet clouds.'
 	},
 	writing: {
 		key: 'writing',
@@ -148,13 +148,13 @@ export const paintings: Record<string, Painting> = {
 	},
 	contact: {
 		key: 'contact',
-		title: 'Frederiksborg Castle by Moonlight',
-		artist: 'Johan Christian Dahl',
-		year: '1817',
-		museum: 'Statens Museum for Kunst, Copenhagen',
-		museumUrl: 'https://www.smk.dk/en/',
-		source: 'https://en.wikipedia.org/wiki/Johan_Christian_Dahl',
-		alt: 'A Danish renaissance castle mirrored in still water under a high white moon and quiet clouds.'
+		title: 'Two Men Contemplating the Moon',
+		artist: 'Caspar David Friedrich',
+		year: 'c. 1820',
+		museum: 'Galerie Neue Meister, Dresden',
+		museumUrl: 'https://gemaeldegalerie.skd.museum/',
+		source: 'https://en.wikipedia.org/wiki/Two_Men_Contemplating_the_Moon',
+		alt: 'Two figures in coats stand at the edge of a wood beside a leaning fir, looking up at a low evening moon.'
 	},
 	'404': {
 		key: '404',
@@ -233,13 +233,13 @@ export function roomForPath(pathname: string): string {
     Used for the <meta name="theme-color"> so browser chrome matches the room. */
 export const roomBg: Record<string, string> = {
 	home: '#0a1220',
-	about: '#1a1612',
+	about: '#0c121e',
 	writing: '#1c1a17',
 	library: '#1a1814',
 	films: '#121319',
 	music: '#141017',
 	projects: '#131010',
 	likes: '#0a0e1a',
-	contact: '#0c121e',
+	contact: '#1a1612',
 	'404': '#232b30'
 };
