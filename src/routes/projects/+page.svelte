@@ -142,6 +142,8 @@
 
 	const description = `Everything Khaled Waleed has built and shipped: Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`;
 
+	const [products, commissions, government, earlier, openSource] = sections;
+
 	const schema = {
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
@@ -181,19 +183,48 @@
 
 <SchemaOrg {schema} />
 
-{#snippet projectRow(p: Project)}
+{#snippet measureLine(p: Project, heading: boolean)}
+	<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
+		{#if heading}
+			<h3>
+				{#if p.url}
+					<a href={p.url} target="_blank" rel="noopener" class="link">{p.name}</a>
+				{:else}{p.name}{/if}
+			</h3>
+		{:else if p.url}
+			<a href={p.url} target="_blank" rel="noopener" class="link italic">{p.name}</a>
+		{:else}
+			<span class="text-[var(--ink)] italic">{p.name}</span>
+		{/if}
+		<span class="leader hidden sm:block" aria-hidden="true"></span>
+		<span class="smallcaps measure shrink-0">{p.measure}</span>
+	</div>
+{/snippet}
+
+{#snippet plateRow(p: Project)}
+	<li>
+		{@render measureLine(p, true)}
+		<p class="mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{p.note}</p>
+	</li>
+{/snippet}
+
+{#snippet indexRow(p: Project)}
 	<li class="py-4">
-		<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-			{#if p.url}
-				<a href={p.url} target="_blank" rel="noopener" class="link italic">{p.name}</a>
-			{:else}
-				<span class="text-[var(--ink)] italic">{p.name}</span>
-			{/if}
-			<span class="leader hidden sm:block" aria-hidden="true"></span>
-			<span class="smallcaps shrink-0">{p.measure}</span>
-		</div>
+		{@render measureLine(p, false)}
 		<p class="mt-1.5 text-sm leading-relaxed text-[var(--ink-muted)]">{p.note}</p>
 	</li>
+{/snippet}
+
+{#snippet intro(s: Section)}
+	{#if s.intro}
+		<p class="mt-2 text-sm text-[var(--ink-muted)] italic">{s.intro}</p>
+	{/if}
+{/snippet}
+
+{#snippet outro(s: Section)}
+	{#if s.outro}
+		<p class="mt-4 text-sm leading-relaxed text-[var(--ink-muted)] italic">{s.outro}</p>
+	{/if}
 {/snippet}
 
 <PageHeader room="projects" title="Projects">
@@ -209,26 +240,63 @@
 
 	<Fleuron />
 
-	<div class="rise space-y-16">
-		{#each sections as s, i (s.id)}
-			<section id={s.id} class="scroll-mt-20">
-				<h2>{s.name}</h2>
-				{#if s.intro}
-					<p class="mt-2 text-sm text-[var(--ink-muted)] italic">{s.intro}</p>
-				{/if}
-				<ul class="mt-4 divide-y divide-[var(--rule)]">
-					{#each s.items as p (p.name)}
-						{@render projectRow(p)}
-					{/each}
-				</ul>
-				{#if s.outro}
-					<p class="mt-4 text-sm leading-relaxed text-[var(--ink-muted)] italic">{s.outro}</p>
-				{/if}
-				{#if i < sections.length - 1}
-					<div class="rule-fine mt-12"></div>
-				{/if}
-			</section>
-		{/each}
+	<div class="rise space-y-14">
+		<!-- The two product lines hang as full plates -->
+		<section id={products.id} class="scroll-mt-20">
+			<h2>{products.name}</h2>
+			{@render intro(products)}
+			<ul class="mt-8 space-y-10">
+				{#each products.items as p (p.name)}
+					{@render plateRow(p)}
+				{/each}
+			</ul>
+			{@render outro(products)}
+		</section>
+
+		<div class="rule-fine"></div>
+
+		<section id={commissions.id} class="scroll-mt-20">
+			<h2>{commissions.name}</h2>
+			{@render intro(commissions)}
+			<ul class="mt-8 space-y-10">
+				{#each commissions.items as p (p.name)}
+					{@render plateRow(p)}
+				{/each}
+			</ul>
+			{@render outro(commissions)}
+		</section>
+
+		<div class="rule-fine"></div>
+
+		<!-- The government work reads as a register: dense, ruled -->
+		<section id={government.id} class="scroll-mt-20">
+			<h2>{government.name}</h2>
+			{@render intro(government)}
+			<ul class="mt-4 divide-y divide-[var(--rule)]">
+				{#each government.items as p (p.name)}
+					{@render indexRow(p)}
+				{/each}
+			</ul>
+			{@render outro(government)}
+		</section>
+
+		<div class="rule-fine"></div>
+
+		<!-- Two closing wings share a row on wide screens -->
+		<div class="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-14">
+			{#each [earlier, openSource] as s (s.id)}
+				<section id={s.id} class="wing scroll-mt-20">
+					<h2>{s.name}</h2>
+					{@render intro(s)}
+					<ul class="mt-2">
+						{#each s.items as p (p.name)}
+							{@render indexRow(p)}
+						{/each}
+					</ul>
+					{@render outro(s)}
+				</section>
+			{/each}
+		</div>
 	</div>
 
 	<Fleuron />
@@ -246,3 +314,17 @@
 		<figcaption class="smallcaps mt-4">Vitex’s motto, since 2021</figcaption>
 	</figure>
 </Container>
+
+<style>
+	/* The numbers are this page's gilding; everything else stays ink.
+	   (.smallcaps colors itself outside Tailwind's layers, hence a class.) */
+	.measure {
+		color: color-mix(in oklab, var(--accent) 72%, var(--ink-muted));
+	}
+
+	/* Wing headings step down so Products and the register keep the lead
+	   voice (the app.css h2 clamp is un-layered, so no utility can). */
+	.wing h2 {
+		font-size: 1.4rem;
+	}
+</style>

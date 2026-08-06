@@ -1,18 +1,15 @@
 <script lang="ts">
 	import { Seo, Container, Button, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 
-	type Role = {
-		title: string;
-		period: string;
-		highlights: string[];
-	};
-
 	type Experience = {
 		company: string;
 		url?: string;
 		meta: string;
-		lede?: string;
-		roles: Role[];
+		title: string;
+		start: string;
+		/** absent = ongoing, rendered as "since {start}" */
+		end?: string;
+		highlights: string[];
 	};
 
 	const experiences: Experience[] = [
@@ -20,126 +17,102 @@
 			company: 'QiCard',
 			url: 'https://qi.iq',
 			meta: 'Full-time, Baghdad, on-site',
-			roles: [
-				{
-					title: 'Lead Frontend Engineer',
-					period: 'since Jan 2025',
-					highlights: [
-						'Youngest employee among Qi’s 3,000+ staff.',
-						'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app to modern Vue/Nuxt standards within a year.',
-						'Built the frontend team: scouted, interviewed, and trial-task-vetted all three hires, then trained and onboarded them; now lead the four, owning code review, standards, and release quality.',
-						'Portfolio serves 4+ million users, including Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems managing the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
-						'Designed and built the corporate website of Enjaz, Qi’s e-government arm.'
-					]
-				}
+			title: 'Lead Frontend Engineer',
+			start: 'Jan 2025',
+			highlights: [
+				'Youngest employee among Qi’s 3,000+ staff.',
+				'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app to modern Vue/Nuxt standards within a year.',
+				'Built the frontend team: scouted, interviewed, and trial-task-vetted all three hires, then trained and onboarded them; now lead the four, owning code review, standards, and release quality.',
+				'Portfolio serves 4+ million users, including Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems managing the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
+				'Designed and built the corporate website of Enjaz, Qi’s e-government arm.'
 			]
 		},
 		{
 			company: 'Ishtar Center for Democracy Support',
 			url: 'https://ishtarcenter.com',
 			meta: 'Part-time, Baghdad, hybrid',
-			roles: [
-				{
-					title: 'Director of AI & Technology',
-					period: 'since Feb 2024',
-					highlights: [
-						'Center member of an Iraqi NGO advancing democracy and human rights; own all of its technology.',
-						'Work with Iraq’s top researchers, applying advanced AI models to conduct and enhance the center’s research.',
-						'Built and operate ishtarcenter.com, a bilingual Nuxt site with a self-hosted backend, and the center’s conference website.'
-					]
-				}
+			title: 'Director of AI & Technology',
+			start: 'Feb 2024',
+			highlights: [
+				'Center member of an Iraqi NGO advancing democracy and human rights; own all of its technology.',
+				'Work with Iraq’s top researchers, applying advanced AI models to conduct and enhance the center’s research.',
+				'Built and operate ishtarcenter.com, a bilingual Nuxt site with a self-hosted backend, and the center’s conference website.'
 			]
 		},
 		{
 			company: 'Vitex',
 			url: 'https://vitex.dev',
 			meta: 'Self-employed, Baghdad, remote',
-			roles: [
-				{
-					title: 'Founder & Lead Engineer',
-					period: 'since Oct 2021',
-					highlights: [
-						'Run a four-person design-engineering studio (“Software, pretty and perfect”) building web platforms and mobile apps for Iraqi enterprises and NGOs.',
-						'Built Risha end to end (mobile app, dashboard, website): e-learning connecting Iraq’s sixth-preparatory students with elite private tutors. 25K+ downloads, custom cross-device DRM; led all design and frontend.',
-						'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations: 1,000+ cars and $3M+ in transactions monthly.',
-						'Built and operate Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, live in 20+ venues.',
-						'Shipped platforms for the Afaq Al-Obaidi subsidiaries (Smartic for employment, National Foodstuff, Auto Zone, Golden Lube) and an archiving system for the Al-Amal Association.',
-						'Operate 20+ production client deployments (Cloudflare Pages + self-hosted VPS backends).'
-					]
-				}
+			title: 'Founder & Lead Engineer',
+			start: 'Oct 2021',
+			highlights: [
+				'Run a four-person design-engineering studio (“Software, pretty and perfect”) building web platforms and mobile apps for Iraqi enterprises and NGOs.',
+				'Built Risha end to end (mobile app, dashboard, website): e-learning connecting Iraq’s sixth-preparatory students with elite private tutors. 25K+ downloads, custom cross-device DRM; led all design and frontend.',
+				'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations: 1,000+ cars and $3M+ in transactions monthly.',
+				'Built and operate Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, live in 20+ venues.',
+				'Shipped platforms for the Afaq Al-Obaidi subsidiaries (Smartic for employment, National Foodstuff, Auto Zone, Golden Lube) and an archiving system for the Al-Amal Association.',
+				'Operate 20+ production client deployments (Cloudflare Pages + self-hosted VPS backends).'
 			]
 		},
 		{
 			company: 'Morshed',
 			meta: 'Part-time, Baghdad, hybrid',
-			roles: [
-				{
-					title: 'Senior Software Engineer',
-					period: 'Feb 2024 to Dec 2024',
-					highlights: [
-						'Built Morshed’s website, accounting ERP, and internal workflow systems, and shipped websites and ERP systems for Morshed’s clients.',
-						'Owned the digital transformation of the business-development & PR firm end to end.'
-					]
-				}
+			title: 'Senior Software Engineer',
+			start: 'Feb 2024',
+			end: 'Dec 2024',
+			highlights: [
+				'Built Morshed’s website, accounting ERP, and internal workflow systems, and shipped websites and ERP systems for Morshed’s clients.',
+				'Owned the digital transformation of the business-development & PR firm end to end.'
 			]
 		},
 		{
 			company: 'Digital Logic',
 			meta: 'Full-time, Baghdad, on-site',
-			roles: [
-				{
-					title: 'Frontend Engineer',
-					period: 'Oct 2022 to Dec 2024',
-					highlights: [
-						'Built the Iraqi Electronic Passport platform’s public website and appointment-booking flow, plus Vue.js frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
-						'Led a team of nine developing The Garage System, an ERP managing the intercity-taxi garages of every Iraqi governorate; set code conventions and reviewed all frontend work.',
-						'Mentored three interns through their first production features.'
-					]
-				}
+			title: 'Frontend Engineer',
+			start: 'Oct 2022',
+			end: 'Dec 2024',
+			highlights: [
+				'Built the Iraqi Electronic Passport platform’s public website and appointment-booking flow, plus Vue.js frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
+				'Led a team of nine developing The Garage System, an ERP managing the intercity-taxi garages of every Iraqi governorate; set code conventions and reviewed all frontend work.',
+				'Mentored three interns through their first production features.'
 			]
 		},
 		{
 			company: 'Speetu',
 			meta: 'Part-time, Amsterdam, remote',
-			roles: [
-				{
-					title: 'Design Engineer',
-					period: 'Oct 2021 to Oct 2022',
-					highlights: [
-						'Designed and built websites for Dutch brands, Inflexio among them, plus Speetu’s own site, logo, and brand identity.',
-						'Collaborated remotely with a distributed team across time zones.'
-					]
-				}
+			title: 'Design Engineer',
+			start: 'Oct 2021',
+			end: 'Oct 2022',
+			highlights: [
+				'Designed and built websites for Dutch brands, Inflexio among them, plus Speetu’s own site, logo, and brand identity.',
+				'Collaborated remotely with a distributed team across time zones.'
 			]
 		},
 		{
 			company: 'The Town Studio',
 			meta: 'Full-time, Baghdad, on-site',
-			roles: [
-				{
-					title: 'Graphic Designer',
-					period: 'Jun 2021 to Oct 2021',
-					highlights: [
-						'Produced print and digital brand assets (brochures, posters, social-media sets, web graphics), mostly for beauty and organic brands, doctors, and surgeons.',
-						'Worked with marketing teams to keep design aligned with brand strategy and campaign goals.'
-					]
-				}
+			title: 'Graphic Designer',
+			start: 'Jun 2021',
+			end: 'Oct 2021',
+			highlights: [
+				'Produced print and digital brand assets (brochures, posters, social-media sets, web graphics), mostly for beauty and organic brands, doctors, and surgeons.',
+				'Worked with marketing teams to keep design aligned with brand strategy and campaign goals.'
 			]
 		},
 		{
 			company: 'Nakhlat Baghdad',
 			meta: 'Full-time, Baghdad, on-site',
-			roles: [
-				{
-					title: 'Cashier & Store Assistant',
-					period: 'Apr 2019 to Jun 2021',
-					highlights: [
-						'First job ever, in a mid-sized Al-Harithiya supermarket: checkout, inventory, and restocking, learning to handle impatient adults before having a high-school ID.'
-					]
-				}
+			title: 'Cashier & Store Assistant',
+			start: 'Apr 2019',
+			end: 'Jun 2021',
+			highlights: [
+				'First job ever, in a mid-sized Al-Harithiya supermarket: checkout, inventory, and restocking, learning to handle impatient adults before having a high-school ID.'
 			]
 		}
 	];
+
+	const period = (exp: Experience) =>
+		exp.end ? `${exp.start} to ${exp.end}` : `since ${exp.start}`;
 
 	const linkedIn = site.socials.find((s) => s.label === 'LinkedIn')?.href;
 	const cvUrl = '/Khaled-Waleed-Resume.pdf';
@@ -266,31 +239,32 @@
 
 	<section class="rise mt-8">
 		<h2 class="text-center">Where I’ve worked</h2>
-		<ol class="mt-12 space-y-14">
-			{#each experiences as exp (exp.company)}
-				<li class="border-l-2 border-[var(--accent)] pl-6">
-					{#if exp.roles.length > 1}
-						<div class="smallcaps mb-2">{exp.meta}</div>
-						<h3 class="text-[var(--ink)]">{@render companyName(exp)}</h3>
-						<div class="mt-7 space-y-9">
-							{#each exp.roles as role (role.title)}
-								<div>
-									<div class="smallcaps mb-2">{role.period}</div>
-									<h4 class="text-[1.2rem] text-[var(--ink)]">{role.title}</h4>
-									{@render highlights(role.highlights)}
-								</div>
-							{/each}
-						</div>
-					{:else}
-						<div class="smallcaps mb-2">{exp.roles[0].period} · {exp.meta}</div>
-						<h3 class="text-[var(--ink)]">
-							{exp.roles[0].title} · {@render companyName(exp)}
-						</h3>
-						{#if exp.lede}
-							<p class="mt-3 text-[var(--ink-muted)] italic">{exp.lede}</p>
+		<ol class="mt-12">
+			{#each experiences as exp, i (exp.company)}
+				<li class="grid grid-cols-1 sm:grid-cols-[8.75rem_1fr]">
+					<div class="hidden pt-[0.45rem] pr-7 text-right sm:block">
+						{#if exp.end}
+							<div class="smallcaps date-ink">{exp.start}</div>
+							<div class="smallcaps mt-1"><span class="date-dim">to</span> {exp.end}</div>
+						{:else}
+							<div class="smallcaps date-dim">since</div>
+							<div class="smallcaps date-ink mt-1">{exp.start}</div>
 						{/if}
-						{@render highlights(exp.roles[0].highlights)}
-					{/if}
+						<p class="mt-2.5 text-[0.8rem] leading-[1.6] text-[var(--ink-dim)] italic">
+							{exp.meta}
+						</p>
+					</div>
+					<div
+						class="entry relative pl-6 sm:pl-7 {i < experiences.length - 1
+							? 'pb-12 sm:pb-14'
+							: 'pb-0'}"
+					>
+						<span class="entry-gem" aria-hidden="true"></span>
+						<div class="smallcaps mb-2 sm:hidden">{period(exp)} · {exp.meta}</div>
+						<h3 class="text-[var(--ink)]">{@render companyName(exp)}</h3>
+						<p class="mt-1 font-display text-[1.05rem] text-[var(--ink-muted)]">{exp.title}</p>
+						{@render highlights(exp.highlights)}
+					</div>
 				</li>
 			{/each}
 		</ol>
@@ -358,3 +332,50 @@
 		{/each}
 	</ul>
 {/snippet}
+
+<style>
+	/* One continuous rail for the whole history, mixed faintly gilt so it
+	   reads as hanging wire rather than wallpaper seam; a gem (the .orn /
+	   Fleuron diamond) seats each entry on it. Consecutive entries touch
+	   (spacing is padding, not margin), which is what keeps the wire unbroken. */
+	.entry {
+		border-left: 1px solid color-mix(in oklab, var(--accent) 22%, var(--rule));
+	}
+
+	.entry-gem {
+		position: absolute;
+		top: 0.52rem;
+		left: -0.5px;
+		width: 0.34rem;
+		height: 0.34rem;
+		background: color-mix(in oklab, var(--accent) 55%, transparent);
+		transform: translateX(-50%) rotate(45deg);
+		transition: background-color 400ms ease;
+	}
+
+	li:hover .entry-gem {
+		background: var(--accent);
+	}
+
+	/* The company link is the only control in an entry; widen its touch
+	   target without moving the underline. */
+	.entry h3 a {
+		position: relative;
+	}
+
+	.entry h3 a::after {
+		content: '';
+		position: absolute;
+		inset: -8px 0;
+	}
+
+	/* .smallcaps sets its own color outside Tailwind's layers, so utility
+	   classes cannot re-tint it; these carry the marginalia's two tones. */
+	.date-ink {
+		color: var(--ink);
+	}
+
+	.date-dim {
+		color: var(--ink-dim);
+	}
+</style>
