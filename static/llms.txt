@@ -20,7 +20,6 @@
 - /about: The full story, the work history, the toolkit, and the CV as a downloadable PDF.
 - /projects: Everything built and shipped: products, client work, government platforms, open source.
 - /writing: Essays on people, ideas, art, and philosophy, with the occasional piece on software.
-- /writing/it-hasnt-happened-yet: On the fear of losing a daily person to boredom.
 - /writing/the-thin-line: How small the difference between a good person and a bad one really is.
 - /writing/life-is-interesting: On meaning, and why we keep asking about it.
 - /writing/bun-on-cloudflare-pages: Deploying Bun projects to Cloudflare Pages.
