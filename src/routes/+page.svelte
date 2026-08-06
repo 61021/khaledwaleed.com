@@ -2,9 +2,6 @@
 	import { Seo, Container, Button, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import { paintings } from '$lib/site';
 	import sizes from '$lib/painting-sizes.json';
-	import { posts, formatDate } from '$lib/posts';
-
-	const latest = posts.slice(0, 3);
 
 	// The entrance hall: one card per room, each behind its own painting,
 	// hung salon-style. `span` is a card's width in sixths of the wall:
@@ -116,28 +113,13 @@
 	{/snippet}
 </PageHeader>
 
-<!-- Welcome note -->
-<Container size="prose">
-	<section class="welcome rise-3">
-		<p class="dropcap">
-			Part portfolio, part personal record. If you are here about work,
-			<a href="/about" class="link">About</a> has the story and the CV: seven government platforms, four
-			million users, and one studio of my own.
-		</p>
-		<p class="welcome-aside">
-			The rest is what I read, watch, listen to, and think about. Anything else,
-			<a href="/contact" class="link">Contact</a> is one click away.
-		</p>
-	</section>
-</Container>
-
 <Fleuron />
 
 <!-- The rooms: an entrance hall of small framed paintings -->
 <Container>
 	<section aria-labelledby="rooms-heading">
 		<header class="section-head rise">
-			<h2 id="rooms-heading" class="italic">Around the site</h2>
+			<h2 id="rooms-heading" class="italic">Discover</h2>
 		</header>
 
 		<ul class="room-grid rise-2" role="list">
@@ -184,41 +166,6 @@
 
 <Fleuron />
 
-<!-- Latest essays, catalogue style -->
-<Container size="prose">
-	<section aria-labelledby="desk-heading">
-		<header class="section-head">
-			<h2 id="desk-heading" class="italic">Latest essays</h2>
-		</header>
-
-		{#if latest.length}
-			<ol class="desk-list" role="list">
-				{#each latest as post (post.slug)}
-					<li>
-						<a href={`/writing/${post.slug}`} class="desk-row">
-							<span class="desk-line">
-								<span class="desk-title">{post.title}</span>
-								<span class="leader" aria-hidden="true"></span>
-								<time class="desk-date smallcaps" datetime={post.date}>{formatDate(post.date)}</time
-								>
-							</span>
-							<span class="desk-desc">{post.description}</span>
-						</a>
-					</li>
-				{/each}
-			</ol>
-		{/if}
-
-		<p class="desk-more">
-			<a href="/writing" class="smallcaps link-quiet">all essays →</a>
-			<span class="desk-sep" aria-hidden="true">·</span>
-			<a href="/rss.xml" class="smallcaps link-quiet">rss</a>
-		</p>
-	</section>
-</Container>
-
-<Fleuron />
-
 <!-- Contact -->
 <Container size="prose">
 	<section class="closing">
@@ -230,21 +177,6 @@
 </Container>
 
 <style>
-	/* ---------- Welcome ---------- */
-	.welcome {
-		margin-top: 1.25rem;
-	}
-
-	.welcome p {
-		font-size: 1.08rem;
-		line-height: 1.75;
-	}
-
-	.welcome-aside {
-		margin-top: 1.1rem;
-		color: var(--ink-muted);
-	}
-
 	/* ---------- Section headers ---------- */
 	.section-head {
 		text-align: center;
@@ -404,99 +336,6 @@
 		.room-note {
 			font-size: 0.85rem;
 		}
-	}
-
-	/* ---------- Writing desk ---------- */
-	.desk-list {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	.desk-row {
-		display: block;
-	}
-
-	/* Phones: date above title, no leader — a squeezed three-part row
-	   wraps titles one word per line. ≥640px: the catalogue line. */
-	.desk-line {
-		display: flex;
-		flex-direction: column-reverse;
-		align-items: flex-start;
-		gap: 0.35rem;
-	}
-
-	.desk-line .leader {
-		display: none;
-	}
-
-	@media (min-width: 640px) {
-		.desk-line {
-			flex-direction: row;
-			align-items: baseline;
-			gap: 0.65rem;
-		}
-
-		.desk-line .leader {
-			display: block;
-		}
-	}
-
-	.desk-title {
-		font-family: var(--font-display);
-		font-style: italic;
-		font-size: clamp(1.3rem, 2vw + 0.6rem, 1.65rem);
-		line-height: 1.25;
-		color: var(--ink);
-		transition: color 300ms ease;
-	}
-
-	/* A small gilt diamond marks each entry, like a catalogue pilcrow. */
-	.desk-title::before {
-		content: '';
-		display: inline-block;
-		width: 0.28rem;
-		height: 0.28rem;
-		margin-right: 0.6rem;
-		vertical-align: 0.18em;
-		background: color-mix(in oklab, var(--accent) 45%, transparent);
-		transform: rotate(45deg);
-		transition: background-color 300ms ease;
-	}
-
-	.desk-row:hover .desk-title::before {
-		background: var(--accent);
-	}
-
-	.desk-row:hover .desk-title {
-		color: var(--accent);
-	}
-
-	.desk-date {
-		white-space: nowrap;
-		color: var(--ink-dim);
-	}
-
-	.desk-desc {
-		display: block;
-		margin-top: 0.45rem;
-		font-size: 0.95rem;
-		line-height: 1.65;
-		color: var(--ink-muted);
-		max-width: 36rem;
-		text-wrap: pretty;
-	}
-
-	.desk-more {
-		margin-top: 2.25rem;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 0.7rem;
-	}
-
-	.desk-sep {
-		color: var(--ink-dim);
 	}
 
 	/* ---------- Correspondence ---------- */
