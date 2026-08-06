@@ -42,9 +42,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const path = event.url.pathname.replace(/\/+$/, '') || '/';
 	const target = redirects[path];
 	if (target) {
-		return withSecurityHeaders(
-			new Response(null, { status: 301, headers: { location: target } })
-		);
+		return withSecurityHeaders(new Response(null, { status: 301, headers: { location: target } }));
 	}
 
 	const room = event.route.id === null ? '404' : roomForPath(event.url.pathname);

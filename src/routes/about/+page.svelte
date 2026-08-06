@@ -197,10 +197,10 @@
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
 			At fourteen I was behind a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries
-			and counting change. My father had died in 2014, and I was the eldest son in a family of
-			five, so someone had to provide. I have been working ever since, first at the register, then
-			in pixels, now on systems that millions of people depend on. And providing ever since, too.
-			This page is the long version.
+			and counting change. My father had died in 2014, and I was the eldest son in a family of five,
+			so someone had to provide. I have been working ever since, first at the register, then in
+			pixels, now on systems that millions of people depend on. And providing ever since, too. This
+			page is the long version.
 		</p>
 		<p>
 			Design came before code. At seventeen, still in school, I spent a summer making posters for
