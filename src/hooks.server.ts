@@ -16,17 +16,40 @@ const redirects: Record<string, string> = {
 	'/cv': '/about'
 };
 
+// Mirrors the root _headers file, which only reaches the static pipeline
+// (prerendered pages, assets) — worker-rendered responses (/music, /manage,
+// /api/*, these 301s) must carry the security headers themselves.
+const securityHeaders: Record<string, string> = {
+	'X-Content-Type-Options': 'nosniff',
+	'X-Frame-Options': 'SAMEORIGIN',
+	'Referrer-Policy': 'strict-origin-when-cross-origin',
+	'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+	'Cross-Origin-Opener-Policy': 'same-origin',
+	'Strict-Transport-Security': 'max-age=15552000'
+};
+
+function withSecurityHeaders(response: Response) {
+	for (const [header, value] of Object.entries(securityHeaders)) {
+		if (!response.headers.has(header)) response.headers.set(header, value);
+	}
+	return response;
+}
+
 // Stamp the per-page room palette into the served HTML so the first paint
 // (and no-JS visitors) get the right colors instead of a navy→warm flash.
 // app.html ships data-room="home" / theme-color #0a1220 as placeholders.
 export const handle: Handle = async ({ event, resolve }) => {
 	const path = event.url.pathname.replace(/\/+$/, '') || '/';
 	const target = redirects[path];
-	if (target) return new Response(null, { status: 301, headers: { location: target } });
+	if (target) {
+		return withSecurityHeaders(
+			new Response(null, { status: 301, headers: { location: target } })
+		);
+	}
 
 	const room = event.route.id === null ? '404' : roomForPath(event.url.pathname);
 	let buffer = '';
-	return resolve(event, {
+	const response = await resolve(event, {
 		transformPageChunk: ({ html, done }) => {
 			buffer += html;
 			if (!done) return '';
@@ -35,4 +58,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 				.replace('content="#0a1220"', `content="${roomBg[room] ?? '#0a1220'}"`);
 		}
 	});
+	return withSecurityHeaders(response);
 };
