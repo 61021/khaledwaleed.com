@@ -65,7 +65,7 @@
 {#snippet bookRow(b: Book)}
 	<li class="py-3">
 		<div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-			<span class="italic text-[var(--ink)]">{b.title}</span>
+			<span class="text-[var(--ink)] italic">{b.title}</span>
 			<span class="leader hidden sm:block" aria-hidden="true"></span>
 			<span class="smallcaps shrink-0">{b.author}</span>
 		</div>
@@ -82,7 +82,7 @@
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10 smallcaps">
+	<div class="rise-3 smallcaps mt-10">
 		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
@@ -97,7 +97,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="italic text-[var(--ink-muted)]">Between books.</p>
+			<p class="text-[var(--ink-muted)] italic">Between books.</p>
 		{/if}
 	</section>
 
@@ -112,7 +112,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="italic text-[var(--ink-muted)]">The queue is empty for once.</p>
+			<p class="text-[var(--ink-muted)] italic">The queue is empty for once.</p>
 		{/if}
 	</section>
 
@@ -132,9 +132,9 @@
 	<Fleuron />
 
 	<figure class="rise mx-auto max-w-md text-center">
-		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.25rem; line-height: 1.5;">
+		<blockquote class="text-[var(--ink)] italic" style="font-size: 1.25rem; line-height: 1.5;">
 			“When I am attacked by gloomy thoughts, nothing helps me so much as running to my books.”
 		</blockquote>
-		<figcaption class="mt-4 smallcaps">Montaigne</figcaption>
+		<figcaption class="smallcaps mt-4">Montaigne</figcaption>
 	</figure>
 </Container>

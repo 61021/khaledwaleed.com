@@ -82,7 +82,7 @@
 			{@render pic()}
 		</div>
 
-		<figcaption class="plate mx-auto mt-4 px-6 rise-2">
+		<figcaption class="plate rise-2 mx-auto mt-4 px-6">
 			<em>{p.title}</em>
 			<span class="plate-sep">·</span>
 			{p.artist}

@@ -187,7 +187,7 @@
 			{#if p.url}
 				<a href={p.url} target="_blank" rel="noopener" class="link italic">{p.name}</a>
 			{:else}
-				<span class="italic text-[var(--ink)]">{p.name}</span>
+				<span class="text-[var(--ink)] italic">{p.name}</span>
 			{/if}
 			<span class="leader hidden sm:block" aria-hidden="true"></span>
 			<span class="smallcaps shrink-0">{p.measure}</span>
@@ -203,7 +203,7 @@
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10 smallcaps">
+	<div class="rise-3 smallcaps mt-10">
 		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
@@ -214,7 +214,7 @@
 			<section id={s.id} class="scroll-mt-20">
 				<h2>{s.name}</h2>
 				{#if s.intro}
-					<p class="mt-2 text-sm italic text-[var(--ink-muted)]">{s.intro}</p>
+					<p class="mt-2 text-sm text-[var(--ink-muted)] italic">{s.intro}</p>
 				{/if}
 				<ul class="mt-4 divide-y divide-[var(--rule)]">
 					{#each s.items as p (p.name)}
@@ -222,10 +222,10 @@
 					{/each}
 				</ul>
 				{#if s.outro}
-					<p class="mt-4 text-sm italic leading-relaxed text-[var(--ink-muted)]">{s.outro}</p>
+					<p class="mt-4 text-sm leading-relaxed text-[var(--ink-muted)] italic">{s.outro}</p>
 				{/if}
 				{#if i < sections.length - 1}
-					<div class="mt-12 rule-fine"></div>
+					<div class="rule-fine mt-12"></div>
 				{/if}
 			</section>
 		{/each}
@@ -240,9 +240,9 @@
 	<Fleuron />
 
 	<figure class="rise mx-auto max-w-md text-center">
-		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.35rem; line-height: 1.5;">
+		<blockquote class="text-[var(--ink)] italic" style="font-size: 1.35rem; line-height: 1.5;">
 			Software, pretty and perfect.
 		</blockquote>
-		<figcaption class="mt-4 smallcaps">Vitex’s motto, since 2021</figcaption>
+		<figcaption class="smallcaps mt-4">Vitex’s motto, since 2021</figcaption>
 	</figure>
 </Container>

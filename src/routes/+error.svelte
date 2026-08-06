@@ -19,7 +19,7 @@
 	<Fleuron />
 	<div class="rise text-center">
 		<div
-			class="italic text-[var(--ink-muted)]"
+			class="text-[var(--ink-muted)] italic"
 			style="font-family: var(--font-display); font-size: 6rem; line-height: 1;"
 		>
 			{$page.status}

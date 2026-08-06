@@ -305,7 +305,7 @@
 				class="flex flex-col items-start justify-between gap-4 text-left sm:flex-row sm:items-center sm:gap-6"
 			>
 				<div class="space-y-1">
-					<div class="italic text-[var(--ink-muted)] max-sm:text-sm">
+					<div class="text-[var(--ink-muted)] italic max-sm:text-sm">
 						{site.name} <span lang="ar" class="not-italic">{site.nameArabic}</span> ·
 						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>

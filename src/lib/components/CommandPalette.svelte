@@ -71,16 +71,14 @@
 			keywords: 'spotify listening songs albums tracks artists'
 		},
 		{ id: 'contact', title: 'Contact', subtitle: 'Get in touch', href: '/contact', kind: 'page' },
-		...posts.map(
-			(p): Item => ({
-				id: `post-${p.slug}`,
-				title: p.title,
-				subtitle: p.description,
-				href: `/writing/${p.slug}`,
-				kind: 'post',
-				keywords: p.tags.join(' ')
-			})
-		),
+		...posts.map((p): Item => ({
+			id: `post-${p.slug}`,
+			title: p.title,
+			subtitle: p.description,
+			href: `/writing/${p.slug}`,
+			kind: 'post',
+			keywords: p.tags.join(' ')
+		})),
 		{
 			id: 'email',
 			title: 'Email Khaled',
@@ -259,7 +257,7 @@
 			</div>
 
 			{#if filtered.length === 0}
-				<div class="px-5 py-10 text-center italic text-[var(--ink-dim)]">
+				<div class="px-5 py-10 text-center text-[var(--ink-dim)] italic">
 					Nothing matches <em class="text-[var(--ink-muted)]">{query}</em>.
 				</div>
 			{:else}
@@ -294,7 +292,7 @@
 										>
 									{/if}
 								</span>
-								<span class="shrink-0 smallcaps">{item.kind}</span>
+								<span class="smallcaps shrink-0">{item.kind}</span>
 							</button>
 						</li>
 					{/each}

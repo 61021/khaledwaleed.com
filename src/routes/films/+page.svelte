@@ -281,7 +281,7 @@
 
 <Container>
 	{#if lastUpdated}
-		<div class="rise-3 mt-10 smallcaps">
+		<div class="rise-3 smallcaps mt-10">
 			updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 		</div>
 	{/if}
@@ -289,7 +289,7 @@
 	{#if total === 0}
 		<!-- PocketBase is unreachable (or the log is empty) — say so honestly. -->
 		<section class="rise mt-20 mb-12 text-center">
-			<p class="text-[1.4rem] text-[var(--ink)] [font-family:var(--font-display)]">
+			<p class="[font-family:var(--font-display)] text-[1.4rem] text-[var(--ink)]">
 				The log isn’t loading.
 			</p>
 			<p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
@@ -387,7 +387,7 @@
 			</div>
 
 			{#if sorted.length === 0}
-				<p class="mt-14 text-center italic text-[var(--ink-muted)]">
+				<p class="mt-14 text-center text-[var(--ink-muted)] italic">
 					{#if query.trim()}
 						Nothing here matches <em class="text-[var(--ink)]">{query}</em>.
 					{:else}
@@ -472,7 +472,7 @@
 				<img src="/logos/tmdb.svg" alt="The Movie Database (TMDB)" width="80" height="58" />
 			</a>
 			<p
-				class="max-w-sm text-[0.72rem] font-semibold tracking-[0.04em] text-[var(--ink-muted)] [font-family:var(--font-body)]"
+				class="max-w-sm [font-family:var(--font-body)] text-[0.72rem] font-semibold tracking-[0.04em] text-[var(--ink-muted)]"
 			>
 				Posters and metadata via The Movie Database. This product uses the TMDB API but is not
 				endorsed or certified by TMDB.

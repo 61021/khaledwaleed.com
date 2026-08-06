@@ -414,7 +414,7 @@
 					{/if}
 				</div>
 			{/if}
-			<ul class="mt-3 divide-y 097 divide-[var(--rule)]">
+			<ul class="097 mt-3 divide-y divide-[var(--rule)]">
 				{#each films as f (f.id)}
 					<li class="row">
 						<Poster posterPath={f.posterPath || null} alt="" width={40} />

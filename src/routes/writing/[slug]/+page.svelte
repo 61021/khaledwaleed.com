@@ -82,12 +82,12 @@
 				{ name: post.title, href: `/writing/${post.slug}` }
 			]}
 		/>
-		<div class="mt-4 smallcaps">
+		<div class="smallcaps mt-4">
 			by <a href="/about" class="link-quiet" rel="author">Khaled Waleed</a> ·
 			<time datetime={post.date}>{formatDate(post.date)}</time>
 		</div>
 		{#if post.tags.length}
-			<div class="mt-1 smallcaps text-[var(--ink-dim)]">{post.tags.join(', ')}</div>
+			<div class="smallcaps mt-1 text-[var(--ink-dim)]">{post.tags.join(', ')}</div>
 		{/if}
 	</div>
 
@@ -107,7 +107,7 @@
 					<a href={`/writing/${data.older.slug}`} class="group block text-left">
 						<div class="smallcaps">← older</div>
 						<div
-							class="mt-2 text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
+							class="mt-2 [font-family:var(--font-display)] text-[1.2rem] leading-[1.25] text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
 						>
 							{data.older.title}
 						</div>
@@ -119,7 +119,7 @@
 					<a href={`/writing/${data.newer.slug}`} class="group block text-left sm:text-right">
 						<div class="smallcaps">newer →</div>
 						<div
-							class="mt-2 text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
+							class="mt-2 [font-family:var(--font-display)] text-[1.2rem] leading-[1.25] text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
 						>
 							{data.newer.title}
 						</div>
@@ -128,7 +128,7 @@
 			</div>
 		</nav>
 
-		<div class="mt-10 rule-fine"></div>
+		<div class="rule-fine mt-10"></div>
 	{/if}
 
 	<footer class="rise mt-10 flex items-baseline justify-between">
@@ -144,7 +144,7 @@
 
 <!-- Painting credit at the foot -->
 <Container size="prose">
-	<div class="mt-16 text-center smallcaps">
+	<div class="smallcaps mt-16 text-center">
 		this page is dedicated to <em>{painting.title}</em> by {painting.artist}, {painting.year}
 	</div>
 </Container>

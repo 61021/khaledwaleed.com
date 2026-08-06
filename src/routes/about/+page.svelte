@@ -242,7 +242,7 @@
 			things become more bearable once they become interesting. Software included. If some of that
 			overlaps with your world, <a href="/contact" class="link">let's talk</a>.
 		</p>
-		<p class="text-sm italic text-[var(--ink-muted)]">
+		<p class="text-sm text-[var(--ink-muted)] italic">
 			For the record, the name in Arabic is <span lang="ar" class="not-italic">خالد وليد</span>,
 			romanized Khaled Waleed, though Khalid Waleed and Khaled Walid also find their way to me.
 		</p>
@@ -256,7 +256,7 @@
 			{#each facts as f (f.label)}
 				<div>
 					<dt class="smallcaps">{f.label}</dt>
-					<dd class="mt-1 italic text-[var(--ink)]">{f.value}</dd>
+					<dd class="mt-1 text-[var(--ink)] italic">{f.value}</dd>
 				</div>
 			{/each}
 		</dl>
@@ -287,14 +287,14 @@
 							{exp.roles[0].title} · {@render companyName(exp)}
 						</h3>
 						{#if exp.lede}
-							<p class="mt-3 italic text-[var(--ink-muted)]">{exp.lede}</p>
+							<p class="mt-3 text-[var(--ink-muted)] italic">{exp.lede}</p>
 						{/if}
 						{@render highlights(exp.roles[0].highlights)}
 					{/if}
 				</li>
 			{/each}
 		</ol>
-		<p class="mt-14 text-center text-sm italic text-[var(--ink-muted)]">
+		<p class="mt-14 text-center text-sm text-[var(--ink-muted)] italic">
 			The same history on
 			<a href={linkedIn} target="_blank" rel="noopener" class="link">LinkedIn</a>, or as a two-page
 			PDF.
@@ -310,7 +310,7 @@
 	<!-- The toolkit -->
 	<section class="rise mt-8">
 		<h2 class="text-center">The toolkit</h2>
-		<p class="mx-auto mt-4 max-w-md text-center text-sm italic text-[var(--ink-muted)]">
+		<p class="mx-auto mt-4 max-w-md text-center text-sm text-[var(--ink-muted)] italic">
 			The tools I reach for without thinking.
 		</p>
 		<dl class="mt-10 space-y-7">
@@ -333,7 +333,7 @@
 	<Fleuron />
 
 	<section class="rise mt-8 text-left sm:text-center">
-		<p class="max-w-md italic text-[var(--ink-muted)] sm:mx-auto">
+		<p class="max-w-md text-[var(--ink-muted)] italic sm:mx-auto">
 			If you want to talk, about work or anything else, I am easy to reach.
 		</p>
 		<div class="mt-6 flex flex-wrap items-center justify-start gap-4 sm:justify-center">

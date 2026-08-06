@@ -263,13 +263,13 @@
 </PageHeader>
 
 <Container size="prose">
-	<div class="rise-3 mt-10 smallcaps">
+	<div class="rise-3 smallcaps mt-10">
 		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
 	<!-- Section index -->
 	<nav aria-label="Sections" class="rise-3 mt-8">
-		<ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 smallcaps">
+		<ul class="smallcaps flex flex-wrap justify-center gap-x-6 gap-y-2">
 			{#each sections as s (s.name)}
 				<li>
 					<a href={`#${s.name.toLowerCase()}`} class="link-quiet">{s.name}</a>
@@ -291,7 +291,7 @@
 				</h2>
 				<!-- The kicker reads as a chapter subtitle, not a filing label. -->
 				<p
-					class="mt-2 text-[1.05rem] italic text-[var(--ink-muted)] [font-family:var(--font-display)]"
+					class="mt-2 [font-family:var(--font-display)] text-[1.05rem] text-[var(--ink-muted)] italic"
 				>
 					{s.kicker}
 				</p>
@@ -310,7 +310,7 @@
 					</p>
 				{/if}
 				{#if i < sections.length - 1}
-					<div class="mt-12 rule-fine"></div>
+					<div class="rule-fine mt-12"></div>
 				{/if}
 			</section>
 		{/each}
@@ -319,9 +319,9 @@
 	<Fleuron />
 
 	<figure class="rise mx-auto max-w-md text-center">
-		<blockquote class="italic text-[var(--ink)]" style="font-size: 1.35rem; line-height: 1.5;">
+		<blockquote class="text-[var(--ink)] italic" style="font-size: 1.35rem; line-height: 1.5;">
 			I am worthy because I am curious, not because I am clever.
 		</blockquote>
-		<figcaption class="mt-4 smallcaps">a note to self</figcaption>
+		<figcaption class="smallcaps mt-4">a note to self</figcaption>
 	</figure>
 </Container>

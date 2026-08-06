@@ -45,7 +45,7 @@
 <Container size="prose">
 	{#if !data.ok}
 		<Fleuron />
-		<p class="rise text-center italic text-[var(--ink-muted)]">
+		<p class="rise text-center text-[var(--ink-muted)] italic">
 			Spotify is not answering right now. Check back soon.
 		</p>
 	{:else}
@@ -67,7 +67,7 @@
 			</div>
 		</div>
 
-		<p class="mt-4 text-center smallcaps">{rangeLabel[data.range] ?? ''}</p>
+		<p class="smallcaps mt-4 text-center">{rangeLabel[data.range] ?? ''}</p>
 
 		<Fleuron />
 
@@ -78,7 +78,7 @@
 				<ol class="mt-4 divide-y divide-[var(--rule)]">
 					{#each data.tracks as t, i (t.url)}
 						<li class="group flex items-center gap-4 py-3">
-							<span class="w-5 shrink-0 text-right smallcaps tabular-nums">{i + 1}</span>
+							<span class="smallcaps w-5 shrink-0 text-right tabular-nums">{i + 1}</span>
 							{#if t.image}
 								<img src={t.image} alt="" width="48" height="48" class="art" loading="lazy" />
 							{/if}
@@ -155,7 +155,7 @@
 									>
 										{t.name}
 									</span>
-									<time datetime={t.playedAt} class="shrink-0 smallcaps tabular-nums"
+									<time datetime={t.playedAt} class="smallcaps shrink-0 tabular-nums"
 										>{ago(t.playedAt)}</time
 									>
 								</span>
@@ -170,7 +170,7 @@
 
 	<Fleuron />
 
-	<div class="rise text-center smallcaps">
+	<div class="rise smallcaps text-center">
 		<a href="https://www.spotify.com" target="_blank" rel="noopener noreferrer" class="link-quiet">
 			listening data via Spotify
 		</a>

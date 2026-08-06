@@ -57,7 +57,7 @@
 						{post.title}
 					</h2>
 					<p class="mt-3 leading-relaxed text-[var(--ink-muted)]">{post.description}</p>
-					<div class="mt-3 smallcaps">
+					<div class="smallcaps mt-3">
 						{post.tags.join(', ')}
 					</div>
 				</a>
