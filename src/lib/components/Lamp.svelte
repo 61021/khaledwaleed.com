@@ -47,6 +47,9 @@
 			for (let i = 0; i < lit.length; i++) {
 				lit[i].style.setProperty('--lit-x', `${(x - rects[i].left).toFixed(1)}px`);
 				lit[i].style.setProperty('--lit-y', `${(y - rects[i].top).toFixed(1)}px`);
+				// Anchored in the same style flush as the coordinates: the disc
+				// fades up in place (opacity transitions, transform doesn't).
+				lit[i].style.setProperty('--lit-on', '1');
 			}
 		};
 

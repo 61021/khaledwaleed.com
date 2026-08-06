@@ -159,6 +159,15 @@ html {
 		color 600ms ease;
 }
 
+/* While a view transition runs (+layout sets data-vt), the crossfade
+   carries the palette change: the eases above and the wallpaper's would
+   otherwise straggle 600ms past the fade, re-rastering viewport-sized
+   layers every frame while the transition composites its snapshots. */
+html[data-vt],
+html[data-vt] body::before {
+	transition: none;
+}
+
 body {
 	font-family: var(--font-body);
 	background-color: transparent;
@@ -237,6 +246,10 @@ body {
 	height: 36rem;
 	pointer-events: none;
 	mix-blend-mode: overlay;
+	/* Lamp.svelte raises --lit-on once the disc is anchored, so the light
+	   settles onto a freshly hung canvas as a slow bloom, not a pop. */
+	opacity: var(--lit-on, 0);
+	transition: opacity 600ms ease;
 	background: radial-gradient(
 		circle closest-side,
 		rgb(255 233 189 / 0.55),
@@ -435,6 +448,19 @@ a.link-quiet:hover {
 	height: 40%;
 	background: linear-gradient(to bottom, transparent, var(--bg));
 	pointer-events: none;
+}
+
+/* A painting that misses its own view transition (cold room, slow line;
+   +layout waits only 300ms) develops in like a print instead of popping.
+   Scoped to walked-in visits: first paint and no-JS visitors keep the
+   image immediate, so LCP never waits on this. */
+html[data-navigated] .frontispiece img {
+	opacity: 0;
+	transition: opacity 500ms ease;
+}
+
+html[data-navigated] .frontispiece img.loaded {
+	opacity: 1;
 }
 
 /* ---------- Plate caption ---------- */

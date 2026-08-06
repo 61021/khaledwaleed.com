@@ -14,6 +14,7 @@
 	import { JsonLd, Container, CommandPalette, Lamp, site } from '$lib';
 	import { roomBg, roomForPath } from '$lib/site';
 	import { paletteSignal } from '$lib/palette.svelte';
+	import { isPaintingWarm, paintingKeyForPath, warmPainting } from '$lib/painting-warm';
 
 	let { children } = $props();
 
@@ -27,6 +28,27 @@
 				'Source: https://github.com/61021/khaledwaleed.com\n' +
 				'Hello: contact@khaledwaleed.com'
 		);
+	});
+
+	// Carry the next room's painting to the door: any intent toward an
+	// internal link (hover, focus, first touch) starts fetching + decoding
+	// that room's hero, the way data-sveltekit-preload-data already warms
+	// its data. By the click, the canvas is usually ready to hang.
+	onMount(() => {
+		const warmFromIntent = (e: Event) => {
+			const a = (e.target as Element | null)?.closest?.('a[href^="/"]');
+			if (!a) return;
+			const href = a.getAttribute('href');
+			if (href) warmPainting(paintingKeyForPath(new URL(href, location.origin).pathname));
+		};
+		document.addEventListener('pointerover', warmFromIntent, { passive: true });
+		document.addEventListener('focusin', warmFromIntent, { passive: true });
+		document.addEventListener('touchstart', warmFromIntent, { passive: true });
+		return () => {
+			document.removeEventListener('pointerover', warmFromIntent);
+			document.removeEventListener('focusin', warmFromIntent);
+			document.removeEventListener('touchstart', warmFromIntent);
+		};
 	});
 
 	// Mobile nav menu (collapsible on phones).
@@ -74,10 +96,37 @@
 			return;
 
 		return new Promise((resolve) => {
-			document.startViewTransition(async () => {
-				resolve();
-				await navigation.complete;
-			});
+			const html = document.documentElement;
+			const begin = () => {
+				// While the transition runs, the room's 600ms palette eases
+				// (html background/color, the damask wallpaper) go quiet: the
+				// crossfade IS the palette change. Left on, they straggle past
+				// the fade and repaint the whole viewport under it.
+				html.setAttribute('data-vt', '');
+				const transition = document.startViewTransition(async () => {
+					resolve();
+					await navigation.complete;
+				});
+				transition.finished.finally(() => html.removeAttribute('data-vt'));
+			};
+
+			// Hold the door a beat for the incoming painting so the crossfade
+			// is canvas to canvas, never canvas to blank wall. Intent warming
+			// usually makes this instant; a cold room gets at most 300ms and
+			// then develops in late (see .frontispiece img in app.css).
+			const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null;
+			if (!key || isPaintingWarm(key)) {
+				begin();
+				return;
+			}
+			let started = false;
+			const go = () => {
+				if (started) return;
+				started = true;
+				begin();
+			};
+			warmPainting(key).then(go, go);
+			setTimeout(go, 300);
 		});
 	});
 
