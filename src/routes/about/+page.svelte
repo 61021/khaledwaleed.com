@@ -168,7 +168,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-08-05',
+		dateModified: '2026-08-06',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -196,11 +196,11 @@
 <Container size="prose">
 	<section class="rise-3 mt-12 space-y-6">
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
-			My father died in 2014. I was the eldest son in a family of five, so someone had to provide:
-			at fourteen, a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries and counting
-			change. I have been working ever since, first at the register, then in pixels, now on systems
-			that millions of people depend on. And providing ever since, too. This page is the long
-			version.
+			At fourteen I was behind a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries
+			and counting change. My father had died in 2014, and I was the eldest son in a family of
+			five, so someone had to provide. I have been working ever since, first at the register, then
+			in pixels, now on systems that millions of people depend on. And providing ever since, too.
+			This page is the long version.
 		</p>
 		<p>
 			Design came before code. At seventeen, still in school, I spent a summer making posters for
