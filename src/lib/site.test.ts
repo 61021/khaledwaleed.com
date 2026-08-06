@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { paintings, roomForPath, site } from './site';
+import sizes from './painting-sizes.json';
 
 describe('roomForPath', () => {
 	test('maps every route to its room', () => {
@@ -34,6 +35,14 @@ describe('roomForPath', () => {
 		];
 		for (const r of routes) {
 			expect(paintings[roomForPath(r)]).toBeDefined();
+		}
+	});
+	test('every painting key has generated size variants on disk', () => {
+		// The manifest is written from the files in static/paintings, so a
+		// painting whose key has no manifest entry would render a bare srcset
+		// pointing at files that do not exist (the re-hang failure mode).
+		for (const [room, p] of Object.entries(paintings)) {
+			expect(sizes[p.key as keyof typeof sizes], `room "${room}" → key "${p.key}"`).toBeDefined();
 		}
 	});
 });

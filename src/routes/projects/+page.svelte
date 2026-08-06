@@ -126,7 +126,7 @@
 				},
 				{
 					name: 'Hyprland website',
-					url: 'https://hyprland.org',
+					url: 'https://hypr.land',
 					measure: 'merged',
 					note: 'Work on the Wayland compositor’s website.'
 				},

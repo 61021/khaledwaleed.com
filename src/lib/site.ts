@@ -20,6 +20,8 @@ export const site = {
 	url: 'https://khaledwaleed.com',
 	email: 'contact@khaledwaleed.com',
 	phone: '+9647838577553',
+	/** The same number, spaced for human eyes (tel: links use `phone`). */
+	phoneDisplay: '+964 783 857 7553',
 	avatar: '/avatar.svg',
 	ogImage: '/og.png',
 	twitter: undefined as string | undefined,
@@ -37,20 +39,14 @@ export const site = {
 		'Khalid Waleed',
 		'خالد وليد',
 		'Khaled Waleed software engineer',
+		'Lead Design Engineer',
 		'lead design engineer Iraq',
 		'design engineer Baghdad',
-		'senior developer Iraq',
-		'senior dev Iraq',
+		'software engineer Iraq',
 		'senior frontend engineer Iraq',
-		'senior backend engineer Iraq',
-		'Iraqi software engineer',
-		'Baghdad software engineer',
-		'hire senior engineer Iraq',
 		'SvelteKit developer Iraq',
 		'Nuxt developer Iraq',
-		'Go developer Iraq',
-		'TypeScript engineer Iraq',
-		'freelance senior software engineer Baghdad'
+		'Go developer Iraq'
 	],
 
 	companies: [
@@ -115,7 +111,10 @@ export const paintings: Record<string, Painting> = {
 		alt: 'A river city under a clouded moon; lamps and the silhouette of the Frauenkirche reflected on dark water.'
 	},
 	about: {
-		key: 'about',
+		// File key is content-derived, not room-derived: /paintings/* is cached
+		// immutable, so every re-hang MUST ship a new filename (046baf6 swapped
+		// bytes in place and served cross-hung art for two days).
+		key: 'frederiksborg',
 		title: 'Frederiksborg Castle by Moonlight',
 		artist: 'Johan Christian Dahl',
 		year: '1817',
@@ -147,7 +146,7 @@ export const paintings: Record<string, Painting> = {
 		focal: '50% 30%'
 	},
 	contact: {
-		key: 'contact',
+		key: 'two-men',
 		title: 'Two Men Contemplating the Moon',
 		artist: 'Caspar David Friedrich',
 		year: 'c. 1820',

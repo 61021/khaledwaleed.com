@@ -23,8 +23,13 @@
 		nationality: { '@type': 'Country', name: 'Iraq' },
 		url: site.url,
 		mainEntityOfPage: site.url,
-		// Raster first — image search and knowledge panels skip SVGs.
-		image: [`${site.url}${site.ogImage}`, `${site.url}${site.avatar}`],
+		// A real photograph first — image search, knowledge panels, and the
+		// person-entity disambiguation all prefer a face over a wordmark.
+		image: [
+			`${site.url}/khaled-waleed.jpg`,
+			`${site.url}${site.ogImage}`,
+			`${site.url}${site.avatar}`
+		],
 		jobTitle: site.role,
 		disambiguatingDescription: `${site.role} based in Baghdad, Iraq (QiCard, Vitex, Ishtar Center)`,
 		hasOccupation: {
@@ -34,7 +39,7 @@
 				{ '@type': 'City', name: 'Baghdad' },
 				{ '@type': 'Country', name: 'Iraq' }
 			],
-			skills: 'SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux'
+			skills: 'SvelteKit, Nuxt, Vue, TypeScript, Go, Linux'
 		},
 		email: `mailto:${site.email}`,
 		telephone: site.phone,

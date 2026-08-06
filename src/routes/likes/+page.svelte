@@ -60,7 +60,7 @@
 		},
 		{
 			name: 'Music',
-			kicker: 'What I actually listen to',
+			kicker: 'What I listen to',
 			items: [
 				'Classical, all of it',
 				'Tchaikovsky, for Swan Lake',

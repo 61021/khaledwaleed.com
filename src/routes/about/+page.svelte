@@ -114,10 +114,12 @@
 	const linkedIn = site.socials.find((s) => s.label === 'LinkedIn')?.href;
 	const cvUrl = '/Khaled-Waleed-Resume.pdf';
 
+	// The toolkit mirrors the skills recorded in the personal canon
+	// (~/stuff/cv/khaled.md) — nothing appears here that isn't recorded there.
 	const skills: Record<string, string[]> = {
 		Frontend: ['TypeScript', 'SvelteKit', 'Nuxt', 'Vue', 'React', 'Tailwind', 'Vite'],
-		Backend: ['Go', 'Node.js', 'PostgreSQL', 'Redis', 'REST', 'gRPC'],
-		Platform: ['Docker', 'Kubernetes', 'CI/CD', 'Nginx', 'Linux'],
+		Backend: ['Go', 'Node.js', 'PocketBase'],
+		Platform: ['Docker', 'Nginx', 'Cloudflare Pages', 'Linux'],
 		Tools: ['Git', 'Fish', 'Arch Linux']
 	};
 
@@ -165,6 +167,18 @@
 
 <Container size="prose">
 	<section class="rise-3 mt-12 space-y-6">
+		<figure class="portrait">
+			<img
+				src="/khaled-waleed-480.jpg"
+				srcset="/khaled-waleed-480.jpg 480w, /khaled-waleed.jpg 1200w"
+				sizes="(min-width: 640px) 13rem, 60vw"
+				alt="Khaled Waleed"
+				width="480"
+				height="640"
+				loading="lazy"
+				decoding="async"
+			/>
+		</figure>
 		<p class="dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]">
 			At fourteen I was behind a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries
 			and counting change. My father had died in 2014, and I was the eldest son in a family of five,
@@ -331,6 +345,36 @@
 {/snippet}
 
 <style>
+	/* The author's portrait, hung like the rest of the collection: gilt
+	   fillet, dark mat, outer moulding (the home cards' frame recipe).
+	   Phones centre it above the story; larger screens let the prose
+	   wrap around it like a book frontispiece. */
+	.portrait {
+		width: 60%;
+		max-width: 13rem;
+		margin: 0 auto 1.5rem;
+	}
+
+	.portrait img {
+		display: block;
+		width: calc(100% - 10px);
+		height: auto;
+		margin: 5px;
+		box-shadow:
+			0 0 0 1px color-mix(in oklab, var(--accent) 45%, transparent),
+			0 0 0 4px color-mix(in oklab, var(--bg) 55%, var(--bg-soft)),
+			0 0 0 5px color-mix(in oklab, var(--accent) 22%, transparent),
+			0 14px 30px -16px rgb(0 0 0 / 0.55);
+	}
+
+	@media (min-width: 640px) {
+		.portrait {
+			float: right;
+			width: 13rem;
+			margin: 0.4rem 0 1rem 1.75rem;
+		}
+	}
+
 	/* One continuous rail for the whole history, mixed faintly gilt so it
 	   reads as hanging wire rather than wallpaper seam; a gem (the .orn /
 	   Fleuron diamond) seats each entry on it. Consecutive entries touch

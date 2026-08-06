@@ -308,6 +308,16 @@
 						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
 					<div class="smallcaps">mmxxvi · set in playfair &amp; lato</div>
+					<div class="smallcaps">
+						<a
+							href="https://vitex.dev"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="transition-colors hover:text-[var(--accent)]"
+						>
+							Built by Vitex
+						</a>
+					</div>
 				</div>
 				<nav
 					aria-label="Elsewhere"

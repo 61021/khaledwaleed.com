@@ -145,6 +145,7 @@
 <!-- Painting credit at the foot -->
 <Container size="prose">
 	<div class="smallcaps mt-16 text-center">
-		this page is dedicated to <em>{painting.title}</em> by {painting.artist}, {painting.year}
+		this page is dedicated to <em>{painting.title}</em> by {painting.artist},
+		<span class="whitespace-nowrap">{painting.year}</span>
 	</div>
 </Container>

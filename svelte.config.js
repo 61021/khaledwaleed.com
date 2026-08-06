@@ -25,6 +25,8 @@ const config = {
 					'/apple-touch-icon.png',
 					'/icon-192.png',
 					'/icon-512.png',
+					'/khaled-waleed.jpg',
+					'/khaled-waleed-480.jpg',
 					'/humans.txt',
 					'/llms.txt',
 					'/rss.xsl',

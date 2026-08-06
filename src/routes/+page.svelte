@@ -72,8 +72,8 @@
 		url: site.url,
 		name: `${site.name}, ${site.role}`,
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-08-04',
-		primaryImageOfPage: `${site.url}${site.avatar}`,
+		dateModified: '2026-08-07',
+		primaryImageOfPage: `${site.url}/khaled-waleed.jpg`,
 		mainEntity: { '@id': `${site.url}/#person` }
 	};
 </script>
@@ -104,32 +104,30 @@
 <!-- The rooms: an entrance hall of small framed paintings -->
 <Container>
 	<section aria-labelledby="rooms-heading">
-		<header class="section-head rise">
-			<h2 id="rooms-heading">Discover</h2>
-		</header>
+		<h2 id="rooms-heading" class="sr-only">Pages</h2>
 
 		<ul class="room-grid rise-2" role="list">
 			{#each rooms as r (r.key)}
 				{@const p = paintings[r.key]}
-				{@const entry = sizes[r.key as keyof typeof sizes]}
+				{@const entry = sizes[p.key as keyof typeof sizes]}
 				<li class="room-slot" class:wide={r.span === 3}>
 					<a href={r.href} class="room-card">
 						<span class="room-art lamp-lit">
 							<picture>
 								<source
 									type="image/avif"
-									srcset={cardSrcset(r.key, 'avif')}
+									srcset={cardSrcset(p.key, 'avif')}
 									sizes={cardSizes(r.span)}
 								/>
 								<source
 									type="image/webp"
-									srcset={cardSrcset(r.key, 'webp')}
+									srcset={cardSrcset(p.key, 'webp')}
 									sizes={cardSizes(r.span)}
 								/>
 								<!-- Decorative here: the visible label names the room; the
 								     painting is credited in full inside the room itself. -->
 								<img
-									src={`/paintings/${r.key}.webp`}
+									src={`/paintings/${p.key}.webp`}
 									alt=""
 									width={entry?.width}
 									height={entry?.height}
@@ -163,16 +161,6 @@
 </Container>
 
 <style>
-	/* ---------- Section headers ---------- */
-	.section-head {
-		text-align: center;
-		margin-bottom: 2rem;
-	}
-
-	.section-head h2 {
-		margin-top: 0.4rem;
-	}
-
 	/* ---------- Room grid ---------- */
 	/* Phones: a single-column list of horizontal cards — small framed
 	   painting at left, label beside it. Two columns squeeze the notes

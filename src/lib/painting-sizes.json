@@ -4,20 +4,15 @@
 		"width": 2000,
 		"height": 1272
 	},
-	"about": {
-		"widths": [720, 1280, 2000],
-		"width": 2000,
-		"height": 1377
-	},
-	"contact": {
-		"widths": [720, 1280, 2000],
-		"width": 2000,
-		"height": 1603
-	},
 	"films": {
 		"widths": [720, 1280, 2000],
 		"width": 2000,
 		"height": 1633
+	},
+	"frederiksborg": {
+		"widths": [720, 1280, 2000],
+		"width": 2000,
+		"height": 1377
 	},
 	"home": {
 		"widths": [720, 1280, 2000],
@@ -43,6 +38,11 @@
 		"widths": [720, 1280, 1542],
 		"width": 1542,
 		"height": 2000
+	},
+	"two-men": {
+		"widths": [720, 1280, 2000],
+		"width": 2000,
+		"height": 1603
 	},
 	"writing": {
 		"widths": [720, 1280, 2000],

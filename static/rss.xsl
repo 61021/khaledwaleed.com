@@ -10,7 +10,7 @@
 			<head>
 				<meta charset="utf-8"/>
 				<meta name="viewport" content="width=device-width, initial-scale=1"/>
-				<title><xsl:value-of select="/rss/channel/title"/> — feed</title>
+				<title><xsl:value-of select="/rss/channel/title"/></title>
 				<style>
 					:root {
 						--bg: #1c1a17;
@@ -65,7 +65,7 @@
 						<p style="margin:0">
 							This is the feed for <a href="https://khaledwaleed.com/writing">khaledwaleed.com/writing</a>.
 							Copy this page's address into your feed reader and new essays will
-							find you on their own — no algorithm, no account, no noise.
+							arrive on their own.
 						</p>
 					</div>
 					<xsl:for-each select="/rss/channel/item">

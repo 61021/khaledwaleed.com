@@ -21,7 +21,12 @@ const DIR = path.resolve('static/paintings');
 const MANIFEST = path.resolve('src/lib/painting-sizes.json');
 const TARGET_WIDTHS = [720, 1280];
 
-const files = (await readdir(DIR)).filter((f) => /^[a-z0-9]+\.webp$/.test(f));
+// Masters may carry hyphens (re-hung art gets a NEW, content-derived name —
+// /paintings/* is cached immutable, so a room can never re-use a filename);
+// only the generated -720/-1280 variants are excluded.
+const files = (await readdir(DIR)).filter(
+	(f) => /^[a-z0-9-]+\.webp$/.test(f) && !/-(?:720|1280)\.webp$/.test(f)
+);
 
 const manifest: Record<string, { widths: number[]; width: number; height: number }> = {};
 

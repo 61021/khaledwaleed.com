@@ -139,6 +139,9 @@
 
 	.hero-eyebrow {
 		margin-bottom: 0.75rem;
+		/* Full ink: the eyebrow can land on a painting's brightest band
+		   (Moonrise's sky on /likes), where the muted tone washes out. */
+		color: var(--ink);
 	}
 
 	.page-title {

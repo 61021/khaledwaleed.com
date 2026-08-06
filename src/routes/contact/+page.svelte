@@ -2,7 +2,7 @@
 	import { Seo, Container, PageHeader, Fleuron, Button, SchemaOrg, site } from '$lib';
 
 	const channels = [
-		{ label: 'Phone', value: site.phone, href: `tel:${site.phone}` },
+		{ label: 'Phone', value: site.phoneDisplay, href: `tel:${site.phone}` },
 		{ label: 'Email', value: site.email, href: `mailto:${site.email}` },
 		...site.socials.map((s) => ({ label: s.label, value: s.handle, href: s.href }))
 	];
@@ -35,7 +35,9 @@
 </PageHeader>
 
 <Container size="prose">
-	<dl class="rise-3 mt-12 divide-y divide-[var(--rule)]">
+	<p class="rise-3 mt-12 text-[var(--ink)]">I’m open to senior roles and select contract work.</p>
+
+	<dl class="rise-3 mt-6 divide-y divide-[var(--rule)]">
 		{#each channels as c (c.label)}
 			<div class="flex items-baseline gap-4 py-5">
 				<dt class="smallcaps shrink-0">{c.label}</dt>
