@@ -240,13 +240,13 @@
 			out:fly={{ y: 4, duration: 150 }}
 		>
 			<div class="flex items-center gap-3 border-b border-[var(--rule)] px-5 py-4">
-				<span class="italic text-[var(--accent)]" aria-hidden="true">·</span>
+				<span class="text-[var(--accent)]" aria-hidden="true">·</span>
 				<input
 					bind:this={inputEl}
 					bind:value={query}
 					type="text"
 					placeholder="Search pages and essays…"
-					class="flex-1 bg-transparent text-[1.05rem] italic text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none"
+					class="flex-1 bg-transparent text-[1.05rem] text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none"
 					autocomplete="off"
 					spellcheck="false"
 					role="combobox"
@@ -287,7 +287,7 @@
 								aria-selected={i === activeIndex}
 							>
 								<span class="min-w-0">
-									<span class="block text-[1.05rem] italic">{item.title}</span>
+									<span class="block text-[1.05rem]">{item.title}</span>
 									{#if item.subtitle}
 										<span class="block truncate text-[0.85rem] text-[var(--ink-dim)]"
 											>{item.subtitle}</span

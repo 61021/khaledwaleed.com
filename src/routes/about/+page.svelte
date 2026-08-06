@@ -265,25 +265,25 @@
 	<Fleuron />
 
 	<section class="rise mt-8">
-		<h2 class="text-center italic">Where I’ve worked</h2>
+		<h2 class="text-center">Where I’ve worked</h2>
 		<ol class="mt-12 space-y-14">
 			{#each experiences as exp (exp.company)}
 				<li class="border-l-2 border-[var(--accent)] pl-6">
 					{#if exp.roles.length > 1}
 						<div class="smallcaps mb-2">{exp.meta}</div>
-						<h3 class="italic text-[var(--ink)]">{@render companyName(exp)}</h3>
+						<h3 class="text-[var(--ink)]">{@render companyName(exp)}</h3>
 						<div class="mt-7 space-y-9">
 							{#each exp.roles as role (role.title)}
 								<div>
 									<div class="smallcaps mb-2">{role.period}</div>
-									<h4 class="text-[1.2rem] italic text-[var(--ink)]">{role.title}</h4>
+									<h4 class="text-[1.2rem] text-[var(--ink)]">{role.title}</h4>
 									{@render highlights(role.highlights)}
 								</div>
 							{/each}
 						</div>
 					{:else}
 						<div class="smallcaps mb-2">{exp.roles[0].period} · {exp.meta}</div>
-						<h3 class="italic text-[var(--ink)]">
+						<h3 class="text-[var(--ink)]">
 							{exp.roles[0].title} · {@render companyName(exp)}
 						</h3>
 						{#if exp.lede}
@@ -309,7 +309,7 @@
 
 	<!-- The toolkit -->
 	<section class="rise mt-8">
-		<h2 class="text-center italic">The toolkit</h2>
+		<h2 class="text-center">The toolkit</h2>
 		<p class="mx-auto mt-4 max-w-md text-center text-sm italic text-[var(--ink-muted)]">
 			The tools I reach for without thinking.
 		</p>

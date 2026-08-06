@@ -94,7 +94,6 @@
 		outline-offset: -1px;
 		color: var(--ink-dim);
 		font-family: var(--font-display);
-		font-style: italic;
 	}
 
 	.ghost.fluid {

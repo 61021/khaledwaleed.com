@@ -289,7 +289,7 @@
 	{#if total === 0}
 		<!-- PocketBase is unreachable (or the log is empty) — say so honestly. -->
 		<section class="rise mt-20 mb-12 text-center">
-			<p class="italic text-[1.4rem] text-[var(--ink)] [font-family:var(--font-display)]">
+			<p class="text-[1.4rem] text-[var(--ink)] [font-family:var(--font-display)]">
 				The log isn’t loading.
 			</p>
 			<p class="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
@@ -635,7 +635,6 @@
 
 	.find input::placeholder {
 		color: var(--ink-dim);
-		font-style: italic;
 	}
 
 	.find input:focus {

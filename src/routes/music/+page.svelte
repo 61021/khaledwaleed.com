@@ -74,7 +74,7 @@
 		<!-- Top tracks -->
 		{#if data.tracks.length}
 			<section class="rise">
-				<h2 class="italic">On repeat</h2>
+				<h2>On repeat</h2>
 				<ol class="mt-4 divide-y divide-[var(--rule)]">
 					{#each data.tracks as t, i (t.url)}
 						<li class="group flex items-center gap-4 py-3">
@@ -84,7 +84,7 @@
 							{/if}
 							<a href={t.url} target="_blank" rel="noopener noreferrer" class="min-w-0 flex-1">
 								<div
-									class="truncate italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+									class="truncate text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
 									style="font-family: var(--font-display); font-size: 1.15rem; line-height: 1.2;"
 								>
 									{t.name}
@@ -102,7 +102,7 @@
 			<Fleuron />
 
 			<section class="rise">
-				<h2 class="italic">In heavy rotation</h2>
+				<h2>In heavy rotation</h2>
 				<ul class="mt-6 grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-4">
 					{#each data.artists as a (a.url)}
 						<li>
@@ -123,7 +123,7 @@
 									/>
 								{/if}
 								<div
-									class="mt-3 truncate italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+									class="mt-3 truncate text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
 									style="font-family: var(--font-display); font-size: 1.05rem;"
 								>
 									{a.name}
@@ -140,7 +140,7 @@
 			<Fleuron />
 
 			<section class="rise">
-				<h2 class="italic">Last spins</h2>
+				<h2>Last spins</h2>
 				<ol class="mt-4 divide-y divide-[var(--rule)]">
 					{#each data.recent as t, i (`${t.url}-${t.playedAt}-${i}`)}
 						<li class="group flex items-center gap-4 py-2.5">
@@ -150,7 +150,7 @@
 							<a href={t.url} target="_blank" rel="noopener noreferrer" class="min-w-0 flex-1">
 								<span class="flex items-baseline justify-between gap-4">
 									<span
-										class="truncate italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+										class="truncate text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
 										style="font-family: var(--font-display); font-size: 1.05rem;"
 									>
 										{t.name}

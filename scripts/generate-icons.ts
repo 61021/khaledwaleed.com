@@ -3,10 +3,9 @@
  * Generate the PNG icons that SVG can't cover:
  *   - apple-touch-icon.png (180×180, iOS home screen ignores SVG)
  *   - icon-192.png / icon-512.png (web app manifest)
- * The mark is the site wordmark — "KW" in Zodiak italic gold on
+ * The mark is the site wordmark — "KW" in Playfair Display gold on
  * the home room's night blue — matching the header and the OG cards.
  * Run after changing branding: bun run scripts/generate-icons.ts
- * (needs the font files: bun scripts/fetch-fonts.ts first).
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -16,7 +15,11 @@ import sharp from 'sharp';
 
 const OUT = path.resolve('static');
 
-const zodiak = readFileSync(path.resolve('src/lib/fonts/files/zodiak-400-italic.woff'));
+const playfair = readFileSync(
+	path.resolve(
+		'node_modules/@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff'
+	)
+);
 
 const node = {
 	type: 'div',
@@ -28,8 +31,8 @@ const node = {
 			alignItems: 'center',
 			justifyContent: 'center',
 			background: 'linear-gradient(180deg, #0a1220 0%, #131d34 100%)',
-			fontFamily: '"Zodiak", serif',
-			fontStyle: 'italic',
+			fontFamily: '"Playfair Display", serif',
+			fontStyle: 'normal',
 			fontSize: '268px',
 			color: '#d9b66c'
 		},
@@ -40,7 +43,7 @@ const node = {
 const svg = await satori(node, {
 	width: 512,
 	height: 512,
-	fonts: [{ name: 'Zodiak', data: zodiak, weight: 400, style: 'italic' }]
+	fonts: [{ name: 'Playfair Display', data: playfair, weight: 400, style: 'normal' }]
 });
 const master = new Resvg(svg).render().asPng();
 

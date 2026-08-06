@@ -45,7 +45,7 @@
 						href={c.href}
 						target={c.href.startsWith('http') ? '_blank' : undefined}
 						rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-						class="link italic"
+						class="link"
 					>
 						{c.value}
 					</a>

@@ -107,7 +107,7 @@
 					<a href={`/writing/${data.older.slug}`} class="group block text-left">
 						<div class="smallcaps">← older</div>
 						<div
-							class="mt-2 italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
+							class="mt-2 text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
 						>
 							{data.older.title}
 						</div>
@@ -119,7 +119,7 @@
 					<a href={`/writing/${data.newer.slug}`} class="group block text-left sm:text-right">
 						<div class="smallcaps">newer →</div>
 						<div
-							class="mt-2 italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
+							class="mt-2 text-[var(--ink)] transition-colors group-hover:text-[var(--accent)] [font-family:var(--font-display)] text-[1.2rem] leading-[1.25]"
 						>
 							{data.newer.title}
 						</div>
@@ -132,10 +132,10 @@
 	{/if}
 
 	<footer class="rise mt-10 flex items-baseline justify-between">
-		<a href="/writing" class="link-quiet italic">← All writing</a>
+		<a href="/writing" class="link-quiet">← All writing</a>
 		<a
 			href={`mailto:${site.email}?subject=Re: ${encodeURIComponent(post.title)}`}
-			class="link-quiet italic"
+			class="link-quiet"
 		>
 			Reply by email →
 		</a>

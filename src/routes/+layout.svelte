@@ -1,9 +1,10 @@
 <script lang="ts">
 	import '../app.css';
-	import '@fontsource/ibm-plex-sans/400.css';
-	import '@fontsource/ibm-plex-sans/400-italic.css';
-	import '@fontsource/ibm-plex-sans/600.css';
-	import '$lib/fonts/zodiak.css';
+	import '@fontsource/lato/400.css';
+	import '@fontsource/lato/400-italic.css';
+	import '@fontsource/lato/700.css';
+	import '@fontsource/playfair-display/400.css';
+	import '@fontsource/playfair-display/400-italic.css';
 
 	import { page } from '$app/stores';
 	import { onNavigate } from '$app/navigation';
@@ -174,7 +175,7 @@
 		<div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6">
 			<a
 				href="/"
-				class="font-display text-2xl italic text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
+				class="font-display text-2xl text-[var(--ink)] transition-colors hover:text-[var(--accent)]"
 				aria-label="Khaled Waleed, home"
 			>
 				KW<span class="sr-only">Khaled Waleed</span>
@@ -186,7 +187,7 @@
 					{@const active = isActive(item.href, $page.url.pathname)}
 					<a
 						href={item.href}
-						class="-my-2 py-2 font-display text-[1.05rem] italic transition-colors duration-300 {active
+						class="-my-2 py-2 font-display text-[1.05rem] transition-colors duration-300 {active
 							? 'text-[var(--accent)]'
 							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 						aria-current={active ? 'page' : undefined}
@@ -258,7 +259,7 @@
 						<li>
 							<a
 								href={item.href}
-								class="block py-3 font-display text-lg italic transition-colors {active
+								class="block py-3 font-display text-lg transition-colors {active
 									? 'text-[var(--accent)]'
 									: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
 								aria-current={active ? 'page' : undefined}
@@ -271,7 +272,7 @@
 					<li>
 						<button
 							type="button"
-							class="block w-full py-3 text-left font-display text-lg italic text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]"
+							class="block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]"
 							onclick={() => {
 								mobileOpen = false;
 								paletteSignal.request();
@@ -308,7 +309,7 @@
 						{site.name} <span lang="ar" class="not-italic">{site.nameArabic}</span> ·
 						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
-					<div class="smallcaps">mmxxvi · set in zodiak &amp; ibm plex</div>
+					<div class="smallcaps">mmxxvi · set in playfair &amp; lato</div>
 				</div>
 				<nav
 					aria-label="Elsewhere"
@@ -319,7 +320,7 @@
 							href={s.href}
 							target="_blank"
 							rel="me noopener noreferrer"
-							class="text-sm italic text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
+							class="text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
 						>
 							{s.label}
 						</a>
@@ -328,13 +329,13 @@
 						href="https://github.com/61021/khaledwaleed.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-sm italic text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
+						class="text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
 					>
 						Source
 					</a>
 					<a
 						href="/rss.xml"
-						class="text-sm italic text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
+						class="text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]"
 					>
 						RSS
 					</a>

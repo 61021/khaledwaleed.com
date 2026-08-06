@@ -89,7 +89,7 @@
 	<Fleuron />
 
 	<section class="rise space-y-5">
-		<h2 class="italic">Now reading</h2>
+		<h2>Now reading</h2>
 		{#if reading.length}
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each reading as b (b.title)}
@@ -104,7 +104,7 @@
 	<Fleuron />
 
 	<section class="rise space-y-5">
-		<h2 class="italic">Want to read</h2>
+		<h2>Want to read</h2>
 		{#if queue.length}
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each queue as b (b.title)}
@@ -120,7 +120,7 @@
 		<Fleuron />
 
 		<section class="rise space-y-5">
-			<h2 class="italic">Books I keep returning to</h2>
+			<h2>Books I keep returning to</h2>
 			<ul class="divide-y divide-[var(--rule)]">
 				{#each loved as b (b.title)}
 					{@render bookRow(b)}

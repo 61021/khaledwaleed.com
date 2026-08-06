@@ -284,7 +284,7 @@
 		{#each sections as s, i (s.name)}
 			<section id={s.name.toLowerCase()} class="scroll-mt-20">
 				<h2
-					class="italic text-[var(--ink)]"
+					class="text-[var(--ink)]"
 					style="font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;"
 				>
 					{s.name}

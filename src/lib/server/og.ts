@@ -18,10 +18,15 @@ function loadFont(...candidates: string[]): Buffer | null {
 	return null;
 }
 
-const plexRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff')
+const latoRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/lato/files/lato-latin-400-normal.woff')
 );
-const zodiakItalic = loadFont(join(ROOT, 'src/lib/fonts/files/zodiak-400-italic.woff'));
+const playfairRegular = loadFont(
+	join(
+		ROOT,
+		'node_modules/@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff'
+	)
+);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Node = any;
@@ -63,7 +68,7 @@ export type OgCard = {
 	palette: OgPalette;
 	/** small uppercase line above the headline */
 	eyebrow?: string;
-	/** the big Zodiak italic lines */
+	/** the big Playfair roman lines */
 	headline: string[];
 	/** normal-weight line under the headline */
 	sub?: string;
@@ -88,7 +93,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				justifyContent: 'space-between',
 				background: `linear-gradient(180deg, ${c.bg} 0%, ${c.bgSoft} 100%)`,
 				padding: '80px 100px',
-				fontFamily: '"IBM Plex Sans", sans-serif',
+				fontFamily: '"Lato", sans-serif',
 				color: c.ink
 			}
 		},
@@ -100,8 +105,8 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				{
 					style: {
 						display: 'flex',
-						fontFamily: '"Zodiak", serif',
-						fontStyle: 'italic',
+						fontFamily: '"Playfair Display", serif',
+						fontStyle: 'normal',
 						fontSize: '56px',
 						color: c.accent,
 						lineHeight: 1
@@ -141,8 +146,8 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"Zodiak", serif',
-						fontStyle: 'italic',
+						fontFamily: '"Playfair Display", serif',
+						fontStyle: 'normal',
 						fontSize: `${size}px`,
 						lineHeight: 1.08,
 						color: c.ink,
@@ -180,14 +185,13 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	);
 
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
-	if (plexRegular)
-		fonts.push({ name: 'IBM Plex Sans', data: plexRegular, weight: 400, style: 'normal' });
-	if (zodiakItalic)
+	if (latoRegular) fonts.push({ name: 'Lato', data: latoRegular, weight: 400, style: 'normal' });
+	if (playfairRegular)
 		fonts.push({
-			name: 'Zodiak',
-			data: zodiakItalic,
+			name: 'Playfair Display',
+			data: playfairRegular,
 			weight: 400,
-			style: 'italic'
+			style: 'normal'
 		});
 
 	const svg = await satori(node, { width: 1200, height: 630, fonts });
@@ -197,11 +201,11 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 /** Break a title into 1–3 lines that fit the card, and pick a size. */
 export function layoutHeadline(title: string): { lines: string[]; size: number } {
 	const size = title.length > 70 ? 60 : title.length > 45 ? 68 : title.length > 26 ? 80 : 96;
-	// Rough character budget per line at each size (Zodiak italic,
-	// 1000px box). Measured 2026-08-06 from rendered cards: Zodiak sets
-	// ~10% wider than Fraunces (22 title-case chars ≈ 930px at size 80),
-	// so Fraunces' 21/26/30/35 budgets shrink to 19/23/27/32.
-	const budget = size >= 96 ? 19 : size >= 80 ? 23 : size >= 68 ? 27 : 32;
+	// Rough character budget per line at each size (Playfair Display
+	// roman, 1000px box). Measured 2026-08-06 from rendered cards: the
+	// widest observed line is ~44px/char at size 80 (22 chars ≈ 965px),
+	// so the budgets are 18/22/26/29 for sizes 96/80/68/60.
+	const budget = size >= 96 ? 18 : size >= 80 ? 22 : size >= 68 ? 26 : 29;
 
 	const words = title.split(' ');
 	const lines: string[] = [];

@@ -301,7 +301,6 @@
 
 	.page-title {
 		font-family: var(--font-display);
-		font-style: italic;
 		font-weight: 400;
 		font-size: clamp(2.1rem, 8.5vw, 2.6rem);
 		line-height: 1.08;

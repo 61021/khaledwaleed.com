@@ -456,7 +456,6 @@
 
 	.m-title {
 		font-family: var(--font-display);
-		font-style: italic;
 		font-weight: 400;
 		font-size: clamp(1.9rem, 4vw + 1rem, 2.6rem);
 		color: var(--ink);
@@ -465,7 +464,6 @@
 
 	.m-sub {
 		font-family: var(--font-display);
-		font-style: italic;
 		font-size: 1.4rem;
 		color: var(--ink);
 	}
@@ -562,7 +560,6 @@
 	}
 	.result-title {
 		font-family: var(--font-display);
-		font-style: italic;
 		font-size: 1.1rem;
 		color: var(--ink);
 		line-height: 1.2;

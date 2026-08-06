@@ -119,7 +119,7 @@
 <Container>
 	<section aria-labelledby="rooms-heading">
 		<header class="section-head rise">
-			<h2 id="rooms-heading" class="italic">Discover</h2>
+			<h2 id="rooms-heading">Discover</h2>
 		</header>
 
 		<ul class="room-grid rise-2" role="list">
@@ -286,7 +286,6 @@
 	.room-name {
 		display: block;
 		font-family: var(--font-display);
-		font-style: italic;
 		font-size: 1.35rem;
 		line-height: 1.2;
 		color: var(--ink);
@@ -345,7 +344,6 @@
 
 	.closing-line {
 		font-family: var(--font-display);
-		font-style: italic;
 		font-size: clamp(1.4rem, 2.5vw + 0.5rem, 1.85rem);
 		line-height: 1.35;
 		color: var(--ink-muted);

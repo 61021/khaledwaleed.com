@@ -65,7 +65,6 @@
 		justify-content: center;
 		gap: 0.5rem;
 		font-family: var(--font-display);
-		font-style: italic;
 		letter-spacing: 0.02em;
 		cursor: pointer;
 		transition:

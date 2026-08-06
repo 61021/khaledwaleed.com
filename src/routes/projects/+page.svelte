@@ -212,7 +212,7 @@
 	<div class="rise space-y-16">
 		{#each sections as s, i (s.id)}
 			<section id={s.id} class="scroll-mt-20">
-				<h2 class="italic">{s.name}</h2>
+				<h2>{s.name}</h2>
 				{#if s.intro}
 					<p class="mt-2 text-sm italic text-[var(--ink-muted)]">{s.intro}</p>
 				{/if}

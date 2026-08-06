@@ -51,7 +51,7 @@
 						<span>{post.readingTime}</span>
 					</div>
 					<h2
-						class="mt-3 italic text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
+						class="mt-3 text-[var(--ink)] transition-colors group-hover:text-[var(--accent)]"
 						style="font-family: var(--font-display); font-size: clamp(1.6rem, 3vw + 0.5rem, 2.25rem); line-height: 1.15;"
 					>
 						{post.title}

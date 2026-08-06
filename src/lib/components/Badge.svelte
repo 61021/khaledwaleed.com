@@ -5,7 +5,7 @@
 </script>
 
 <span
-	class="inline-block border border-[var(--rule)] px-2.5 py-0.5 text-[0.78rem] italic text-[var(--ink-muted)] {cls}"
+	class="inline-block border border-[var(--rule)] px-2.5 py-0.5 text-[0.78rem] text-[var(--ink-muted)] {cls}"
 >
 	{@render children()}
 </span>
