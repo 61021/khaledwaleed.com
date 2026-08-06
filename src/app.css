@@ -117,12 +117,15 @@
 /* ---------- Typography stack ----------
    Two families, one role each:
    · body    = IBM Plex Sans (sans: labels, notes, smallcaps, UI)
-   · display = EB Garamond   (serif: headings, dropcaps, logo, buttons, essay prose)
-   One weight per family (400); Plex 600 only for smallcaps labels. */
+   · display = Fraunces      (serif: headings, dropcaps, logo, buttons, essay prose)
+   One weight per family (400); Plex 600 only for smallcaps labels.
+   Fraunces is variable (wght + opsz): optical sizing is automatic, so
+   prose gets the sturdy text cut and big headings the high-contrast
+   display cut. SOFT/WONK stay at their 0 defaults. */
 :root {
 	--font-body:
 		'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
-	--font-display: 'EB Garamond', Georgia, 'Times New Roman', ui-serif, serif;
+	--font-display: 'Fraunces Variable', Georgia, 'Times New Roman', ui-serif, serif;
 }
 
 @theme inline {

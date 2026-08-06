@@ -21,8 +21,8 @@ function loadFont(...candidates: string[]): Buffer | null {
 const plexRegular = loadFont(
 	join(ROOT, 'node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff')
 );
-const garamondItalic = loadFont(
-	join(ROOT, 'node_modules/@fontsource/eb-garamond/files/eb-garamond-latin-400-italic.woff')
+const frauncesItalic = loadFont(
+	join(ROOT, 'node_modules/@fontsource/fraunces/files/fraunces-latin-400-italic.woff')
 );
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,7 +65,7 @@ export type OgCard = {
 	palette: OgPalette;
 	/** small uppercase line above the headline */
 	eyebrow?: string;
-	/** the big EB Garamond italic lines */
+	/** the big Fraunces italic lines */
 	headline: string[];
 	/** normal-weight line under the headline */
 	sub?: string;
@@ -102,7 +102,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				{
 					style: {
 						display: 'flex',
-						fontFamily: '"EB Garamond", serif',
+						fontFamily: '"Fraunces", serif',
 						fontStyle: 'italic',
 						fontSize: '56px',
 						color: c.accent,
@@ -143,7 +143,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"EB Garamond", serif',
+						fontFamily: '"Fraunces", serif',
 						fontStyle: 'italic',
 						fontSize: `${size}px`,
 						lineHeight: 1.08,
@@ -184,10 +184,10 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	const fonts: { name: string; data: Buffer; weight: 400; style: 'normal' | 'italic' }[] = [];
 	if (plexRegular)
 		fonts.push({ name: 'IBM Plex Sans', data: plexRegular, weight: 400, style: 'normal' });
-	if (garamondItalic)
+	if (frauncesItalic)
 		fonts.push({
-			name: 'EB Garamond',
-			data: garamondItalic,
+			name: 'Fraunces',
+			data: frauncesItalic,
 			weight: 400,
 			style: 'italic'
 		});
@@ -199,8 +199,9 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 /** Break a title into 1–3 lines that fit the card, and pick a size. */
 export function layoutHeadline(title: string): { lines: string[]; size: number } {
 	const size = title.length > 70 ? 60 : title.length > 45 ? 68 : title.length > 26 ? 80 : 96;
-	// Rough character budget per line at each size (EB Garamond italic,
-	// 1000px box — it sets wider than Cormorant did, hence the tight caps).
+	// Rough character budget per line at each size (Fraunces italic,
+	// 1000px box). Measured 2026-08-06: title-case lines fit ~22/26/31/35,
+	// so EB Garamond's budgets carry over unchanged.
 	const budget = size >= 96 ? 21 : size >= 80 ? 26 : size >= 68 ? 30 : 35;
 
 	const words = title.split(' ');

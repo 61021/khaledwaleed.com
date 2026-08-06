@@ -3,7 +3,7 @@
  * Generate the PNG icons that SVG can't cover:
  *   - apple-touch-icon.png (180×180, iOS home screen ignores SVG)
  *   - icon-192.png / icon-512.png (web app manifest)
- * The mark is the site wordmark — "KW" in Cormorant Garamond italic gold on
+ * The mark is the site wordmark — "KW" in Fraunces italic gold on
  * the home room's night blue — matching the header and the OG cards.
  * Run after changing branding: bun run scripts/generate-icons.ts
  */
@@ -15,10 +15,8 @@ import sharp from 'sharp';
 
 const OUT = path.resolve('static');
 
-const cormorant = readFileSync(
-	path.resolve(
-		'node_modules/@fontsource/cormorant-garamond/files/cormorant-garamond-latin-400-italic.woff'
-	)
+const fraunces = readFileSync(
+	path.resolve('node_modules/@fontsource/fraunces/files/fraunces-latin-400-italic.woff')
 );
 
 const node = {
@@ -31,7 +29,7 @@ const node = {
 			alignItems: 'center',
 			justifyContent: 'center',
 			background: 'linear-gradient(180deg, #0a1220 0%, #131d34 100%)',
-			fontFamily: '"Cormorant Garamond", serif',
+			fontFamily: '"Fraunces", serif',
 			fontStyle: 'italic',
 			fontSize: '268px',
 			color: '#d9b66c'
@@ -43,7 +41,7 @@ const node = {
 const svg = await satori(node, {
 	width: 512,
 	height: 512,
-	fonts: [{ name: 'Cormorant Garamond', data: cormorant, weight: 400, style: 'italic' }]
+	fonts: [{ name: 'Fraunces', data: fraunces, weight: 400, style: 'italic' }]
 });
 const master = new Resvg(svg).render().asPng();
 
