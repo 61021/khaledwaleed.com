@@ -9,7 +9,7 @@ The personal website of **Khaled Waleed** — a lead design engineer in Baghdad,
   <img alt="Svelte 5" src="https://img.shields.io/badge/Svelte-5%20(runes)-FF3E00?logo=svelte&logoColor=white">
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-4-38BDF8?logo=tailwindcss&logoColor=white">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white">
-  <img alt="Bun" src="https://img.shields.io/badge/Bun-1.3-000000?logo=bun&logoColor=white">
+  <img alt="pnpm" src="https://img.shields.io/badge/pnpm-11-F69220?logo=pnpm&logoColor=white">
   <img alt="Cloudflare Pages" src="https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare&logoColor=white">
 </p>
 
@@ -31,32 +31,33 @@ Almost everything is **prerendered to static HTML** at build time. The single ex
 | Language     | TypeScript                                                                                                                                         |
 | OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                                                            |
 | Fonts        | Self-hosted [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) + [Lato](https://fonts.google.com/specimen/Lato) via Fontsource |
-| Runtime / PM | [Bun](https://bun.sh)                                                                                                                              |
+| Runtime / PM | [Node 24](https://nodejs.org) + [pnpm 11](https://pnpm.io)                                                                                         |
 | Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                                                                  |
 
 ## Getting started
 
 ### Prerequisites
 
-- [Bun](https://bun.sh) `1.3+`
+- [Node](https://nodejs.org) `24+` (see `.node-version`)
+- [pnpm](https://pnpm.io) `11+`
 
 ### Install & run
 
 ```sh
-bun install
-bun run dev          # start the dev server
-bun run dev -- --open  # …and open it in the browser
+pnpm install
+pnpm dev          # start the dev server
+pnpm dev --open   # …and open it in the browser
 ```
 
 ### Other scripts
 
 ```sh
-bun run build    # production build (static + edge functions)
-bun run preview  # preview the production build locally
-bun run check    # type-check with svelte-check
-bun run test     # unit tests (bun test)
-bun run lint     # prettier --check + eslint
-bun run format   # prettier --write
+pnpm build    # production build (static + edge functions)
+pnpm preview  # preview the production build locally
+pnpm check    # type-check with svelte-check
+pnpm test     # unit tests (vitest)
+pnpm lint     # prettier --check + eslint
+pnpm format   # prettier --write
 ```
 
 CI (GitHub Actions) runs lint → check → test → build on every push and PR to `main`.
@@ -70,7 +71,7 @@ Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everyth
 | `TMDB_API_KEY`          | `/manage` saves & the `/api/tmdb/*` endpoints (search + metadata snapshots) |
 | `SPOTIFY_CLIENT_ID`     | Live `/music` page — top tracks, artists, recently played                   |
 | `SPOTIFY_CLIENT_SECRET` | Live `/music` page                                                          |
-| `SPOTIFY_REFRESH_TOKEN` | Live `/music` page (obtain via `bun run scripts/spotify-auth.ts`)           |
+| `SPOTIFY_REFRESH_TOKEN` | Live `/music` page (obtain via `node scripts/spotify-auth.ts`)              |
 
 In production, `TMDB_API_KEY` and the three `SPOTIFY_*` values are set as Cloudflare Pages environment variables.
 

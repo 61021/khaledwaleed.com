@@ -7,5 +7,5 @@ Location: Baghdad, Iraq
 Last update: 2026-08
 Standards: HTML5, CSS3
 Components: SvelteKit 5, Tailwind 4
-Software: Bun, Vite, Cloudflare Pages
+Software: pnpm, Vite, Cloudflare Pages
 Fonts: Playfair Display, Lato
