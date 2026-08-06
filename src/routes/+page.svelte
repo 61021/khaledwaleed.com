@@ -5,7 +5,7 @@
 
 	// The entrance hall: one card per room, each behind its own painting,
 	// hung salon-style. `span` is a card's width in sixths of the wall:
-	// two wide frames, three upright, two wide.
+	// two wide frames, then three upright.
 	const rooms = [
 		{
 			href: '/about',
@@ -36,25 +36,11 @@
 			note: 'Cinema, music, art, style, food, and the rest of my obsessions.'
 		},
 		{
-			href: '/library',
-			key: 'library',
-			name: 'Library',
-			span: 2,
-			note: 'What I’m reading and what’s next.'
-		},
-		{
 			href: '/films',
 			key: 'films',
 			name: 'Films',
-			span: 3,
+			span: 2,
 			note: 'Everything I’ve watched, scored 1 to 10.'
-		},
-		{
-			href: '/music',
-			key: 'music',
-			name: 'Music',
-			span: 3,
-			note: 'What I’ve been listening to, live from Spotify.'
 		}
 	] as const;
 
@@ -197,8 +183,8 @@
 		gap: 0.8rem;
 	}
 
-	/* ≥640px: a salon hang on a six-column wall — two wide frames, three
-	   upright, two wide. Seven paintings, no straggler. */
+	/* ≥640px: a salon hang on a six-column wall — two wide frames, then
+	   three upright. Five paintings, no straggler. */
 	@media (min-width: 640px) {
 		.room-grid {
 			grid-template-columns: repeat(6, minmax(0, 1fr));

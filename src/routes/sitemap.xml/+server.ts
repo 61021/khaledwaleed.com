@@ -3,17 +3,7 @@ import { posts } from '$lib/posts';
 
 export const prerender = true;
 
-const staticRoutes = [
-	'/',
-	'/about',
-	'/projects',
-	'/likes',
-	'/library',
-	'/films',
-	'/music',
-	'/contact',
-	'/writing'
-];
+const staticRoutes = ['/', '/about', '/projects', '/likes', '/films', '/contact', '/writing'];
 
 export const GET = () => {
 	// Only claim a lastmod when we actually know it — search engines learn to

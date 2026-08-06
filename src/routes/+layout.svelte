@@ -135,9 +135,7 @@
 		{ name: 'Projects', href: '/projects' },
 		{ name: 'Writing', href: '/writing' },
 		{ name: 'Likes', href: '/likes' },
-		{ name: 'Library', href: '/library' },
 		{ name: 'Films', href: '/films' },
-		{ name: 'Music', href: '/music' },
 		{ name: 'Contact', href: '/contact' }
 	];
 

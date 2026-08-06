@@ -56,8 +56,7 @@
 				'Lonely figures in vast landscapes',
 				'Storms at sea',
 				'Melancholy without despair'
-			],
-			link: { href: '/library', label: "What's on the shelf →" }
+			]
 		},
 		{
 			name: 'Music',
@@ -71,8 +70,7 @@
 				'Garage rock revival',
 				'Moody Americana',
 				'The tuning note before the first note'
-			],
-			link: { href: '/music', label: 'What I am listening to lately →' }
+			]
 		},
 		{
 			name: 'Style',

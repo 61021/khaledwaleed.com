@@ -16,6 +16,13 @@ const redirects: Record<string, string> = {
 	'/cv': '/about'
 };
 
+// Rooms hidden for now, links removed everywhere but the pages kept intact.
+// 302 rather than 301 so nothing caches the detour while they're offstage.
+const hidden: Record<string, string> = {
+	'/library': '/likes',
+	'/music': '/likes'
+};
+
 // Mirrors the root _headers file, which only reaches the static pipeline
 // (prerendered pages, assets) — worker-rendered responses (/music, /manage,
 // /api/*, these 301s) must carry the security headers themselves.
@@ -43,6 +50,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const target = redirects[path];
 	if (target) {
 		return withSecurityHeaders(new Response(null, { status: 301, headers: { location: target } }));
+	}
+	const detour = hidden[path];
+	if (detour) {
+		return withSecurityHeaders(new Response(null, { status: 302, headers: { location: detour } }));
 	}
 
 	const room = event.route.id === null ? '404' : roomForPath(event.url.pathname);

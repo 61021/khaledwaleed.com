@@ -2,7 +2,7 @@
 
 > The personal site of Khaled Waleed, lead design engineer in Baghdad, Iraq.
 > Hand-built: one public-domain painting per page, essays, a work history,
-> and living logs of films, books, and music.
+> and a living log of films.
 
 ## About
 
@@ -25,15 +25,12 @@
 - /writing/bun-on-cloudflare-pages: Deploying Bun projects to Cloudflare Pages.
 - /writing/sitting-in-discomfort-on-purpose: The small, private habit of voluntary difficulty.
 - /likes: A catalogue of obsessions: cinema, music, art, style, food, philosophy.
-- /library: What I am reading, what is queued, and what I return to.
 - /films: Every film and series I have watched, scored 1 to 10.
-- /music: What I have been listening to, live from Spotify.
 - /contact: Phone, email, GitHub, LinkedIn, Telegram, Instagram, WhatsApp.
 - /rss.xml: RSS feed for the writing.
 
 ## Style note
 
 Each page is paired with one public-domain Northern Romantic painting
-(Friedrich, Dahl, Rembrandt, Vermeer, Daguerre, Wright of Derby). The site is
-set in Playfair Display and Lato, built with SvelteKit, and deployed on
-Cloudflare Pages.
+(Friedrich, Dahl, Daguerre, Wright of Derby). The site is set in Playfair
+Display and Lato, built with SvelteKit, and deployed on Cloudflare Pages.

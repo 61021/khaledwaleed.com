@@ -47,28 +47,12 @@
 			kind: 'page'
 		},
 		{
-			id: 'library',
-			title: 'Library',
-			subtitle: 'Reading now and up next',
-			href: '/library',
-			kind: 'page',
-			keywords: 'books reading shelf'
-		},
-		{
 			id: 'films',
 			title: 'Films',
 			subtitle: 'Everything I have rated, by score',
 			href: '/films',
 			kind: 'page',
 			keywords: 'movies cinema imdb ratings tv shows watch'
-		},
-		{
-			id: 'music',
-			title: 'Music',
-			subtitle: 'Top tracks & artists, via Spotify',
-			href: '/music',
-			kind: 'page',
-			keywords: 'spotify listening songs albums tracks artists'
 		},
 		{ id: 'contact', title: 'Contact', subtitle: 'Get in touch', href: '/contact', kind: 'page' },
 		...posts.map((p): Item => ({

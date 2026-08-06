@@ -19,7 +19,7 @@ The personal website of **Khaled Waleed** — a lead design engineer in Baghdad,
 
 It's a portfolio, a blog, and a small personal museum. Each route is a **room**, and each room is paired with a famous public-domain painting (Friedrich, Dahl, Rembrandt, Vermeer, Wright of Derby…) that sets its colour palette and mood. The result is a calm, reading-first site rather than a dashboard of widgets.
 
-Almost everything is **prerendered to static HTML** at build time. The single exception is `/music`, which runs live on the edge to read recent listening data from Spotify.
+Almost everything is **prerendered to static HTML** at build time. The single exception is `/music`, which runs live on the edge to read recent listening data from Spotify. Both `/music` and `/library` are hidden for now — the worker answers them with a 302 to `/likes`.
 
 ## Tech stack
 
@@ -112,9 +112,9 @@ static/                   # paintings, logos, manifest, etc.
 | `/about`    | Longer bio, career history, toolkit, CV download                                               |
 | `/projects` | The catalogue of shipped work — products, client work, government platforms, open source       |
 | `/writing`  | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                    |
-| `/library`  | Books                                                                                          |
+| `/library`  | Books — hidden for now, 302s to `/likes`                                                       |
 | `/films`    | A ledger of ~225 rated films & shows — server-rendered from PocketBase, searchable, with stats |
-| `/music`    | **Live** top tracks, artists & recently played from Spotify (edge-rendered)                    |
+| `/music`    | **Live** top tracks & artists from Spotify — hidden for now, 302s to `/likes`                  |
 | `/likes`    | A catalogue of obsessions                                                                      |
 | `/contact`  | Ways to get in touch                                                                           |
 
