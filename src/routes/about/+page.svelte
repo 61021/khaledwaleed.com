@@ -20,9 +20,8 @@
 			title: 'Lead Frontend Engineer',
 			start: 'Jan 2025',
 			highlights: [
-				'Youngest employee among Qi’s 3,000+ staff.',
 				'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app to modern Vue/Nuxt standards within a year.',
-				'Built the frontend team: scouted, interviewed, and trial-task-vetted all three hires, then trained and onboarded them; now lead the four, owning code review, standards, and release quality.',
+				'Built the frontend team: scouted all three hires from the market, ran their interviews and trial tasks, then trained and onboarded them; now lead the four, owning code review, standards, and release quality.',
 				'Portfolio serves 4+ million users, including Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems managing the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
 				'Designed and built the corporate website of Enjaz, Qi’s e-government arm.'
 			]
@@ -35,7 +34,7 @@
 			start: 'Feb 2024',
 			highlights: [
 				'Center member of an Iraqi NGO advancing democracy and human rights; own all of its technology.',
-				'Work with Iraq’s top researchers, applying advanced AI models to conduct and enhance the center’s research.',
+				'Work with Iraq’s top researchers, applying advanced AI models to the center’s research.',
 				'Built and operate ishtarcenter.com, a bilingual Nuxt site with a self-hosted backend, and the center’s conference website.'
 			]
 		},
@@ -49,7 +48,7 @@
 				'Run a four-person design-engineering studio (“Software, pretty and perfect”) building web platforms and mobile apps for Iraqi enterprises and NGOs.',
 				'Built Risha end to end (mobile app, dashboard, website): e-learning connecting Iraq’s sixth-preparatory students with elite private tutors. 25K+ downloads, custom cross-device DRM; led all design and frontend.',
 				'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations: 1,000+ cars and $3M+ in transactions monthly.',
-				'Built and operate Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, live in 20+ venues.',
+				'Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, is live in 20+ venues.',
 				'Shipped platforms for the Afaq Al-Obaidi subsidiaries (Smartic for employment, National Foodstuff, Auto Zone, Golden Lube) and an archiving system for the Al-Amal Association.',
 				'Operate 20+ production client deployments (Cloudflare Pages + self-hosted VPS backends).'
 			]
@@ -61,8 +60,8 @@
 			start: 'Feb 2024',
 			end: 'Dec 2024',
 			highlights: [
-				'Built Morshed’s website, accounting ERP, and internal workflow systems, and shipped websites and ERP systems for Morshed’s clients.',
-				'Owned the digital transformation of the business-development & PR firm end to end.'
+				'Built Morshed’s website, accounting ERP, and internal workflow systems, then shipped websites and ERPs for its clients.',
+				'Owned the whole digital transformation of the business-development & PR firm.'
 			]
 		},
 		{
@@ -84,8 +83,7 @@
 			start: 'Oct 2021',
 			end: 'Oct 2022',
 			highlights: [
-				'Designed and built websites for Dutch brands, Inflexio among them, plus Speetu’s own site, logo, and brand identity.',
-				'Collaborated remotely with a distributed team across time zones.'
+				'Designed and built websites for Dutch brands, Inflexio among them, plus Speetu’s own site, logo, and brand identity.'
 			]
 		},
 		{
@@ -95,8 +93,7 @@
 			start: 'Jun 2021',
 			end: 'Oct 2021',
 			highlights: [
-				'Produced print and digital brand assets (brochures, posters, social-media sets, web graphics), mostly for beauty and organic brands, doctors, and surgeons.',
-				'Worked with marketing teams to keep design aligned with brand strategy and campaign goals.'
+				'Produced print and digital brand assets (brochures, posters, social-media sets, web graphics), mostly for beauty and organic brands, doctors, and surgeons.'
 			]
 		},
 		{
