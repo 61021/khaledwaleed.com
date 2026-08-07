@@ -333,7 +333,7 @@
 				</label>
 			</div>
 
-			<div class="line" role="group" aria-label="Sort titles">
+			<div class="line line-fill" role="group" aria-label="Sort titles">
 				{#each sortOptions as opt, i (opt.value)}
 					{#if i}<span class="vsep" aria-hidden="true"></span>{/if}
 					<button
@@ -649,11 +649,18 @@
 			margin-left: 0;
 		}
 
-		/* Once the search wraps to its own row, spread the type switcher
-		   across the full width instead of leaving it huddled left. */
+		/* Phones spread both control rows edge to edge: the type switcher
+		   once the search wraps to its own row, and the sort options once
+		   the view toggle drops to its own row below them. */
 		.line-fill .line-opt {
 			flex: 1 1 0;
 			justify-content: center;
+		}
+
+		.viewtoggle {
+			flex-basis: 100%;
+			justify-content: flex-end;
+			margin-left: 0;
 		}
 	}
 
