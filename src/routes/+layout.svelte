@@ -112,8 +112,9 @@
 
 			// Hold the door a beat for the incoming painting so the crossfade
 			// is canvas to canvas, never canvas to blank wall. Intent warming
-			// usually makes this instant; a cold room gets at most 300ms and
-			// then develops in late (see .frontispiece img in app.css).
+			// usually makes this instant; a cold room gets at most 100ms — a
+			// longer hold read as input lag, and the late canvas develops in
+			// via .loaded anyway (see .frontispiece img in app.css).
 			const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null;
 			if (!key || isPaintingWarm(key)) {
 				begin();
@@ -126,7 +127,7 @@
 				begin();
 			};
 			warmPainting(key).then(go, go);
-			setTimeout(go, 300);
+			setTimeout(go, 100);
 		});
 	});
 

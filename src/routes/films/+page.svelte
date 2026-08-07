@@ -705,6 +705,11 @@
 		padding: 1.05rem 0.15rem;
 		border-bottom: 1px solid color-mix(in oklab, var(--rule) 80%, transparent);
 		transition: background-color 400ms ease;
+		/* 225 rows: let offscreen ones skip layout and paint, which is most
+		   of what froze navigations INTO this room (the swap runs inside the
+		   view transition, on a frozen frame). */
+		content-visibility: auto;
+		contain-intrinsic-size: auto 140px;
 	}
 
 	.lrow:hover {
@@ -819,6 +824,11 @@
 		margin-top: 1.9rem;
 		padding: 0;
 		list-style: none;
+	}
+
+	.wall li {
+		content-visibility: auto;
+		contain-intrinsic-size: auto 230px;
 	}
 
 	@media (max-width: 400px) {

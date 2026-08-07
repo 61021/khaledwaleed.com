@@ -585,18 +585,36 @@ html[data-navigated] .frontispiece img.loaded {
 }
 
 /* ---------- Painterly view transitions ----------
-   Two crossfades per navigation: the room (root) and the canvas hanging
-   in the hero frame (`hero-painting`, one per page — see PageHeader).
-   Opacity only, and no per-painting names: animating a 6px blur across
-   two viewport-sized snapshots janked every navigation on big screens,
-   and uniquely-named paintings flew as full-bleed snapshots over the
-   page while the rooms changed. */
+   Two layers per navigation, on different clocks: the room (root — chrome,
+   text, wallpaper) crossfades briefly so the palette never pops, while the
+   canvas in the hero frame takes a long dissolve with a breath of scale,
+   like a print developing. Keeping the long animation OFF the root halves
+   the full-viewport blending; the painting is the only large layer that
+   works for more than a quarter second. Opacity and transform only. */
 ::view-transition-old(root),
-::view-transition-new(root),
-::view-transition-old(hero-painting),
-::view-transition-new(hero-painting) {
-	animation-duration: 400ms;
+::view-transition-new(root) {
+	animation-duration: 240ms;
 	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(hero-painting) {
+	animation-duration: 620ms;
+	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-new(hero-painting) {
+	animation: vt-canvas-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes vt-canvas-in {
+	from {
+		opacity: 0;
+		transform: scale(1.035);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 /* The Alchemist hangs in the darkest room; give the canvas more light
