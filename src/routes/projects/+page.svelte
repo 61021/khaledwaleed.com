@@ -2,7 +2,7 @@
 	import { Seo, Container, PageHeader, Fleuron, SchemaOrg, site } from '$lib';
 	import { formatDate } from '$lib/posts';
 
-	const lastUpdated = '2026-08-05';
+	const lastUpdated = '2026-08-08';
 
 	type Project = {
 		name: string;
@@ -53,6 +53,12 @@
 					note: 'E-learning for Iraq’s sixth-preparatory year: students pick from elite private tutors. The whole product: mobile app, dashboard, website, and a custom DRM that holds across devices; every screen of it designed and built by me.'
 				},
 				{
+					name: 'Amanat Baghdad',
+					url: 'https://www.amanatbaghdad.gov.iq',
+					measure: 'gov.iq',
+					note: 'The official website of the Mayoralty of Baghdad, the capital’s municipal government.'
+				},
+				{
 					name: 'Ishtar Center',
 					url: 'https://ishtarcenter.com',
 					measure: 'since 2024',
@@ -79,6 +85,7 @@
 				},
 				{
 					name: 'Enjaz',
+					url: 'https://enjaz.tech',
 					measure: 'solo build',
 					note: 'The corporate website of Qi’s e-government arm.'
 				},
