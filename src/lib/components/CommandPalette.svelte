@@ -36,7 +36,8 @@
 			subtitle: 'Products, client work, government platforms',
 			href: '/projects',
 			kind: 'page',
-			keywords: 'work portfolio products auction key rocca menu risha amanat baghdad enjaz oil coupon vitex open source'
+			keywords:
+				'work portfolio products auction key rocca menu risha amanat baghdad enjaz oil coupon vitex open source'
 		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{
