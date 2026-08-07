@@ -55,6 +55,7 @@
 		},
 		{
 			company: 'Morshed',
+			url: 'https://morshed-bdc.com',
 			meta: 'Part-time, Baghdad, hybrid',
 			title: 'Senior Software Engineer',
 			start: 'Feb 2024',
@@ -78,6 +79,7 @@
 		},
 		{
 			company: 'Speetu',
+			url: 'https://speetu.com',
 			meta: 'Part-time, Amsterdam, remote',
 			title: 'Design Engineer',
 			start: 'Oct 2021',
