@@ -585,65 +585,35 @@ html[data-navigated] .frontispiece img.loaded {
 }
 
 /* ---------- Painterly view transitions ----------
-   Two layers per navigation, on different clocks: the room (root — chrome,
-   text, wallpaper) crossfades briefly so the palette never pops, while the
-   canvas in the hero frame takes a long dissolve with a breath of scale,
-   like a print developing. Keeping the long animation OFF the root halves
-   the full-viewport blending; the painting is the only large layer that
-   works for more than a quarter second. Opacity and transform only. */
+   One dissolve, one clock. The whole frame — room, chrome, veil, title,
+   canvas — crossfades together over 620ms: any layer on its own clock
+   eventually meets the others at a seam, and both split-clock attempts
+   (400/620, then staged titles) read as exactly that. Identical pixels
+   (nav, footer) blend invisibly, so only what truly changes appears to
+   move. The lone extra motion is the incoming canvas settling from a
+   breath of scale, animated on the LIVE element beneath the veil (set
+   post-swap via data-vt-in so the outgoing snapshot never zooms) — type
+   stays sharp because the text is not in that layer. Opacity and
+   transform only; no filters, no per-element names (per-painting names
+   once flew full-bleed snapshots across the viewport). */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-	animation-duration: 240ms;
-	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-::view-transition-old(hero-painting) {
 	animation-duration: 620ms;
-	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+	/* Symmetric in-out so the blend spends its time mid-dissolve — an
+	   ease-out front-loads the fade and reads as another quick cut. */
+	animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
 }
 
-::view-transition-new(hero-painting) {
-	animation: vt-canvas-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+html[data-vt-in] .hero-art img {
+	animation: vt-canvas-settle 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* The veil rides the canvas's clock exactly — its bottom is solid var(--bg),
-   so on the root's quick fade the new room's tint (navy → umber on some
-   walks) landed abruptly over a painting still mid-dissolve. */
-::view-transition-old(hero-veil),
-::view-transition-new(hero-veil) {
-	animation-duration: 620ms;
-	animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* The title card is staged, not snapped: the old line leaves with the old
-   room (240ms root fade), the wall holds its breath, and the new title,
-   lede, and plate rise in as the canvas settles. These animate the LIVE
-   elements inside the incoming snapshot — no extra transition layers, and
-   aborted navigations just snap them visible when data-vt lifts. */
-html[data-vt] .hero-content,
-html[data-vt] .hero-plate {
-	animation: vt-title-in 380ms cubic-bezier(0.22, 1, 0.36, 1) 210ms both;
-}
-
-@keyframes vt-canvas-in {
+@keyframes vt-canvas-settle {
 	from {
-		opacity: 0;
-		transform: scale(1.035);
+		transform: scale(1.03);
 	}
 	to {
-		opacity: 1;
 		transform: scale(1);
-	}
-}
-
-@keyframes vt-title-in {
-	from {
-		opacity: 0;
-		transform: translateY(10px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
 	}
 }
 

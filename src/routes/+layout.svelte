@@ -106,8 +106,15 @@
 				const transition = document.startViewTransition(async () => {
 					resolve();
 					await navigation.complete;
+					// Post-swap flag for the incoming canvas's scale settle —
+					// set before the new capture, never on the old one (the
+					// outgoing snapshot must not zoom for a frame).
+					html.setAttribute('data-vt-in', '');
 				});
-				transition.finished.finally(() => html.removeAttribute('data-vt'));
+				transition.finished.finally(() => {
+					html.removeAttribute('data-vt');
+					html.removeAttribute('data-vt-in');
+				});
 			};
 
 			// Hold the door a beat for the incoming painting so the crossfade

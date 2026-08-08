@@ -85,11 +85,9 @@
 		position: absolute;
 		inset: 0;
 		z-index: 0;
-		/* One name shared by every page's hero: the old and new frames sit on
-		   the same rect, so the transition is a crossfade of the two canvases
-		   in place. Per-painting names turned each navigation into flying
-		   full-bleed snapshots stacked over the page. */
-		view-transition-name: hero-painting;
+		/* No view-transition-name here (or anywhere in the hero): the whole
+		   frame dissolves as one on the root clock — see app.css. Named hero
+		   layers on their own clocks kept meeting the rest at a seam. */
 	}
 
 	.hero :global(.frontispiece) {
@@ -117,11 +115,6 @@
 		inset: 0;
 		z-index: 1;
 		pointer-events: none;
-		/* Its own transition layer so the tint rides the canvas's 620ms
-		   dissolve (see app.css) — on the 240ms root clock the new room's
-		   gradient landed on a painting still mid-crossfade. Same rect on
-		   every page, so the pair never morphs. */
-		view-transition-name: hero-veil;
 		background: linear-gradient(
 			to bottom,
 			color-mix(in oklab, var(--bg) 55%, transparent) 0%,
