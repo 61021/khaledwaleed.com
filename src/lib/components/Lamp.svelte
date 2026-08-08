@@ -27,6 +27,11 @@
 	onMount(() => {
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 		if (!window.matchMedia('(pointer: fine)').matches) return;
+		// Gecko sits the lamp out entirely (the style block hides the glow):
+		// blend-mode re-compositing and per-frame custom-property writes are
+		// exactly its slow paths — carrying the lamp made every mouse move
+		// stutter in his Firefox while Chromium stayed smooth.
+		if (CSS.supports('-moz-appearance', 'none')) return;
 
 		const root = document.documentElement.style;
 
@@ -117,6 +122,14 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.lamp {
+			display: none;
+		}
+	}
+
+	/* Gecko: no lamp at all — even a resting soft-light disc re-blends the
+	   backdrop on every scrolled frame there. */
+	@supports (-moz-appearance: none) {
 		.lamp {
 			display: none;
 		}

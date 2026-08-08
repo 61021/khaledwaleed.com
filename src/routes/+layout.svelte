@@ -89,6 +89,12 @@
 			navigation.complete.then(restore, restore);
 		}
 		if (!document.startViewTransition) return;
+		// Gecko's first-generation view transitions stutter on full-page
+		// snapshot dissolves (his daily Firefox; Chromium is smooth), so
+		// Firefox takes the designed no-VT path: instant swap, the 600ms
+		// palette ease, paintings developing in. Re-test on major Firefox
+		// releases before removing.
+		if (CSS.supports('-moz-appearance', 'none')) return;
 		if (
 			typeof window !== 'undefined' &&
 			window.matchMedia('(prefers-reduced-motion: reduce)').matches

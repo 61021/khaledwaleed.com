@@ -207,8 +207,12 @@ body {
 }
 
 @media (pointer: coarse) {
-	html {
-		animation: lamp-drift 52s ease-in-out infinite alternate;
+	/* Gecko sits the lamp out (see Lamp.svelte) — don't animate custom
+	   properties every frame for a glow it never shows. */
+	@supports not (-moz-appearance: none) {
+		html {
+			animation: lamp-drift 52s ease-in-out infinite alternate;
+		}
 	}
 }
 
