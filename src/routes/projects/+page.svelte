@@ -56,7 +56,7 @@
 					name: 'Amanat Baghdad',
 					url: 'https://www.amanatbaghdad.gov.iq',
 					measure: 'gov.iq',
-					note: 'The official website of the Mayoralty of Baghdad, the capital’s municipal government.'
+					note: 'The official website of the Mayoralty of Baghdad, the capital’s municipal government. Built in partnership with UoITC-BIC, the business-informatics college of Baghdad’s public IT university.'
 				},
 				{
 					name: 'Ishtar Center',

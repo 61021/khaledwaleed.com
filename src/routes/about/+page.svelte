@@ -125,13 +125,6 @@
 		Tools: ['Git', 'Fish', 'Arch Linux']
 	};
 
-	const facts = [
-		{ label: 'Based in', value: `${site.location.city}, ${site.location.country}` },
-		{ label: 'Working on', value: 'Qi & Vitex' },
-		{ label: 'Reading next', value: 'Distributed systems, Rust' },
-		{ label: 'Open to', value: 'Senior roles, contracts' }
-	];
-
 	// Supporting page about the person — NOT the canonical ProfilePage
 	// (that is the homepage). Using AboutPage + `about` keeps /about from
 	// competing with "/" for the person-name query.
@@ -142,7 +135,7 @@
 		url: `${site.url}/about`,
 		name: 'About',
 		isPartOf: { '@id': `${site.url}/#website` },
-		dateModified: '2026-08-06',
+		dateModified: '2026-08-08',
 		about: { '@id': `${site.url}/#person` },
 		breadcrumb: {
 			'@type': 'BreadcrumbList',
@@ -176,7 +169,7 @@
 				sizes="(min-width: 640px) 13rem, 60vw"
 				alt="Khaled Waleed"
 				width="480"
-				height="640"
+				height="500"
 				loading="lazy"
 				decoding="async"
 			/>
@@ -232,20 +225,6 @@
 			For the record, the name in Arabic is <span lang="ar" class="not-italic">خالد وليد</span>,
 			romanized Khaled Waleed, though Khalid Waleed and Khaled Walid also find their way to me.
 		</p>
-	</section>
-
-	<Fleuron />
-
-	<!-- At a glance -->
-	<section class="rise">
-		<dl class="grid grid-cols-2 gap-x-6 gap-y-6 text-left sm:gap-x-10 sm:text-center">
-			{#each facts as f (f.label)}
-				<div>
-					<dt class="smallcaps">{f.label}</dt>
-					<dd class="mt-1 text-[var(--ink)] italic">{f.value}</dd>
-				</div>
-			{/each}
-		</dl>
 	</section>
 
 	<Fleuron />
