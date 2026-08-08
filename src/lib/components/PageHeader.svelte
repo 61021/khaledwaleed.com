@@ -117,6 +117,11 @@
 		inset: 0;
 		z-index: 1;
 		pointer-events: none;
+		/* Its own transition layer so the tint rides the canvas's 620ms
+		   dissolve (see app.css) — on the 240ms root clock the new room's
+		   gradient landed on a painting still mid-crossfade. Same rect on
+		   every page, so the pair never morphs. */
+		view-transition-name: hero-veil;
 		background: linear-gradient(
 			to bottom,
 			color-mix(in oklab, var(--bg) 55%, transparent) 0%,
