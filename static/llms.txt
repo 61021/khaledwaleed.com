@@ -1,0 +1,37 @@
+# khaledwaleed.com
+
+> The personal site of Khaled Waleed, lead design engineer in Baghdad, Iraq.
+> Hand-built: one public-domain painting per page, essays, a work history,
+> and a living log of films.
+
+## About
+
+- Name: Khaled Waleed (Arabic: خالد وليد)
+- Also spelled: Khalid Waleed · Khaled Walid · Khalid Walid
+- Role: Lead Design Engineer
+- Location: Baghdad, Iraq
+- Working at: Enjaz (enjaz.tech), Vitex (vitex.dev)
+- Stack: SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux
+- Email: contact@khaledwaleed.com
+
+## Pages
+
+- /: Home.
+- /story: The full story, the work history, and the CV as a downloadable PDF.
+- /projects: Everything built and shipped: products, client work, government platforms, open source.
+- /writing: Essays on people, ideas, art, and philosophy, with the occasional piece on software.
+- /writing/the-thin-line: How small the difference between a good person and a bad one really is.
+- /writing/life-is-interesting: On meaning, and why we keep asking about it.
+- /writing/bun-on-cloudflare-pages: Deploying Bun projects to Cloudflare Pages.
+- /writing/sitting-in-discomfort-on-purpose: The small, private habit of voluntary difficulty.
+- /likes: A catalogue of obsessions: cinema, music, art, style, food, philosophy.
+- /films: Every film and series I have watched, scored 1 to 10.
+- /tools: The hardware, software, and services in daily use, physical and digital.
+- /contact: Phone, email, GitHub, LinkedIn, Telegram, Instagram, WhatsApp.
+- /rss.xml: RSS feed for the writing.
+
+## Style note
+
+Each page is paired with one public-domain Northern Romantic painting
+(Friedrich, Dahl, Daguerre, Wright of Derby). The site is set in Playfair
+Display and Lato, built with SvelteKit, and deployed on Cloudflare Pages.

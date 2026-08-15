@@ -1,0 +1,14 @@
+shellEmulator: true
+
+trustPolicy: no-downgrade
+
+# chokidar 5.0.0 (2025-11) adopted trusted publishing, which makes the
+# integrity-pinned 4.0.3 that svelte-check needs read as a "trust downgrade".
+# The tarball hash hasn't changed; this is the policy's known false positive
+# (it's even the example in the pnpm docs). Drop when svelte-check moves to v5.
+trustPolicyExclude:
+  - chokidar@4.0.3
+
+allowBuilds:
+  esbuild: true
+  workerd: true

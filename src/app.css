@@ -1,0 +1,930 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* ============================================================
+   khaledwaleed.com: Northern Romantic redesign
+   Per-page palette set via [data-room] on <html>. Each room is
+   one painting; tokens shift drastically light/dark accordingly.
+   ============================================================ */
+
+/* ---------- Default (room: home, Dresden by Moonlight) ---------- */
+:root,
+:root[data-room='home'] {
+	--bg: #0a1220;
+	--bg-soft: #111a2c;
+	--ink: #ece4ce;
+	--ink-muted: #c4ccdb;
+	--ink-dim: #909cb3;
+	--rule: #1f2a40;
+	--accent: #d9b66c;
+}
+
+:root[data-room='story'] {
+	/* dahl's frederiksborg dusk: mauve clouded sky, moon-parchment ink, the brick castle for an accent */
+	--bg: #191114;
+	--bg-soft: #221821;
+	--ink: #e7dacc;
+	--ink-muted: #ab958f;
+	--ink-dim: #907d78;
+	--rule: #2d1f27;
+	--accent: #c98d6b;
+}
+
+:root[data-room='writing'] {
+	/* rembrandt's apostle paul: NGA umber, manuscript parchment, sword-hilt gold */
+	--bg: #1b1410;
+	--bg-soft: #241c15;
+	--ink: #dccdb2;
+	--ink-muted: #9c8d78;
+	--ink-dim: #8e806b;
+	--rule: #2c231b;
+	--accent: #c99f5b;
+}
+
+:root[data-room='library'] {
+	/* a quieter, slightly warmer reading-room cousin of writing */
+	--bg: #1a1814;
+	--bg-soft: #221f1a;
+	--ink: #e2d6bd;
+	--ink-muted: #a89c84;
+	--ink-dim: #8b806c;
+	--rule: #2a2620;
+	--accent: #c9a464;
+}
+
+:root[data-room='films'] {
+	/* daguerre's holyrood chapel: slate-violet night, silvered stone, moonlight through the bare east window */
+	--bg: #121319;
+	--bg-soft: #1a1c25;
+	--ink: #e6e2d6;
+	--ink-muted: #a5a5ad;
+	--ink-dim: #7e7e88;
+	--rule: #242631;
+	--accent: #d3c48e;
+}
+
+:root[data-room='music'] {
+	/* Vermeer daylight, dimmed: warm parchment over a faintly violet umber */
+	--bg: #141017;
+	--bg-soft: #1d1620;
+	--ink: #ead8c0;
+	--ink-muted: #ad9fb0;
+	--ink-dim: #887986;
+	--rule: #2a2230;
+	--accent: #d8b25a;
+}
+
+:root[data-room='projects'] {
+	/* wright of derby's alchemist: umber workshop dark, parchment ink, the phosphorus flask for an accent */
+	--bg: #131010;
+	--bg-soft: #1c1714;
+	--ink: #eae0cd;
+	--ink-muted: #ab9d86;
+	--ink-dim: #897c6c;
+	--rule: #2a221c;
+	--accent: #e3c377;
+}
+
+:root[data-room='likes'] {
+	/* moonrise over the sea: dark indigo night, pale silver ink, warm moon accent */
+	--bg: #0a0e1a;
+	--bg-soft: #121829;
+	--ink: #e4e3d6;
+	--ink-muted: #8a93a8;
+	--ink-dim: #777d8a;
+	--rule: #1c2238;
+	--accent: #d9b070;
+}
+
+:root[data-room='contact'] {
+	/* friedrich's two men contemplating the moon: warm umber dusk, parchment ink */
+	--bg: #1a1612;
+	--bg-soft: #221c17;
+	--ink: #e8dcc4;
+	--ink-muted: #b3a78d;
+	--ink-dim: #8a806d;
+	--rule: #2e2620;
+	--accent: #c9b27a;
+}
+
+:root[data-room='tools'] {
+	/* kersting's studio: olive-umber walls, parchment ink, ochre easel-wood accent */
+	--bg: #131310;
+	--bg-soft: #1b1b16;
+	--ink: #e4decb;
+	--ink-muted: #a5a08c;
+	--ink-dim: #86816e;
+	--rule: #292920;
+	--accent: #c9a35e;
+}
+
+:root[data-room='404'] {
+	--bg: #232b30;
+	--bg-soft: #2d3539;
+	--ink: #d8d4c8;
+	--ink-muted: #a09f95;
+	--ink-dim: #94938b;
+	--rule: #353d42;
+	--accent: #b8a87a;
+}
+
+/* ---------- Typography stack ----------
+   Two families, one role each:
+   · body    = Lato             (sans: labels, notes, smallcaps, UI)
+   · display = Playfair Display (serif: headings, dropcaps, logo, buttons, essay prose)
+   One weight per family (400); Lato 700 only for smallcaps labels
+   (Lato has no 600). The display serif wears ROMAN everywhere since
+   2026-08-06: italic survives only as semantics (em, blockquotes,
+   work titles) and the likes kickers. */
+:root {
+	--font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+	--font-display: 'Playfair Display', Georgia, 'Times New Roman', ui-serif, serif;
+}
+
+@theme inline {
+	--font-sans: var(--font-body);
+	--font-serif: var(--font-display);
+	--font-display: var(--font-display);
+	--color-bg: var(--bg);
+	--color-bg-soft: var(--bg-soft);
+	--color-ink: var(--ink);
+	--color-ink-muted: var(--ink-muted);
+	--color-ink-dim: var(--ink-dim);
+	--color-rule: var(--rule);
+	--color-accent: var(--accent);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html {
+	scroll-behavior: smooth;
+	background-color: var(--bg);
+	color: var(--ink);
+	transition:
+		background-color 600ms ease,
+		color 600ms ease;
+}
+
+/* While a view transition runs (+layout sets data-vt), the crossfade
+   carries the palette change: the eases above and the wallpaper's would
+   otherwise straggle 600ms past the fade, re-rastering viewport-sized
+   layers every frame while the transition composites its snapshots. */
+html[data-vt],
+html[data-vt] body::before {
+	transition: none;
+}
+
+body {
+	font-family: var(--font-body);
+	background-color: transparent;
+	color: var(--ink);
+	font-size: 17px;
+	line-height: 1.7;
+	font-feature-settings:
+		'liga' 1,
+		'kern' 1;
+}
+
+/* ---------- Wallpaper & candlelight ----------
+   Two fixed layers behind all content: ringed fans (the old wave
+   pattern, scalloped fans with two rings inside every arc, an SVG
+   mask filled with the room's accent, so the wallpaper re-colours
+   with each room) and a soft vignette pooling the light toward the
+   centre, like a lamplit room. body is transparent; <html> carries
+   --bg. */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -2;
+	pointer-events: none;
+	background-color: var(--accent);
+	opacity: 0.03;
+	transition: background-color 600ms ease;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23fff' stroke-width='.55'%3E%3Cpath d='M0 12 A12 12 0 0 1 24 12'/%3E%3Cpath d='M24 12 A12 12 0 0 1 48 12'/%3E%3Cpath d='M-12 24 A12 12 0 0 1 12 24'/%3E%3Cpath d='M12 24 A12 12 0 0 1 36 24'/%3E%3Cpath d='M36 24 A12 12 0 0 1 60 24'/%3E%3Cpath d='M0 36 A12 12 0 0 1 24 36'/%3E%3Cpath d='M24 36 A12 12 0 0 1 48 36'/%3E%3Cpath d='M-12 48 A12 12 0 0 1 12 48'/%3E%3Cpath d='M12 48 A12 12 0 0 1 36 48'/%3E%3Cpath d='M36 48 A12 12 0 0 1 60 48'/%3E%3Cpath d='M4 12 A8 8 0 0 1 20 12'/%3E%3Cpath d='M8 12 A4 4 0 0 1 16 12'/%3E%3Cpath d='M28 12 A8 8 0 0 1 44 12'/%3E%3Cpath d='M32 12 A4 4 0 0 1 40 12'/%3E%3Cpath d='M-8 24 A8 8 0 0 1 8 24'/%3E%3Cpath d='M-4 24 A4 4 0 0 1 4 24'/%3E%3Cpath d='M16 24 A8 8 0 0 1 32 24'/%3E%3Cpath d='M20 24 A4 4 0 0 1 28 24'/%3E%3Cpath d='M40 24 A8 8 0 0 1 56 24'/%3E%3Cpath d='M44 24 A4 4 0 0 1 52 24'/%3E%3Cpath d='M4 36 A8 8 0 0 1 20 36'/%3E%3Cpath d='M8 36 A4 4 0 0 1 16 36'/%3E%3Cpath d='M28 36 A8 8 0 0 1 44 36'/%3E%3Cpath d='M32 36 A4 4 0 0 1 40 36'/%3E%3Cpath d='M-8 48 A8 8 0 0 1 8 48'/%3E%3Cpath d='M-4 48 A4 4 0 0 1 4 48'/%3E%3Cpath d='M16 48 A8 8 0 0 1 32 48'/%3E%3Cpath d='M20 48 A4 4 0 0 1 28 48'/%3E%3Cpath d='M40 48 A8 8 0 0 1 56 48'/%3E%3Cpath d='M44 48 A4 4 0 0 1 52 48'/%3E%3C/g%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23fff' stroke-width='.55'%3E%3Cpath d='M0 12 A12 12 0 0 1 24 12'/%3E%3Cpath d='M24 12 A12 12 0 0 1 48 12'/%3E%3Cpath d='M-12 24 A12 12 0 0 1 12 24'/%3E%3Cpath d='M12 24 A12 12 0 0 1 36 24'/%3E%3Cpath d='M36 24 A12 12 0 0 1 60 24'/%3E%3Cpath d='M0 36 A12 12 0 0 1 24 36'/%3E%3Cpath d='M24 36 A12 12 0 0 1 48 36'/%3E%3Cpath d='M-12 48 A12 12 0 0 1 12 48'/%3E%3Cpath d='M12 48 A12 12 0 0 1 36 48'/%3E%3Cpath d='M36 48 A12 12 0 0 1 60 48'/%3E%3Cpath d='M4 12 A8 8 0 0 1 20 12'/%3E%3Cpath d='M8 12 A4 4 0 0 1 16 12'/%3E%3Cpath d='M28 12 A8 8 0 0 1 44 12'/%3E%3Cpath d='M32 12 A4 4 0 0 1 40 12'/%3E%3Cpath d='M-8 24 A8 8 0 0 1 8 24'/%3E%3Cpath d='M-4 24 A4 4 0 0 1 4 24'/%3E%3Cpath d='M16 24 A8 8 0 0 1 32 24'/%3E%3Cpath d='M20 24 A4 4 0 0 1 28 24'/%3E%3Cpath d='M40 24 A8 8 0 0 1 56 24'/%3E%3Cpath d='M44 24 A4 4 0 0 1 52 24'/%3E%3Cpath d='M4 36 A8 8 0 0 1 20 36'/%3E%3Cpath d='M8 36 A4 4 0 0 1 16 36'/%3E%3Cpath d='M28 36 A8 8 0 0 1 44 36'/%3E%3Cpath d='M32 36 A4 4 0 0 1 40 36'/%3E%3Cpath d='M-8 48 A8 8 0 0 1 8 48'/%3E%3Cpath d='M-4 48 A4 4 0 0 1 4 48'/%3E%3Cpath d='M16 48 A8 8 0 0 1 32 48'/%3E%3Cpath d='M20 48 A4 4 0 0 1 28 48'/%3E%3Cpath d='M40 48 A8 8 0 0 1 56 48'/%3E%3Cpath d='M44 48 A4 4 0 0 1 52 48'/%3E%3C/g%3E%3C/svg%3E");
+	-webkit-mask-repeat: repeat;
+	mask-repeat: repeat;
+	-webkit-mask-size: 80px 80px;
+	mask-size: 80px 80px;
+}
+
+body::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background: radial-gradient(120% 100% at 50% 24%, transparent 52%, color-mix(in oklab, black 26%, transparent) 100%);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-display);
+	color: var(--ink);
+	font-weight: 400;
+	letter-spacing: 0;
+	line-height: 1.15;
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: clamp(2.25rem, 5vw + 1rem, 4.5rem);
+}
+
+h2 {
+	font-size: clamp(1.6rem, 2.5vw + 0.5rem, 2.5rem);
+}
+
+h3 {
+	font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem);
+}
+
+p {
+	line-height: 1.7;
+	text-wrap: pretty;
+}
+
+em,
+i {
+	font-style: italic;
+}
+
+.smallcaps {
+	font-family: var(--font-body);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	font-size: 0.72rem;
+	font-weight: 700;
+	color: var(--ink-muted);
+}
+
+/* ---------- Links ---------- */
+/* Layered so text-color utilities can override it: unlayered, this
+   rule silently beat every text-[...] on every anchor (the nav's
+   active accent never rendered). */
+@layer base {
+	a {
+		color: inherit;
+		text-decoration: none;
+		transition: color 300ms ease;
+	}
+}
+
+a.link {
+	color: var(--ink);
+	border-bottom: 1px solid color-mix(in oklab, var(--accent) 50%, transparent);
+	transition:
+		color 300ms ease,
+		border-color 300ms ease;
+}
+
+a.link:hover {
+	color: var(--accent);
+	border-bottom-color: currentColor;
+}
+
+a.link-quiet {
+	color: var(--ink-muted);
+	border-bottom: 1px solid color-mix(in oklab, currentColor 25%, transparent);
+}
+
+a.link-quiet:hover {
+	color: var(--accent);
+	border-bottom-color: currentColor;
+}
+
+::selection {
+	background-color: color-mix(in oklab, var(--accent) 35%, transparent);
+	color: var(--ink);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+	background: color-mix(in oklab, var(--accent) 16%, var(--rule));
+	border-radius: 0;
+	border: 2px solid var(--bg);
+}
+
+/* ---------- Focus ---------- */
+:focus {
+	outline: none;
+}
+:focus-visible {
+	outline: 1px solid var(--accent);
+	outline-offset: 4px;
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+	position: absolute;
+	left: -9999px;
+	top: 0;
+	z-index: 100;
+	padding: 0.75rem 1rem;
+	background: var(--ink);
+	color: var(--bg);
+}
+.skip-link:focus {
+	left: 0;
+}
+
+/* ---------- Frontispiece (painting) ---------- */
+.frontispiece {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	background: var(--bg-soft);
+}
+
+.frontispiece picture,
+.frontispiece img {
+	display: block;
+	width: 100%;
+	height: clamp(360px, 60vh, 680px);
+	object-fit: cover;
+	object-position: center;
+}
+
+@media (max-width: 640px) {
+	.frontispiece picture,
+	.frontispiece img {
+		height: 70vh;
+	}
+}
+
+.frontispiece::after {
+	content: '';
+	position: absolute;
+	inset: auto 0 0 0;
+	height: 40%;
+	background: linear-gradient(to bottom, transparent, var(--bg));
+	pointer-events: none;
+}
+
+/* A painting that misses its own view transition (cold room, slow line;
+   +layout waits only 300ms) develops in like a print instead of popping.
+   Scoped to walked-in visits: first paint and no-JS visitors keep the
+   image immediate, so LCP never waits on this. */
+html[data-navigated] .frontispiece img {
+	opacity: 0;
+	transition: opacity 500ms ease;
+}
+
+html[data-navigated] .frontispiece img.loaded {
+	opacity: 1;
+}
+
+/* ---------- Plate caption ---------- */
+.plate {
+	font-family: var(--font-body);
+	font-style: italic;
+	font-size: 0.875rem;
+	color: var(--ink-muted);
+	text-align: center;
+	line-height: 1.6;
+	letter-spacing: 0.01em;
+}
+
+.plate em {
+	color: var(--ink-muted);
+}
+
+/* ---------- Drop cap ---------- */
+.dropcap::first-letter {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: 3.4em;
+	line-height: 0.85;
+	float: left;
+	padding: 0.08em 0.14em 0 0;
+	color: var(--ink);
+}
+
+@media (min-width: 640px) {
+	.dropcap::first-letter {
+		font-size: 4.5em;
+		padding: 0.05em 0.12em 0 0;
+	}
+}
+
+/* ---------- Rules ---------- */
+.rule-thin {
+	height: 1px;
+	background: var(--rule);
+	width: 100%;
+}
+
+.rule-fine {
+	height: 1px;
+	background: color-mix(in oklab, var(--rule) 70%, transparent);
+}
+
+/* ---------- Engraved rule ----------
+   A single hairline fading at both ends, with a small ornament seated
+   in the middle; give it one child: <span class="gem"></span> for a
+   gilt diamond. Used above the colophon. */
+.rule-engraved {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	color: color-mix(in oklab, var(--accent) 60%, var(--ink-dim));
+}
+
+.rule-engraved::before,
+.rule-engraved::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: var(--rule);
+}
+
+.rule-engraved::before {
+	-webkit-mask-image: linear-gradient(to right, transparent, black 30%);
+	mask-image: linear-gradient(to right, transparent, black 30%);
+}
+
+.rule-engraved::after {
+	-webkit-mask-image: linear-gradient(to left, transparent, black 30%);
+	mask-image: linear-gradient(to left, transparent, black 30%);
+}
+
+.rule-engraved .gem {
+	width: 0.32rem;
+	height: 0.32rem;
+	background: currentColor;
+	transform: rotate(45deg);
+}
+
+/* ---------- Ornamented label ----------
+   Flanks a smallcaps eyebrow with two tiny gilt diamonds. */
+.orn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.8rem;
+}
+
+.orn::before,
+.orn::after {
+	content: '';
+	width: 0.28rem;
+	height: 0.28rem;
+	background: color-mix(in oklab, var(--accent) 55%, transparent);
+	transform: rotate(45deg);
+}
+
+/* ---------- Engraved corner-pieces ----------
+   Corners set outside the plate, after the certificate borders whose
+   fleurons attend the ruled panel from without: scrolled corners with
+   a diamond bud on the diagonal, a bracketed variant small enough for
+   buttons, and a bare gem for chips. The host draws its own 1px rule;
+   the pieces stand a step off it and never cross it. Drawn once as
+   white-on-transparent masks (tl is the source; the rest are the same
+   art rotated about center) and inked through background-color, so
+   every frame takes the room's accent and re-colours with the
+   palette, like the wallpaper. */
+:root {
+	--corner-scroll-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.3'%3E%3Cpath d='M18 .65 H.65 V18'/%3E%3Cpath d='M18 .65 a3.8 3.8 0 0 1 3.8 3.8 a2.4 2.4 0 0 1 -2.4 2.4 a1.5 1.5 0 0 1 -1.5 -1.5 a.95 .95 0 0 1 .95 -.95'/%3E%3Cpath d='M.65 18 a3.8 3.8 0 0 0 3.8 3.8 a2.4 2.4 0 0 0 2.4 -2.4 a1.5 1.5 0 0 0 -1.5 -1.5 a.95 .95 0 0 0 -.95 .95'/%3E%3C/g%3E%3Crect x='5.9' y='5.9' width='3.4' height='3.4' fill='%23fff' transform='rotate(45 7.6 7.6)'/%3E%3C/svg%3E");
+	--corner-scroll-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cg transform='rotate(90 14 14)'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.3'%3E%3Cpath d='M18 .65 H.65 V18'/%3E%3Cpath d='M18 .65 a3.8 3.8 0 0 1 3.8 3.8 a2.4 2.4 0 0 1 -2.4 2.4 a1.5 1.5 0 0 1 -1.5 -1.5 a.95 .95 0 0 1 .95 -.95'/%3E%3Cpath d='M.65 18 a3.8 3.8 0 0 0 3.8 3.8 a2.4 2.4 0 0 0 2.4 -2.4 a1.5 1.5 0 0 0 -1.5 -1.5 a.95 .95 0 0 0 -.95 .95'/%3E%3C/g%3E%3Crect x='5.9' y='5.9' width='3.4' height='3.4' fill='%23fff' transform='rotate(45 7.6 7.6)'/%3E%3C/g%3E%3C/svg%3E");
+	--corner-scroll-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cg transform='rotate(180 14 14)'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.3'%3E%3Cpath d='M18 .65 H.65 V18'/%3E%3Cpath d='M18 .65 a3.8 3.8 0 0 1 3.8 3.8 a2.4 2.4 0 0 1 -2.4 2.4 a1.5 1.5 0 0 1 -1.5 -1.5 a.95 .95 0 0 1 .95 -.95'/%3E%3Cpath d='M.65 18 a3.8 3.8 0 0 0 3.8 3.8 a2.4 2.4 0 0 0 2.4 -2.4 a1.5 1.5 0 0 0 -1.5 -1.5 a.95 .95 0 0 0 -.95 .95'/%3E%3C/g%3E%3Crect x='5.9' y='5.9' width='3.4' height='3.4' fill='%23fff' transform='rotate(45 7.6 7.6)'/%3E%3C/g%3E%3C/svg%3E");
+	--corner-scroll-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cg transform='rotate(270 14 14)'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.3'%3E%3Cpath d='M18 .65 H.65 V18'/%3E%3Cpath d='M18 .65 a3.8 3.8 0 0 1 3.8 3.8 a2.4 2.4 0 0 1 -2.4 2.4 a1.5 1.5 0 0 1 -1.5 -1.5 a.95 .95 0 0 1 .95 -.95'/%3E%3Cpath d='M.65 18 a3.8 3.8 0 0 0 3.8 3.8 a2.4 2.4 0 0 0 2.4 -2.4 a1.5 1.5 0 0 0 -1.5 -1.5 a.95 .95 0 0 0 -.95 .95'/%3E%3C/g%3E%3Crect x='5.9' y='5.9' width='3.4' height='3.4' fill='%23fff' transform='rotate(45 7.6 7.6)'/%3E%3C/g%3E%3C/svg%3E");
+	--corner-bracket-tl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.4'%3E%3Cpath d='M12.5 .7 H.7 V12.5'/%3E%3Cpath d='M12.5 .7 V3.4'/%3E%3Cpath d='M.7 12.5 H3.4'/%3E%3C/g%3E%3Crect x='3.9' y='3.9' width='3' height='3' fill='%23fff' transform='rotate(45 5.4 5.4)'/%3E%3C/svg%3E");
+	--corner-bracket-tr: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg transform='rotate(90 10 10)'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.4'%3E%3Cpath d='M12.5 .7 H.7 V12.5'/%3E%3Cpath d='M12.5 .7 V3.4'/%3E%3Cpath d='M.7 12.5 H3.4'/%3E%3C/g%3E%3Crect x='3.9' y='3.9' width='3' height='3' fill='%23fff' transform='rotate(45 5.4 5.4)'/%3E%3C/g%3E%3C/svg%3E");
+	--corner-bracket-br: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg transform='rotate(180 10 10)'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.4'%3E%3Cpath d='M12.5 .7 H.7 V12.5'/%3E%3Cpath d='M12.5 .7 V3.4'/%3E%3Cpath d='M.7 12.5 H3.4'/%3E%3C/g%3E%3Crect x='3.9' y='3.9' width='3' height='3' fill='%23fff' transform='rotate(45 5.4 5.4)'/%3E%3C/g%3E%3C/svg%3E");
+	--corner-bracket-bl: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg transform='rotate(270 10 10)'%3E%3Cg fill='none' stroke='%23fff' stroke-width='1.4'%3E%3Cpath d='M12.5 .7 H.7 V12.5'/%3E%3Cpath d='M12.5 .7 V3.4'/%3E%3Cpath d='M.7 12.5 H3.4'/%3E%3C/g%3E%3Crect x='3.9' y='3.9' width='3' height='3' fill='%23fff' transform='rotate(45 5.4 5.4)'/%3E%3C/g%3E%3C/svg%3E");
+	--gem-dot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Crect x='2.3' y='2.3' width='3.4' height='3.4' fill='%23fff' transform='rotate(45 4 4)'/%3E%3C/svg%3E");
+}
+
+/* Corner-pieces outside the plate: the host keeps its 1px rule; the
+   scrolled corners nest each corner from without, arms echoing the
+   rule a step out, curls turned back toward it. Raise --frame-ink
+   with the host's hover to brighten them. Hosts sitting in a grid
+   need gaps that clear 2 × --frame-offset, or neighbouring pieces
+   touch. */
+.frame-engraved {
+	position: relative;
+	--frame-corner: 30px;
+	/* How far the pieces stand off the host's rule. */
+	--frame-offset: 6px;
+}
+
+.frame-engraved::before {
+	content: '';
+	position: absolute;
+	inset: calc(var(--frame-offset) * -1);
+	pointer-events: none;
+	background: var(--frame-ink, color-mix(in oklab, var(--accent) 55%, var(--rule)));
+	transition: background-color 400ms ease;
+	-webkit-mask:
+		var(--corner-scroll-tl) left top / var(--frame-corner) var(--frame-corner) no-repeat,
+		var(--corner-scroll-tr) right top / var(--frame-corner) var(--frame-corner) no-repeat,
+		var(--corner-scroll-br) right bottom / var(--frame-corner) var(--frame-corner) no-repeat,
+		var(--corner-scroll-bl) left bottom / var(--frame-corner) var(--frame-corner) no-repeat;
+	mask:
+		var(--corner-scroll-tl) left top / var(--frame-corner) var(--frame-corner) no-repeat,
+		var(--corner-scroll-tr) right top / var(--frame-corner) var(--frame-corner) no-repeat,
+		var(--corner-scroll-br) right bottom / var(--frame-corner) var(--frame-corner) no-repeat,
+		var(--corner-scroll-bl) left bottom / var(--frame-corner) var(--frame-corner) no-repeat;
+}
+
+/* The bare setting: four gilt gems straddling a chip's corners. */
+.frame-gemmed {
+	position: relative;
+}
+
+.frame-gemmed::before {
+	content: '';
+	position: absolute;
+	inset: -3px;
+	pointer-events: none;
+	background: var(--frame-ink, color-mix(in oklab, var(--accent) 65%, var(--rule)));
+	transition: background-color 300ms ease;
+	-webkit-mask:
+		var(--gem-dot) left top / 7px 7px no-repeat,
+		var(--gem-dot) right top / 7px 7px no-repeat,
+		var(--gem-dot) right bottom / 7px 7px no-repeat,
+		var(--gem-dot) left bottom / 7px 7px no-repeat;
+	mask:
+		var(--gem-dot) left top / 7px 7px no-repeat,
+		var(--gem-dot) right top / 7px 7px no-repeat,
+		var(--gem-dot) right bottom / 7px 7px no-repeat,
+		var(--gem-dot) left bottom / 7px 7px no-repeat;
+}
+
+/* ---------- Dotted catalogue leader ----------
+   Fills the space between a row's title and its right-hand label,
+   like an index or auction-catalogue line. Use inside a flex row. */
+.leader {
+	flex: 1;
+	min-width: 2.5rem;
+	align-self: flex-end;
+	margin-bottom: 0.45em;
+	border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 55%, transparent);
+}
+
+/* ---------- Painterly view transitions ----------
+   One dissolve, one clock, and a breath of camera. Old and new frames
+   share the same 680ms curve; the leaving room drifts a step toward
+   the viewer as it fades, the arriving one settles back into place.
+   Whole-frame transforms only: because every layer rides the same
+   clock and the same transform, nothing meets anything at a seam
+   (split clocks and staged titles both failed exactly that way, and
+   per-painting names once flew full-bleed snapshots across the
+   viewport). The other motion is the incoming canvas settling from a
+   breath of scale, animated on the LIVE element beneath the veil (set
+   post-swap via data-vt-in so the outgoing snapshot never zooms);
+   type stays sharp because the text is not in that layer. Opacity and
+   transform only; no filters. */
+::view-transition-old(root) {
+	animation: vt-scene-out 680ms cubic-bezier(0.33, 0, 0.67, 1) both;
+}
+
+::view-transition-new(root) {
+	animation: vt-scene-in 680ms cubic-bezier(0.33, 0, 0.67, 1) both;
+}
+
+@keyframes vt-scene-out {
+	to {
+		opacity: 0;
+		transform: scale(1.016);
+	}
+}
+
+@keyframes vt-scene-in {
+	from {
+		opacity: 0;
+		transform: scale(0.986);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+html[data-vt-in] .hero-art img {
+	animation: vt-canvas-settle 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes vt-canvas-settle {
+	from {
+		transform: scale(1.045);
+	}
+
+	to {
+		transform: scale(1);
+	}
+}
+
+/* Browsers that sit out the view transition (Gecko, or no support)
+   still get a scene change: +layout re-stamps data-nav-in once the
+   new room is in the DOM, and main rises in as one piece. The chrome
+   holds still; one layer, one clock, so nothing meets at a seam. */
+html[data-nav-in] main {
+	animation: scene-in 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes scene-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* The Alchemist hangs in the darkest room; give the canvas more light
+   so the phosphorus flask reads through the veil. */
+[data-room='projects'] .hero-art img {
+	filter: brightness(1.22) contrast(1.02);
+}
+
+/* ---------- Slow rising fade ---------- */
+
+/* The curtain's score (Curtain.svelte): one overture per full
+   arrival; hold with the monogram, then the sweep. The rises below
+   read --curtain-done so the room appears only once the stage is
+   clear, and --rise-step spaces the procession. */
+:root {
+	--curtain-hold: 450ms;
+	--curtain-sweep: 1150ms;
+	--curtain-done: calc(var(--curtain-hold) + var(--curtain-sweep));
+	--rise-step: 160ms;
+}
+
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* The procession: every riser takes a seat in the order of its --seq
+   (the legacy -2/-3 suffixes are seats 1 and 2; set --seq inline for
+   anything later). Delays live in the no-preference block below. */
+.rise,
+.rise-2,
+.rise-3 {
+	animation: rise 1100ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.rise-2 {
+	--seq: 1;
+}
+
+.rise-3 {
+	--seq: 2;
+}
+
+/* The rises are a first-arrival flourish only. Once the visitor starts
+   walking the house (+layout.svelte stamps data-navigated on the first
+   client-side navigation), each room change is one ink-wash view
+   transition; content that rose up afterwards read as the room
+   straggling in behind its painting. */
+html[data-navigated] .rise,
+html[data-navigated] .rise-2,
+html[data-navigated] .rise-3 {
+	animation: none;
+}
+
+/* First arrivals wait in the dark until the curtain has swept clear,
+   then take their seats in --seq order. Scoped to no-preference: the
+   reduce reset below zeroes durations but NOT delays, and a
+   reduced-motion visitor gets no curtain to wait for. */
+@media (prefers-reduced-motion: no-preference) {
+	.rise,
+	.rise-2,
+	.rise-3 {
+		animation-delay: calc(var(--curtain-done) + var(--seq, 0) * var(--rise-step));
+	}
+}
+
+/* ---------- Reveal on approach ----------
+   The walk-through counterpart to the rises: content marked with the
+   reveal action (src/lib/reveal.ts) starts a step below its seat and
+   rises as it enters the viewport, so a room fills up as the visitor
+   walks it. The action never hides anything for no-JS or
+   reduced-motion visitors, and bursts arriving together cascade via
+   --rv-wait. */
+.rv {
+	opacity: 0;
+	transform: translateY(18px);
+}
+
+.rv-in {
+	opacity: 1;
+	transform: translateY(0);
+	transition:
+		opacity 950ms cubic-bezier(0.2, 0.7, 0.2, 1),
+		transform 950ms cubic-bezier(0.2, 0.7, 0.2, 1);
+	transition-delay: var(--rv-wait, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* ---------- Prose for posts ----------
+   Essays are set in the display serif, book-size: the room is a reading
+   room. Labels and UI around them stay in the sans. */
+.prose-romantic {
+	color: var(--ink);
+	font-family: var(--font-display);
+	font-size: 1.22rem;
+	line-height: 1.7;
+	max-width: 38rem;
+	text-wrap: pretty;
+}
+
+.prose-romantic > p {
+	margin: 1.4em 0;
+}
+
+.prose-romantic > p:first-child {
+	margin-top: 0;
+}
+
+.prose-romantic > p:first-child::first-letter {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: 3.4em;
+	line-height: 0.85;
+	float: left;
+	padding: 0.08em 0.14em 0 0;
+	color: var(--ink);
+}
+
+@media (min-width: 640px) {
+	.prose-romantic > p:first-child::first-letter {
+		font-size: 4.5em;
+		padding: 0.05em 0.12em 0 0;
+	}
+}
+
+.prose-romantic h2 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: 1.85rem;
+	margin: 3rem 0 1rem;
+	color: var(--ink);
+}
+
+.prose-romantic h3 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-size: 1.35rem;
+	margin: 2.5rem 0 0.75rem;
+	color: var(--ink);
+}
+
+.prose-romantic a {
+	color: var(--ink);
+	border-bottom: 1px solid color-mix(in oklab, var(--accent) 60%, transparent);
+}
+
+.prose-romantic a:hover {
+	color: var(--accent);
+	border-bottom-color: currentColor;
+}
+
+.prose-romantic blockquote {
+	border-left: 2px solid var(--accent);
+	padding-left: 1.5rem;
+	margin: 2rem 0;
+	font-style: italic;
+	color: var(--ink-muted);
+}
+
+.prose-romantic ul,
+.prose-romantic ol {
+	margin: 1.5em 0;
+	padding-left: 1.5em;
+}
+
+.prose-romantic li {
+	margin: 0.4em 0;
+}
+
+.prose-romantic ul li {
+	list-style: none;
+	position: relative;
+}
+
+.prose-romantic ul li::before {
+	content: '·';
+	position: absolute;
+	left: -1em;
+	color: var(--accent);
+	font-size: 1.4em;
+	line-height: 1;
+}
+
+.prose-romantic code {
+	font-family: 'JetBrainsMono Nerd Font', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-style: normal;
+	font-size: 0.82em;
+	background: color-mix(in oklab, var(--accent) 12%, transparent);
+	padding: 0 0.3em;
+}
+
+.prose-romantic hr {
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.65rem;
+	margin: 2.75rem 0;
+}
+
+.prose-romantic hr::before,
+.prose-romantic hr::after {
+	content: '';
+	width: 0.26rem;
+	height: 0.26rem;
+	background: color-mix(in oklab, var(--accent) 50%, transparent);
+	transform: rotate(45deg);
+}
+
+/* ---------- Print: essays as clean paper ---------- */
+@media print {
+	:root,
+	:root[data-room] {
+		--bg: #ffffff;
+		--bg-soft: #ffffff;
+		--ink: #111111;
+		--ink-muted: #444444;
+		--ink-dim: #666666;
+		--rule: #dddddd;
+		--accent: #806a30;
+	}
+
+	header,
+	footer,
+	.skip-link,
+	.frontispiece,
+	.hero-veil,
+	.hero-plate {
+		display: none !important;
+	}
+
+	body::before,
+	body::after {
+		display: none !important;
+	}
+
+	.hero {
+		min-height: auto !important;
+	}
+
+	.hero-content {
+		text-shadow: none !important;
+		padding-block: 0 !important;
+	}
+
+	body {
+		font-size: 11.5pt;
+	}
+
+	.prose-romantic a {
+		border-bottom: none;
+		text-decoration: underline;
+	}
+
+	.rise,
+	.rise-2,
+	.rise-3 {
+		animation: none !important;
+	}
+}
