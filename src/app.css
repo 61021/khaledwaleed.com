@@ -97,14 +97,14 @@
 }
 
 :root[data-room='contact'] {
-	/* friedrich's two men contemplating the moon: warm umber dusk, parchment ink */
-	--bg: #1a1612;
-	--bg-soft: #221c17;
-	--ink: #e8dcc4;
-	--ink-muted: #b3a78d;
-	--ink-dim: #8a806d;
-	--rule: #2e2620;
-	--accent: #c9b27a;
+	/* metsu's man writing a letter: warm umber shadow, silvered window-light parchment, amber wood-and-gilt accent */
+	--bg: #1a1413;
+	--bg-soft: #221a19;
+	--ink: #e2d8cb;
+	--ink-muted: #afa392;
+	--ink-dim: #8a7e6d;
+	--rule: #2d2322;
+	--accent: #c99e73;
 }
 
 :root[data-room='tools'] {

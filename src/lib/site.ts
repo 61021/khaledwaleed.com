@@ -148,14 +148,18 @@ export const paintings: Record<string, Painting> = {
 		focal: '50% 30%',
 	},
 	contact: {
-		key: 'two-men',
-		title: 'Two Men Contemplating the Moon',
-		artist: 'Caspar David Friedrich',
-		year: 'c. 1820',
-		museum: 'Galerie Neue Meister, Dresden',
-		museumUrl: 'https://gemaeldegalerie.skd.museum/',
-		source: 'https://en.wikipedia.org/wiki/Two_Men_Contemplating_the_Moon',
-		alt: 'Two figures in coats stand at the edge of a wood beside a leaning fir, looking up at a low evening moon.',
+		// Content-derived key per the immutable-cache law; the Two Men's
+		// room-era key retired with the canvas 2026-08-15.
+		key: 'man-writing',
+		title: 'Man Writing a Letter',
+		artist: 'Gabriël Metsu',
+		year: 'c. 1664-66',
+		museum: 'National Gallery of Ireland, Dublin',
+		museumUrl: 'https://www.nationalgallery.ie/',
+		source: 'https://en.wikipedia.org/wiki/Man_Writing_a_Letter',
+		alt: 'A young man in black sits at a carpeted table by a bright window, writing a letter, a globe on the ledge behind him.',
+		// keep his head and the letter in the wide desktop crop
+		focal: '48% 32%',
 	},
 	404: {
 		key: '404',
@@ -270,7 +274,7 @@ export const roomBg: Record<string, string> = {
 	music: '#141017',
 	projects: '#131010',
 	likes: '#0a0e1a',
-	contact: '#1a1612',
+	contact: '#1a1413',
 	tools: '#131310',
 	404: '#232b30',
 }

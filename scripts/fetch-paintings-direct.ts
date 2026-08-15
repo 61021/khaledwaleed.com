@@ -62,6 +62,14 @@ const items: Item[] = [
 		file: 'Saint Paul, Rembrandt van Rijn (and Workshop?), c. 1657.jpg',
 		srcWidth: 3200,
 	},
+	{
+		// NGI Dublin's 3689×4740 scan. Hung on /contact 2026-08-15 from a
+		// six-way letters-and-windows tasting, replacing the Two Men: a
+		// correspondence picture for the correspondence room.
+		slug: 'man-writing',
+		file: 'Man Writing a Letter by Gabriël Metsu.jpg',
+		srcWidth: 3200,
+	},
 ]
 
 const OUT = path.resolve('static/paintings')
