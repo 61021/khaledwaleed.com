@@ -24,17 +24,15 @@
 		type = 'button',
 		onclick,
 	}: Props = $props()
+
+	// Variants and sizes map 1:1 onto scoped classes below.
+	const classes = $derived(['btn', `btn-${variant}`, `btn-${size}`, cls])
 </script>
 
 {#if href}
 	<a
 		{href}
-		class='btn {cls}'
-		class:btn-primary={variant === 'primary'}
-		class:btn-outline={variant === 'outline'}
-		class:btn-ghost={variant === 'ghost'}
-		class:btn-md={size === 'md'}
-		class:btn-lg={size === 'lg'}
+		class={classes}
 		target={external ? '_blank' : undefined}
 		rel={external ? 'noopener noreferrer' : undefined}
 		{download}
@@ -42,16 +40,7 @@
 		{@render children()}
 	</a>
 {:else}
-	<button
-		{type}
-		class='btn {cls}'
-		class:btn-primary={variant === 'primary'}
-		class:btn-outline={variant === 'outline'}
-		class:btn-ghost={variant === 'ghost'}
-		class:btn-md={size === 'md'}
-		class:btn-lg={size === 'lg'}
-		{onclick}
-	>
+	<button {type} class={classes} {onclick}>
 		{@render children()}
 	</button>
 {/if}

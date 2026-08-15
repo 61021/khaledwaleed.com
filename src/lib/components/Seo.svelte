@@ -1,5 +1,5 @@
 <script lang='ts'>
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 	import { site } from '$lib/site'
 
 	type Props = {
@@ -31,7 +31,7 @@
 			? `${title} · ${site.name}`
 			: `${site.name} · ${site.role} in ${site.location.city}, ${site.location.country}`,
 	)
-	const url = $derived(`${site.url}${$page.url.pathname}`)
+	const url = $derived(`${site.url}${page.url.pathname}`)
 	const imageUrl = $derived(image.startsWith('http') ? image : `${site.url}${image}`)
 </script>
 

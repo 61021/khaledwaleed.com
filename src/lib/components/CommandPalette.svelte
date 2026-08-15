@@ -1,8 +1,9 @@
 <script lang='ts'>
 	import { goto } from '$app/navigation'
-	import { paletteSignal } from '$lib/palette.svelte'
+	import { palette } from '$lib/palette'
 	import { posts } from '$lib/posts'
 	import { sound } from '$lib/sound.svelte'
+	import { onMount } from 'svelte'
 	import { fade, fly } from 'svelte/transition'
 
 	type Item = {
@@ -99,14 +100,7 @@
 	let lastFocused: HTMLElement | null = null
 
 	// The header search button (or anything else) can ask us to open.
-	let handledRequests = 0
-	$effect(() => {
-		if (paletteSignal.requests > handledRequests) {
-			handledRequests = paletteSignal.requests
-			if (!open)
-				openPalette()
-		}
-	})
+	onMount(() => palette.register(openPalette))
 
 	const filtered = $derived.by(() => {
 		const q = query.trim().toLowerCase()
@@ -118,12 +112,9 @@
 		})
 	})
 
-	$effect(() => {
-		void filtered
-		activeIndex = 0
-	})
-
 	function openPalette() {
+		if (open)
+			return
 		lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
 		open = true
 		query = ''
@@ -246,6 +237,7 @@
 				<input
 					bind:this={inputEl}
 					bind:value={query}
+					oninput={() => (activeIndex = 0)}
 					type='text'
 					placeholder='Search pages and essays…'
 					class='flex-1 bg-transparent text-[1.05rem] text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none'

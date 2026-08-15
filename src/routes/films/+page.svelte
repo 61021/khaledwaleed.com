@@ -1,10 +1,10 @@
 <script lang='ts'>
 	import type { PageData } from './$types'
 	import { replaceState } from '$app/navigation'
+	import { page } from '$app/state'
 	import { Container, Fleuron, PageHeader, SchemaOrg, Seo, site } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
 	import { formatDate } from '$lib/posts'
-	import { onMount } from 'svelte'
 
 	const { data }: { data: PageData } = $props()
 	type Personal = PageData['films'][number]
@@ -47,8 +47,18 @@
 	)
 
 	// --- Type filter -----------------------------------------------------
+	// The controls read from the URL (?type=&sort=&dir=&view=) at init, so
+	// the server renders the exact view a shared link names; the handlers
+	// below write changes back with replaceState. Legacy names keep working.
+	const params = page.url.searchParams
+
 	type Filter = 'all' | 'films' | 'series'
-	let filter = $state<Filter>('all')
+	const typeParam = params.get('type')
+	let filter = $state<Filter>(
+		typeParam === 'films' || typeParam === 'movies'
+			? 'films'
+			: typeParam === 'series' || typeParam === 'shows' ? 'series' : 'all',
+	)
 
 	const filterOptions = $derived<{ value: Filter, label: string, count: number }[]>([
 		{ value: 'all', label: 'All', count: total },
@@ -83,8 +93,18 @@
 		mine: 'desc',
 	}
 
-	let sort = $state<Sort>('watched')
-	let dir = $state<Dir>('desc')
+	// Legacy sort values: year → release, rating → mine, recent → watched.
+	const sortParam = params.get('sort')
+	const initialSort: Sort
+		= sortParam === 'release' || sortParam === 'year'
+			? 'release'
+			: sortParam === 'mine' || sortParam === 'rating' ? 'mine' : 'watched'
+	const dirParam = params.get('dir')
+
+	let sort = $state<Sort>(initialSort)
+	let dir = $state<Dir>(
+		dirParam === 'asc' || dirParam === 'desc' ? dirParam : DEFAULT_DIR[initialSort],
+	)
 
 	const sortOptions: { value: Sort, label: string, star?: boolean, by: string }[] = [
 		{ value: 'watched', label: 'Watched', by: 'watch date' },
@@ -137,7 +157,7 @@
 
 	// --- View (list ↔ grid) -------------------------------------------------
 	type View = 'list' | 'grid'
-	let view = $state<View>('list')
+	let view = $state<View>(params.get('view') === 'grid' ? 'grid' : 'list')
 
 	function setFilter(v: Filter): void {
 		filter = v
@@ -169,28 +189,6 @@
 		else url.searchParams.set('view', view)
 		replaceState(`${url.pathname}${url.search}`, {})
 	}
-
-	onMount(() => {
-		const sp = new URLSearchParams(location.search)
-		const t = sp.get('type')
-		// Legacy names (movies/shows) keep working.
-		if (t === 'films' || t === 'movies')
-			filter = 'films'
-		else if (t === 'series' || t === 'shows')
-			filter = 'series'
-		const s = sp.get('sort')
-		// Legacy values: year → release, rating → mine, recent → watched.
-		if (s === 'release' || s === 'year')
-			sort = 'release'
-		else if (s === 'mine' || s === 'rating')
-			sort = 'mine'
-		dir = DEFAULT_DIR[sort]
-		const d = sp.get('dir')
-		if (d === 'asc' || d === 'desc')
-			dir = d
-		if (sp.get('view') === 'grid')
-			view = 'grid'
-	})
 
 	// --- Row copy ----------------------------------------------------------
 	const kindLabel = (f: Personal): string =>
@@ -332,8 +330,7 @@
 					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
 					<button
 						type='button'
-						class='line-opt'
-						class:on={filter === opt.value}
+						class={['line-opt', filter === opt.value && 'on']}
 						aria-pressed={filter === opt.value}
 						onclick={() => setFilter(opt.value)}
 					>
@@ -357,8 +354,7 @@
 					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
 					<button
 						type='button'
-						class='line-opt'
-						class:on={sort === opt.value}
+						class={['line-opt', sort === opt.value && 'on']}
 						aria-pressed={sort === opt.value}
 						aria-label={`Sort by ${opt.by}${
 							sort === opt.value ? (dir === 'desc' ? ', descending' : ', ascending') : ''
@@ -374,7 +370,7 @@
 				<div class='viewtoggle' role='group' aria-label='Layout'>
 					<button
 						type='button'
-						class:on={view === 'list'}
+						class={[view === 'list' && 'on']}
 						aria-pressed={view === 'list'}
 						aria-label='List view'
 						title='List view'
@@ -389,7 +385,7 @@
 					</button>
 					<button
 						type='button'
-						class:on={view === 'grid'}
+						class={[view === 'grid' && 'on']}
 						aria-pressed={view === 'grid'}
 						aria-label='Grid view'
 						title='Grid view'

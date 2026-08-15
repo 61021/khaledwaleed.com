@@ -18,8 +18,7 @@
 
 	const url = $derived(`${site.url}/writing/${post.slug}`)
 	const ogImage = $derived(`${site.url}/writing/${post.slug}/og.png`)
-	const room = $derived('writing')
-	const painting = $derived(paintings[room as keyof typeof paintings])
+	const painting = paintings.writing
 
 	const articleSchema = $derived({
 		'@context': 'https://schema.org',
@@ -67,7 +66,7 @@
 
 <ReadingProgress />
 
-<PageHeader {room} eyebrow={post.readingTime} title={post.title}>
+<PageHeader room='writing' eyebrow={post.readingTime} title={post.title}>
 	{#snippet lede()}
 		<p>{post.description}</p>
 	{/snippet}

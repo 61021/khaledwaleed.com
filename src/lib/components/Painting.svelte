@@ -30,7 +30,7 @@
 
 	// A canvas warmed before the navigation paints on the first frame; one
 	// arriving later develops in via .loaded (see app.css). onload covers
-	// the fetch, the action covers images already complete at mount.
+	// the fetch, the attachment covers images already complete at mount.
 	let loadFired = $state(false)
 	const loaded = $derived(loadFired || isPaintingWarm(p.key))
 
@@ -52,9 +52,9 @@
 			loading={priority ? 'eager' : 'lazy'}
 			fetchpriority={priority ? 'high' : 'auto'}
 			decoding='async'
-			class:loaded
+			class={[loaded && 'loaded']}
 			onload={() => (loadFired = true)}
-			use:markLoaded
+			{@attach markLoaded}
 		/>
 	</picture>
 {/snippet}

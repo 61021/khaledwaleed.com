@@ -256,7 +256,7 @@
 
 	<div class='space-y-14'>
 		<!-- The two product lines hang as full plates -->
-		<section id={products.id} class='scroll-mt-20' use:reveal>
+		<section id={products.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{products.name}</h2>
 			{@render intro(products)}
 			<ul class='mt-8 space-y-10'>
@@ -269,7 +269,7 @@
 
 		<div class='rule-fine'></div>
 
-		<section id={commissions.id} class='scroll-mt-20' use:reveal>
+		<section id={commissions.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{commissions.name}</h2>
 			{@render intro(commissions)}
 			<ul class='mt-8 space-y-10'>
@@ -283,7 +283,7 @@
 		<div class='rule-fine'></div>
 
 		<!-- The government work reads as a register: dense, ruled -->
-		<section id={government.id} class='scroll-mt-20' use:reveal>
+		<section id={government.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{government.name}</h2>
 			{@render intro(government)}
 			<ul class='mt-4 divide-y divide-[var(--rule)]'>
@@ -299,7 +299,7 @@
 		<!-- Two closing wings share a row on wide screens -->
 		<div class='grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-14'>
 			{#each [earlier, openSource] as s (s.id)}
-				<section id={s.id} class='wing scroll-mt-20' use:reveal>
+				<section id={s.id} class='wing scroll-mt-20' {@attach reveal}>
 					<h2>{s.name}</h2>
 					{@render intro(s)}
 					<ul class='mt-2'>
@@ -315,13 +315,13 @@
 
 	<Fleuron />
 
-	<p class='text-center' use:reveal>
+	<p class='text-center' {@attach reveal}>
 		<a href='/story' class='link'>All of this as a work history: Story →</a>
 	</p>
 
 	<Fleuron />
 
-	<figure class='mx-auto max-w-md text-center' use:reveal>
+	<figure class='mx-auto max-w-md text-center' {@attach reveal}>
 		<blockquote class='text-[var(--ink)] italic' style='font-size: 1.35rem; line-height: 1.5;'>
 			Software, pretty and perfect.
 		</blockquote>

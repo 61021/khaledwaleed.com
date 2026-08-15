@@ -291,7 +291,7 @@
 
 	<div class='space-y-16'>
 		{#each sections as s, i (s.name)}
-			<section id={s.name.toLowerCase()} class='scroll-mt-20' use:reveal>
+			<section id={s.name.toLowerCase()} class='scroll-mt-20' {@attach reveal}>
 				<h2
 					class='text-[var(--ink)]'
 					style='font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;'
@@ -327,7 +327,7 @@
 
 	<Fleuron />
 
-	<figure class='mx-auto max-w-md text-center' use:reveal>
+	<figure class='mx-auto max-w-md text-center' {@attach reveal}>
 		<blockquote class='text-[var(--ink)] italic' style='font-size: 1.35rem; line-height: 1.5;'>
 			I am worthy because I am curious, not because I am clever.
 		</blockquote>

@@ -7,7 +7,10 @@ export default antfu(
 		// The repo has been tab-indented since day one; ESLint can't re-indent
 		// Svelte markup, so converting to spaces isn't worth the churn.
 		stylistic: { indent: 'tab' },
-		ignores: ['static/**'],
+		// The tasting scratch files are git-ignored only via .git/info/exclude,
+		// which the gitignore integration doesn't read; keep repo-wide runs
+		// (and their --fix) away from work-in-progress harnesses.
+		ignores: ['static/**', 'painting-tasting/**', '*-tasting.html'],
 	},
 	{
 		rules: {

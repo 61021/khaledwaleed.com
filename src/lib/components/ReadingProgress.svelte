@@ -2,42 +2,33 @@
 	import { onMount } from 'svelte'
 
 	let progress = $state(0)
+	let article: HTMLElement | null = null
+	let frame = 0
 
-	onMount(() => {
-		if (typeof window === 'undefined')
-			return
-		const article = document.querySelector('article')
+	function update() {
+		frame = 0
 		if (!article)
 			return
+		const top = article.getBoundingClientRect().top + window.scrollY
+		const height = article.offsetHeight - window.innerHeight
+		const scrolled = window.scrollY - top
+		progress = Math.max(0, Math.min(1, scrolled / Math.max(height, 1)))
+	}
 
-		let frame = 0
+	// Coalesce scroll and resize events into one update per frame.
+	function schedule() {
+		if (!frame)
+			frame = requestAnimationFrame(update)
+	}
 
-		function update() {
-			frame = 0
-			const el = article as HTMLElement
-			const top = el.getBoundingClientRect().top + window.scrollY
-			const height = el.offsetHeight - window.innerHeight
-			const scrolled = window.scrollY - top
-			progress = Math.max(0, Math.min(1, scrolled / Math.max(height, 1)))
-		}
-
-		// Coalesce scroll events into one update per frame.
-		function schedule() {
-			if (!frame)
-				frame = requestAnimationFrame(update)
-		}
-
+	onMount(() => {
+		article = document.querySelector('article')
 		update()
-		window.addEventListener('scroll', schedule, { passive: true })
-		window.addEventListener('resize', schedule)
-		return () => {
-			if (frame)
-				cancelAnimationFrame(frame)
-			window.removeEventListener('scroll', schedule)
-			window.removeEventListener('resize', schedule)
-		}
+		return () => cancelAnimationFrame(frame)
 	})
 </script>
+
+<svelte:window onscroll={schedule} onresize={schedule} />
 
 <div class='pointer-events-none fixed inset-x-0 top-0 z-50 h-px' aria-hidden='true'>
 	<div class='h-full origin-left bg-[var(--accent)]' style='transform: scaleX({progress});'></div>

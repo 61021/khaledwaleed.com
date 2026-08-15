@@ -107,7 +107,7 @@
 			{#each rooms as r, i (r.key)}
 				{@const p = paintings[r.key]}
 				{@const entry = sizes[p.key as keyof typeof sizes]}
-				<li class='room-slot rise' class:wide={r.span === 3} style='--seq: {4 + i}'>
+				<li class={['room-slot rise', r.span === 3 && 'wide']} style='--seq: {4 + i}'>
 					<a href={r.href} class='room-card frame-engraved'>
 						<span class='room-art'>
 							<picture>

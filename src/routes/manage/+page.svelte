@@ -3,16 +3,12 @@
 	import type { FilmMeta, MediaType, SearchResult } from '$lib/tmdb'
 	import { Container } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
-	import {
-		metaToFields,
-		pb,
-
-	} from '$lib/pocketbase'
+	import { metaToFields, pb } from '$lib/pocketbase'
 	import { onMount } from 'svelte'
 
 	// --- Auth ------------------------------------------------------------
 	let authed = $state(false)
-	const email = $state('master@khaledwaleed.com')
+	const email = 'master@khaledwaleed.com'
 	let password = $state('')
 	let authError = $state('')
 
@@ -58,7 +54,8 @@
 
 	// --- Search ----------------------------------------------------------
 	let query = $state('')
-	let results = $state<SearchResult[]>([])
+	// API responses that are only ever reassigned: raw state, no deep proxy.
+	let results = $state.raw<SearchResult[]>([])
 	let searching = $state(false)
 	let searchTimer: ReturnType<typeof setTimeout>
 	let searchCtl: AbortController | null = null
@@ -220,7 +217,9 @@
 	}
 
 	// --- Collection list -------------------------------------------------
-	let films = $state<FilmRecord[]>([])
+	// Reassigned wholesale on every change (see refreshMeta), so raw state
+	// skips proxying a few hundred records.
+	let films = $state.raw<FilmRecord[]>([])
 	let listError = $state('')
 
 	async function loadFilms() {
@@ -290,11 +289,10 @@
 		listError = ''
 		const m = await fetchMeta(f.type, f.tmdbId)
 		if (m) {
+			const fields = metaToFields(m)
 			try {
-				await pb.collection('films').update(f.id, metaToFields(m))
-				const i = films.findIndex(x => x.id === f.id)
-				if (i !== -1)
-					films[i] = { ...films[i], ...metaToFields(m) }
+				await pb.collection('films').update(f.id, fields)
+				films = films.map(x => (x.id === f.id ? { ...x, ...fields } : x))
 			}
 			catch (err) {
 				if (!expired(err))
@@ -362,7 +360,7 @@
 											<span class='result-title'>{r.title}</span>
 											<span class='muted'>{r.year || '?'} · {kind(r.mediaType)}</span>
 										</span>
-										<span class='result-add' class:always={dupe}
+										<span class={['result-add', dupe && 'always']}
 										>{dupe ? 'In collection · Edit' : 'Add'}</span
 										>
 									</button>
@@ -440,7 +438,7 @@
 					{/if}
 				</div>
 			{/if}
-			<ul class='097 mt-3 divide-y divide-[var(--rule)]'>
+			<ul class='mt-3 divide-y divide-[var(--rule)]'>
 				{#each films as f (f.id)}
 					<li class='row'>
 						<Poster posterPath={f.posterPath || null} alt="" width={40} />

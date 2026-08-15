@@ -44,7 +44,7 @@
 
 	<ol class='space-y-12'>
 		{#each posts as post (post.slug)}
-			<li use:reveal>
+			<li {@attach reveal}>
 				<a href={`/writing/${post.slug}`} class='group block'>
 					<div class='smallcaps'>
 						<time datetime={post.date}>{formatDate(post.date)}</time>
@@ -68,7 +68,7 @@
 
 	<Fleuron />
 
-	<div class='text-center' use:reveal>
+	<div class='text-center' {@attach reveal}>
 		<a href='/rss.xml' class='smallcaps link-quiet'> subscribe via rss </a>
 	</div>
 </Container>

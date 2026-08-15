@@ -1,11 +1,11 @@
 <script lang='ts'>
 	import { dev } from '$app/environment'
 	import { onNavigate } from '$app/navigation'
-	import { page } from '$app/stores'
+	import { page } from '$app/state'
 	import { CommandPalette, Container, Curtain, JsonLd, site } from '$lib'
 	import { romanYear } from '$lib/dates'
 	import { isPaintingWarm, paintingKeyForPath, warmPainting } from '$lib/painting-warm'
-	import { paletteSignal } from '$lib/palette.svelte'
+	import { palette } from '$lib/palette'
 
 	import { roomBg, roomForPath } from '$lib/site'
 	import { sound } from '$lib/sound.svelte'
@@ -34,41 +34,30 @@
 	})
 
 	// The sound system: a tick on every control, nocturnes underneath.
-	// Delegated so every link and button on every page ticks without
-	// touching the components themselves.
+	// Delegated via <svelte:document> below so every link and button on
+	// every page ticks without touching the components themselves.
 	onMount(() => {
 		sound.init()
-		const tickOnClick = (e: MouseEvent) => {
-			const el = e.target instanceof Element ? e.target.closest('a, button') : null
-			if (el)
-				sound.tick('tap')
-		}
-		document.addEventListener('click', tickOnClick, { capture: true, passive: true })
-		return () => document.removeEventListener('click', tickOnClick, { capture: true })
 	})
+
+	function tickOnClick(e: MouseEvent) {
+		const el = e.target instanceof Element ? e.target.closest('a, button') : null
+		if (el)
+			sound.tick('tap')
+	}
 
 	// Carry the next room's painting to the door: any intent toward an
 	// internal link (hover, focus, first touch) starts fetching + decoding
 	// that room's hero, the way data-sveltekit-preload-data already warms
 	// its data. By the click, the canvas is usually ready to hang.
-	onMount(() => {
-		const warmFromIntent = (e: Event) => {
-			const a = (e.target as Element | null)?.closest?.('a[href^="/"]')
-			if (!a)
-				return
-			const href = a.getAttribute('href')
-			if (href)
-				warmPainting(paintingKeyForPath(new URL(href, location.origin).pathname))
-		}
-		document.addEventListener('pointerover', warmFromIntent, { passive: true })
-		document.addEventListener('focusin', warmFromIntent, { passive: true })
-		document.addEventListener('touchstart', warmFromIntent, { passive: true })
-		return () => {
-			document.removeEventListener('pointerover', warmFromIntent)
-			document.removeEventListener('focusin', warmFromIntent)
-			document.removeEventListener('touchstart', warmFromIntent)
-		}
-	})
+	function warmFromIntent(e: Event) {
+		const a = (e.target as Element | null)?.closest?.('a[href^="/"]')
+		if (!a)
+			return
+		const href = a.getAttribute('href')
+		if (href)
+			warmPainting(paintingKeyForPath(new URL(href, location.origin).pathname))
+	}
 
 	// Mobile nav menu (collapsible on phones).
 	let mobileOpen = $state(false)
@@ -77,9 +66,7 @@
 	// browser-chrome tint in step. SSR stamps the same values via
 	// hooks.server.ts; this covers client-side navigations.
 	$effect(() => {
-		if (typeof document === 'undefined')
-			return
-		const room = $page.status >= 400 ? '404' : roomForPath($page.url.pathname)
+		const room = page.status >= 400 ? '404' : roomForPath(page.url.pathname)
 		document.documentElement.setAttribute('data-room', room)
 		const themeColor = roomBg[room]
 		if (themeColor) {
@@ -89,8 +76,6 @@
 
 	onNavigate((navigation) => {
 		mobileOpen = false
-		if (typeof document === 'undefined')
-			return
 		// After the first arrival, the entry rises sit out (see app.css):
 		// navigations animate as one view transition, and text fading up
 		// AFTER it made every room seem to straggle in behind its painting.
@@ -106,12 +91,8 @@
 			// `complete` rejects when a navigation is aborted; restore either way.
 			navigation.complete.then(restore, restore)
 		}
-		if (
-			typeof window !== 'undefined'
-			&& window.matchMedia('(prefers-reduced-motion: reduce)').matches
-		) {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 			return
-		}
 		// Browsers sitting out the view transition still get a scene
 		// change: once the new room is in the DOM, main rises in as one
 		// piece (html[data-nav-in] in app.css). Chrome holds still; the
@@ -211,6 +192,13 @@
 	{/if}
 </svelte:head>
 
+<svelte:document
+	onclickcapture={tickOnClick}
+	onpointerover={warmFromIntent}
+	onfocusin={warmFromIntent}
+	ontouchstart={warmFromIntent}
+/>
+
 <svelte:window
 	onkeydown={(e) => {
 		if (e.key === 'Escape')
@@ -243,7 +231,7 @@
 			<!-- Desktop: links inline, centred between the monogram and the search chip -->
 			<nav aria-label='Primary' class='hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'>
 				{#each nav as item (item.name)}
-					{@const active = isActive(item.href, $page.url.pathname)}
+					{@const active = isActive(item.href, page.url.pathname)}
 					<a
 						href={item.href}
 						class="-my-2 py-2 font-display text-[1.05rem] transition-colors duration-300 {active
@@ -280,7 +268,7 @@
 					class="relative flex cursor-pointer items-center justify-center p-2 text-[0.95rem] leading-none text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
 					aria-label='Search the site'
 					title='Search (press /)'
-					onclick={() => paletteSignal.request()}
+					onclick={() => palette.request()}
 				>
 					/
 				</button>
@@ -289,8 +277,10 @@
 			<!-- Phone: hamburger toggle -->
 			<button
 				type='button'
-				class='menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden'
-				class:open={mobileOpen}
+				class={[
+					'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden',
+					mobileOpen && 'open',
+				]}
 				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
 				aria-expanded={mobileOpen}
 				aria-controls='mobile-nav'
@@ -335,7 +325,7 @@
 			>
 				<ul class='mt-2 flex flex-col border-t border-[var(--rule)] pt-1'>
 					{#each nav as item (item.name)}
-						{@const active = isActive(item.href, $page.url.pathname)}
+						{@const active = isActive(item.href, page.url.pathname)}
 						<li>
 							<a
 								href={item.href}
@@ -355,7 +345,7 @@
 							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
 							onclick={() => {
 								mobileOpen = false
-								paletteSignal.request()
+								palette.request()
 							}}
 						>
 							Search…

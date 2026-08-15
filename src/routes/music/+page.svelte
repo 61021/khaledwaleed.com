@@ -59,8 +59,7 @@
 					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
 					<a
 						href={`?range=${r.key}`}
-						class='line-opt'
-						class:on={data.range === r.key}
+						class={['line-opt', data.range === r.key && 'on']}
 						aria-current={data.range === r.key ? 'page' : undefined}
 						data-sveltekit-noscroll
 					>

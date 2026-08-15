@@ -59,7 +59,7 @@
 
 	<Fleuron />
 
-	<section class='text-left sm:text-center' use:reveal>
+	<section class='text-left sm:text-center' {@attach reveal}>
 		<div class='flex flex-wrap items-center justify-start gap-8 sm:justify-center'>
 			<Button href='/writing' size='lg'>Read the essays</Button>
 			<Button href='/' variant='outline' size='lg'>Home</Button>

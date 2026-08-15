@@ -38,16 +38,14 @@
 		{alt}
 		{width}
 		{height}
-		class:vivid
-		class:fluid
+		class={[vivid && 'vivid', fluid && 'fluid']}
 		loading='lazy'
 		decoding='async'
 		onerror={() => (failedPath = posterPath)}
 	/>
 {:else}
 	<div
-		class='ghost'
-		class:fluid
+		class={['ghost', fluid && 'fluid']}
 		style={fluid ? undefined : `width:${width}px;height:${height}px;`}
 		aria-hidden='true'
 	>

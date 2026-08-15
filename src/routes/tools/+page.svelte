@@ -176,7 +176,7 @@
 
 	<div class='space-y-16'>
 		{#each sections as s, i (s.name)}
-			<section id={slug(s.name)} class='scroll-mt-20' use:reveal>
+			<section id={slug(s.name)} class='scroll-mt-20' {@attach reveal}>
 				<h2
 					class='text-[var(--ink)]'
 					style='font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;'

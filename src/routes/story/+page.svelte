@@ -221,7 +221,7 @@
 
 	<Fleuron />
 
-	<section class='mt-8' use:reveal>
+	<section class='mt-8' {@attach reveal}>
 		<h2 class='text-center'>Where I’ve worked</h2>
 		<ol class='mt-12'>
 			{#each experiences as exp, i (exp.company)}
@@ -264,7 +264,7 @@
 
 	<Fleuron />
 
-	<section class='mt-8 text-left sm:text-center' use:reveal>
+	<section class='mt-8 text-left sm:text-center' {@attach reveal}>
 		<p class='max-w-md text-[var(--ink-muted)] italic sm:mx-auto'>
 			If you want to talk, about work or anything else, I am easy to reach.
 		</p>

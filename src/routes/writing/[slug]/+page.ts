@@ -9,10 +9,10 @@ export const entries: EntryGenerator = () => posts.map(p => ({ slug: p.slug }))
 export const load: PageLoad = async ({ params }) => {
 	const post = getPost(params.slug)
 	if (!post)
-		throw error(404, 'Post not found')
+		error(404, 'Post not found')
 	const Content = await loadPostComponent(params.slug)
 	if (!Content)
-		throw error(404, 'Post not found')
+		error(404, 'Post not found')
 
 	// Neighbouring essays (posts are sorted newest-first).
 	const idx = posts.findIndex(p => p.slug === params.slug)
