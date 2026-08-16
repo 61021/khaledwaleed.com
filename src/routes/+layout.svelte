@@ -3,6 +3,7 @@
 	import { onNavigate } from '$app/navigation'
 	import { page } from '$app/state'
 	import { CommandPalette, Container, Curtain, JsonLd, site } from '$lib'
+	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
 	import { isPaintingWarm, paintingKeyForPath, warmPainting } from '$lib/painting-warm'
 	import { palette } from '$lib/palette'
@@ -25,11 +26,15 @@
 
 	// A calling card for the curious.
 	onMount(() => {
+		const hour = new Date().getHours()
+		const afterHours = hour >= 23 || hour < 5
 		// eslint-disable-next-line no-console
 		console.log(
 			'%c☾ khaledwaleed.com',
 			'font-family: Georgia, serif; font-style: italic; font-size: 16px;',
-			`\n\nThe paintings are public domain; the rest is mine.\n\nSource: https://github.com/61021/khaledwaleed.com\nHello: contact@khaledwaleed.com`,
+			`\n\nThe paintings are public domain; the rest is mine.${
+				afterHours ? '\nAfter hours. The doors stay open.' : ''
+			}\n\nSource: https://github.com/61021/khaledwaleed.com\nHello: contact@khaledwaleed.com`,
 		)
 	})
 
@@ -61,6 +66,59 @@
 
 	// Mobile nav menu (collapsible on phones).
 	let mobileOpen = $state(false)
+
+	// One global keydown: the menu's escape, the sound switch, and two
+	// secrets. The Konami code takes the curtain for an encore; so does
+	// a certain phrase, kept here only as a SHA-256 digest so the words
+	// themselves never enter a public repo. Typing in a field never counts.
+	const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a']
+	const PHRASE_LEN = 10
+	const PHRASE_DIGEST = 'fc9bd828aaf0670745795cd1359e1ffee264c4e631874c1aeb5cf4f1a84ec0dd'
+	let konamiAt = 0
+	let typed = ''
+
+	function isTyping(target: EventTarget | null) {
+		return (
+			target instanceof HTMLElement
+			&& (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target.isContentEditable)
+		)
+	}
+
+	async function matchPhrase(candidate: string) {
+		if (!crypto?.subtle)
+			return
+		const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(candidate))
+		const hex = [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('')
+		if (hex !== PHRASE_DIGEST)
+			return
+		typed = ''
+		curtain.encore()
+		// eslint-disable-next-line no-console
+		console.log(
+			'%c☾ hello, old friend.',
+			'font-family: Georgia, serif; font-style: italic; font-size: 16px;',
+		)
+	}
+
+	function onGlobalKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape')
+			mobileOpen = false
+		if (e.metaKey || e.ctrlKey || e.altKey || isTyping(e.target))
+			return
+		const key = e.key.toLowerCase()
+		if (key === 'm')
+			sound.toggle()
+		konamiAt = key === KONAMI[konamiAt] ? konamiAt + 1 : key === KONAMI[0] ? 1 : 0
+		if (konamiAt === KONAMI.length) {
+			konamiAt = 0
+			curtain.encore()
+		}
+		if (e.key.length === 1) {
+			typed = (typed + key).slice(-PHRASE_LEN)
+			if (typed.length === PHRASE_LEN)
+				void matchPhrase(typed)
+		}
+	}
 
 	// Set the per-page palette on <html data-room="..."> and keep the
 	// browser-chrome tint in step. SSR stamps the same values via
@@ -199,20 +257,7 @@
 	ontouchstart={warmFromIntent}
 />
 
-<svelte:window
-	onkeydown={(e) => {
-		if (e.key === 'Escape')
-			mobileOpen = false
-		if (e.key === 'm' && !e.metaKey && !e.ctrlKey && !e.altKey) {
-			const t = e.target
-			const typing
-				= t instanceof HTMLElement
-					&& (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t.isContentEditable)
-			if (!typing)
-				sound.toggle()
-		}
-	}}
-/>
+<svelte:window onkeydown={onGlobalKeydown} />
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
@@ -382,9 +427,15 @@
 						{site.name} <span lang='ar' class='not-italic'>{site.nameArabic}</span> ·
 						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 					</div>
-					<div class='smallcaps'>{colophonYear} · set in playfair &amp; lato · for r.</div>
+					<div class='smallcaps'>
+						{colophonYear} · set in playfair &amp; lato ·
+						<!-- Plain text on purpose: no cursor, no role, no hint.
+						     Whoever clicks it anyway hears the music lean in. -->
+						<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+						<span onclick={() => sound.swell()}>for r.</span>
+					</div>
 				</div>
-				<div class='space-y-2'>
+				<div class='footer-rooms space-y-2'>
 					<nav
 						aria-label='Pages'
 						class='grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:justify-end sm:gap-x-5'

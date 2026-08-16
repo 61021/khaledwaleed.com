@@ -1,4 +1,5 @@
 <script lang='ts'>
+	import { curtain } from '$lib/curtain'
 	import { onMount } from 'svelte'
 
 	// One performance per full arrival: the layout survives client-side
@@ -8,14 +9,30 @@
 	// the show is over.
 	let struck = $state(false)
 
+	// Unless the house calls for an encore (the Konami code, the palette's
+	// hidden entry): the same cloth comes back for one close-and-part.
+	let encore = $state(false)
+	let encoreTimer: ReturnType<typeof setTimeout>
+
 	onMount(() => {
 		const timer = setTimeout(() => (struck = true), 2400)
-		return () => clearTimeout(timer)
+		const unregister = curtain.register(() => {
+			// The overture, or a running encore, finishes uninterrupted.
+			if (!struck || encore)
+				return
+			encore = true
+			encoreTimer = setTimeout(() => (encore = false), 2900)
+		})
+		return () => {
+			clearTimeout(timer)
+			clearTimeout(encoreTimer)
+			unregister()
+		}
 	})
 </script>
 
-{#if !struck}
-	<div class='curtain' aria-hidden='true'>
+{#if !struck || encore}
+	<div class={['curtain', encore && 'encore']} aria-hidden='true'>
 		<div class='veil'></div>
 		<div class='panel left'></div>
 		<div class='panel right'></div>
@@ -156,6 +173,59 @@
 
 	@keyframes house-lights {
 		to {
+			opacity: 0;
+		}
+	}
+
+	/* The encore: same cloth, opposite choreography. The panels enter
+	   from the wings, hold the house dark a beat, then part again; the
+	   veil dims and lifts under them. One keyframe ride per panel (close
+	   at 0-38%, hold to 57%, part to 100% of 2800ms), segment curves set
+	   inside the keyframes, so the whole figure stays one composited
+	   pass; the strike timer in the script runs 100ms past it. */
+	.encore .veil {
+		animation: encore-lights 2800ms linear both;
+	}
+
+	.encore .panel {
+		animation: encore-part 2800ms both;
+	}
+
+	@keyframes encore-part {
+		0% {
+			transform: translateX(calc(var(--dir) * 104%));
+			animation-timing-function: cubic-bezier(0.55, 0, 0.3, 1);
+		}
+
+		38% {
+			transform: translateX(0);
+			animation-timing-function: linear;
+		}
+
+		57% {
+			transform: translateX(0);
+			animation-timing-function: cubic-bezier(0.72, 0, 0.22, 1);
+		}
+
+		100% {
+			transform: translateX(calc(var(--dir) * 104%));
+		}
+	}
+
+	@keyframes encore-lights {
+		0% {
+			opacity: 0;
+		}
+
+		38% {
+			opacity: 0.92;
+		}
+
+		57% {
+			opacity: 0.92;
+		}
+
+		100% {
 			opacity: 0;
 		}
 	}

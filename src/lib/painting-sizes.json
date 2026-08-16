@@ -8,6 +8,15 @@
 		"width": 2000,
 		"height": 1272
 	},
+	"abbey": {
+		"widths": [
+			720,
+			1280,
+			2000
+		],
+		"width": 2000,
+		"height": 1281
+	},
 	"apostle": {
 		"widths": [
 			720,
@@ -96,5 +105,14 @@
 		],
 		"width": 1542,
 		"height": 2000
+	},
+	"two-men": {
+		"widths": [
+			720,
+			1280,
+			2000
+		],
+		"width": 2000,
+		"height": 1603
 	}
 }

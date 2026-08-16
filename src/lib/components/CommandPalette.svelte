@@ -1,5 +1,6 @@
 <script lang='ts'>
 	import { goto } from '$app/navigation'
+	import { curtain } from '$lib/curtain'
 	import { palette } from '$lib/palette'
 	import { posts } from '$lib/posts'
 	import { sound } from '$lib/sound.svelte'
@@ -11,8 +12,16 @@
 		title: string
 		subtitle?: string
 		href: string
-		kind: 'page' | 'post' | 'external'
+		kind: 'page' | 'post' | 'external' | 'action'
 		keywords?: string
+		/**
+		 * Service-corridor entries: never in the default list, they step
+		 * out only when a query token of three letters or more starts one
+		 * of these words. The regular haystack is not searched for them.
+		 */
+		secret?: string[]
+		/** Runs instead of navigating. */
+		run?: () => void
 	}
 
 	const items: Item[] = [
@@ -89,6 +98,41 @@
 			href: '/rss.xml',
 			kind: 'external',
 		},
+		{
+			id: 'github',
+			title: 'GitHub',
+			subtitle: 'github.com/61021',
+			href: 'https://github.com/61021',
+			kind: 'external',
+			keywords: 'github source code repositories 61021',
+		},
+		// The service corridor.
+		{
+			id: 'encore',
+			title: 'Encore',
+			subtitle: 'Lower the curtain and raise it again',
+			href: '',
+			kind: 'action',
+			secret: ['encore', 'curtain', 'overture', 'velvet', 'konami'],
+			run: () => curtain.encore(),
+		},
+		{
+			id: 'now-playing',
+			title: 'Now playing',
+			subtitle: 'Chopin, Nocturne in E minor, Op. 72 No. 1 · Musopen, public domain',
+			href: '',
+			kind: 'action',
+			secret: ['chopin', 'nocturne', 'now playing', 'playing', 'music', 'sound', 'piano'],
+			run: () => sound.toggle(),
+		},
+		{
+			id: 'storeroom',
+			title: 'Storeroom',
+			subtitle: 'Paintings that used to hang here',
+			href: '/storeroom',
+			kind: 'page',
+			secret: ['storeroom', 'storage', 'vault', 'archive', 'basement', 'paintings', 'retired'],
+		},
 	]
 
 	let open = $state(false)
@@ -105,10 +149,14 @@
 	const filtered = $derived.by(() => {
 		const q = query.trim().toLowerCase()
 		if (!q)
-			return items
+			return items.filter(it => !it.secret)
+		const parts = q.split(/\s+/)
 		return items.filter((it) => {
+			const secret = it.secret
+			if (secret)
+				return parts.some(part => part.length >= 3 && secret.some(word => word.startsWith(part)))
 			const hay = `${it.title} ${it.subtitle ?? ''} ${it.keywords ?? ''}`.toLowerCase()
-			return q.split(/\s+/).every(part => hay.includes(part))
+			return parts.every(part => hay.includes(part))
 		})
 	})
 
@@ -132,7 +180,10 @@
 
 	function select(item: Item) {
 		closePalette()
-		if (item.kind === 'external' || item.href.startsWith('mailto:')) {
+		if (item.run) {
+			item.run()
+		}
+		else if (item.kind === 'external' || item.href.startsWith('mailto:')) {
 			window.location.href = item.href
 		}
 		else {

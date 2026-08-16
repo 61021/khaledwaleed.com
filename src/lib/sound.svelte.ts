@@ -34,6 +34,7 @@ class SoundSystem {
 	private unlisten: (() => void) | null = null
 	private fadeFrame = 0
 	private lastTick = 0
+	private swellTimer: ReturnType<typeof setTimeout> | undefined
 
 	/**
 	 * Call once from the root layout. Reads the stored preference and
@@ -104,6 +105,21 @@ class SoundSystem {
 		else {
 			this.chime([[988, 0], [659, 0.06]], 0.16, 0.032)
 		}
+	}
+
+	/**
+	 * The music leans in: a slow crest above the resting volume, held a
+	 * moment, then settled back down. Does nothing unless the nocturne
+	 * is already audibly playing; repeated calls restart the crest.
+	 */
+	swell() {
+		if (!this.enabled || !this.armed || !this.music || this.music.paused)
+			return
+		const el = this.music
+		clearTimeout(this.swellTimer)
+		this.fadeTo(el, 0.085, 1800, () => {
+			this.swellTimer = setTimeout(() => this.fadeTo(el, MUSIC_VOLUME, 3800), 2400)
+		})
 	}
 
 	/** A small bell figure: sine notes as [frequency, offset] pairs. */
@@ -198,6 +214,7 @@ class SoundSystem {
 	}
 
 	private stopMusic() {
+		clearTimeout(this.swellTimer)
 		if (!this.music || this.music.paused)
 			return
 		const el = this.music

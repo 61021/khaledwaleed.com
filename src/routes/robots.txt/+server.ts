@@ -3,7 +3,9 @@ import { site } from '$lib/site'
 export const prerender = true
 
 export function GET() {
-	const body = `User-agent: *
+	const body = `# humans: ${site.url}/humans.txt
+
+User-agent: *
 Allow: /
 Disallow: /manage
 Disallow: /api/

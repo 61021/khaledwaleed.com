@@ -877,8 +877,17 @@ html[data-navigated] .rise-3 {
 	transform: rotate(45deg);
 }
 
-/* ---------- Print: essays as clean paper ---------- */
+/* ---------- Print: pages as catalogue leaves ----------
+   The chrome stays on screen; paper gets the title, the plate, the
+   text, and the colophon. Two rules matter most: the site header is
+   hidden but the page header is NOT (both are <header> elements), and
+   reveal-on-approach content is forced visible, because the observer
+   never fires for pages the printer hasn't scrolled. */
 @media print {
+	@page {
+		margin: 18mm;
+	}
+
 	:root,
 	:root[data-room] {
 		--bg: #ffffff;
@@ -890,12 +899,15 @@ html[data-navigated] .rise-3 {
 		--accent: #806a30;
 	}
 
-	header,
-	footer,
+	header:not(.page-header),
 	.skip-link,
-	.frontispiece,
+	.reading-progress,
+	.hero-art,
 	.hero-veil,
-	.hero-plate {
+	.footer-rooms,
+	footer .rule-engraved,
+	nav[aria-label='More essays'],
+	main footer {
 		display: none !important;
 	}
 
@@ -913,6 +925,16 @@ html[data-navigated] .rise-3 {
 		padding-block: 0 !important;
 	}
 
+	.page-title {
+		font-size: 26pt;
+	}
+
+	/* The wall label becomes the leaf's imprint line, under the title. */
+	.hero-plate {
+		position: static !important;
+		margin-top: 0.75rem !important;
+	}
+
 	body {
 		font-size: 11.5pt;
 	}
@@ -922,9 +944,21 @@ html[data-navigated] .rise-3 {
 		text-decoration: underline;
 	}
 
+	/* Nothing choreographed hides on paper. */
 	.rise,
 	.rise-2,
 	.rise-3 {
 		animation: none !important;
+	}
+
+	.rv {
+		opacity: 1 !important;
+		transform: none !important;
+		transition: none !important;
+	}
+
+	footer {
+		margin-top: 2.5rem !important;
+		padding-block: 0 !important;
 	}
 }

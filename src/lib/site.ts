@@ -234,6 +234,50 @@ export const paintings: Record<string, Painting> = {
 	},
 }
 
+/* -----------------------------------------------------------------------
+   Retired canvases: works that hung in a room and came down when it was
+   re-hung. Their files stay in /static/paintings under content-derived
+   keys per the immutable-cache law, and they reappear in the storeroom
+   (/storeroom), newest to come down first.
+   ----------------------------------------------------------------------- */
+
+export interface RetiredPainting extends Painting {
+	/** the page it hung on */
+	hungOn: string
+	/** when it came down, printed on the storeroom label */
+	until: string
+}
+
+export const retired: RetiredPainting[] = [
+	{
+		key: 'two-men',
+		title: 'Two Men Contemplating the Moon',
+		artist: 'Caspar David Friedrich',
+		year: 'c. 1820',
+		museum: 'Galerie Neue Meister, Dresden',
+		museumUrl: 'https://gemaeldegalerie.skd.museum/',
+		source: 'https://en.wikipedia.org/wiki/Two_Men_Contemplating_the_Moon',
+		alt: 'Two figures in coats stand at the edge of a wood beside a leaning fir, looking up at a low evening moon.',
+		hungOn: '/contact',
+		until: 'August 2026',
+	},
+	{
+		// Master restored from the writing tasting's archive copy; the
+		// canvas originally hung under the room-named key that its
+		// replacement retired.
+		key: 'abbey',
+		title: 'The Abbey in the Oakwood',
+		artist: 'Caspar David Friedrich',
+		year: '1809-10',
+		museum: 'Alte Nationalgalerie, Berlin',
+		museumUrl: 'https://www.smb.museum/en/museums-institutions/alte-nationalgalerie/',
+		source: 'https://en.wikipedia.org/wiki/The_Abbey_in_the_Oakwood',
+		alt: 'The ruined choir of a gothic abbey stands among bare oaks in winter fog, a file of monks carrying a coffin toward its gate.',
+		hungOn: '/writing',
+		until: 'August 2026',
+	},
+]
+
 /** Map a URL pathname to a painting key (room). */
 export function roomForPath(pathname: string): string {
 	if (pathname === '/' || pathname === '')
