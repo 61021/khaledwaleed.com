@@ -117,7 +117,7 @@ class SoundSystem {
 			return
 		const el = this.music
 		clearTimeout(this.swellTimer)
-		this.fadeTo(el, 0.085, 1800, () => {
+		this.fadeTo(el, 0.1, 1800, () => {
 			this.swellTimer = setTimeout(() => this.fadeTo(el, MUSIC_VOLUME, 3800), 2400)
 		})
 	}

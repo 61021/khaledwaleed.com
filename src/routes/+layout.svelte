@@ -72,8 +72,8 @@
 	// a certain phrase, kept here only as a SHA-256 digest so the words
 	// themselves never enter a public repo. Typing in a field never counts.
 	const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a']
-	const PHRASE_LEN = 10
-	const PHRASE_DIGEST = 'fc9bd828aaf0670745795cd1359e1ffee264c4e631874c1aeb5cf4f1a84ec0dd'
+	const PHRASE_LEN = 5
+	const PHRASE_DIGEST = '760da8335e0a4744e99ec6aee79a1e6fee7519a82cd245b1d8e9f95ed8704eb8'
 	let konamiAt = 0
 	let typed = ''
 
@@ -93,9 +93,10 @@
 			return
 		typed = ''
 		curtain.encore()
+		sound.swell()
 		// eslint-disable-next-line no-console
 		console.log(
-			'%c☾ hello, old friend.',
+			'%c☾ hello, you.',
 			'font-family: Georgia, serif; font-style: italic; font-size: 16px;',
 		)
 	}
