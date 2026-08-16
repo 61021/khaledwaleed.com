@@ -436,7 +436,10 @@
 						<span onclick={() => sound.swell()}>for r.</span>
 					</div>
 				</div>
-				<div class='footer-rooms space-y-2'>
+				<!-- Phones keep the colophon alone: the rooms are a tap away in
+				     the header menu, and repeating them under a hamburger only
+				     lengthened the scroll. -->
+				<div class='footer-rooms hidden space-y-2 sm:block'>
 					<nav
 						aria-label='Pages'
 						class='grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:justify-end sm:gap-x-5'
