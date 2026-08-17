@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-08-11'
+	const lastUpdated = '2026-08-17'
 
 	/* An item is plain text, or a term wearing a small note that shows
 	   itself on hover and focus. */
@@ -77,6 +77,10 @@
 				'Tchaikovsky, for Swan Lake',
 				'Chopin\'s nocturnes',
 				'Progressive metal',
+				'Tool',
+				'Opeth',
+				'Jeff Buckley',
+				'Kadhim Alsaher',
 				'Britpop',
 				'Garage rock revival',
 				'Moody Americana',
