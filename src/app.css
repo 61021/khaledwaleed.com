@@ -171,12 +171,12 @@ html {
 		color 600ms ease;
 }
 
-/* While a view transition runs (+layout sets data-vt), the crossfade
-   carries the palette change: the eases above and the wallpaper's would
-   otherwise straggle 600ms past the fade, re-rastering viewport-sized
-   layers every frame while the transition composites its snapshots. */
-html[data-vt],
-html[data-vt] body::before {
+/* While the velvet band rides (+layout sets data-sweep), the covered
+   beat carries the palette change: the eases above and the wallpaper's
+   would otherwise straggle past the band's release, re-rastering
+   viewport-sized layers while it sweeps. */
+html[data-sweep],
+html[data-sweep] body::before {
 	transition: none;
 }
 
@@ -532,7 +532,8 @@ html[data-navigated] .frontispiece img.loaded {
 	inset: calc(var(--frame-offset) * -1);
 	pointer-events: none;
 	background: var(--frame-ink, color-mix(in oklab, var(--accent) 55%, var(--rule)));
-	transition: background-color 400ms ease;
+	/* Frames warm slowly under the hand, the tour's pace. */
+	transition: background-color 600ms ease;
 	-webkit-mask:
 		var(--corner-scroll-tl) left top / var(--frame-corner) var(--frame-corner) no-repeat,
 		var(--corner-scroll-tr) right top / var(--frame-corner) var(--frame-corner) no-repeat,
@@ -580,77 +581,60 @@ html[data-navigated] .frontispiece img.loaded {
 	border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 55%, transparent);
 }
 
-/* ---------- Painterly view transitions ----------
-   One dissolve, one clock, and a breath of camera. Old and new frames
-   share the same 680ms curve; the leaving room drifts a step toward
-   the viewer as it fades, the arriving one settles back into place.
-   Whole-frame transforms only: because every layer rides the same
-   clock and the same transform, nothing meets anything at a seam
-   (split clocks and staged titles both failed exactly that way, and
-   per-painting names once flew full-bleed snapshots across the
-   viewport). The other motion is the incoming canvas settling from a
-   breath of scale, animated on the LIVE element beneath the veil (set
-   post-swap via data-vt-in so the outgoing snapshot never zooms);
-   type stays sharp because the text is not in that layer. Opacity and
-   transform only; no filters. */
-::view-transition-old(root) {
-	animation: vt-scene-out 680ms cubic-bezier(0.33, 0, 0.67, 1) both;
+/* ---------- The velvet walk ----------
+   Every room change rides one band of the curtain's own cloth, in
+   every engine: it gathers over the frame (segment curves inside the
+   keyframes, the encore's idiom), holds covered for a beat while the
+   router swaps the room and the palette underneath (+layout resolves
+   the navigation inside the hold), then releases off the far side.
+   The band stands wider than the viewport (inset 0 -6vw) so its
+   soft-masked edges never thin the cover mid-hold, and it animates
+   transform only: the folds rasterise once and ride as one composited
+   layer. This retired the view transitions and the Gecko fork with
+   them; Firefox and Chromium walk the same corridor now. */
+.velvet-band {
+	position: fixed;
+	inset: 0 -6vw;
+	z-index: 105;
+	pointer-events: none;
+	transform: translateX(-102%);
+	background-color: var(--bg);
+	background-image: repeating-linear-gradient(
+		90deg,
+		rgb(0 0 0 / 0.14) 0,
+		transparent 26px,
+		rgb(255 255 255 / 0.03) 52px,
+		transparent 78px,
+		rgb(0 0 0 / 0.14) 110px
+	);
+	-webkit-mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+	mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
 }
 
-::view-transition-new(root) {
-	animation: vt-scene-in 680ms cubic-bezier(0.33, 0, 0.67, 1) both;
+.velvet-band.sweep {
+	animation: velvet-sweep 640ms both;
 }
 
-@keyframes vt-scene-out {
-	to {
-		opacity: 0;
-		transform: scale(1.016);
-	}
-}
-
-@keyframes vt-scene-in {
-	from {
-		opacity: 0;
-		transform: scale(0.986);
-	}
-
-	to {
-		opacity: 1;
-		transform: scale(1);
-	}
-}
-
-html[data-vt-in] .hero-art img {
-	animation: vt-canvas-settle 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes vt-canvas-settle {
-	from {
-		transform: scale(1.045);
+/* Covered from 42% to 58% (roughly 270ms to 370ms): the swap lands at
+   300ms, always against velvet, never against the old room. */
+@keyframes velvet-sweep {
+	0% {
+		transform: translateX(-102%);
+		animation-timing-function: cubic-bezier(0.55, 0, 0.3, 1);
 	}
 
-	to {
-		transform: scale(1);
-	}
-}
-
-/* Browsers that sit out the view transition (Gecko, or no support)
-   still get a scene change: +layout re-stamps data-nav-in once the
-   new room is in the DOM, and main rises in as one piece. The chrome
-   holds still; one layer, one clock, so nothing meets at a seam. */
-html[data-nav-in] main {
-	animation: scene-in 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-}
-
-@keyframes scene-in {
-	from {
-		opacity: 0;
-		transform: translateY(10px);
+	42% {
+		transform: translateX(0);
+		animation-timing-function: linear;
 	}
 
-	to {
-		opacity: 1;
-		transform: translateY(0);
+	58% {
+		transform: translateX(0);
+		animation-timing-function: cubic-bezier(0.72, 0, 0.22, 1);
+	}
+
+	100% {
+		transform: translateX(102%);
 	}
 }
 
@@ -660,27 +644,50 @@ html[data-nav-in] main {
 	filter: brightness(1.22) contrast(1.02);
 }
 
-/* ---------- Slow rising fade ---------- */
+/* ---------- The grand tour entrance ---------- */
 
 /* The curtain's score (Curtain.svelte): one overture per full
-   arrival; hold with the monogram, then the sweep. The rises below
-   read --curtain-done so the room appears only once the stage is
-   clear, and --rise-step spaces the procession. */
+   arrival; hold, then the sweep. The procession below reads
+   --curtain-done so the room appears only once the stage is clear,
+   and --rise-step spaces the seats. */
 :root {
 	--curtain-hold: 450ms;
 	--curtain-sweep: 1150ms;
 	--curtain-done: calc(var(--curtain-hold) + var(--curtain-sweep));
-	--rise-step: 160ms;
+	--rise-step: 180ms;
 }
 
-@keyframes rise {
+/* Nothing travels on entry but the canvas and the title's tracking:
+   seats fade up in place, the title settles its letter-spacing as it
+   arrives (one line, re-laid once per full arrival, by design), and
+   the hero canvas drifts home from a breath of scale while the
+   curtain parts. */
+@keyframes tour-in {
 	from {
 		opacity: 0;
-		transform: translateY(14px);
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
+	}
+}
+
+@keyframes tour-title {
+	from {
+		opacity: 0;
+		letter-spacing: 0.045em;
+	}
+	to {
+		opacity: 1;
+		letter-spacing: 0em;
+	}
+}
+
+@keyframes tour-canvas {
+	from {
+		transform: scale(1.07);
+	}
+	to {
+		transform: scale(1);
 	}
 }
 
@@ -690,7 +697,7 @@ html[data-nav-in] main {
 .rise,
 .rise-2,
 .rise-3 {
-	animation: rise 1100ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	animation: tour-in 900ms cubic-bezier(0.25, 0.5, 0.25, 1) both;
 }
 
 .rise-2 {
@@ -701,10 +708,25 @@ html[data-nav-in] main {
 	--seq: 2;
 }
 
-/* The rises are a first-arrival flourish only. Once the visitor starts
-   walking the house (+layout.svelte stamps data-navigated on the first
-   client-side navigation), each room change is one ink-wash view
-   transition; content that rose up afterwards read as the room
+/* The room title makes the tour's one flourish. (PageHeader's class
+   is reachable here because Svelte keeps literal class names in the
+   DOM; the print block below leans on the same fact.) */
+.page-title.rise-2 {
+	animation-name: tour-title;
+	animation-duration: 1100ms;
+}
+
+/* First arrivals only: walked-into rooms hang their canvas instantly
+   (and the develop-in for late paintings is scoped to data-navigated,
+   so the two never overlap). */
+html:not([data-navigated]) .hero-art img {
+	animation: tour-canvas 1600ms cubic-bezier(0.25, 0.5, 0.25, 1) both;
+}
+
+/* The entrance is a first-arrival flourish only. Once the visitor
+   starts walking the house (+layout.svelte stamps data-navigated on
+   the first client-side navigation), each room change rides the
+   velvet band; content that faded up afterwards read as the room
    straggling in behind its painting. */
 html[data-navigated] .rise,
 html[data-navigated] .rise-2,
@@ -713,14 +735,19 @@ html[data-navigated] .rise-3 {
 }
 
 /* First arrivals wait in the dark until the curtain has swept clear,
-   then take their seats in --seq order. Scoped to no-preference: the
-   reduce reset below zeroes durations but NOT delays, and a
-   reduced-motion visitor gets no curtain to wait for. */
+   then take their seats in --seq order; the canvas starts its drift
+   as the panels part. Scoped to no-preference: the reduce reset below
+   zeroes durations but NOT delays, and a reduced-motion visitor gets
+   no curtain to wait for. */
 @media (prefers-reduced-motion: no-preference) {
 	.rise,
 	.rise-2,
 	.rise-3 {
 		animation-delay: calc(var(--curtain-done) + var(--seq, 0) * var(--rise-step));
+	}
+
+	html:not([data-navigated]) .hero-art img {
+		animation-delay: var(--curtain-hold);
 	}
 }
 
@@ -733,15 +760,15 @@ html[data-navigated] .rise-3 {
    --rv-wait. */
 .rv {
 	opacity: 0;
-	transform: translateY(18px);
+	transform: translateY(22px);
 }
 
 .rv-in {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
-		opacity 950ms cubic-bezier(0.2, 0.7, 0.2, 1),
-		transform 950ms cubic-bezier(0.2, 0.7, 0.2, 1);
+		opacity 800ms cubic-bezier(0.22, 0.7, 0.25, 1),
+		transform 800ms cubic-bezier(0.22, 0.7, 0.25, 1);
 	transition-delay: var(--rv-wait, 0ms);
 }
 

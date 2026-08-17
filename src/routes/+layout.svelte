@@ -5,7 +5,7 @@
 	import { CommandPalette, Container, Curtain, JsonLd, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
-	import { isPaintingWarm, paintingKeyForPath, warmPainting } from '$lib/painting-warm'
+	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
 	import { palette } from '$lib/palette'
 
 	import { roomBg, roomForPath } from '$lib/site'
@@ -133,17 +133,23 @@
 		}
 	})
 
+	// The velvet walk's band (see .velvet-band in app.css) and a token so
+	// a fast second navigation is never cleaned up by the first one's timer.
+	let bandEl = $state<HTMLDivElement>()
+	let sweepToken = 0
+
 	onNavigate((navigation) => {
 		mobileOpen = false
-		// After the first arrival, the entry rises sit out (see app.css):
-		// navigations animate as one view transition, and text fading up
-		// AFTER it made every room seem to straggle in behind its painting.
+		// After the first arrival, the entrance procession sits out (see
+		// app.css): walked-into rooms are simply there behind the band, and
+		// content fading up afterwards read as the room straggling in.
 		document.documentElement.setAttribute('data-navigated', '')
-		// Route changes must land at the top as an instant jump hidden inside
-		// the transition; html's smooth scrolling turned the router's scroll
-		// reset into an eased scroll still running when the new room appeared.
+		// Route changes must land at the top as an instant jump hidden under
+		// the band; html's smooth scrolling turned the router's scroll reset
+		// into an eased scroll still running when the new room appeared.
 		// Same-page hash jumps keep the smoothness.
-		if (navigation.from?.url.pathname !== navigation.to?.url.pathname) {
+		const pathChanged = navigation.from?.url.pathname !== navigation.to?.url.pathname
+		if (pathChanged) {
 			const html = document.documentElement
 			html.style.scrollBehavior = 'auto'
 			const restore = () => setTimeout(() => html.style.removeProperty('scroll-behavior'), 150)
@@ -152,70 +158,43 @@
 		}
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 			return
-		// Browsers sitting out the view transition still get a scene
-		// change: once the new room is in the DOM, main rises in as one
-		// piece (html[data-nav-in] in app.css). Chrome holds still; the
-		// palette ease and the painting's develop-in carry on beneath.
-		const sceneIn = () => {
-			const html = document.documentElement
-			html.removeAttribute('data-nav-in')
-			requestAnimationFrame(() => html.setAttribute('data-nav-in', ''))
-		}
-		if (!document.startViewTransition) {
-			navigation.complete.then(sceneIn, () => {})
+		// The corridor is for room changes only: hash jumps and same-path
+		// search changes (the music range switcher) swap in place.
+		if (!pathChanged)
 			return
-		}
-		// Gecko's first-generation view transitions stutter on full-page
-		// snapshot dissolves (his daily Firefox; Chromium is smooth), so
-		// Firefox takes the designed no-VT path: instant swap, the 600ms
-		// palette ease, paintings developing in. Re-test on major Firefox
-		// releases before removing.
-		if (CSS.supports('-moz-appearance', 'none')) {
-			navigation.complete.then(sceneIn, () => {})
+		// Start carrying the next painting to the door. No hold: the band's
+		// covered beat is the decode window, and a canvas that still misses
+		// its cue develops in via .loaded (see .frontispiece img in app.css).
+		const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null
+		if (key)
+			warmPainting(key)
+		// The velvet walk, one corridor for every engine (the view
+		// transitions and their Gecko fork are gone): the band gathers over
+		// the frame, holds covered while the router swaps the room and the
+		// palette underneath, then releases off the far side. data-sweep
+		// silences the 600ms palette eases so the change is done before the
+		// reveal; onNavigate runs after data loading, so the hold never
+		// waits on the network.
+		const band = bandEl
+		if (!band)
 			return
-		}
-
-		return new Promise((resolve) => {
-			const html = document.documentElement
-			const begin = () => {
-				// While the transition runs, the room's 600ms palette eases
-				// (html background/color, the damask wallpaper) go quiet: the
-				// crossfade IS the palette change. Left on, they straggle past
-				// the fade and repaint the whole viewport under it.
-				html.setAttribute('data-vt', '')
-				const transition = document.startViewTransition(async () => {
-					resolve()
-					await navigation.complete
-					// Post-swap flag for the incoming canvas's scale settle:
-					// set before the new capture, never on the old one (the
-					// outgoing snapshot must not zoom for a frame).
-					html.setAttribute('data-vt-in', '')
-				})
-				transition.finished.finally(() => {
-					html.removeAttribute('data-vt')
-					html.removeAttribute('data-vt-in')
-				})
-			}
-
-			// Hold the door a beat for the incoming painting so the crossfade
-			// is canvas to canvas, never canvas to blank wall. Intent warming
-			// usually makes this instant; a cold room gets at most 100ms. A
-			// longer hold read as input lag, and the late canvas develops in
-			// via .loaded anyway (see .frontispiece img in app.css).
-			const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null
-			if (!key || isPaintingWarm(key)) {
-				begin()
+		const token = ++sweepToken
+		const html = document.documentElement
+		html.setAttribute('data-sweep', '')
+		band.classList.remove('sweep')
+		void band.offsetWidth
+		band.classList.add('sweep')
+		setTimeout(() => {
+			if (token !== sweepToken)
 				return
-			}
-			let started = false
-			const go = () => {
-				if (started)
-					return
-				started = true
-				begin()
-			}
-			warmPainting(key).then(go, go)
-			setTimeout(go, 100)
+			html.removeAttribute('data-sweep')
+			band.classList.remove('sweep')
+		}, 700)
+		return new Promise((resolve) => {
+			// The band covers the frame from roughly 270ms to 370ms; resolve
+			// inside the hold so the swap lands against velvet, never against
+			// the old room.
+			setTimeout(resolve, 300)
 		})
 	})
 
@@ -473,6 +452,10 @@
 		</Container>
 	</footer>
 </div>
+
+<!-- The velvet walk's band: parked in the wings until a navigation
+     rides it (see .velvet-band in app.css). -->
+<div class='velvet-band' bind:this={bandEl} aria-hidden='true'></div>
 
 <style>
 	/* Hamburger ↔ X: both glyphs stay in the DOM and cross-fade with

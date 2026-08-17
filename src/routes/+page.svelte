@@ -199,7 +199,8 @@
 		padding: 0.5rem;
 		background: var(--bg-soft);
 		border: 1px solid var(--rule);
-		transition: border-color 400ms ease;
+		/* Frames warm slowly under the hand, the tour's pace. */
+		transition: border-color 600ms ease;
 	}
 
 	.room-card:hover {
@@ -223,7 +224,7 @@
 			0 0 0 4px color-mix(in oklab, var(--bg) 55%, var(--bg-soft)),
 			0 0 0 5px color-mix(in oklab, var(--accent) 22%, transparent),
 			0 14px 30px -16px rgb(0 0 0 / 0.55);
-		transition: box-shadow 400ms ease;
+		transition: box-shadow 600ms ease;
 	}
 
 	.room-card:hover .room-art {
@@ -240,14 +241,15 @@
 		object-fit: cover;
 		filter: brightness(0.9) saturate(0.98);
 		transform: scale(1.02);
+		/* The canvas leans in slowly under the hand. */
 		transition:
-			filter 700ms ease,
-			transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+			filter 600ms ease,
+			transform 1200ms cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.room-card:hover .room-art img {
 		filter: brightness(1.02) saturate(1);
-		transform: scale(1.06);
+		transform: scale(1.055);
 	}
 
 	.room-label {

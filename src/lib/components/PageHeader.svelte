@@ -19,8 +19,8 @@
 <header class='page-header'>
 	<div class='hero-wrap'>
 		<div class='hero' style:--focal={p?.focal ?? 'center'}>
-			<!-- Every page names its one hero `hero-painting` (see the style
-			     block), so navigations swap the canvas inside the frame. -->
+			<!-- One hero canvas per page; navigations swap it behind the
+			     velvet band. -->
 			<div class='hero-art'>
 				<Painting {room} priority bare />
 			</div>
@@ -83,9 +83,9 @@
 		position: absolute;
 		inset: 0;
 		z-index: 0;
-		/* No view-transition-name here (or anywhere in the hero): the whole
-		   frame dissolves as one on the root clock; see app.css. Named hero
-		   layers on their own clocks kept meeting the rest at a seam. */
+		/* No transition clock of its own: room changes swap this canvas
+		   behind the velvet band (see .velvet-band in app.css). Layers
+		   carrying their own clocks kept meeting the rest at a seam. */
 	}
 
 	.hero :global(.frontispiece) {
