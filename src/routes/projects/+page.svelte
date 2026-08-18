@@ -133,10 +133,10 @@
 					note: 'Contributions to the Vue framework’s core.',
 				},
 				{
-					name: 'Reka UI',
-					url: 'https://reka-ui.com',
+					name: 'Nuxt UI',
+					url: 'https://ui.nuxt.com',
 					measure: 'merged',
-					note: 'Contributions to the Vue UI-primitives library.',
+					note: 'Contributions to the official Nuxt component library.',
 				},
 				{
 					name: 'Hyprland website',
