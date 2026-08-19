@@ -24,7 +24,6 @@
 			<div class='hero-art'>
 				<Painting {room} priority bare />
 			</div>
-			<div class='hero-veil' aria-hidden='true'></div>
 
 			<div class='hero-content px-6'>
 				{#if eyebrow}
@@ -67,14 +66,16 @@
 	}
 
 	/* Mobile-first: a shorter banner with the title card resting on the
-	   veiled bottom edge, left-aligned like a frontispiece caption. */
+	   dissolving bottom edge, left-aligned like a frontispiece caption.
+	   The top padding clears the site nav, which floats on the canvas. */
 	.hero {
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
-		min-height: clamp(340px, 52svh, 560px);
+		min-height: clamp(420px, 66svh, 660px);
 		width: 100%;
+		padding-top: 5rem;
 		overflow: hidden;
 		isolation: isolate;
 	}
@@ -92,6 +93,35 @@
 		position: absolute;
 		inset: 0;
 		z-index: 0;
+		/* The canvas hangs unshaded and dissolves into the wall itself:
+		   an alpha mask eased along a smootherstep ramp, so the fade has
+		   no visible start line and no banding, and the wallpaper shows
+		   through where the paint thins instead of a solid wash covering
+		   it. The top edge stays clear; the nav letters on the canvas. */
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			black 58%,
+			rgb(0 0 0 / 0.983) 63.25%,
+			rgb(0 0 0 / 0.896) 68.5%,
+			rgb(0 0 0 / 0.716) 73.75%,
+			rgb(0 0 0 / 0.5) 79%,
+			rgb(0 0 0 / 0.284) 84.25%,
+			rgb(0 0 0 / 0.104) 89.5%,
+			rgb(0 0 0 / 0.017) 94.75%,
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to bottom,
+			black 58%,
+			rgb(0 0 0 / 0.983) 63.25%,
+			rgb(0 0 0 / 0.896) 68.5%,
+			rgb(0 0 0 / 0.716) 73.75%,
+			rgb(0 0 0 / 0.5) 79%,
+			rgb(0 0 0 / 0.284) 84.25%,
+			rgb(0 0 0 / 0.104) 89.5%,
+			rgb(0 0 0 / 0.017) 94.75%,
+			transparent 100%
+		);
 	}
 
 	.hero :global(.frontispiece picture),
@@ -102,28 +132,9 @@
 		object-position: var(--focal, center);
 	}
 
-	/* The hero veil handles all fading; drop the frontispiece's own gradient. */
+	/* The mask above handles all fading; drop the frontispiece's own gradient. */
 	.hero :global(.frontispiece::after) {
 		display: none;
-	}
-
-	/* Phones: the top edge dissolves out of the wall so the masthead and
-	   painting meet without a seam, the upper half stays clear, and the
-	   text zone is grounded. */
-	.hero-veil {
-		position: absolute;
-		inset: 0;
-		z-index: 1;
-		pointer-events: none;
-		background: linear-gradient(
-			to bottom,
-			var(--bg) 0%,
-			color-mix(in oklab, var(--bg) 45%, transparent) 10%,
-			color-mix(in oklab, var(--bg) 10%, transparent) 32%,
-			color-mix(in oklab, var(--bg) 52%, transparent) 64%,
-			color-mix(in oklab, var(--bg) 88%, transparent) 88%,
-			var(--bg) 100%
-		);
 	}
 
 	.hero-content {
@@ -190,18 +201,8 @@
 		.hero {
 			justify-content: center;
 			align-items: center;
-			min-height: clamp(440px, 72vh, 760px);
-		}
-
-		.hero-veil {
-			background: linear-gradient(
-				to bottom,
-				var(--bg) 0%,
-				color-mix(in oklab, var(--bg) 50%, transparent) 12%,
-				color-mix(in oklab, var(--bg) 20%, transparent) 30%,
-				color-mix(in oklab, var(--bg) 34%, transparent) 62%,
-				var(--bg) 100%
-			);
+			min-height: clamp(540px, 86vh, 900px);
+			padding-top: 5.5rem;
 		}
 
 		.hero-content {

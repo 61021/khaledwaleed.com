@@ -253,9 +253,11 @@
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
-<div class='flex min-h-[100dvh] flex-col'>
-	<!-- Quiet classical header: not sticky, no chrome -->
-	<header class='py-4'>
+<div class='relative flex min-h-[100dvh] flex-col'>
+	<!-- Quiet classical header: not sticky, no chrome, and out of the
+	     flow: the nav is lettering on the room's canvas from the first
+	     frame, never a band of wall above it. -->
+	<header class='absolute inset-x-0 top-0 z-40 py-4'>
 		<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
 			<a
 				href='/'
@@ -295,7 +297,7 @@
 						sound.toggle()
 					}}
 				>
-					<svg width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden='true'>
+					<svg class='sound-glyph' width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden='true'>
 						<ellipse cx='6' cy='12' rx='2.3' ry='1.8' fill='currentColor' transform='rotate(-16 6 12)' />
 						<path d='M8.1 12 V3.2 Q11 4 11.7 6.7' stroke='currentColor' stroke-width='1.2' stroke-linecap='round' />
 						{#if !sound.enabled}
@@ -483,6 +485,34 @@
 <div class='velvet-band' bind:this={bandEl} aria-hidden='true'></div>
 
 <style>
+	/* The nav letters directly on the room's canvas, so its lettering
+	   keeps legible the house way: a halo keyed to the wall color, the
+	   same mechanism the title card uses. Never a scrim. */
+	header a,
+	header button,
+	.sound-hint {
+		text-shadow:
+			0 1px 2px color-mix(in oklab, var(--bg) 70%, transparent),
+			0 1px 14px color-mix(in oklab, var(--bg) 85%, transparent);
+	}
+
+	/* Glyphs are strokes, not letters; the halo comes as a drop-shadow
+	   on their stills (the hamburger's svgs animate their own filter). */
+	.sound-glyph,
+	.menu-icon {
+		filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent));
+	}
+
+	/* The open menu is the one header surface that must read as a panel
+	   over art: a still pane of the room's own air, not a card. */
+	#mobile-nav {
+		padding-bottom: 0.5rem;
+		background: color-mix(in oklab, var(--bg) 84%, transparent);
+		border-bottom: 1px solid var(--rule);
+		-webkit-backdrop-filter: blur(12px);
+		backdrop-filter: blur(12px);
+	}
+
 	/* Hamburger ↔ X: both glyphs stay in the DOM and cross-fade with
 	   opacity/scale/blur instead of swapping instantly. */
 	.menu-icon {

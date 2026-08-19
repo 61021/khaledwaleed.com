@@ -9,7 +9,7 @@
 <Seo title='Storeroom' description='Paintings that used to hang on this site.' noindex />
 
 <Container size='prose'>
-	<header class='rise pt-12 text-center sm:pt-20'>
+	<header class='rise pt-32 text-center sm:pt-36'>
 		<h1>Storeroom</h1>
 		<p class='mx-auto mt-4 max-w-md text-[var(--ink-muted)]'>
 			Paintings that used to hang here. When a room is re-hung, the old
