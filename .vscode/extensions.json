@@ -1,0 +1,4 @@
+{
+	"recommendations": ["dbaeumer.vscode-eslint", "svelte.svelte-vscode"],
+	"unwantedRecommendations": ["esbenp.prettier-vscode"]
+}
