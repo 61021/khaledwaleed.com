@@ -1,6 +1,6 @@
 # khaledwaleed.com
 
-The personal website of **Khaled Waleed**, a lead design engineer in Baghdad, Iraq. A quiet, atmospheric site built with SvelteKit and Go-flavoured sensibilities, where every page is its own dimly-lit room hung with a public-domain Northern Romantic painting.
+The personal website of **Khaled Waleed**, a design engineer in Baghdad, Iraq. A quiet, atmospheric site built with SvelteKit and Go-flavoured sensibilities, where every page is its own dimly-lit room hung with a public-domain Northern Romantic painting.
 
 🔗 **Live:** [khaledwaleed.com](https://khaledwaleed.com)
 

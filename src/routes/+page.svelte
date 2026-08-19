@@ -79,7 +79,7 @@
 </script>
 
 <Seo
-	description='Khaled Waleed is a lead design engineer in Baghdad, Iraq, building production web apps in SvelteKit, Nuxt, and Go.'
+	description='Khaled Waleed is a design engineer in Baghdad, Iraq, building production web apps in SvelteKit, Nuxt, and Go.'
 	type='profile'
 />
 

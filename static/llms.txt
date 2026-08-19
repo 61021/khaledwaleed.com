@@ -1,6 +1,6 @@
 # khaledwaleed.com
 
-> The personal site of Khaled Waleed, lead design engineer in Baghdad, Iraq.
+> The personal site of Khaled Waleed, design engineer in Baghdad, Iraq.
 > Hand-built: one public-domain painting per page, essays, a work history,
 > and a living log of films.
 
@@ -8,7 +8,7 @@
 
 - Name: Khaled Waleed (Arabic: خالد وليد)
 - Also spelled: Khalid Waleed · Khaled Walid · Khalid Walid
-- Role: Lead Design Engineer
+- Role: Design Engineer
 - Location: Baghdad, Iraq
 - Working at: Enjaz (enjaz.tech), Vitex (vitex.dev)
 - Stack: SvelteKit, Nuxt, TypeScript, Go, PostgreSQL, Linux

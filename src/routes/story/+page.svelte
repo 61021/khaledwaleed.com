@@ -141,7 +141,7 @@
 
 <Seo
 	title='Story'
-	description='Khaled Waleed is a lead design engineer in Baghdad, Iraq: five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go.'
+	description='Khaled Waleed is a design engineer in Baghdad, Iraq: five years building web apps across government, payments, democracy, and private-sector projects in SvelteKit, Nuxt, and Go.'
 />
 
 <SchemaOrg schema={storyPageSchema} />
@@ -202,7 +202,7 @@
 			small courtesies of an interface, shipped in business dashboards nobody expected to enjoy. I
 			never accepted that “it works” and “it feels right” should be different standards. Vitex,
 			meanwhile, grew up with me, four people now, with products of its own out in the world.
-			There's a title for all of this, lead design engineer, but it's the same instinct that started
+			There's a title for all of this, design engineer, but it's the same instinct that started
 			with the posters.
 		</p>
 		<p>
