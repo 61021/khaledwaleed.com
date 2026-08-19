@@ -165,6 +165,9 @@
 				loading='lazy'
 				decoding='async'
 			/>
+			<!-- The one living subject in the collection gets a wall plate
+			     like everything else hung in the house. -->
+			<figcaption class='plate portrait-plate'>Khaled Waleed, hung here since August 2026.</figcaption>
 		</figure>
 		<p class='dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]'>
 			At fourteen I was behind a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries
@@ -312,6 +315,11 @@
 			0 0 0 4px color-mix(in oklab, var(--bg) 55%, var(--bg-soft)),
 			0 0 0 5px color-mix(in oklab, var(--accent) 22%, transparent),
 			0 14px 30px -16px rgb(0 0 0 / 0.55);
+	}
+
+	.portrait-plate {
+		margin-top: 0.7rem;
+		font-size: 0.72rem;
 	}
 
 	@media (min-width: 640px) {

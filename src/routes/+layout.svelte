@@ -41,8 +41,20 @@
 	// The sound system: a tick on every control, nocturnes underneath.
 	// Delegated via <svelte:document> below so every link and button on
 	// every page ticks without touching the components themselves.
+	// One whisper per visit under the note glyph (the nocturne's own wall
+	// plate), so the house's most distinctive layer stops being a secret.
+	let soundHint = $state(false)
 	onMount(() => {
 		sound.init()
+		if (sound.enabled && !sessionStorage.getItem('kw-sound-hint')) {
+			sessionStorage.setItem('kw-sound-hint', '1')
+			const show = setTimeout(() => (soundHint = true), 3200)
+			const hide = setTimeout(() => (soundHint = false), 12200)
+			return () => {
+				clearTimeout(show)
+				clearTimeout(hide)
+			}
+		}
 	})
 
 	function tickOnClick(e: MouseEvent) {
@@ -271,14 +283,17 @@
 
 			<!-- Desktop: sound and search balance the monogram, bare glyphs
 			     in the nav's own idiom; the header stays chromeless. -->
-			<div class='hidden items-center gap-1 justify-self-end sm:flex'>
+			<div class='relative hidden items-center gap-1 justify-self-end sm:flex'>
 				<button
 					type='button'
 					class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
 					aria-pressed={sound.enabled}
 					aria-label={sound.enabled ? 'Turn sound off' : 'Turn sound on'}
 					title='Sound (press m)'
-					onclick={() => sound.toggle()}
+					onclick={() => {
+						soundHint = false
+						sound.toggle()
+					}}
 				>
 					<svg width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden='true'>
 						<ellipse cx='6' cy='12' rx='2.3' ry='1.8' fill='currentColor' transform='rotate(-16 6 12)' />
@@ -297,7 +312,14 @@
 				>
 					/
 				</button>
+				{#if soundHint}
+					<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
+				{/if}
 			</div>
+
+			<!-- Sound state for screen readers: the m shortcut and both
+			     toggles land here, wherever focus happens to be. -->
+			<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
 
 			<!-- Phone: hamburger toggle -->
 			<button
@@ -484,5 +506,37 @@
 		opacity: 1;
 		scale: 1;
 		filter: blur(0px);
+	}
+
+	/* The nocturne's wall plate: one whisper per visit, then never again. */
+	.sound-hint {
+		position: absolute;
+		top: calc(100% + 0.4rem);
+		right: 0.15rem;
+		font-size: 0.6rem;
+		color: var(--ink-dim);
+		white-space: nowrap;
+		pointer-events: none;
+		animation: hint-whisper 8800ms ease both;
+	}
+
+	@keyframes hint-whisper {
+		0% {
+			opacity: 0;
+			transform: translateY(-3px);
+		}
+
+		6% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		91% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+		}
 	}
 </style>
