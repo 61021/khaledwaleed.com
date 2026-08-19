@@ -236,4 +236,10 @@
 			display: none;
 		}
 	}
+
+	/* Nor for a reload or a back/forward return (app.html stamps
+	   data-navigated before first paint); the encore still answers. */
+	:global(html[data-navigated]) .curtain:not(.encore) {
+		display: none;
+	}
 </style>

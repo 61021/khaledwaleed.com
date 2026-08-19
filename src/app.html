@@ -12,36 +12,15 @@
 		<link rel="alternate" type="application/rss+xml" title="Khaled Waleed · Writing" href="/rss.xml" />
 
 		<script>
-			// Reloads land at the top of the room. Chromium restores the old
-			// scroll using the PREVIOUS document's scrollRestoration (SvelteKit
-			// flips it to auto on unload), so setting manual here cannot stop
-			// it, and the restore can land either side of DOMContentLoaded.
-			// Guard the load window instead: zero any restored offset the
-			// moment it appears, stand down at load+400ms or on the visitor's
-			// first gesture. The curtain overture covers the correction. Kit's
-			// sessionStorage restore is dropped too; back/forward page loads
-			// keep their native restore; reloads with a hash keep their anchor.
-			if (performance.getEntriesByType('navigation')[0]?.type === 'reload' && !location.hash) {
-				history.scrollRestoration = 'manual'
-				try {
-					sessionStorage.removeItem('sveltekit:scroll')
-				} catch {}
-				const gestures = ['wheel', 'touchstart', 'pointerdown', 'keydown']
-				const toTop = () => {
-					if (scrollY > 0) {
-						document.documentElement.style.scrollBehavior = 'auto'
-						scrollTo(0, 0)
-						document.documentElement.style.removeProperty('scroll-behavior')
-					}
-				}
-				const disarm = () => {
-					removeEventListener('scroll', toTop, true)
-					gestures.forEach((g) => removeEventListener(g, disarm, true))
-				}
-				addEventListener('scroll', toTop, { capture: true, passive: true })
-				gestures.forEach((g) => addEventListener(g, disarm, { capture: true, passive: true }))
-				addEventListener('DOMContentLoaded', toTop)
-				addEventListener('load', () => setTimeout(disarm, 400))
+			// A reload or a back/forward return is a continuation, not a
+			// premiere: stamp data-navigated before first paint so the curtain
+			// and the entrance rises sit out (the same switch client-side
+			// navigation throws in +layout.svelte), and leave the scroll to
+			// the browser's own restoration. Fresh arrivals keep the overture.
+			{
+				const nav = performance.getEntriesByType('navigation')[0]
+				if (nav && (nav.type === 'reload' || nav.type === 'back_forward'))
+					document.documentElement.setAttribute('data-navigated', '')
 			}
 		</script>
 
