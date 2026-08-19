@@ -12,14 +12,14 @@
 			key: 'story',
 			name: 'Story',
 			span: 3,
-			note: 'The full story, the work history, and the CV.',
+			note: 'The full story, from a supermarket checkout at fourteen, and the CV.',
 		},
 		{
 			href: '/projects',
 			key: 'projects',
 			name: 'Projects',
 			span: 3,
-			note: 'Products, client work, and government platforms, with the numbers.',
+			note: 'Seven government platforms, two products of my own, and the client work, with the numbers.',
 		},
 		{
 			href: '/writing',
@@ -85,7 +85,7 @@
 
 <SchemaOrg schema={profilePageSchema} />
 
-<PageHeader room='home' title='Khaled Waleed'>
+<PageHeader room='home' eyebrow={`${site.role} · ${site.location.city}`} title='Khaled Waleed'>
 	{#snippet lede()}
 		<p>
 			I create art, digital and physical, write occasionally, and spend a lot of time thinking
