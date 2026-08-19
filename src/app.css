@@ -352,6 +352,8 @@ a.link-quiet:hover {
 	width: 100%;
 	overflow: hidden;
 	background: var(--bg-soft);
+	/* How much wall closes over the corners of the canvas. */
+	--vignette: 68%;
 }
 
 .frontispiece picture,
@@ -368,6 +370,32 @@ a.link-quiet:hover {
 	.frontispiece img {
 		height: 70vh;
 	}
+}
+
+/* The wall closes over the corners: a vignette mixed from the room's own
+   --bg, so the paint sinks into the wall instead of ending on a rectangle.
+   Same smootherstep ramp as the hero mask, for the same reason: two stops
+   band visibly across grounds this flat and this dark. */
+.frontispiece::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	/* The hero canvas keeps a transform from its entrance drift, which
+	   would otherwise paint the image over an auto-z-index layer. */
+	z-index: 1;
+	pointer-events: none;
+	background: radial-gradient(
+		ellipse 58% 58% at 50% 50%,
+		transparent 35%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.017), transparent) 43%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.104), transparent) 51%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.284), transparent) 59%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.5), transparent) 67%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.716), transparent) 76%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.896), transparent) 84%,
+		color-mix(in oklab, var(--bg) calc(var(--vignette) * 0.983), transparent) 92%,
+		color-mix(in oklab, var(--bg) var(--vignette), transparent) 100%
+	);
 }
 
 .frontispiece::after {
@@ -950,6 +978,11 @@ html[data-navigated] .rise-3 {
 	.hero-content {
 		text-shadow: none !important;
 		padding-block: 0 !important;
+	}
+
+	/* Paper has no wall for the canvas to sink into. */
+	.frontispiece {
+		--vignette: 0%;
 	}
 
 	.page-title {
