@@ -35,6 +35,11 @@
 	const lastUpdated = $derived(
 		personal.reduce((a, f) => (f.watchedOn > a ? f.watchedOn : a), personal[0]?.watchedOn ?? ''),
 	)
+	const firstYear = $derived(
+		personal
+			.reduce((a, f) => (f.watchedOn && (!a || f.watchedOn < a) ? f.watchedOn : a), '')
+			.slice(0, 4),
+	)
 
 	// --- Favourite strips --------------------------------------------------
 	// The shrine at the top: everything scored a perfect 10, films and series
@@ -155,9 +160,48 @@
 		return arr
 	})
 
+	// --- Sessions ----------------------------------------------------------
+	// At 200+ rows the ledger read as one unbroken run; auction catalogues
+	// break into sessions, so the chronological sorts get a year rule per
+	// watch/release year. The rating sort stays a single sweep.
+	const sessionLabel = (f: Personal): string => {
+		if (sort === 'mine')
+			return ''
+		if (sort === 'watched')
+			return f.watchedOn ? f.watchedOn.slice(0, 4) : 'undated'
+		return f.year ? String(f.year) : 'undated'
+	}
+
+	const sessions = $derived.by<{ label: string, items: Personal[] }[]>(() => {
+		const out: { label: string, items: Personal[] }[] = []
+		for (const f of sorted) {
+			const label = sessionLabel(f)
+			const prev = out[out.length - 1]
+			if (prev && prev.label === label)
+				prev.items.push(f)
+			else out.push({ label, items: [f] })
+		}
+		return out
+	})
+
 	// --- View (list ↔ grid) -------------------------------------------------
 	type View = 'list' | 'grid'
 	let view = $state<View>(params.get('view') === 'grid' ? 'grid' : 'list')
+
+	// --- Back to the controls ------------------------------------------------
+	// The ledger runs tens of thousands of pixels and the filters live only at
+	// its head; two screens in, a gemmed plate floats up offering the way back.
+	let scrollY = $state(0)
+	let innerHeight = $state(0)
+	let controlsEl = $state<HTMLDivElement>()
+	const showReturn = $derived(total > 0 && innerHeight > 0 && scrollY > innerHeight * 2)
+
+	function returnToControls(): void {
+		// Bare scrollIntoView: html's scroll-behavior is smooth, and the
+		// reduced-motion reset flips it to auto, so both ride the house rule.
+		controlsEl?.scrollIntoView({ block: 'start' })
+		controlsEl?.focus({ preventScroll: true })
+	}
 
 	function setFilter(v: Filter): void {
 		filter = v
@@ -247,6 +291,8 @@
 
 <SchemaOrg {schema} />
 
+<svelte:window bind:scrollY bind:innerHeight />
+
 <svelte:head>
 	<link rel='preconnect' href='https://image.tmdb.org' />
 </svelte:head>
@@ -325,80 +371,86 @@
 		<Fleuron />
 
 		<section class='rise' aria-label='Viewing log'>
-			<div class='line line-fill' role='group' aria-label='Filter titles'>
-				{#each filterOptions as opt, i (opt.value)}
-					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
-					<button
-						type='button'
-						class={['line-opt', filter === opt.value && 'on']}
-						aria-pressed={filter === opt.value}
-						onclick={() => setFilter(opt.value)}
-					>
-						{opt.label} <b>{opt.count}</b>
-					</button>
-				{/each}
-				<label class='find'>
-					<span class='sr-only'>Find a title</span>
-					<input
-						type='search'
-						bind:value={query}
-						placeholder='Find a title, a director…'
-						autocomplete='off'
-						spellcheck='false'
-					/>
-				</label>
-			</div>
-
-			<div class='line line-fill' role='group' aria-label='Sort titles'>
-				{#each sortOptions as opt, i (opt.value)}
-					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
-					<button
-						type='button'
-						class={['line-opt', sort === opt.value && 'on']}
-						aria-pressed={sort === opt.value}
-						aria-label={`Sort by ${opt.by}${
-							sort === opt.value ? (dir === 'desc' ? ', descending' : ', ascending') : ''
-						}`}
-						onclick={() => setSort(opt.value)}
-					>
-						{#if opt.star}<span class='sort-star' aria-hidden='true'>★</span
-						>{/if}{opt.label}{#if sort === opt.value}<span class='dir' aria-hidden='true'
-						>{dir === 'desc' ? '↓' : '↑'}</span
-						>{/if}
-					</button>
-				{/each}
-				<div class='viewtoggle' role='group' aria-label='Layout'>
-					<button
-						type='button'
-						class={[view === 'list' && 'on']}
-						aria-pressed={view === 'list'}
-						aria-label='List view'
-						title='List view'
-						onclick={() => setView('list')}
-					>
-						<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256'
-						><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
-							fill='currentColor'
-							d='M208 136H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-40a16 16 0 0 0-16-16m0 56H48v-40h160zm0-144H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m0 56H48V64h160z'
-						/></svg
+			<!-- The scroll target for the floating return plate; focusable so
+			     the jump lands screen readers here too. -->
+			<div class='controls' bind:this={controlsEl} tabindex='-1'>
+				<div class='line line-fill' role='group' aria-label='Filter titles'>
+					{#each filterOptions as opt, i (opt.value)}
+						{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
+						<button
+							type='button'
+							class={['line-opt', filter === opt.value && 'on']}
+							aria-pressed={filter === opt.value}
+							onclick={() => setFilter(opt.value)}
 						>
-					</button>
-					<button
-						type='button'
-						class={[view === 'grid' && 'on']}
-						aria-pressed={view === 'grid'}
-						aria-label='Grid view'
-						title='Grid view'
-						onclick={() => setView('grid')}
-					>
-						<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256'
-						><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
-							fill='currentColor'
-							d='M104 40H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64H56V56h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64h-48V56h48zm-96 32H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64H56v-48h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64h-48v-48h48z'
-						/></svg
-						>
-					</button>
+							{opt.label} <b>{opt.count}</b>
+						</button>
+					{/each}
+					<label class='find'>
+						<span class='sr-only'>Find a title</span>
+						<input
+							type='search'
+							bind:value={query}
+							placeholder='Find a title, a director…'
+							autocomplete='off'
+							spellcheck='false'
+						/>
+					</label>
 				</div>
+
+				<div class='line line-fill' role='group' aria-label='Sort titles'>
+					{#each sortOptions as opt, i (opt.value)}
+						{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
+						<button
+							type='button'
+							class={['line-opt', sort === opt.value && 'on']}
+							aria-pressed={sort === opt.value}
+							aria-label={`Sort by ${opt.by}${
+								sort === opt.value ? (dir === 'desc' ? ', descending' : ', ascending') : ''
+							}`}
+							onclick={() => setSort(opt.value)}
+						>
+							{#if opt.star}<span class='sort-star' aria-hidden='true'>★</span
+							>{/if}{opt.label}{#if sort === opt.value}<span class='dir' aria-hidden='true'
+							>{dir === 'desc' ? '↓' : '↑'}</span
+							>{/if}
+						</button>
+					{/each}
+					<div class='viewtoggle' role='group' aria-label='Layout'>
+						<button
+							type='button'
+							class={[view === 'list' && 'on']}
+							aria-pressed={view === 'list'}
+							aria-label='List view'
+							title='List view'
+							onclick={() => setView('list')}
+						>
+							<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256'
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill='currentColor'
+								d='M208 136H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-40a16 16 0 0 0-16-16m0 56H48v-40h160zm0-144H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m0 56H48V64h160z'
+							/></svg
+							>
+						</button>
+						<button
+							type='button'
+							class={[view === 'grid' && 'on']}
+							aria-pressed={view === 'grid'}
+							aria-label='Grid view'
+							title='Grid view'
+							onclick={() => setView('grid')}
+						>
+							<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256'
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill='currentColor'
+								d='M104 40H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64H56V56h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64h-48V56h48zm-96 32H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64H56v-48h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64h-48v-48h48z'
+							/></svg
+							>
+						</button>
+					</div>
+				</div>
+
+				<p class='sr-only' aria-live='polite'>{sorted.length} of {total} titles</p>
 			</div>
 
 			{#if sorted.length === 0}
@@ -410,70 +462,90 @@
 					{/if}
 				</p>
 			{:else if view === 'list'}
-				<ul class='list'>
-					{#each sorted as f (key(f))}
-						<li class='lrow'>
-							<a
-								class='lrow-thumb'
-								href={tmdbUrl(f)}
-								target='_blank'
-								rel='noopener noreferrer'
-								aria-label={`${title(f)} on TMDB`}
-							>
-								<Poster posterPath={f.posterPath} alt="" width={84} fluid />
-							</a>
-							<div class='lrow-main'>
-								<h3 class='lrow-title'>
-									{title(f)}{#if isFavourite(f)}<span
-										class='text-[var(--accent)]'
-										title='My favourite'
-									>
-										★</span
-									>{/if}
-								</h3>
-								{#if subline(f)}<p class='lrow-sub'>{subline(f)}</p>{/if}
-								<p class='lrow-ratings'>
-									<span class='r-mine' aria-label={`My rating ${f.rating} out of 10`}>
-										<span class='star' aria-hidden='true'>★</span>{f.rating}
-									</span>
-									{#if f.watched > 1}{@render rewatch(f.watched)}{/if}
-								</p>
-								{#if f.directors.length}
-									<p class='lrow-by'>
-										<span class='by-lbl'>{f.type === 'tv' ? 'Created by' : 'Directed by'}</span>
-										{f.directors.join(', ')}
-									</p>
-								{/if}
-							</div>
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				<ul class='wall'>
-					{#each sorted as f (key(f))}
-						<li>
-							<a
-								class='cell'
-								href={tmdbUrl(f)}
-								target='_blank'
-								rel='noopener noreferrer'
-								title={title(f)}
-							>
-								<Poster posterPath={f.posterPath} alt="" width={104} fluid />
-								<span class='cell-title'
-								>{title(f)}{#if isFavourite(f)}<span class='text-[var(--accent)]'>
-									★</span
-								>{/if}</span
+				{#each sessions as s, si (s.label || 'all')}
+					{#if s.label}
+						<div class={['session-head', si === 0 && 'first']}>
+							<h3 class='smallcaps session-label'>{s.label}</h3>
+							<span class='smallcaps session-count'>{s.items.length}</span>
+						</div>
+					{/if}
+					<ul class={['list', s.label && 'grouped']}>
+						{#each s.items as f (key(f))}
+							<li class='lrow'>
+								<a
+									class='lrow-thumb'
+									href={tmdbUrl(f)}
+									target='_blank'
+									rel='noopener noreferrer'
+									aria-label={`${title(f)} on TMDB`}
 								>
-								<span class='cell-sub'>{[f.year || '', `★ ${f.rating}`].join(' · ')}</span>
-							</a>
-						</li>
-					{/each}
-				</ul>
+									<Poster posterPath={f.posterPath} alt="" width={84} fluid />
+								</a>
+								<div class='lrow-main'>
+									<h4 class='lrow-title'>
+										{title(f)}{#if isFavourite(f)}<span
+											class='text-[var(--accent)]'
+											title='My favourite'
+										>
+											★</span
+										>{/if}
+									</h4>
+									{#if subline(f)}<p class='lrow-sub'>{subline(f)}</p>{/if}
+									<p class='lrow-ratings'>
+										<span class='r-mine' aria-label={`My rating ${f.rating} out of 10`}>
+											<span class='star' aria-hidden='true'>★</span>{f.rating}
+										</span>
+										{#if f.watched > 1}{@render rewatch(f.watched)}{/if}
+									</p>
+									{#if f.directors.length}
+										<p class='lrow-by'>
+											<span class='by-lbl'>{f.type === 'tv' ? 'Created by' : 'Directed by'}</span>
+											{f.directors.join(', ')}
+										</p>
+									{/if}
+								</div>
+							</li>
+						{/each}
+					</ul>
+				{/each}
+			{:else}
+				{#each sessions as s, si (s.label || 'all')}
+					{#if s.label}
+						<div class={['session-head', si === 0 && 'first']}>
+							<h3 class='smallcaps session-label'>{s.label}</h3>
+							<span class='smallcaps session-count'>{s.items.length}</span>
+						</div>
+					{/if}
+					<ul class={['wall', s.label && 'grouped']}>
+						{#each s.items as f (key(f))}
+							<li>
+								<a
+									class='cell'
+									href={tmdbUrl(f)}
+									target='_blank'
+									rel='noopener noreferrer'
+									title={title(f)}
+								>
+									<Poster posterPath={f.posterPath} alt="" width={104} fluid />
+									<span class='cell-title'
+									>{title(f)}{#if isFavourite(f)}<span class='text-[var(--accent)]'>
+										★</span
+									>{/if}</span
+									>
+									<span class='cell-sub'>{[f.year || '', `★ ${f.rating}`].join(' · ')}</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				{/each}
 			{/if}
 		</section>
 
 		<Fleuron />
+
+		{#if firstYear}
+			<p class='rise closing-note'>The log runs back to {firstYear}.</p>
+		{/if}
 
 		<!-- TMDB attribution (required by their API terms) -->
 		<div class='rise flex flex-col items-center gap-3 text-center'>
@@ -493,6 +565,17 @@
 				endorsed or certified by TMDB.
 			</p>
 		</div>
+		{#if showReturn}
+			<button
+				type='button'
+				class='return frame-gemmed'
+				aria-label='Back to the filters'
+				title='Back to the filters'
+				onclick={returnToControls}
+			>
+				<span aria-hidden='true'>↑</span>
+			</button>
+		{/if}
 	{/if}
 </Container>
 
@@ -892,6 +975,98 @@
 		filter: none;
 		transform: translateY(-4px);
 		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+	}
+
+	/* ---------- Session rules ---------- */
+	/* Chronological sorts break the ledger into years, their heads set
+	   like the favourite shelves': smallcaps year, count, one hairline. */
+	.session-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 2.6rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--rule);
+	}
+
+	.session-head.first {
+		margin-top: 1.9rem;
+	}
+
+	.session-label {
+		margin: 0;
+		color: var(--ink);
+	}
+
+	.session-count {
+		color: var(--ink-dim);
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* The head carries the rule, so a grouped list drops its own. */
+	.list.grouped {
+		margin-top: 0;
+		border-top: 0;
+	}
+
+	.wall.grouped {
+		margin-top: 1.4rem;
+	}
+
+	/* The scroll target for the return plate; focus lands here quietly. */
+	.controls {
+		outline: none;
+		scroll-margin-top: 4.5rem;
+	}
+
+	/* ---------- Back to the controls ---------- */
+	/* A gemmed plate floats up once the visitor is two screens deep in
+	   the ledger; kept under the velvet band (z 105). */
+	.return {
+		position: fixed;
+		right: max(1.1rem, env(safe-area-inset-right));
+		bottom: max(1.2rem, env(safe-area-inset-bottom));
+		z-index: 60;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		background: var(--bg-soft);
+		border: 1px solid var(--rule);
+		color: var(--ink-muted);
+		font-size: 1.05rem;
+		cursor: pointer;
+		box-shadow: 0 12px 28px -14px rgb(0 0 0 / 0.65);
+		animation: tour-in 250ms ease both;
+		transition:
+			color 250ms ease,
+			border-color 250ms ease;
+	}
+
+	.return:hover,
+	.return:focus-visible {
+		color: var(--accent);
+		border-color: color-mix(in oklab, var(--accent) 45%, var(--rule));
+	}
+
+	@media print {
+		.return {
+			display: none;
+		}
+	}
+
+	/* ---------- The closing line ---------- */
+	.closing-note {
+		margin: 0 auto 2.6rem;
+		max-width: 34rem;
+		text-align: center;
+		font-family: var(--font-display);
+		font-size: clamp(1.25rem, 2vw + 0.4rem, 1.5rem);
+		line-height: 1.4;
+		color: var(--ink-muted);
+		text-wrap: balance;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
