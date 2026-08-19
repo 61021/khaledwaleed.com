@@ -227,7 +227,9 @@ class SoundSystem {
 		const start = performance.now()
 		const step = (now: number) => {
 			const k = Math.min(1, (now - start) / ms)
-			el.volume = from + (target - from) * k
+			// Clamped: interleaved fades (a quick off-on) can land a write a
+			// hair outside [0, 1], which throws on HTMLMediaElement.
+			el.volume = Math.min(1, Math.max(0, from + (target - from) * k))
 			if (k < 1) {
 				this.fadeFrame = requestAnimationFrame(step)
 			}
