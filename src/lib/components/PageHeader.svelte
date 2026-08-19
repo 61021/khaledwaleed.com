@@ -203,6 +203,9 @@
 			align-items: center;
 			min-height: clamp(540px, 86vh, 900px);
 			padding-top: 5.5rem;
+			/* The title card hangs above centre, the way a wall label sits
+			   high on the canvas rather than across its middle. */
+			padding-bottom: 7rem;
 		}
 
 		.hero-content {
