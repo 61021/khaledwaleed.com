@@ -455,19 +455,22 @@
 						{/each}
 					</nav>
 					<div class='text-sm sm:text-right'>
-						<a
-							href='https://khalidwaleed.com'
-							class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-						>
-							khalidwaleed.com
-						</a>
-						<span class='text-[var(--ink-dim)]'>·</span>
-						<a
-							href='/'
-							class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-						>
-							khaledwaleed.com
-						</a>
+						<span class='text-[var(--ink-dim)]'>registered domains:</span>
+						<span class='whitespace-nowrap'>
+							<a
+								href='https://khalidwaleed.com'
+								class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+							>
+								khalidwaleed.com
+							</a>
+							<span class='text-[var(--ink-dim)]'>·</span>
+							<a
+								href='/'
+								class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+							>
+								khaledwaleed.com
+							</a>
+						</span>
 					</div>
 				</div>
 			</div>
