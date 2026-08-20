@@ -75,14 +75,14 @@
 }
 
 :root[data-room='projects'] {
-	/* wright of derby's alchemist: umber workshop dark, parchment ink, the phosphorus flask for an accent */
-	--bg: #131010;
-	--bg-soft: #1c1714;
-	--ink: #eae0cd;
-	--ink-muted: #ab9d86;
-	--ink-dim: #897c6c;
-	--rule: #2a221c;
-	--accent: #e3c377;
+	/* vermeer's geographer: warm study shadow, chart-parchment ink, brass and oak gold */
+	--bg: #191712;
+	--bg-soft: #221e17;
+	--ink: #e3d8bf;
+	--ink-muted: #a2977f;
+	--ink-dim: #8c826b;
+	--rule: #2a251c;
+	--accent: #c9a55e;
 }
 
 :root[data-room='likes'] {
@@ -725,12 +725,6 @@ html[data-swap='in'] .stage {
 	transition:
 		opacity var(--swap-in) var(--ease-out),
 		filter var(--swap-in) var(--ease-out);
-}
-
-/* The Alchemist hangs in the darkest room; give the canvas more light
-   so the phosphorus flask reads through the veil. */
-[data-room='projects'] .hero-art img {
-	filter: brightness(1.22) contrast(1.02);
 }
 
 /* ---------- The grand tour entrance ---------- */

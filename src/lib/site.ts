@@ -206,16 +206,18 @@ export const paintings: Record<string, Painting> = {
 		focal: '50% 30%',
 	},
 	projects: {
-		key: 'projects',
-		title: 'The Alchemist Discovering Phosphorus',
-		artist: 'Joseph Wright of Derby',
-		year: '1771',
-		museum: 'Derby Museum and Art Gallery',
-		museumUrl: 'https://www.derbymuseums.org/',
-		source: 'https://en.wikipedia.org/wiki/The_Alchemist_Discovering_Phosphorus',
-		alt: 'An alchemist kneels in his vaulted workshop as the vessel before him erupts in white light, two apprentices at their work in the shadows behind.',
-		// keep the erupting vessel and the kneeling alchemist in the wide crop
-		focal: '50% 68%',
+		// Content-derived key per the immutable-cache law; the Alchemist's
+		// room-era key, the last one in the house, retired with the canvas.
+		key: 'geographer',
+		title: 'The Geographer',
+		artist: 'Johannes Vermeer',
+		year: '1669',
+		museum: 'Städel Museum, Frankfurt',
+		museumUrl: 'https://www.staedelmuseum.de/en',
+		source: 'https://en.wikipedia.org/wiki/The_Geographer',
+		alt: 'A geographer in a blue gown pauses over his charts with dividers in hand, looking up into the window light, a globe on the cabinet behind him.',
+		// keep his lifted face and the dividers in the wide desktop crop
+		focal: '46% 28%',
 	},
 	tools: {
 		// Kersting painting his friend's famously bare studio: easel, chair,
@@ -249,6 +251,20 @@ export interface RetiredPainting extends Painting {
 }
 
 export const retired: RetiredPainting[] = [
+	{
+		// The house's last room-named file key, retired with the canvas;
+		// its files stay byte-identical at their year-cached URLs.
+		key: 'projects',
+		title: 'The Alchemist Discovering Phosphorus',
+		artist: 'Joseph Wright of Derby',
+		year: '1771',
+		museum: 'Derby Museum and Art Gallery',
+		museumUrl: 'https://www.derbymuseums.org/',
+		source: 'https://en.wikipedia.org/wiki/The_Alchemist_Discovering_Phosphorus',
+		alt: 'An alchemist kneels in his vaulted workshop as the vessel before him erupts in white light, two apprentices at their work in the shadows behind.',
+		hungOn: '/projects',
+		until: 'August 2026',
+	},
 	{
 		key: 'two-men',
 		title: 'Two Men Contemplating the Moon',
@@ -322,7 +338,7 @@ export const roomBg: Record<string, string> = {
 	library: '#1a1814',
 	films: '#121319',
 	music: '#141017',
-	projects: '#131010',
+	projects: '#191712',
 	likes: '#0a0e1a',
 	contact: '#1a1413',
 	tools: '#131310',

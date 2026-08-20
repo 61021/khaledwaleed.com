@@ -70,6 +70,15 @@ const items: Item[] = [
 		file: 'Man Writing a Letter by Gabriël Metsu.jpg',
 		srcWidth: 3200,
 	},
+	{
+		// Städel's 7991×8959 Google Art Project scan. Hung on /projects
+		// 2026-08-20 from a six-way tasting, replacing Wright's Alchemist
+		// and retiring the house's last room-named file key: the planner
+		// mid-thought, dividers in hand, for the shipped-work page.
+		slug: 'geographer',
+		file: 'Johannes Vermeer - The Geographer - Google Art Project.jpg',
+		srcWidth: 3200,
+	},
 ]
 
 const OUT = path.resolve('static/paintings')
