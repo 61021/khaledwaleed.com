@@ -5,8 +5,8 @@
 	// How long the room must stay still before the house closes for the
 	// night, and how long the lights take to come back up (the .lifting
 	// fade below; the element stays mounted and inert until then).
-	const IDLE_MS = 10_000
-	const LIFT_MS = 460
+	const IDLE_MS = 20_000
+	const LIFT_MS = 260
 	// A moving pointer fires dozens of events a second; one timer reset
 	// each is churn nobody sees.
 	const STIR_FLOOR_MS = 400
@@ -96,7 +96,7 @@
 
 	.screensaver.lifting {
 		pointer-events: none;
-		animation: house-up 460ms ease both;
+		animation: house-up 260ms var(--ease-out) both;
 	}
 
 	@keyframes house-down {

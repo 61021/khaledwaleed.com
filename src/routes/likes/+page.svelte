@@ -377,8 +377,8 @@
 		transform: translate(-50%, 5px);
 		pointer-events: none;
 		transition:
-			opacity 220ms ease,
-			transform 220ms ease;
+			opacity 160ms var(--ease-out),
+			transform 160ms var(--ease-out);
 	}
 
 	.noted:hover .note,

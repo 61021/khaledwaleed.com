@@ -346,7 +346,7 @@
 		height: 0.34rem;
 		background: color-mix(in oklab, var(--accent) 55%, transparent);
 		transform: translateX(-50%) rotate(45deg);
-		transition: background-color 400ms ease;
+		transition: background-color var(--dur-quick) var(--ease-out);
 	}
 
 	li:hover .entry-gem {

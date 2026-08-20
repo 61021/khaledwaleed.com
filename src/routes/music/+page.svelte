@@ -187,7 +187,7 @@
 		outline: 1px solid oklch(1 0 0 / 0.1);
 		outline-offset: -1px;
 		filter: saturate(0.85) brightness(0.95);
-		transition: filter 400ms ease;
+		transition: filter var(--dur-quick) var(--ease-out);
 	}
 
 	.group:hover .art {
@@ -206,8 +206,8 @@
 		outline-offset: -1px;
 		filter: saturate(0.85) brightness(0.95);
 		transition:
-			filter 400ms ease,
-			transform 400ms ease;
+			filter var(--dur-quick) var(--ease-out),
+			transform var(--dur-quick) var(--ease-out);
 	}
 
 	.group:hover .artist-art {
@@ -235,8 +235,8 @@
 		color: var(--ink-muted);
 		white-space: nowrap;
 		transition:
-			color 250ms ease,
-			border-color 250ms ease;
+			color var(--dur-quick) var(--ease-out),
+			border-color var(--dur-quick) var(--ease-out);
 	}
 
 	/* Small type, full-size target. */

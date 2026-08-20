@@ -67,9 +67,9 @@
 		/* sit quietly in the Romantic palette until attended to */
 		filter: saturate(0.82) brightness(0.92);
 		transition:
-			filter 500ms ease,
-			transform 500ms ease,
-			box-shadow 500ms ease;
+			filter var(--dur-quick) var(--ease-out),
+			transform var(--dur-quick) var(--ease-out),
+			box-shadow var(--dur-quick) var(--ease-out);
 	}
 
 	/* spotlight: always full colour, richer shadow */
@@ -101,7 +101,7 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		img {
-			transition: filter 500ms ease;
+			transition: filter var(--dur-quick) var(--ease-out);
 		}
 	}
 </style>

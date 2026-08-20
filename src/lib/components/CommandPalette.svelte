@@ -5,6 +5,7 @@
 	import { posts } from '$lib/posts'
 	import { sound } from '$lib/sound.svelte'
 	import { onMount } from 'svelte'
+	import { quintOut } from 'svelte/easing'
 	import { fade, fly } from 'svelte/transition'
 
 	type Item = {
@@ -269,7 +270,7 @@
 			aria-label='Close'
 			class='absolute inset-0 bg-black/55 backdrop-blur-sm'
 			onclick={closePalette}
-			transition:fade={{ duration: 150 }}
+			transition:fade={{ duration: 120 }}
 		></button>
 
 		<!-- Surfaces with a small rise, leaves with a smaller one: exits
@@ -280,8 +281,8 @@
 			role='dialog'
 			aria-modal='true'
 			aria-label='Find a page'
-			in:fly={{ y: 8, duration: 200 }}
-			out:fly={{ y: 4, duration: 150 }}
+			in:fly={{ y: 8, duration: 160, easing: quintOut }}
+			out:fly={{ y: 4, duration: 120, easing: quintOut }}
 		>
 			<div class='flex items-center gap-3 border-b border-[var(--rule)] px-5 py-4'>
 				<span class='text-[var(--accent)]' aria-hidden='true'>·</span>

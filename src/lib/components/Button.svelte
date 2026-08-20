@@ -60,14 +60,15 @@
 		letter-spacing: 0.02em;
 		cursor: pointer;
 		transition:
-			color 300ms ease,
-			border-color 300ms ease,
-			transform 150ms ease;
+			color var(--dur-quick) var(--ease-out),
+			border-color var(--dur-quick) var(--ease-out),
+			transform 120ms var(--ease-out);
 	}
 
-	/* A physical press: the label gives by a pixel. */
+	/* A physical press: the label gives by a pixel, quicker than it returns. */
 	.btn:active {
 		transform: translateY(1px);
+		transition-duration: 45ms;
 	}
 
 	.btn-md {
@@ -120,8 +121,8 @@
 			var(--corner-bracket-br) right bottom / var(--btn-corner) var(--btn-corner) no-repeat,
 			var(--corner-bracket-bl) left bottom / var(--btn-corner) var(--btn-corner) no-repeat;
 		transition:
-			background-color 300ms ease,
-			opacity 300ms ease;
+			background-color var(--dur-quick) var(--ease-out),
+			opacity var(--dur-quick) var(--ease-out);
 	}
 
 	.btn-outline::after {

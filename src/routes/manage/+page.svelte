@@ -511,7 +511,7 @@
 		color: var(--ink);
 		font-family: var(--font-body);
 		font-size: 1rem;
-		transition: border-color 200ms ease;
+		transition: border-color var(--dur-quick) var(--ease-out);
 	}
 	.field:focus {
 		outline: none;
@@ -540,7 +540,7 @@
 		font-weight: 600;
 		letter-spacing: 0.02em;
 		cursor: pointer;
-		transition: opacity 200ms ease;
+		transition: opacity var(--dur-quick) var(--ease-out);
 	}
 	.btn:hover {
 		opacity: 0.9;
@@ -571,7 +571,7 @@
 		border-radius: 0.7rem;
 		text-align: left;
 		cursor: pointer;
-		transition: background-color 200ms ease;
+		transition: background-color var(--dur-quick) var(--ease-out);
 	}
 	.result:hover {
 		background: var(--bg-soft);
@@ -596,7 +596,7 @@
 		text-transform: uppercase;
 		color: var(--accent);
 		opacity: 0;
-		transition: opacity 200ms ease;
+		transition: opacity var(--dur-quick) var(--ease-out);
 	}
 	.result:hover .result-add {
 		opacity: 1;
@@ -632,7 +632,7 @@
 		font-weight: 600;
 		letter-spacing: 0.02em;
 		cursor: pointer;
-		transition: opacity 200ms ease;
+		transition: opacity var(--dur-quick) var(--ease-out);
 	}
 	.btn-sm:hover {
 		opacity: 0.9;
@@ -658,7 +658,7 @@
 		color: var(--ink-dim);
 		font-size: 0.95rem;
 		cursor: pointer;
-		transition: color 200ms ease;
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 	.del:hover {
 		color: color-mix(in oklab, #e0556b 78%, var(--ink));

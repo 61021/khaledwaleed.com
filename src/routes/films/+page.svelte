@@ -662,8 +662,8 @@
 		white-space: nowrap;
 		cursor: pointer;
 		transition:
-			color 250ms ease,
-			border-color 250ms ease;
+			color var(--dur-quick) var(--ease-out),
+			border-color var(--dur-quick) var(--ease-out);
 	}
 
 	/* Small type, full-size target: extend the hit area past the glyphs
@@ -688,7 +688,7 @@
 		font-size: 0.92em;
 		color: var(--ink-dim);
 		font-variant-numeric: tabular-nums;
-		transition: color 250ms ease;
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 
 	.line-opt.on b {
@@ -728,7 +728,7 @@
 		font-family: var(--font-body);
 		font-size: 0.85rem;
 		color: var(--ink);
-		transition: border-color 250ms ease;
+		transition: border-color var(--dur-quick) var(--ease-out);
 	}
 
 	.find input::placeholder {
@@ -777,7 +777,7 @@
 		height: 2.5rem;
 		color: var(--ink-dim);
 		cursor: pointer;
-		transition: color 250ms ease;
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 
 	.viewtoggle button:hover {
@@ -802,7 +802,7 @@
 		gap: 1.2rem;
 		padding: 1.05rem 0.15rem;
 		border-bottom: 1px solid color-mix(in oklab, var(--rule) 80%, transparent);
-		transition: background-color 400ms ease;
+		transition: background-color var(--dur-quick) var(--ease-out);
 		/* 225 rows: let offscreen ones skip layout and paint, which is most
 		   of what froze navigations INTO this room (the swap runs inside the
 		   view transition, on a frozen frame). */
@@ -850,7 +850,7 @@
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
 		overflow: hidden;
-		transition: color 300ms ease;
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 
 	.lrow:hover .lrow-title {
@@ -953,7 +953,7 @@
 		font-size: 0.8rem;
 		line-height: 1.35;
 		color: var(--ink-muted);
-		transition: color 300ms ease;
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 
 	.cell-sub {
@@ -1039,10 +1039,10 @@
 		font-size: 1.05rem;
 		cursor: pointer;
 		box-shadow: 0 12px 28px -14px rgb(0 0 0 / 0.65);
-		animation: tour-in 250ms ease both;
+		animation: tour-in var(--dur-quick) var(--ease-out) both;
 		transition:
-			color 250ms ease,
-			border-color 250ms ease;
+			color var(--dur-quick) var(--ease-out),
+			border-color var(--dur-quick) var(--ease-out);
 	}
 
 	.return:hover,

@@ -3,7 +3,7 @@
 // only once JS is running (no-JS visitors see plain content) and rise as
 // they enter the viewport, so a page fills up as the visitor walks it.
 // Reduced-motion visitors are never hidden at all. Elements crossing the
-// threshold in the same beat cascade 120ms apart via a shared burst
+// threshold in the same beat cascade 60ms apart via a shared burst
 // counter, capped at four seats: uncapped, one long scroll stacked
 // delays without bound and left stragglers fading after the wheel
 // stopped.
@@ -22,7 +22,7 @@ function ensureObserver() {
 					burst = 0
 				lastBurstAt = now
 				const node = entry.target as HTMLElement
-				node.style.setProperty('--rv-wait', `${Math.min(burst++, 3) * 120}ms`)
+				node.style.setProperty('--rv-wait', `${Math.min(burst++, 3) * 60}ms`)
 				node.classList.add('rv-in')
 				observer!.unobserve(node)
 			}

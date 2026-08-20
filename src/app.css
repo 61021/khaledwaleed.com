@@ -139,12 +139,14 @@
 :root {
 	--font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
 	--font-display: 'Playfair Display', Georgia, 'Times New Roman', ui-serif, serif;
+	--font-code: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @theme inline {
 	--font-sans: var(--font-body);
 	--font-serif: var(--font-display);
 	--font-display: var(--font-display);
+	--default-transition-timing-function: var(--ease-out);
 	--color-bg: var(--bg);
 	--color-bg-soft: var(--bg-soft);
 	--color-ink: var(--ink);
@@ -276,7 +278,7 @@ i {
 	a {
 		color: inherit;
 		text-decoration: none;
-		transition: color 300ms ease;
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 }
 
@@ -284,8 +286,8 @@ a.link {
 	color: var(--ink);
 	border-bottom: 1px solid color-mix(in oklab, var(--accent) 50%, transparent);
 	transition:
-		color 300ms ease,
-		border-color 300ms ease;
+		color var(--dur-quick) var(--ease-out),
+		border-color var(--dur-quick) var(--ease-out);
 }
 
 a.link:hover {
@@ -413,7 +415,7 @@ a.link-quiet:hover {
    immediate, so LCP never waits on this. */
 html[data-navigated] .frontispiece img {
 	opacity: 0;
-	transition: opacity 320ms ease;
+	transition: opacity var(--dur-beat) var(--ease-out);
 }
 
 html[data-navigated] .frontispiece img.loaded {
@@ -560,8 +562,8 @@ html[data-navigated] .frontispiece img.loaded {
 	inset: calc(var(--frame-offset) * -1);
 	pointer-events: none;
 	background: var(--frame-ink, color-mix(in oklab, var(--accent) 55%, var(--rule)));
-	/* Frames warm slowly under the hand, the tour's pace. */
-	transition: background-color 600ms ease;
+	/* Warms under the hand at the quick; cools back on the beat. */
+	transition: background-color var(--dur-beat) var(--ease-out);
 	-webkit-mask:
 		var(--corner-scroll-tl) left top / var(--frame-corner) var(--frame-corner) no-repeat,
 		var(--corner-scroll-tr) right top / var(--frame-corner) var(--frame-corner) no-repeat,
@@ -572,6 +574,10 @@ html[data-navigated] .frontispiece img.loaded {
 		var(--corner-scroll-tr) right top / var(--frame-corner) var(--frame-corner) no-repeat,
 		var(--corner-scroll-br) right bottom / var(--frame-corner) var(--frame-corner) no-repeat,
 		var(--corner-scroll-bl) left bottom / var(--frame-corner) var(--frame-corner) no-repeat;
+}
+
+.frame-engraved:hover::before {
+	transition-duration: var(--dur-quick);
 }
 
 /* The bare setting: four gilt gems straddling a chip's corners. */
@@ -585,7 +591,7 @@ html[data-navigated] .frontispiece img.loaded {
 	inset: -3px;
 	pointer-events: none;
 	background: var(--frame-ink, color-mix(in oklab, var(--accent) 65%, var(--rule)));
-	transition: background-color 300ms ease;
+	transition: background-color var(--dur-quick) var(--ease-out);
 	-webkit-mask:
 		var(--gem-dot) left top / 7px 7px no-repeat,
 		var(--gem-dot) right top / 7px 7px no-repeat,
@@ -607,6 +613,18 @@ html[data-navigated] .frontispiece img.loaded {
 	align-self: flex-end;
 	margin-bottom: 0.45em;
 	border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 55%, transparent);
+}
+
+/* ---------- Motion ----------
+   One hand for the whole house: a strong custom ease-out at two
+   tempos. Interactions answer at the quick; the few larger surface
+   changes (develop-ins, frames cooling, reveals) take the beat or a
+   touch more. The curtain, the tour, and the screensaver's closing
+   keep their own slow clocks: those are for show. */
+:root {
+	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+	--dur-quick: 180ms;
+	--dur-beat: 240ms;
 }
 
 /* ---------- The blur swap ----------
@@ -640,8 +658,8 @@ html[data-swap='in'] .stage {
 	opacity: 1;
 	filter: blur(0);
 	transition:
-		opacity var(--swap-in) cubic-bezier(0.22, 0.7, 0.25, 1),
-		filter var(--swap-in) cubic-bezier(0.22, 0.7, 0.25, 1);
+		opacity var(--swap-in) var(--ease-out),
+		filter var(--swap-in) var(--ease-out);
 }
 
 /* The Alchemist hangs in the darkest room; give the canvas more light
@@ -766,15 +784,15 @@ html[data-navigated] .rise-3 {
    --rv-wait. */
 .rv {
 	opacity: 0;
-	transform: translateY(22px);
+	transform: translateY(14px);
 }
 
 .rv-in {
 	opacity: 1;
 	transform: translateY(0);
 	transition:
-		opacity 800ms cubic-bezier(0.22, 0.7, 0.25, 1),
-		transform 800ms cubic-bezier(0.22, 0.7, 0.25, 1);
+		opacity 450ms var(--ease-out),
+		transform 450ms var(--ease-out);
 	transition-delay: var(--rv-wait, 0ms);
 }
 
