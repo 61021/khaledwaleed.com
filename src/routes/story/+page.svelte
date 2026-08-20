@@ -153,18 +153,31 @@
 </PageHeader>
 
 <Container size='prose'>
-	<section class='rise-3 mt-12 space-y-6'>
+	<section class='mt-12 space-y-6'>
 		<figure class='portrait'>
-			<img
-				src='/khaled-waleed-480.jpg'
-				srcset='/khaled-waleed-480.jpg 480w, /khaled-waleed.jpg 1200w'
-				sizes='(min-width: 640px) 13rem, 60vw'
-				alt='Khaled Waleed'
-				width='480'
-				height='500'
-				loading='lazy'
-				decoding='async'
-			/>
+			<!-- The jpgs stay: OG cards and the Person schema point at them. -->
+			<picture>
+				<source
+					type='image/avif'
+					srcset='/khaled-waleed-480.avif 480w, /khaled-waleed.avif 1200w'
+					sizes='(min-width: 640px) 13rem, 60vw'
+				/>
+				<source
+					type='image/webp'
+					srcset='/khaled-waleed-480.webp 480w, /khaled-waleed.webp 1200w'
+					sizes='(min-width: 640px) 13rem, 60vw'
+				/>
+				<img
+					src='/khaled-waleed-480.jpg'
+					srcset='/khaled-waleed-480.jpg 480w, /khaled-waleed.jpg 1200w'
+					sizes='(min-width: 640px) 13rem, 60vw'
+					alt='Khaled Waleed'
+					width='480'
+					height='500'
+					loading='lazy'
+					decoding='async'
+				/>
+			</picture>
 			<!-- The one living subject in the collection gets a wall plate
 			     like everything else hung in the house. -->
 			<figcaption class='plate portrait-plate'>Khaled Waleed, hung here since August 2026.</figcaption>

@@ -248,7 +248,7 @@
 </PageHeader>
 
 <Container size='prose'>
-	<div class='rise-3 smallcaps mt-10'>
+	<div class='smallcaps mt-10'>
 		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 

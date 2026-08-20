@@ -73,7 +73,7 @@
 </PageHeader>
 
 <Container size='prose'>
-	<div class='rise-3 mt-10'>
+	<div class='mt-10'>
 		<Breadcrumb
 			items={[
 				{ name: 'Home', href: '/' },
@@ -92,7 +92,7 @@
 
 	<Fleuron />
 
-	<article class='rise prose-romantic mx-auto'>
+	<article class='prose-romantic mx-auto'>
 		<Content />
 	</article>
 
@@ -100,7 +100,7 @@
 
 	<!-- Neighbouring essays -->
 	{#if data.older || data.newer}
-		<nav aria-label='More essays' class='rise'>
+		<nav aria-label='More essays'>
 			<div class='grid gap-6 sm:grid-cols-2'>
 				{#if data.older}
 					<a href={`/writing/${data.older.slug}`} class='group block text-left'>
@@ -130,7 +130,7 @@
 		<div class='rule-fine mt-10'></div>
 	{/if}
 
-	<footer class='rise mt-10 flex items-baseline justify-between'>
+	<footer class='mt-10 flex items-baseline justify-between'>
 		<a href='/writing' class='link-quiet'>← All writing</a>
 		<a
 			href={`mailto:${site.email}?subject=Re: ${encodeURIComponent(post.title)}`}

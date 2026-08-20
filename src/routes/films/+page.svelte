@@ -317,14 +317,23 @@
 	>
 {/snippet}
 
+{#snippet star(size: number)}
+	<svg class='star' xmlns='http://www.w3.org/2000/svg' width={size} height={size} viewBox='0 0 256 256' aria-hidden='true'
+	><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+		fill='currentColor'
+		d='m234.29 114.85l-45 38.83L203 211.75a16.4 16.4 0 0 1-24.5 17.82L128 198.49l-50.53 31.08A16.4 16.4 0 0 1 53 211.75l13.76-58.07l-45-38.83A16.46 16.46 0 0 1 31.08 86l59-4.76l22.76-55.08a16.36 16.36 0 0 1 30.27 0l22.75 55.08l59 4.76a16.46 16.46 0 0 1 9.37 28.86Z'
+	/></svg
+	>
+{/snippet}
+
 {#snippet strip(label: string, items: Personal[])}
-	<section class='favs rise-2' aria-label={label}>
+	<section class='favs' aria-label={label}>
 		<div class='favs-head'>
 			<h2 class='smallcaps favs-label'>{label}</h2>
 			<span class='smallcaps favs-count'>{items.length}</span>
 		</div>
 		<ul class='favs-strip'>
-			{#each items as f (key(f))}
+			{#each items as f, i (key(f))}
 				<li>
 					<a
 						class='fav'
@@ -334,7 +343,9 @@
 						title={title(f)}
 						aria-label={`${title(f)} on TMDB`}
 					>
-						<Poster posterPath={f.posterPath} alt="" width={112} fluid vivid />
+						<!-- The shrine opens the page; lazy would hold its first
+						     posters back behind everything else. -->
+						<Poster posterPath={f.posterPath} alt="" width={112} fluid vivid eager={i < 8} />
 					</a>
 				</li>
 			{/each}
@@ -344,14 +355,14 @@
 
 <Container>
 	{#if lastUpdated}
-		<div class='rise-3 smallcaps mt-10'>
+		<div class='smallcaps mt-10'>
 			updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 		</div>
 	{/if}
 
 	{#if total === 0}
 		<!-- PocketBase is unreachable (or the log is empty); say so honestly. -->
-		<section class='rise mt-20 mb-12 text-center'>
+		<section class='mt-20 mb-12 text-center'>
 			<p class='[font-family:var(--font-display)] text-[1.4rem] text-[var(--ink)]'>
 				The log isn’t loading.
 			</p>
@@ -370,7 +381,7 @@
 
 		<Fleuron />
 
-		<section class='rise' aria-label='Viewing log'>
+		<section aria-label='Viewing log'>
 			<!-- The scroll target for the floating return plate; focusable so
 			     the jump lands screen readers here too. -->
 			<div class='controls' bind:this={controlsEl} tabindex='-1'>
@@ -410,9 +421,20 @@
 							}`}
 							onclick={() => setSort(opt.value)}
 						>
-							{#if opt.star}<span class='sort-star' aria-hidden='true'>★</span
-							>{/if}{opt.label}{#if sort === opt.value}<span class='dir' aria-hidden='true'
-							>{dir === 'desc' ? '↓' : '↑'}</span
+							{#if opt.star}<span class='sort-star'>{@render star(10)}</span
+							>{/if}{opt.label}{#if sort === opt.value}<svg
+								class='dir'
+								xmlns='http://www.w3.org/2000/svg'
+								width='10'
+								height='10'
+								viewBox='0 0 256 256'
+								aria-hidden='true'
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill='currentColor'
+								d={dir === 'desc'
+									? 'm213.66 101.66l-80 80a8 8 0 0 1-11.32 0l-80-80a8 8 0 0 1 11.32-11.32L128 164.69l74.34-74.35a8 8 0 0 1 11.32 11.32'
+									: 'M213.66 165.66a8 8 0 0 1-11.32 0L128 91.31l-74.34 74.35a8 8 0 0 1-11.32-11.32l80-80a8 8 0 0 1 11.32 0l80 80a8 8 0 0 1 0 11.32'}
+							/></svg
 							>{/if}
 						</button>
 					{/each}
@@ -483,17 +505,14 @@
 								</a>
 								<div class='lrow-main'>
 									<h4 class='lrow-title'>
-										{title(f)}{#if isFavourite(f)}<span
-											class='text-[var(--accent)]'
-											title='My favourite'
-										>
-											★</span
+										{title(f)}{#if isFavourite(f)}<span class='fav-mark' title='My favourite'
+										>{@render star(12)}<span class='sr-only'>My favourite</span></span
 										>{/if}
 									</h4>
 									{#if subline(f)}<p class='lrow-sub'>{subline(f)}</p>{/if}
 									<p class='lrow-ratings'>
 										<span class='r-mine' aria-label={`My rating ${f.rating} out of 10`}>
-											<span class='star' aria-hidden='true'>★</span>{f.rating}
+											{@render star(13)}{f.rating}
 										</span>
 										{#if f.watched > 1}{@render rewatch(f.watched)}{/if}
 									</p>
@@ -528,11 +547,16 @@
 								>
 									<Poster posterPath={f.posterPath} alt="" width={104} fluid />
 									<span class='cell-title'
-									>{title(f)}{#if isFavourite(f)}<span class='text-[var(--accent)]'>
-										★</span
+									>{title(f)}{#if isFavourite(f)}<span class='fav-mark'
+									>{@render star(11)}<span class='sr-only'>My favourite</span></span
 									>{/if}</span
 									>
-									<span class='cell-sub'>{[f.year || '', `★ ${f.rating}`].join(' · ')}</span>
+									<span class='cell-sub'
+									>{#if f.year}{f.year} ·
+									{/if}<span class='cell-rating'
+									><span class='sr-only'>rated</span>{@render star(10)}{f.rating}</span
+									></span
+									>
 								</a>
 							</li>
 						{/each}
@@ -544,11 +568,11 @@
 		<Fleuron />
 
 		{#if firstYear}
-			<p class='rise closing-note'>The log runs back to {firstYear}.</p>
+			<p class='closing-note'>The log runs back to {firstYear}.</p>
 		{/if}
 
 		<!-- TMDB attribution (required by their API terms) -->
-		<div class='rise flex flex-col items-center gap-3 text-center'>
+		<div class='flex flex-col items-center gap-3 text-center'>
 			<a
 				href='https://www.themoviedb.org/'
 				target='_blank'
@@ -573,7 +597,12 @@
 				title='Back to the filters'
 				onclick={returnToControls}
 			>
-				<span aria-hidden='true'>↑</span>
+				<svg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 256 256' aria-hidden='true'
+				><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+					fill='currentColor'
+					d='M205.66 117.66a8 8 0 0 1-11.32 0L136 59.31V216a8 8 0 0 1-16 0V59.31l-58.34 58.35a8 8 0 0 1-11.32-11.32l72-72a8 8 0 0 1 11.32 0l72 72a8 8 0 0 1 0 11.32'
+				/></svg
+				>
 			</button>
 		{/if}
 	{/if}
@@ -702,14 +731,30 @@
 		background: var(--rule);
 	}
 
+	/* Preflight makes every svg display:block; the star has to flow with
+	   the type it marks. */
+	.star {
+		display: inline-block;
+		flex: none;
+		vertical-align: -0.13em;
+	}
+
+	.fav-mark {
+		color: var(--accent);
+		margin-left: 0.3em;
+	}
+
 	.sort-star {
+		display: inline-flex;
 		color: var(--accent);
 		margin-right: 0.25rem;
 	}
 
 	.dir {
+		flex: none;
 		color: var(--accent);
-		margin-left: 0.25rem;
+		margin-left: 0.3rem;
+		vertical-align: -0.06em;
 	}
 
 	.find {
@@ -880,17 +925,11 @@
 	.r-mine {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.3rem;
+		gap: 0.28rem;
 		color: var(--accent);
 		font-weight: 600;
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
-	}
-
-	.r-mine .star {
-		font-size: 1.25em;
-		line-height: 1;
-		transform: translateY(-0.04em);
 	}
 
 	.lrow-by {
@@ -965,6 +1004,13 @@
 		font-variant-numeric: tabular-nums;
 	}
 
+	.cell-rating {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.22rem;
+		vertical-align: baseline;
+	}
+
 	.cell:hover .cell-title,
 	.cell:focus-visible .cell-title {
 		color: var(--ink);
@@ -1036,13 +1082,18 @@
 		background: var(--bg-soft);
 		border: 1px solid var(--rule);
 		color: var(--ink-muted);
-		font-size: 1.05rem;
 		cursor: pointer;
 		box-shadow: 0 12px 28px -14px rgb(0 0 0 / 0.65);
-		animation: tour-in var(--dur-quick) var(--ease-out) both;
+		animation: return-in var(--dur-quick) var(--ease-out) both;
 		transition:
 			color var(--dur-quick) var(--ease-out),
 			border-color var(--dur-quick) var(--ease-out);
+	}
+
+	@keyframes return-in {
+		from {
+			opacity: 0;
+		}
 	}
 
 	.return:hover,

@@ -274,12 +274,12 @@
 </PageHeader>
 
 <Container size='prose'>
-	<div class='rise-3 smallcaps mt-10'>
+	<div class='smallcaps mt-10'>
 		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
 	<!-- Section index -->
-	<nav aria-label='Sections' class='rise-3 mt-8'>
+	<nav aria-label='Sections' class='mt-8'>
 		<ul class='smallcaps flex flex-wrap justify-center gap-x-6 gap-y-2'>
 			{#each sections as s (s.name)}
 				<li>

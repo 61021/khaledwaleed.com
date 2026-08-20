@@ -150,8 +150,8 @@
 	   lands left to right the way the hand did. One authored moment,
 	   then it just hangs there and wanders. */
 	.mark {
-		width: min(74vw, 27rem);
-		color: var(--accent);
+		width: min(40vw, 20rem);
+		color: white;
 		filter: drop-shadow(0 2px 24px color-mix(in oklab, black 65%, transparent));
 		-webkit-mask-image: linear-gradient(95deg, black 50%, transparent 66%);
 		mask-image: linear-gradient(95deg, black 50%, transparent 66%);

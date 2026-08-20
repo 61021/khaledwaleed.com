@@ -27,11 +27,11 @@
 
 			<div class='hero-content px-6'>
 				{#if eyebrow}
-					<div class='smallcaps hero-eyebrow rise'>{eyebrow}</div>
+					<div class='smallcaps hero-eyebrow'>{eyebrow}</div>
 				{/if}
-				<h1 class='rise-2 page-title'>{title}</h1>
+				<h1 class='page-title'>{title}</h1>
 				{#if lede}
-					<div class='lede rise-3'>
+					<div class='lede'>
 						{@render lede()}
 					</div>
 				{/if}
@@ -40,7 +40,7 @@
 
 		{#if p}
 			<!-- A wall label, set like one: artist, title, year, then the house. -->
-			<p class='hero-plate plate rise' style='--seq: 3'>
+			<p class='hero-plate plate'>
 				{p.artist}, <em>{p.title}</em>, {p.year}<span class='plate-museum'
 				>.
 					<a href={p.museumUrl} target='_blank' rel='noopener noreferrer' class='link-quiet'
@@ -53,7 +53,7 @@
 </header>
 
 {#if children}
-	<div class='rise' style='--seq: 3'>{@render children()}</div>
+	<div>{@render children()}</div>
 {/if}
 
 <style>

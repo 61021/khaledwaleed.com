@@ -9,9 +9,11 @@
 		vivid?: boolean
 		/** fill the parent's width (keeps the 2:3 ratio); `width` then only sizes the intrinsic attrs */
 		fluid?: boolean
+		/** fetch immediately: for posters in the first viewport, where lazy only delays them */
+		eager?: boolean
 	}
 
-	const { posterPath, alt, width = 52, vivid = false, fluid = false }: Props = $props()
+	const { posterPath, alt, width = 52, vivid = false, fluid = false, eager = false }: Props = $props()
 
 	const TMDB = 'https://image.tmdb.org/t/p'
 	const height = $derived(Math.round((width * 3) / 2))
@@ -39,7 +41,7 @@
 		{width}
 		{height}
 		class={[vivid && 'vivid', fluid && 'fluid']}
-		loading='lazy'
+		loading={eager ? 'eager' : 'lazy'}
 		decoding='async'
 		onerror={() => (failedPath = posterPath)}
 	/>

@@ -181,7 +181,7 @@
 			? {} // TMDB is down; keep the stored snapshot rather than degrade it
 			: {
 				// TMDB is down: keep the essentials from the search pick;
-						// the ↻ refresh can fill in directors/genres later.
+						// the refresh button can fill in directors/genres later.
 				title: selected.title,
 				year: selected.year,
 				format: selected.mediaType === 'tv' ? 'TV Series' : 'Movie',
@@ -454,15 +454,35 @@
 						<div class='row-actions'>
 							<button class='link-quiet' type='button' onclick={() => edit(f)}>Edit</button>
 							<button
-								class='link-quiet'
+								class='link-quiet icon-btn'
 								type='button'
 								onclick={() => refreshMeta(f)}
 								disabled={refreshingId === f.id}
 								title='Re-fetch TMDB metadata'
-								aria-label='Refresh metadata'>{refreshingId === f.id ? '…' : '↻'}</button
+								aria-label='Refresh metadata'
+							>{#if refreshingId === f.id}…{:else}<svg
+								xmlns='http://www.w3.org/2000/svg'
+								width='14'
+								height='14'
+								viewBox='0 0 256 256'
+								aria-hidden='true'
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill='currentColor'
+								d='M224 48v48a8 8 0 0 1-8 8h-48a8 8 0 0 1 0-16h28.69l-14.63-14.63a79.56 79.56 0 0 0-56.13-23.43h-.45a79.52 79.52 0 0 0-55.89 22.77a8 8 0 0 1-11.18-11.44a96 96 0 0 1 135 .79L208 76.69V48a8 8 0 0 1 16 0m-37.59 135.29a80 80 0 0 1-112.47-.66L59.31 168H88a8 8 0 0 0 0-16H40a8 8 0 0 0-8 8v48a8 8 0 0 0 16 0v-28.69l14.63 14.63A95.43 95.43 0 0 0 130 222.06h.53a95.36 95.36 0 0 0 67.07-27.33a8 8 0 0 0-11.18-11.44Z'
+							/></svg
+							>{/if}</button
 							>
-							<button class='del' type='button' onclick={() => remove(f)} aria-label='Remove'
-							>✕</button
+							<button
+								class='del icon-btn'
+								type='button'
+								onclick={() => remove(f)}
+								aria-label='Remove'
+							><svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 256 256' aria-hidden='true'
+							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
+								fill='currentColor'
+								d='M205.66 194.34a8 8 0 0 1-11.32 11.32L128 139.31l-66.34 66.35a8 8 0 0 1-11.32-11.32L116.69 128L50.34 61.66a8 8 0 0 1 11.32-11.32L128 116.69l66.34-66.35a8 8 0 0 1 11.32 11.32L139.31 128Z'
+							/></svg
+							></button
 							>
 						</div>
 					</li>
@@ -654,9 +674,15 @@
 		gap: 0.9rem;
 		flex-shrink: 0;
 	}
+	.icon-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 1;
+	}
+
 	.del {
 		color: var(--ink-dim);
-		font-size: 0.95rem;
 		cursor: pointer;
 		transition: color var(--dur-quick) var(--ease-out);
 	}

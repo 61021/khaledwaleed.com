@@ -101,13 +101,11 @@
 	<section aria-labelledby='rooms-heading'>
 		<h2 id='rooms-heading' class='sr-only'>Pages</h2>
 
-		<!-- The lots take their seats one by one after the hero pieces
-		     (seats 0-3 belong to the PageHeader). -->
 		<ul class='room-grid' role='list'>
-			{#each rooms as r, i (r.key)}
+			{#each rooms as r (r.key)}
 				{@const p = paintings[r.key]}
 				{@const entry = sizes[p.key as keyof typeof sizes]}
-				<li class={['room-slot rise', r.span === 3 && 'wide']} style='--seq: {4 + i}'>
+				<li class={['room-slot', r.span === 3 && 'wide']}>
 					<a href={r.href} class='room-card frame-engraved'>
 						<span class='room-art'>
 							<picture>
@@ -149,7 +147,7 @@
 
 <!-- Contact -->
 <Container size='prose'>
-	<section class='closing rise' style='--seq: {4 + rooms.length}'>
+	<section class='closing'>
 		<p class='closing-line'>I reply to everything.</p>
 		<div class='closing-actions'>
 			<Button href='/contact' size='lg' class='w-full sm:w-auto'>Talk to me</Button>

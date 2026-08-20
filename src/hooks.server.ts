@@ -1,4 +1,5 @@
 import type { Handle } from '@sveltejs/kit'
+import { withEdgeCache } from '$lib/server/edge-cache'
 import { roomBg, roomForPath } from '$lib/site'
 
 // Gone-but-indexed URLs. Cloudflare's _redirects file never fires here
@@ -62,16 +63,21 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	const room = event.route.id === null ? '404' : roomForPath(event.url.pathname)
-	let buffer = ''
-	const response = await resolve(event, {
-		transformPageChunk: ({ html, done }) => {
-			buffer += html
-			if (!done)
-				return ''
-			return buffer
-				.replace('data-room="home"', `data-room="${room}"`)
-				.replace('content="#0a1220"', `content="${roomBg[room] ?? '#0a1220'}"`)
-		},
-	})
-	return withSecurityHeaders(response)
+	const render = async (): Promise<Response> => {
+		let buffer = ''
+		const response = await resolve(event, {
+			transformPageChunk: ({ html, done }) => {
+				buffer += html
+				if (!done)
+					return ''
+				return buffer
+					.replace('data-room="home"', `data-room="${room}"`)
+					.replace('content="#0a1220"', `content="${roomBg[room] ?? '#0a1220'}"`)
+			},
+		})
+		return withSecurityHeaders(response)
+	}
+	// The live rooms answer from the colo cache (see edge-cache.ts);
+	// every other path renders straight through.
+	return withEdgeCache(event, render)
 }

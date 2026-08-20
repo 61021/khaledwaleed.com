@@ -727,120 +727,23 @@ html[data-swap='in'] .stage {
 		filter var(--swap-in) var(--ease-out);
 }
 
-/* ---------- The grand tour entrance ---------- */
+/* ---------- The entrance ---------- */
 
 /* The curtain's score (Curtain.svelte): one overture per full
-   arrival; hold, then the sweep. The procession below reads
-   --curtain-done so the room appears only once the stage is clear,
-   and --rise-step spaces the seats. */
+   arrival; hold, then the sweep. Nothing waits behind it. The room is
+   hung, lit, and finished before the cloth moves, so the panels part
+   on a house that was always there. */
 :root {
 	--curtain-hold: 450ms;
 	--curtain-sweep: 1150ms;
-	--curtain-done: calc(var(--curtain-hold) + var(--curtain-sweep));
-	--rise-step: 180ms;
-}
-
-/* Nothing travels on entry but the canvas and the title's tracking:
-   seats fade up in place, the title settles its letter-spacing as it
-   arrives (one line, re-laid once per full arrival, by design), and
-   the hero canvas drifts home from a breath of scale while the
-   curtain parts. */
-@keyframes tour-in {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-@keyframes tour-title {
-	from {
-		opacity: 0;
-		letter-spacing: 0.045em;
-	}
-	to {
-		opacity: 1;
-		letter-spacing: 0em;
-	}
-}
-
-@keyframes tour-canvas {
-	from {
-		transform: scale(1.07);
-	}
-	to {
-		transform: scale(1);
-	}
-}
-
-/* The procession: every riser takes a seat in the order of its --seq
-   (the legacy -2/-3 suffixes are seats 1 and 2; set --seq inline for
-   anything later). Delays live in the no-preference block below. */
-.rise,
-.rise-2,
-.rise-3 {
-	animation: tour-in 900ms cubic-bezier(0.25, 0.5, 0.25, 1) both;
-}
-
-.rise-2 {
-	--seq: 1;
-}
-
-.rise-3 {
-	--seq: 2;
-}
-
-/* The room title makes the tour's one flourish. (PageHeader's class
-   is reachable here because Svelte keeps literal class names in the
-   DOM; the print block below leans on the same fact.) */
-.page-title.rise-2 {
-	animation-name: tour-title;
-	animation-duration: 1100ms;
-}
-
-/* First arrivals only: walked-into rooms hang their canvas instantly
-   (and the develop-in for late paintings is scoped to data-navigated,
-   so the two never overlap). */
-html:not([data-navigated]) .hero-art img {
-	animation: tour-canvas 1600ms cubic-bezier(0.25, 0.5, 0.25, 1) both;
-}
-
-/* The entrance is a first-arrival flourish only. Once the visitor
-   starts walking the house (+layout.svelte stamps data-navigated on
-   the first client-side navigation), each room change rides the
-   blur swap; content that faded up afterwards read as the room
-   straggling in behind its painting. */
-html[data-navigated] .rise,
-html[data-navigated] .rise-2,
-html[data-navigated] .rise-3 {
-	animation: none;
-}
-
-/* First arrivals wait in the dark until the curtain has swept clear,
-   then take their seats in --seq order; the canvas starts its drift
-   as the panels part. Scoped to no-preference: the reduce reset below
-   zeroes durations but NOT delays, and a reduced-motion visitor gets
-   no curtain to wait for. */
-@media (prefers-reduced-motion: no-preference) {
-	.rise,
-	.rise-2,
-	.rise-3 {
-		animation-delay: calc(var(--curtain-done) + var(--seq, 0) * var(--rise-step));
-	}
-
-	html:not([data-navigated]) .hero-art img {
-		animation-delay: var(--curtain-hold);
-	}
 }
 
 /* ---------- Reveal on approach ----------
-   The walk-through counterpart to the rises: content marked with the
-   reveal action (src/lib/reveal.ts) starts a step below its seat and
-   rises as it enters the viewport, so a room fills up as the visitor
-   walks it. The action never hides anything for no-JS or
-   reduced-motion visitors, and bursts arriving together cascade via
-   --rv-wait. */
+   The one entrance left: content marked with the reveal attachment
+   (src/lib/reveal.ts) starts a step below its seat and rises as it
+   enters the viewport, so a room fills up as the visitor walks it.
+   The attachment never hides anything for no-JS or reduced-motion
+   visitors, and bursts arriving together cascade via --rv-wait. */
 .rv {
 	opacity: 0;
 	transform: translateY(14px);
@@ -1060,12 +963,6 @@ html[data-navigated] .rise-3 {
 	}
 
 	/* Nothing choreographed hides on paper. */
-	.rise,
-	.rise-2,
-	.rise-3 {
-		animation: none !important;
-	}
-
 	.rv {
 		opacity: 1 !important;
 		transform: none !important;

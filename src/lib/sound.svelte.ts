@@ -13,8 +13,12 @@ const POSITION_KEY = 'kw-music-position'
 const MUSIC_VOLUME = 0.03
 
 // One public-domain Musopen recording, fetched via Wikimedia Commons;
-// credited in humans.txt. The E minor nocturne, on a loop.
-const TRACK = '/audio/nocturne-op72-no1.mp3'
+// credited in humans.txt. The E minor nocturne, on a loop: Opus first
+// (a third smaller for the same ears), AAC for engines without it.
+const TRACKS = [
+	{ src: '/audio/nocturne-op72-no1-64k.ogg', type: 'audio/ogg; codecs="opus"' },
+	{ src: '/audio/nocturne-op72-no1-96k.m4a', type: 'audio/mp4; codecs="mp4a.40.2"' },
+] as const
 
 // The gestures Chrome counts as user activation. Scrolling is
 // deliberately not one of them, so the first click, tap, or keypress
@@ -79,11 +83,11 @@ class SoundSystem {
 			return
 		this.lastTick = now
 		if (kind === 'tap') {
-			// A glass tap (tasting pick D): two crystalline sine partials,
-			// struck with an instant attack and gone in under 50ms.
+			// A glass tap (tasting pick D): two crystalline sine partials, struck
+			// with an instant attack and gone inside 70ms, so the peaks sit high.
 			const partials: [number, number, number][] = [
-				[1760, 0.032, 0.045],
-				[2637, 0.012, 0.03],
+				[1760, 0.115, 0.065],
+				[2637, 0.045, 0.042],
 			]
 			for (const [freq, peak, dur] of partials) {
 				const t0 = this.ctx.currentTime
@@ -188,7 +192,8 @@ class SoundSystem {
 	private ensureMusic(): HTMLAudioElement {
 		if (this.music)
 			return this.music
-		const el = new Audio(TRACK)
+		const el = new Audio()
+		el.src = (TRACKS.find(t => el.canPlayType(t.type)) ?? TRACKS[TRACKS.length - 1]).src
 		el.preload = 'auto'
 		el.loop = true
 		let resumeAt = 0

@@ -79,12 +79,12 @@
 		{@render pic()}
 	</div>
 {:else}
-	<figure class='rise'>
+	<figure>
 		<div class='frontispiece'>
 			{@render pic()}
 		</div>
 
-		<figcaption class='plate rise-2 mx-auto mt-4 px-6'>
+		<figcaption class='plate mx-auto mt-4 px-6'>
 			<em>{p.title}</em>
 			<span class='plate-sep'>·</span>
 			{p.artist}

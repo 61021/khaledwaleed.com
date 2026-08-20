@@ -41,11 +41,12 @@
 
 <style>
 	/* The overture: a short hold, part the velvet, bring the house
-	   lights up. Timings come from the --curtain-* score in app.css,
-	   which the rises also read so the room only rises once the stage
-	   is clear. The cloth is cut from the room's own --bg (home's deep
-	   navy at the front door); no pelmet (a CSS scallop row always read
-	   as cut paper) and no monogram, just two full drops and the seam. */
+	   lights up. Timings come from the --curtain-* score in app.css.
+	   Nothing waits behind the cloth: the room is already hung when
+	   the panels part. The cloth is cut from the room's own --bg
+	   (home's deep navy at the front door); no pelmet (a CSS scallop
+	   row always read as cut paper) and no monogram, just two full
+	   drops and the seam. */
 	.curtain {
 		position: fixed;
 		inset: 0;

@@ -82,13 +82,13 @@
 </PageHeader>
 
 <Container size='prose'>
-	<div class='rise-3 smallcaps mt-10'>
+	<div class='smallcaps mt-10'>
 		updated <time datetime={lastUpdated}>{formatDate(lastUpdated)}</time>
 	</div>
 
 	<Fleuron />
 
-	<section class='rise space-y-5'>
+	<section class='space-y-5'>
 		<h2>Now reading</h2>
 		{#if reading.length}
 			<ul class='divide-y divide-[var(--rule)]'>
@@ -103,7 +103,7 @@
 
 	<Fleuron />
 
-	<section class='rise space-y-5'>
+	<section class='space-y-5'>
 		<h2>Want to read</h2>
 		{#if queue.length}
 			<ul class='divide-y divide-[var(--rule)]'>
@@ -119,7 +119,7 @@
 	{#if loved.length}
 		<Fleuron />
 
-		<section class='rise space-y-5'>
+		<section class='space-y-5'>
 			<h2>Books I keep returning to</h2>
 			<ul class='divide-y divide-[var(--rule)]'>
 				{#each loved as b (b.title)}
@@ -131,7 +131,7 @@
 
 	<Fleuron />
 
-	<figure class='rise mx-auto max-w-md text-center'>
+	<figure class='mx-auto max-w-md text-center'>
 		<blockquote class='text-[var(--ink)] italic' style='font-size: 1.25rem; line-height: 1.5;'>
 			“When I am attacked by gloomy thoughts, nothing helps me so much as running to my books.”
 		</blockquote>

@@ -48,12 +48,12 @@
 <Container size='prose'>
 	{#if !data.ok}
 		<Fleuron />
-		<p class='rise text-center text-[var(--ink-muted)] italic'>
+		<p class='text-center text-[var(--ink-muted)] italic'>
 			Spotify is not answering right now. Check back soon.
 		</p>
 	{:else}
 		<!-- Time-range switcher (server-rendered; each is a plain link) -->
-		<div class='rise mt-8 flex justify-center'>
+		<div class='mt-8 flex justify-center'>
 			<div class='line' role='group' aria-label='Time range'>
 				{#each ranges as r, i (r.key)}
 					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
@@ -75,7 +75,7 @@
 
 		<!-- Top tracks -->
 		{#if data.tracks.length}
-			<section class='rise'>
+			<section>
 				<h2>On repeat</h2>
 				<ol class='mt-4 divide-y divide-[var(--rule)]'>
 					{#each data.tracks as t, i (t.url)}
@@ -103,7 +103,7 @@
 		{#if data.artists.length}
 			<Fleuron />
 
-			<section class='rise'>
+			<section>
 				<h2>In heavy rotation</h2>
 				<ul class='mt-6 grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-4'>
 					{#each data.artists as a (a.url)}
@@ -141,7 +141,7 @@
 		{#if data.recent.length}
 			<Fleuron />
 
-			<section class='rise'>
+			<section>
 				<h2>Last spins</h2>
 				<ol class='mt-4 divide-y divide-[var(--rule)]'>
 					{#each data.recent as t, i (`${t.url}-${t.playedAt}-${i}`)}
@@ -172,7 +172,7 @@
 
 	<Fleuron />
 
-	<div class='rise smallcaps text-center'>
+	<div class='smallcaps text-center'>
 		<a href='https://www.spotify.com' target='_blank' rel='noopener noreferrer' class='link-quiet'>
 			listening data via Spotify
 		</a>

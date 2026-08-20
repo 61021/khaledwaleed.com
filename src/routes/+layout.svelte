@@ -10,6 +10,11 @@
 
 	import { roomBg, roomForPath } from '$lib/site'
 	import { sound } from '$lib/sound.svelte'
+	// The two workhorse faces, preloaded so the first paint doesn't run
+	// in fallback type while the CSS is still being parsed for their URLs
+	// (?url resolves to the same hashed asset the @font-face rules name).
+	import latoWoff2 from '@fontsource/lato/files/lato-latin-400-normal.woff2?url'
+	import playfairWoff2 from '@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff2?url'
 	import { onMount } from 'svelte'
 	import '../app.css'
 	import '@fontsource/lato/400.css'
@@ -180,9 +185,9 @@
 		// The first walk out of the space arms the house sound system.
 		if (navigation.to && !isSpacePath(navigation.to.url.pathname))
 			initSound()
-		// After the first arrival, the entrance procession sits out (see
-		// app.css): walked-into rooms are simply there behind the swap, and
-		// content fading up afterwards read as the room straggling in.
+		// The overture plays once per visit: after the first arrival the
+		// curtain sits out and paintings develop in place (see Curtain.svelte
+		// and app.css).
 		document.documentElement.setAttribute('data-navigated', '')
 		// Route changes must land at the top as an instant jump hidden inside
 		// the swap's soft beat; html's smooth scrolling turned the router's
@@ -266,6 +271,10 @@
 {/if}
 
 <svelte:head>
+	{#if !inSpace}
+		<link rel='preload' as='font' type='font/woff2' href={playfairWoff2} crossorigin='anonymous' />
+		<link rel='preload' as='font' type='font/woff2' href={latoWoff2} crossorigin='anonymous' />
+	{/if}
 	{#if !dev && site.cloudflareAnalyticsToken}
 		<script
 			defer
@@ -389,7 +398,6 @@
 				>
 					<span class='menu-icon' aria-hidden='true'>
 						<svg
-							class='icon-bars'
 							width='24'
 							height='24'
 							viewBox='0 0 24 24'
@@ -398,19 +406,9 @@
 							stroke-width='1.75'
 							stroke-linecap='round'
 						>
-							<path d='M3.5 7h17M3.5 12h17M3.5 17h17' />
-						</svg>
-						<svg
-							class='icon-x'
-							width='24'
-							height='24'
-							viewBox='0 0 24 24'
-							fill='none'
-							stroke='currentColor'
-							stroke-width='1.75'
-							stroke-linecap='round'
-						>
-							<path d='M18 6 6 18M6 6l12 12' />
+							<path class='bar bar-top' d='M3.5 7h17' />
+							<path class='bar bar-mid' d='M3.5 12h17' />
+							<path class='bar bar-bot' d='M3.5 17h17' />
 						</svg>
 					</span>
 				</button>
@@ -471,7 +469,7 @@
 
 			<!-- Footer: colophon at left, the rooms and the letterbox at right.
 		     Social platforms live on /contact (and in the Person schema), not here. -->
-			<footer class='rise mt-12 py-6 sm:mt-32 sm:py-10' style='--seq: 10'>
+			<footer class='mt-12 py-6 sm:mt-32 sm:py-10'>
 				<div class='rule-engraved mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10' aria-hidden='true'>
 					<span class='gem'></span>
 				</div>
@@ -595,32 +593,69 @@
 		overflow: hidden;
 	}
 
-	/* Hamburger ↔ X: both glyphs stay in the DOM and cross-fade with
-	   opacity/scale/blur instead of swapping instantly. */
+	/* Hamburger ↔ X: the same three strokes throughout. Opening, the
+	   outer two slide to the centre line and start folding into the
+	   cross before they land; closing runs the order backwards. The
+	   45ms overlap is what keeps it one gesture instead of two. */
 	.menu-icon {
 		display: inline-grid;
 		place-items: center;
 	}
 
-	.menu-icon svg {
-		grid-area: 1 / 1;
+	.bar {
+		transform-box: view-box;
+		/* Closing: unfold first, then spread apart. */
 		transition:
-			opacity var(--dur-quick) var(--ease-out),
+			rotate var(--dur-quick) var(--ease-out),
 			scale var(--dur-quick) var(--ease-out),
-			filter var(--dur-quick) var(--ease-out);
+			opacity var(--dur-quick) var(--ease-out),
+			translate var(--dur-quick) var(--ease-out) 45ms;
 	}
 
-	.icon-x,
-	.menu-toggle.open .icon-bars {
+	.bar-top {
+		transform-origin: 12px 7px;
+	}
+
+	.bar-mid {
+		transform-origin: 12px 12px;
+	}
+
+	.bar-bot {
+		transform-origin: 12px 17px;
+	}
+
+	.menu-toggle.open .bar {
+		/* Opening: converge first, then fold. */
+		transition:
+			translate var(--dur-quick) var(--ease-out),
+			opacity var(--dur-quick) var(--ease-out),
+			rotate var(--dur-quick) var(--ease-out) 45ms,
+			scale var(--dur-quick) var(--ease-out) 45ms;
+	}
+
+	.menu-toggle.open .bar-top {
+		translate: 0 5px;
+		rotate: 45deg;
+		scale: 0.86 1;
+	}
+
+	.menu-toggle.open .bar-bot {
+		translate: 0 -5px;
+		rotate: -45deg;
+		scale: 0.86 1;
+	}
+
+	.menu-toggle.open .bar-mid {
+		scale: 0 1;
 		opacity: 0;
-		scale: 0.25;
-		filter: blur(4px);
 	}
 
-	.menu-toggle.open .icon-x {
-		opacity: 1;
-		scale: 1;
-		filter: blur(0px);
+	@media (prefers-reduced-motion: reduce) {
+		.bar,
+		.menu-toggle.open .bar {
+			transition-duration: 0.01ms;
+			transition-delay: 0ms;
+		}
 	}
 
 	/* The nocturne's wall plate: one whisper per visit, then never again. */

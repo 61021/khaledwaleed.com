@@ -37,13 +37,13 @@
 </PageHeader>
 
 <Container size='prose'>
-	<p class='rise-3 mt-12 text-left text-[var(--ink)] sm:text-center'>
+	<p class='mt-12 text-left text-[var(--ink)] sm:text-center'>
 		I’m open to senior roles and select contract work.
 	</p>
 
 	<!-- A carte de visite left on the hall table: the panel draws its own
 	     1px rule; the engraved corners attend it from without. -->
-	<div class='visite frame-engraved rise-3'>
+	<div class='visite frame-engraved'>
 		<h2 class='visite-name'>{site.name}</h2>
 		<span class='smallcaps visite-role'>{site.role}</span>
 
