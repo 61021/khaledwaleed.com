@@ -157,8 +157,8 @@
 	.page-title {
 		font-family: var(--font-display);
 		font-weight: 400;
-		font-size: clamp(2.1rem, 8.5vw, 2.6rem);
-		line-height: 1.08;
+		font-size: clamp(2.4rem, 10vw, 2.9rem);
+		line-height: 1.06;
 		text-wrap: balance;
 		color: var(--ink);
 		margin: 0;

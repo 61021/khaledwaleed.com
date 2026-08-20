@@ -24,7 +24,7 @@
 		>
 			{page.status}
 		</div>
-		<div class='mt-10 flex flex-wrap items-center justify-center gap-8'>
+		<div class='button-row mt-10'>
 			<Button href='/' size='lg'>Home</Button>
 			<Button href='/writing' variant='outline' size='lg'>Read something instead</Button>
 		</div>

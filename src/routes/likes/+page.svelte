@@ -1,5 +1,5 @@
 <script lang='ts'>
-	import { Container, Fleuron, PageHeader, SchemaOrg, Seo, site } from '$lib'
+	import { Container, Fleuron, Noted, PageHeader, SchemaOrg, Seo, site } from '$lib'
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
@@ -8,8 +8,6 @@
 	/* An item is plain text, or a term wearing a small note that shows
 	   itself on hover and focus. */
 	type Item = string | { label: string, note: string }
-
-	const noteId = (label: string) => `note-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
 
 	type Section = {
 		name: string
@@ -313,7 +311,7 @@
 				<ul class='mt-5 flex flex-wrap gap-x-3 gap-y-1 leading-relaxed text-[var(--ink-muted)]'>
 					{#each s.items as it, j (typeof it === 'string' ? it : it.label)}
 						<li>
-							{#if j > 0}<span class='mr-3 text-[var(--rule)]' aria-hidden='true'>·</span>{/if}{#if typeof it === 'string'}{it}{:else}<button type='button' class='noted' aria-describedby={noteId(it.label)}>{it.label}<span class='note frame-gemmed' id={noteId(it.label)} role='tooltip'>{it.note}</span></button>{/if}
+							{#if j > 0}<span class='mr-3 text-[var(--rule)]' aria-hidden='true'>·</span>{/if}{#if typeof it === 'string'}{it}{:else}<Noted label={it.label} note={it.note} />{/if}
 						</li>
 					{/each}
 				</ul>
@@ -338,52 +336,3 @@
 		<figcaption class='smallcaps mt-4'>a note to self</figcaption>
 	</figure>
 </Container>
-
-<style>
-	/* A noted term: dotted underline as the tell, the note itself a
-	   small gemmed label floating above on hover or focus. The trigger
-	   is a real button so keyboards and screen readers reach it. */
-	.noted {
-		position: relative;
-		padding: 0;
-		font: inherit;
-		color: inherit;
-		background: none;
-		cursor: help;
-		border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 70%, transparent);
-	}
-
-	.noted:focus-visible {
-		outline: 1px dotted var(--accent);
-		outline-offset: 3px;
-	}
-
-	.note {
-		position: absolute;
-		bottom: calc(100% + 12px);
-		left: 50%;
-		z-index: 10;
-		width: max-content;
-		max-width: 17rem;
-		padding: 0.45rem 0.8rem;
-		font-size: 0.82rem;
-		line-height: 1.55;
-		text-align: left;
-		color: var(--ink-muted);
-		background: var(--bg-soft);
-		border: 1px solid var(--rule);
-		box-shadow: 0 16px 34px -20px rgb(0 0 0 / 0.65);
-		opacity: 0;
-		transform: translate(-50%, 5px);
-		pointer-events: none;
-		transition:
-			opacity 160ms var(--ease-out),
-			transform 160ms var(--ease-out);
-	}
-
-	.noted:hover .note,
-	.noted:focus .note {
-		opacity: 1;
-		transform: translate(-50%, 0);
-	}
-</style>

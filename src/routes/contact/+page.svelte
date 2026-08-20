@@ -70,7 +70,7 @@
 	<Fleuron />
 
 	<section class='text-left sm:text-center' {@attach reveal}>
-		<div class='flex flex-wrap items-center justify-start gap-8 sm:justify-center'>
+		<div class='button-row'>
 			<Button href='/writing' size='lg'>Read the essays</Button>
 			<Button href='/' variant='outline' size='lg'>Home</Button>
 		</div>

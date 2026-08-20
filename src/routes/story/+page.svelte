@@ -260,7 +260,7 @@
 			<a href={linkedIn} target='_blank' rel='noopener' class='link'>LinkedIn</a>, or as a two-page
 			PDF.
 		</p>
-		<div class='mt-6 flex flex-wrap items-center justify-center gap-8'>
+		<div class='button-row mt-6'>
 			<Button href={cvUrl} external>View the CV</Button>
 		</div>
 	</section>
@@ -271,7 +271,7 @@
 		<p class='max-w-md text-[var(--ink-muted)] italic sm:mx-auto'>
 			If you want to talk, about work or anything else, I am easy to reach.
 		</p>
-		<div class='mt-6 flex flex-wrap items-center justify-start gap-8 sm:justify-center'>
+		<div class='button-row mt-6'>
 			<Button href='/contact' size='lg'>Talk to me</Button>
 			<Button href='/' variant='outline' size='lg'>Home</Button>
 		</div>

@@ -205,6 +205,11 @@ html[data-room='study'] body::after {
 
 html {
 	scroll-behavior: smooth;
+	/* Nothing in the house is meant to be reached sideways: a stray
+	   absolute (a note, a corner-piece) must be clipped, not turned
+	   into a second axis of scroll. clip, not hidden, so it stays out
+	   of the way of sticky and the scroll anchoring. */
+	overflow-x: clip;
 	background-color: var(--bg);
 	color: var(--ink);
 	transition:
@@ -641,6 +646,27 @@ html[data-navigated] .frontispiece img.loaded {
 		var(--gem-dot) right top / 7px 7px no-repeat,
 		var(--gem-dot) right bottom / 7px 7px no-repeat,
 		var(--gem-dot) left bottom / 7px 7px no-repeat;
+}
+
+/* ---------- Button rows ----------
+   A phone column can't hold two labels side by side, and wrapped they
+   land as ragged blocks against a page that is otherwise centred. On
+   phones they stack the width of the column, like plates; from sm up
+   they sit on one centred line. The 2rem gap is the clearance the
+   corner-pieces need. */
+.button-row {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 2rem;
+}
+
+@media (min-width: 640px) {
+	.button-row {
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: center;
+	}
 }
 
 /* ---------- Dotted catalogue leader ----------

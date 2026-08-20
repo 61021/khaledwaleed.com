@@ -48,8 +48,9 @@
 <style>
 	/* A ruled label, brackets standing outside it: a plain 1px rim
 	   holds the text; four engraved corner brackets attend the rim
-	   from without. Primary inks rim and brackets at strength; outline
-	   keeps both faint until hover. */
+	   from without. Primary fills the rim solid and reverses the label
+	   out of it, a gilt plate; outline keeps rim and brackets faint
+	   until hover. */
 	.btn {
 		position: relative;
 		display: inline-flex;
@@ -61,6 +62,7 @@
 		cursor: pointer;
 		transition:
 			color var(--dur-quick) var(--ease-out),
+			background-color var(--dur-quick) var(--ease-out),
 			border-color var(--dur-quick) var(--ease-out),
 			transform 120ms var(--ease-out);
 	}
@@ -82,8 +84,9 @@
 	}
 
 	.btn-primary {
-		color: var(--ink);
-		border: 1px solid color-mix(in oklab, var(--accent) 60%, transparent);
+		color: var(--bg);
+		background: var(--accent);
+		border: 1px solid var(--accent);
 	}
 
 	.btn-outline {
@@ -129,9 +132,15 @@
 		opacity: 0.5;
 	}
 
+	/* The plate takes more ink: gold brightens in the night rooms, the pen deepens on paper. */
 	.btn-primary:hover {
-		color: var(--accent);
-		border-color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 70%, var(--ink));
+		border-color: color-mix(in oklab, var(--accent) 70%, var(--ink));
+	}
+
+	/* The house focus ring is drawn in accent; on a gilt plate it needs the ink instead. */
+	.btn-primary:focus-visible {
+		outline-color: var(--ink);
 	}
 
 	.btn-primary:hover::after {
