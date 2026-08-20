@@ -1,4 +1,4 @@
-import type { Buffer } from 'node:buffer'
+import { Buffer } from 'node:buffer'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import process from 'node:process'
@@ -6,6 +6,7 @@ import process from 'node:process'
 // Used by /og.png (site-wide card) and /writing/[slug]/og.png (per-essay).
 import { Resvg } from '@resvg/resvg-js'
 import satori from 'satori'
+import { monogram } from '../monogram'
 
 const ROOT = process.cwd()
 
@@ -68,6 +69,16 @@ export const writingPalette: OgPalette = {
 	accent: '#c99f5b',
 }
 
+/**
+ * The signature mark as a data URI, inked in the room's gilt. Satori
+ * has no `currentColor`, so each palette gets its own copy.
+ */
+function markSrc(accent: string): string {
+	const paths = monogram.paths.map(d => `<path d="${d}"/>`).join('')
+	const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${monogram.viewBox}" fill="${accent}">${paths}</svg>`
+	return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`
+}
+
 export interface OgCard {
 	palette: OgPalette
 	/** small uppercase line above the headline */
@@ -104,20 +115,12 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 		el(
 			'div',
 			{ style: { display: 'flex', alignItems: 'center', gap: '16px' } },
-			el(
-				'div',
-				{
-					style: {
-						display: 'flex',
-						fontFamily: '"Playfair Display", serif',
-						fontStyle: 'normal',
-						fontSize: '56px',
-						color: c.accent,
-						lineHeight: 1,
-					},
-				},
-				'KW',
-			),
+			el('img', {
+				src: markSrc(c.accent),
+				width: 84,
+				height: 51,
+				style: { display: 'flex' },
+			}),
 			el('div', {
 				style: {
 					display: 'flex',

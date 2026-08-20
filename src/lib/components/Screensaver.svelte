@@ -1,5 +1,5 @@
 <script lang='ts'>
-	import { site } from '$lib/site'
+	import { Monogram } from '$lib'
 	import { onMount } from 'svelte'
 
 	// How long the room must stay still before the house closes for the
@@ -60,9 +60,7 @@
 		<div class='drift'>
 			<div class='bob'>
 				<div class='mark'>
-					<span class='monogram'>KW</span>
-					<span class='rule'><span class='gem'></span></span>
-					<span class='plate'>{site.name} · {site.location.city}</span>
+					<Monogram class='block h-auto w-full' />
 				</div>
 			</div>
 		</div>
@@ -147,91 +145,45 @@
 		}
 	}
 
+	/* The signature at wall size, and it arrives by writing itself: a
+	   soft-edged mask slid across at the script's own slant, so the ink
+	   lands left to right the way the hand did. One authored moment,
+	   then it just hangs there and wanders. */
 	.mark {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1.1rem;
-		width: min(78vw, 22rem);
-		text-align: center;
-	}
-
-	/* The header's monogram, hung at wall size and settling its tracking
-	   as it arrives: the room title's own flourish (see tour-title). */
-	.monogram {
-		font-family: var(--font-display);
-		font-size: clamp(5rem, 22vw, 8.5rem);
-		line-height: 1;
+		width: min(74vw, 27rem);
 		color: var(--accent);
-		letter-spacing: 0.08em;
-		/* Tracking is trailing space; nudge back to sit optically centred. */
-		text-indent: 0.08em;
-		text-shadow: 0 2px 24px color-mix(in oklab, black 65%, transparent);
-		animation: monogram-settle 1800ms cubic-bezier(0.25, 0.5, 0.25, 1) both;
+		filter: drop-shadow(0 2px 24px color-mix(in oklab, black 65%, transparent));
+		-webkit-mask-image: linear-gradient(95deg, black 50%, transparent 66%);
+		mask-image: linear-gradient(95deg, black 50%, transparent 66%);
+		-webkit-mask-size: 300% 100%;
+		mask-size: 300% 100%;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-position: 0% 0;
+		mask-position: 0% 0;
+		animation: sign-on 1700ms cubic-bezier(0.45, 0.05, 0.25, 1) both;
 	}
 
-	@keyframes monogram-settle {
+	@keyframes sign-on {
 		from {
-			opacity: 0;
-			letter-spacing: 0.22em;
-		}
-	}
-
-	/* The colophon's engraved rule, re-inked for a wall with the lights
-	   out: --rule vanishes at this depth, so the hairline and its gem
-	   are cut from the room's own gilt instead. */
-	.rule {
-		display: flex;
-		align-items: center;
-		gap: 0.9rem;
-		width: 100%;
-		color: color-mix(in oklab, var(--accent) 70%, transparent);
-	}
-
-	.rule::before,
-	.rule::after {
-		content: '';
-		flex: 1;
-		height: 1px;
-		background: color-mix(in oklab, var(--accent) 32%, transparent);
-	}
-
-	.rule::before {
-		mask-image: linear-gradient(to right, transparent, black 30%);
-	}
-
-	.rule::after {
-		mask-image: linear-gradient(to left, transparent, black 30%);
-	}
-
-	.gem {
-		width: 0.32rem;
-		height: 0.32rem;
-		background: currentColor;
-		transform: rotate(45deg);
-	}
-
-	.rule,
-	.plate {
-		animation: label-in 1600ms 300ms ease both;
-	}
-
-	@keyframes label-in {
-		from {
-			opacity: 0;
+			-webkit-mask-position: 100% 0;
+			mask-position: 100% 0;
 		}
 	}
 
 	/* Reduced motion: the mark simply hangs there, centred and still. The
 	   global reset zeroes durations but would leave the wander parked at
-	   whichever keyframe it landed on. */
+	   whichever keyframe it landed on, and the sweep half-inked. */
 	@media (prefers-reduced-motion: reduce) {
 		.drift,
 		.bob,
-		.monogram,
-		.rule,
-		.plate {
+		.mark {
 			animation: none;
+		}
+
+		.mark {
+			-webkit-mask-image: none;
+			mask-image: none;
 		}
 	}
 

@@ -2,7 +2,7 @@
 	import { dev } from '$app/environment'
 	import { onNavigate } from '$app/navigation'
 	import { page } from '$app/state'
-	import { CommandPalette, Container, Curtain, JsonLd, Screensaver, site } from '$lib'
+	import { CommandPalette, Container, Curtain, JsonLd, Monogram, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
 	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
@@ -263,10 +263,10 @@
 		<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
 			<a
 				href='/'
-				class='justify-self-start font-display text-2xl text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
+				class='justify-self-start text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
 				aria-label='Khaled Waleed, home'
 			>
-				KW<span class='sr-only'>Khaled Waleed</span>
+				<Monogram class='block h-7 w-auto' />
 			</a>
 
 			<!-- Desktop: links inline, centred between the monogram and the search chip -->
