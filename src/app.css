@@ -171,13 +171,12 @@ html {
 		color 600ms ease;
 }
 
-/* While the velvet band rides (+layout sets data-sweep), the covered
-   beat carries the palette change: the eases above and the wallpaper's
-   would otherwise straggle past the band's release, re-rastering
-   viewport-sized layers while it sweeps. */
-html[data-sweep],
-html[data-sweep] body::before {
-	transition: none;
+/* A room change carries its palette with it: the 600ms eases above and
+   the wallpaper's would straggle long past the blur swap (+layout sets
+   data-swap), so the wall crosses on the swap's own clock instead. */
+html[data-swap],
+html[data-swap] body::before {
+	transition-duration: var(--swap-in);
 }
 
 body {
@@ -407,13 +406,14 @@ a.link-quiet:hover {
 	pointer-events: none;
 }
 
-/* A painting that misses its own view transition (cold room, slow line;
-   +layout waits only 300ms) develops in like a print instead of popping.
-   Scoped to walked-in visits: first paint and no-JS visitors keep the
-   image immediate, so LCP never waits on this. */
+/* A painting that misses the blur swap (cold room, slow line; the swap
+   waits for nothing) develops in like a print instead of popping, on a
+   clock close enough to the swap's that it doesn't straggle. Scoped to
+   walked-in visits: first paint and no-JS visitors keep the image
+   immediate, so LCP never waits on this. */
 html[data-navigated] .frontispiece img {
 	opacity: 0;
-	transition: opacity 500ms ease;
+	transition: opacity 320ms ease;
 }
 
 html[data-navigated] .frontispiece img.loaded {
@@ -609,61 +609,39 @@ html[data-navigated] .frontispiece img.loaded {
 	border-bottom: 1px dotted color-mix(in oklab, var(--ink-dim) 55%, transparent);
 }
 
-/* ---------- The velvet walk ----------
-   Every room change rides one band of the curtain's own cloth, in
-   every engine: it gathers over the frame (segment curves inside the
-   keyframes, the encore's idiom), holds covered for a beat while the
-   router swaps the room and the palette underneath (+layout resolves
-   the navigation inside the hold), then releases off the far side.
-   The band stands wider than the viewport (inset 0 -6vw) so its
-   soft-masked edges never thin the cover mid-hold, and it animates
-   transform only: the folds rasterise once and ride as one composited
-   layer. This retired the view transitions and the Gecko fork with
-   them; Firefox and Chromium walk the same corridor now. */
-.velvet-band {
-	position: fixed;
-	inset: 0 -6vw;
-	z-index: 105;
-	pointer-events: none;
-	transform: translateX(-102%);
-	background-color: var(--bg);
-	background-image: repeating-linear-gradient(
-		90deg,
-		rgb(0 0 0 / 0.14) 0,
-		transparent 26px,
-		rgb(255 255 255 / 0.03) 52px,
-		transparent 78px,
-		rgb(0 0 0 / 0.14) 110px
-	);
-	-webkit-mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
-	mask-image: linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%);
+/* ---------- The blur swap ----------
+   Room changes are near-instant. The stage (main + footer; the nav
+   lettering floats above it and stays sharp) softens and dips for one
+   short beat, the router swaps the room and the palette under it,
+   then the new room settles back sharp. One layer, one clock: nothing
+   here carries its own timing, which is what every earlier corridor
+   (view transitions, the velvet band) got wrong. The blur stays small
+   and brief on purpose: a viewport-sized filter is the expensive
+   part, and 5px for a tenth of a second is a soft focus pull, not a
+   wash. */
+:root {
+	--swap-out: 90ms;
+	--swap-in: 170ms;
 }
 
-.velvet-band.sweep {
-	animation: velvet-sweep 640ms both;
+html[data-swap] .stage {
+	will-change: opacity, filter;
 }
 
-/* Covered from 42% to 58% (roughly 270ms to 370ms): the swap lands at
-   300ms, always against velvet, never against the old room. */
-@keyframes velvet-sweep {
-	0% {
-		transform: translateX(-102%);
-		animation-timing-function: cubic-bezier(0.55, 0, 0.3, 1);
-	}
+html[data-swap='out'] .stage {
+	opacity: 0.2;
+	filter: blur(5px);
+	transition:
+		opacity var(--swap-out) linear,
+		filter var(--swap-out) linear;
+}
 
-	42% {
-		transform: translateX(0);
-		animation-timing-function: linear;
-	}
-
-	58% {
-		transform: translateX(0);
-		animation-timing-function: cubic-bezier(0.72, 0, 0.22, 1);
-	}
-
-	100% {
-		transform: translateX(102%);
-	}
+html[data-swap='in'] .stage {
+	opacity: 1;
+	filter: blur(0);
+	transition:
+		opacity var(--swap-in) cubic-bezier(0.22, 0.7, 0.25, 1),
+		filter var(--swap-in) cubic-bezier(0.22, 0.7, 0.25, 1);
 }
 
 /* The Alchemist hangs in the darkest room; give the canvas more light
@@ -754,7 +732,7 @@ html:not([data-navigated]) .hero-art img {
 /* The entrance is a first-arrival flourish only. Once the visitor
    starts walking the house (+layout.svelte stamps data-navigated on
    the first client-side navigation), each room change rides the
-   velvet band; content that faded up afterwards read as the room
+   blur swap; content that faded up afterwards read as the room
    straggling in behind its painting. */
 html[data-navigated] .rise,
 html[data-navigated] .rise-2,

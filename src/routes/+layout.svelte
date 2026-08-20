@@ -145,21 +145,20 @@
 		}
 	})
 
-	// The velvet walk's band (see .velvet-band in app.css) and a token so
-	// a fast second navigation is never cleaned up by the first one's timer.
-	let bandEl = $state<HTMLDivElement>()
-	let sweepToken = 0
+	// The blur swap's token: a fast second navigation must never be
+	// cleaned up (or sharpened early) by the first one's timers.
+	let swapToken = 0
 
 	onNavigate((navigation) => {
 		mobileOpen = false
 		// After the first arrival, the entrance procession sits out (see
-		// app.css): walked-into rooms are simply there behind the band, and
+		// app.css): walked-into rooms are simply there behind the swap, and
 		// content fading up afterwards read as the room straggling in.
 		document.documentElement.setAttribute('data-navigated', '')
-		// Route changes must land at the top as an instant jump hidden under
-		// the band; html's smooth scrolling turned the router's scroll reset
-		// into an eased scroll still running when the new room appeared.
-		// Same-page hash jumps keep the smoothness.
+		// Route changes must land at the top as an instant jump hidden inside
+		// the swap's soft beat; html's smooth scrolling turned the router's
+		// scroll reset into an eased scroll still running when the new room
+		// appeared. Same-page hash jumps keep the smoothness.
 		const pathChanged = navigation.from?.url.pathname !== navigation.to?.url.pathname
 		if (pathChanged) {
 			const html = document.documentElement
@@ -170,43 +169,45 @@
 		}
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 			return
-		// The corridor is for room changes only: hash jumps and same-path
+		// The swap is for room changes only: hash jumps and same-path
 		// search changes (the music range switcher) swap in place.
 		if (!pathChanged)
 			return
-		// Start carrying the next painting to the door. No hold: the band's
-		// covered beat is the decode window, and a canvas that still misses
+		// Start carrying the next painting to the door. No hold: the swap's
+		// soft beat is the decode window, and a canvas that still misses
 		// its cue develops in via .loaded (see .frontispiece img in app.css).
 		const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null
 		if (key)
 			warmPainting(key)
-		// The velvet walk, one corridor for every engine (the view
-		// transitions and their Gecko fork are gone): the band gathers over
-		// the frame, holds covered while the router swaps the room and the
-		// palette underneath, then releases off the far side. data-sweep
-		// silences the 600ms palette eases so the change is done before the
-		// reveal; onNavigate runs after data loading, so the hold never
-		// waits on the network.
-		const band = bandEl
-		if (!band)
-			return
-		const token = ++sweepToken
+		// The blur swap (see .stage in app.css): the stage (main + footer;
+		// the nav lettering floats above it, sharp) softens out of focus
+		// for one short beat, the router swaps the room and the palette
+		// underneath, then the new room settles back sharp. One layer, one
+		// clock; the band's covered corridor is gone. data-swap also
+		// shortens the 600ms palette eases to the sharpen's own clock, so
+		// the wall crosses with the focus pull instead of straggling after
+		// it. onNavigate runs after data loading, so the beat never waits
+		// on the network.
 		const html = document.documentElement
-		html.setAttribute('data-sweep', '')
-		band.classList.remove('sweep')
-		void band.offsetWidth
-		band.classList.add('sweep')
-		setTimeout(() => {
-			if (token !== sweepToken)
+		const token = ++swapToken
+		html.setAttribute('data-swap', 'out')
+		const arrive = () => {
+			if (token !== swapToken)
 				return
-			html.removeAttribute('data-sweep')
-			band.classList.remove('sweep')
-		}, 700)
+			html.setAttribute('data-swap', 'in')
+			setTimeout(() => {
+				if (token !== swapToken)
+					return
+				html.removeAttribute('data-swap')
+			}, 200)
+		}
+		// `complete` settles right after the swap: sharpen on the new room,
+		// or back onto the old one when the navigation aborts.
+		navigation.complete.then(arrive, arrive)
 		return new Promise((resolve) => {
-			// The band covers the frame from roughly 270ms to 370ms; resolve
-			// inside the hold so the swap lands against velvet, never against
-			// the old room.
-			setTimeout(resolve, 300)
+			// Swap at the bottom of the dip, never against a half-blurred
+			// old room (--swap-out is 90ms).
+			setTimeout(resolve, 90)
 		})
 	})
 
@@ -297,22 +298,35 @@
 						sound.toggle()
 					}}
 				>
-					<svg class='sound-glyph' width='16' height='16' viewBox='0 0 16 16' fill='none' aria-hidden='true'>
-						<ellipse cx='6' cy='12' rx='2.3' ry='1.8' fill='currentColor' transform='rotate(-16 6 12)' />
-						<path d='M8.1 12 V3.2 Q11 4 11.7 6.7' stroke='currentColor' stroke-width='1.2' stroke-linecap='round' />
-						{#if !sound.enabled}
-							<path d='M2.6 13.6 L13.4 2.6' stroke='currentColor' stroke-width='1.1' stroke-linecap='round' />
+					<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
+					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+						{#if sound.enabled}
+							<path
+								fill='currentColor'
+								d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
+							/>
+						{:else}
+							<path
+								fill='currentColor'
+								d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
+							/>
 						{/if}
 					</svg>
 				</button>
 				<button
 					type='button'
-					class="relative flex cursor-pointer items-center justify-center p-2 text-[0.95rem] leading-none text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
+					class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
 					aria-label='Search the site'
 					title='Search (press /)'
 					onclick={() => palette.request()}
 				>
-					/
+					<!-- phosphor: magnifying-glass -->
+					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+						<path
+							fill='currentColor'
+							d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
+						/>
+					</svg>
 				</button>
 				{#if soundHint}
 					<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
@@ -414,75 +428,76 @@
 		{/if}
 	</header>
 
-	<main id='main' class='flex-1'>
-		{@render children()}
-	</main>
+	<!-- The stage: everything the blur swap softens. The header stays
+	     outside it, so the nav lettering holds sharp over the focus
+	     pull (a filter blurs its whole subtree; no exemptions). -->
+	<div class='stage flex flex-1 flex-col'>
+		<main id='main' class='flex-1'>
+			{@render children()}
+		</main>
 
-	<!-- Footer: colophon at left, the rooms and the letterbox at right.
-	     Social platforms live on /contact (and in the Person schema), not here. -->
-	<footer class='rise mt-12 py-6 sm:mt-32 sm:py-10' style='--seq: 10'>
-		<div class='rule-engraved mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10' aria-hidden='true'>
-			<span class='gem'></span>
-		</div>
-		<Container size='wide'>
-			<div class='flex flex-col gap-6 text-left sm:flex-row sm:items-end sm:justify-between'>
-				<div class='space-y-1'>
-					<div class='text-[var(--ink-muted)] italic max-sm:text-sm'>
-						{site.name} <span lang='ar' class='not-italic'>{site.nameArabic}</span> ·
-						{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
-					</div>
-					<div class='smallcaps'>
-						{colophonYear} · set in playfair &amp; lato ·
-						<!-- Plain text on purpose: no cursor, no role, no hint.
-						     Whoever clicks it anyway hears the music lean in. -->
-						<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-						<span onclick={() => sound.swell()}>for r.</span>
-					</div>
-				</div>
-				<!-- Phones keep the colophon alone: the rooms are a tap away in
-				     the header menu, and repeating them under a hamburger only
-				     lengthened the scroll. -->
-				<div class='footer-rooms hidden space-y-2 sm:block'>
-					<nav
-						aria-label='Pages'
-						class='grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:justify-end sm:gap-x-5'
-					>
-						{#each nav as item (item.name)}
-							<a
-								href={item.href}
-								class='text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-							>
-								{item.name}
-							</a>
-						{/each}
-					</nav>
-					<div class='text-sm sm:text-right'>
-						<span class='text-[var(--ink-dim)]'>registered domains:</span>
-						<span class='whitespace-nowrap'>
-							<a
-								href='https://khalidwaleed.com'
-								class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-							>
-								khalidwaleed.com
-							</a>
-							<span class='text-[var(--ink-dim)]'>·</span>
-							<a
-								href='/'
-								class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-							>
-								khaledwaleed.com
-							</a>
-						</span>
-					</div>
-				</div>
+		<!-- Footer: colophon at left, the rooms and the letterbox at right.
+		     Social platforms live on /contact (and in the Person schema), not here. -->
+		<footer class='rise mt-12 py-6 sm:mt-32 sm:py-10' style='--seq: 10'>
+			<div class='rule-engraved mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10' aria-hidden='true'>
+				<span class='gem'></span>
 			</div>
-		</Container>
-	</footer>
+			<Container size='wide'>
+				<div class='flex flex-col gap-6 text-left sm:flex-row sm:items-end sm:justify-between'>
+					<div class='space-y-1'>
+						<div class='text-[var(--ink-muted)] italic max-sm:text-sm'>
+							{site.name} <span lang='ar' class='not-italic'>{site.nameArabic}</span> ·
+							{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
+						</div>
+						<div class='smallcaps'>
+							{colophonYear} · set in playfair &amp; lato ·
+							<!-- Plain text on purpose: no cursor, no role, no hint.
+							     Whoever clicks it anyway hears the music lean in. -->
+							<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+							<span onclick={() => sound.swell()}>for r.</span>
+						</div>
+					</div>
+					<!-- Phones keep the colophon alone: the rooms are a tap away in
+					     the header menu, and repeating them under a hamburger only
+					     lengthened the scroll. -->
+					<div class='footer-rooms hidden space-y-2 sm:block'>
+						<nav
+							aria-label='Pages'
+							class='grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:justify-end sm:gap-x-5'
+						>
+							{#each nav as item (item.name)}
+								<a
+									href={item.href}
+									class='text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+								>
+									{item.name}
+								</a>
+							{/each}
+						</nav>
+						<div class='text-sm sm:text-right'>
+							<span class='text-[var(--ink-dim)]'>registered domains:</span>
+							<span class='whitespace-nowrap'>
+								<a
+									href='https://khalidwaleed.com'
+									class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+								>
+									khalidwaleed.com
+								</a>
+								<span class='text-[var(--ink-dim)]'>·</span>
+								<a
+									href='/'
+									class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+								>
+									khaledwaleed.com
+								</a>
+							</span>
+						</div>
+					</div>
+				</div>
+			</Container>
+		</footer>
+	</div>
 </div>
-
-<!-- The velvet walk's band: parked in the wings until a navigation
-     rides it (see .velvet-band in app.css). -->
-<div class='velvet-band' bind:this={bandEl} aria-hidden='true'></div>
 
 <style>
 	/* The nav letters directly on the room's canvas, so its lettering
@@ -498,7 +513,7 @@
 
 	/* Glyphs are strokes, not letters; the halo comes as a drop-shadow
 	   on their stills (the hamburger's svgs animate their own filter). */
-	.sound-glyph,
+	.glyph,
 	.menu-icon {
 		filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent));
 	}
