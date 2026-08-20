@@ -11,7 +11,6 @@
 	import { roomBg, roomForPath } from '$lib/site'
 	import { sound } from '$lib/sound.svelte'
 	import { onMount } from 'svelte'
-	import { slide } from 'svelte/transition'
 	import '../app.css'
 	import '@fontsource/lato/400.css'
 	import '@fontsource/lato/400-italic.css'
@@ -20,6 +19,14 @@
 	import '@fontsource/playfair-display/400-italic.css'
 
 	const { children } = $props()
+
+	// The creative space (/space) is a separate world on the same domain:
+	// no header, footer, curtain, palette, screensaver, or sound. Only the
+	// room-token plumbing is shared.
+	function isSpacePath(pathname: string) {
+		return pathname === '/space' || pathname.startsWith('/space/')
+	}
+	const inSpace = $derived(isSpacePath(page.url.pathname))
 
 	// The colophon year, computed so it turns over each New Year.
 	const colophonYear = romanYear(new Date().getFullYear())
@@ -43,21 +50,37 @@
 	// every page ticks without touching the components themselves.
 	// One whisper per visit under the note glyph (the nocturne's own wall
 	// plate), so the house's most distinctive layer stops being a secret.
+	// The space keeps its own silence: a visit that starts there arms
+	// nothing until the first step into the museum (see onNavigate).
 	let soundHint = $state(false)
-	onMount(() => {
+	let soundReady = false
+	let hintShow: ReturnType<typeof setTimeout>
+	let hintHide: ReturnType<typeof setTimeout>
+
+	function initSound() {
+		if (soundReady)
+			return
+		soundReady = true
 		sound.init()
 		if (sound.enabled && !sessionStorage.getItem('kw-sound-hint')) {
 			sessionStorage.setItem('kw-sound-hint', '1')
-			const show = setTimeout(() => (soundHint = true), 3200)
-			const hide = setTimeout(() => (soundHint = false), 12200)
-			return () => {
-				clearTimeout(show)
-				clearTimeout(hide)
-			}
+			hintShow = setTimeout(() => (soundHint = true), 3200)
+			hintHide = setTimeout(() => (soundHint = false), 12200)
+		}
+	}
+
+	onMount(() => {
+		if (!inSpace)
+			initSound()
+		return () => {
+			clearTimeout(hintShow)
+			clearTimeout(hintHide)
 		}
 	})
 
 	function tickOnClick(e: MouseEvent) {
+		if (inSpace)
+			return
 		const el = e.target instanceof Element ? e.target.closest('a, button') : null
 		if (el)
 			sound.tick('tap')
@@ -114,6 +137,9 @@
 	}
 
 	function onGlobalKeydown(e: KeyboardEvent) {
+		// The space has no menu, no sound switch, and no secrets.
+		if (inSpace)
+			return
 		if (e.key === 'Escape')
 			mobileOpen = false
 		if (e.metaKey || e.ctrlKey || e.altKey || isTyping(e.target))
@@ -151,6 +177,9 @@
 
 	onNavigate((navigation) => {
 		mobileOpen = false
+		// The first walk out of the space arms the house sound system.
+		if (navigation.to && !isSpacePath(navigation.to.url.pathname))
+			initSound()
 		// After the first arrival, the entrance procession sits out (see
 		// app.css): walked-into rooms are simply there behind the swap, and
 		// content fading up afterwards read as the room straggling in.
@@ -229,10 +258,12 @@
 	}
 </script>
 
-<JsonLd />
-<CommandPalette />
-<Curtain />
-<Screensaver />
+{#if !inSpace}
+	<JsonLd />
+	<CommandPalette />
+	<Curtain />
+	<Screensaver />
+{/if}
 
 <svelte:head>
 	{#if !dev && site.cloudflareAnalyticsToken}
@@ -255,250 +286,252 @@
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
-<div class='relative flex min-h-[100dvh] flex-col'>
-	<!-- Quiet classical header: not sticky, no chrome, and out of the
+{#if inSpace}
+	<!-- The space: bare paper. Its world lives in routes/space. -->
+	<main id='main'>
+		{@render children()}
+	</main>
+{:else}
+	<div class='relative flex min-h-[100dvh] flex-col'>
+		<!-- Quiet classical header: not sticky, no chrome, and out of the
 	     flow: the nav is lettering on the room's canvas from the first
 	     frame, never a band of wall above it. -->
-	<header class='absolute inset-x-0 top-0 z-40 py-4'>
-		<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
-			<a
-				href='/'
-				class='justify-self-start text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
-				aria-label='Khaled Waleed, home'
-			>
-				<Monogram class='block h-7 w-auto' />
-			</a>
-
-			<!-- Desktop: links inline, centred between the monogram and the search chip -->
-			<nav aria-label='Primary' class='hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'>
-				{#each nav as item (item.name)}
-					{@const active = isActive(item.href, page.url.pathname)}
-					<a
-						href={item.href}
-						class="-my-2 py-2 font-display text-[1.05rem] transition-colors duration-300 {active
-							? 'text-[var(--accent)]'
-							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
-						aria-current={active ? 'page' : undefined}
-					>
-						{item.name}
-					</a>
-				{/each}
-			</nav>
-
-			<!-- Desktop: sound and search balance the monogram, bare glyphs
-			     in the nav's own idiom; the header stays chromeless. -->
-			<div class='relative hidden items-center gap-1 justify-self-end sm:flex'>
-				<button
-					type='button'
-					class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
-					aria-pressed={sound.enabled}
-					aria-label={sound.enabled ? 'Turn sound off' : 'Turn sound on'}
-					title='Sound (press m)'
-					onclick={() => {
-						soundHint = false
-						sound.toggle()
-					}}
+		<header class={['absolute inset-x-0 top-0 z-40 py-4', mobileOpen && 'menu-open']}>
+			<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
+				<a
+					href='/'
+					class='justify-self-start text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
+					aria-label='Khaled Waleed, home'
 				>
-					<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
-					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
-						{#if sound.enabled}
-							<path
-								fill='currentColor'
-								d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
-							/>
-						{:else}
-							<path
-								fill='currentColor'
-								d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
-							/>
-						{/if}
-					</svg>
-				</button>
-				<button
-					type='button'
-					class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
-					aria-label='Search the site'
-					title='Search (press /)'
-					onclick={() => palette.request()}
-				>
-					<!-- phosphor: magnifying-glass -->
-					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
-						<path
-							fill='currentColor'
-							d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
-						/>
-					</svg>
-				</button>
-				{#if soundHint}
-					<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
-				{/if}
-			</div>
+					<Monogram class='block h-7 w-auto' />
+				</a>
 
-			<!-- Sound state for screen readers: the m shortcut and both
-			     toggles land here, wherever focus happens to be. -->
-			<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
-
-			<!-- Phone: hamburger toggle -->
-			<button
-				type='button'
-				class={[
-					'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden',
-					mobileOpen && 'open',
-				]}
-				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-				aria-expanded={mobileOpen}
-				aria-controls='mobile-nav'
-				onclick={() => (mobileOpen = !mobileOpen)}
-			>
-				<span class='menu-icon' aria-hidden='true'>
-					<svg
-						class='icon-bars'
-						width='24'
-						height='24'
-						viewBox='0 0 24 24'
-						fill='none'
-						stroke='currentColor'
-						stroke-width='1.75'
-						stroke-linecap='round'
-					>
-						<path d='M3.5 7h17M3.5 12h17M3.5 17h17' />
-					</svg>
-					<svg
-						class='icon-x'
-						width='24'
-						height='24'
-						viewBox='0 0 24 24'
-						fill='none'
-						stroke='currentColor'
-						stroke-width='1.75'
-						stroke-linecap='round'
-					>
-						<path d='M18 6 6 18M6 6l12 12' />
-					</svg>
-				</span>
-			</button>
-		</div>
-
-		<!-- Phone: collapsible menu -->
-		{#if mobileOpen}
-			<nav
-				id='mobile-nav'
-				aria-label='Primary'
-				class='mx-auto max-w-6xl px-6 sm:hidden'
-				transition:slide={{ duration: 220 }}
-			>
-				<ul class='mt-2 flex flex-col border-t border-[var(--rule)] pt-1'>
+				<!-- Desktop: links inline, centred between the monogram and the search chip -->
+				<nav aria-label='Primary' class='hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'>
 					{#each nav as item (item.name)}
 						{@const active = isActive(item.href, page.url.pathname)}
-						<li>
-							<a
-								href={item.href}
-								class="block py-3 font-display text-lg transition-colors {active
-									? 'text-[var(--accent)]'
-									: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
-								aria-current={active ? 'page' : undefined}
-								onclick={() => (mobileOpen = false)}
-							>
-								{item.name}
-							</a>
-						</li>
+						<a
+							href={item.href}
+							class="-my-2 py-2 font-display text-[1.05rem] transition-colors {active
+								? 'text-[var(--accent)]'
+								: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
+							aria-current={active ? 'page' : undefined}
+						>
+							{item.name}
+						</a>
 					{/each}
-					<li>
-						<button
-							type='button'
-							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
-							onclick={() => {
-								mobileOpen = false
-								palette.request()
-							}}
-						>
-							Search…
-						</button>
-					</li>
-					<li>
-						<button
-							type='button'
-							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
-							onclick={() => sound.toggle()}
-						>
-							{sound.enabled ? 'Sound off' : 'Sound on'}
-						</button>
-					</li>
-				</ul>
-			</nav>
-		{/if}
-	</header>
+				</nav>
 
-	<!-- The stage: everything the blur swap softens. The header stays
-	     outside it, so the nav lettering holds sharp over the focus
-	     pull (a filter blurs its whole subtree; no exemptions). -->
-	<div class='stage flex flex-1 flex-col'>
-		<main id='main' class='flex-1'>
-			{@render children()}
-		</main>
+				<!-- Desktop: sound and search balance the monogram, bare glyphs
+			     in the nav's own idiom; the header stays chromeless. -->
+				<div class='relative hidden items-center gap-1 justify-self-end sm:flex'>
+					<button
+						type='button'
+						class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
+						aria-pressed={sound.enabled}
+						aria-label={sound.enabled ? 'Turn sound off' : 'Turn sound on'}
+						title='Sound (press m)'
+						onclick={() => {
+							soundHint = false
+							sound.toggle()
+						}}
+					>
+						<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
+						<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+							{#if sound.enabled}
+								<path
+									fill='currentColor'
+									d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
+								/>
+							{:else}
+								<path
+									fill='currentColor'
+									d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
+								/>
+							{/if}
+						</svg>
+					</button>
+					<button
+						type='button'
+						class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
+						aria-label='Search the site'
+						title='Search (press /)'
+						onclick={() => palette.request()}
+					>
+						<!-- phosphor: magnifying-glass -->
+						<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+							<path
+								fill='currentColor'
+								d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
+							/>
+						</svg>
+					</button>
+					{#if soundHint}
+						<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
+					{/if}
+				</div>
 
-		<!-- Footer: colophon at left, the rooms and the letterbox at right.
-		     Social platforms live on /contact (and in the Person schema), not here. -->
-		<footer class='rise mt-12 py-6 sm:mt-32 sm:py-10' style='--seq: 10'>
-			<div class='rule-engraved mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10' aria-hidden='true'>
-				<span class='gem'></span>
+				<!-- Sound state for screen readers: the m shortcut and both
+			     toggles land here, wherever focus happens to be. -->
+				<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
+
+				<!-- Phone: hamburger toggle -->
+				<button
+					type='button'
+					class={[
+						'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden',
+						mobileOpen && 'open',
+					]}
+					aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+					aria-expanded={mobileOpen}
+					aria-controls='mobile-nav'
+					onclick={() => (mobileOpen = !mobileOpen)}
+				>
+					<span class='menu-icon' aria-hidden='true'>
+						<svg
+							class='icon-bars'
+							width='24'
+							height='24'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='1.75'
+							stroke-linecap='round'
+						>
+							<path d='M3.5 7h17M3.5 12h17M3.5 17h17' />
+						</svg>
+						<svg
+							class='icon-x'
+							width='24'
+							height='24'
+							viewBox='0 0 24 24'
+							fill='none'
+							stroke='currentColor'
+							stroke-width='1.75'
+							stroke-linecap='round'
+						>
+							<path d='M18 6 6 18M6 6l12 12' />
+						</svg>
+					</span>
+				</button>
 			</div>
-			<Container size='wide'>
-				<div class='flex flex-col gap-6 text-left sm:flex-row sm:items-end sm:justify-between'>
-					<div class='space-y-1'>
-						<div class='text-[var(--ink-muted)] italic max-sm:text-sm'>
-							{site.name} <span lang='ar' class='not-italic'>{site.nameArabic}</span> ·
-							{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
-						</div>
-						<div class='smallcaps'>
-							{colophonYear} · set in playfair &amp; lato ·
-							<!-- Plain text on purpose: no cursor, no role, no hint.
-							     Whoever clicks it anyway hears the music lean in. -->
-							<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-							<span onclick={() => sound.swell()}>for r.</span>
-						</div>
-					</div>
-					<!-- Phones keep the colophon alone: the rooms are a tap away in
-					     the header menu, and repeating them under a hamburger only
-					     lengthened the scroll. -->
-					<div class='footer-rooms hidden space-y-2 sm:block'>
-						<nav
-							aria-label='Pages'
-							class='grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:justify-end sm:gap-x-5'
-						>
-							{#each nav as item (item.name)}
+
+			<!-- Phone: collapsible menu -->
+			<div class='mobile-menu mx-auto max-w-6xl px-6 sm:hidden'>
+				<nav id='mobile-nav' aria-label='Primary' inert={!mobileOpen}>
+					<ul class='mt-2 flex flex-col border-t border-[var(--rule)] pt-1 pb-2'>
+						{#each nav as item (item.name)}
+							{@const active = isActive(item.href, page.url.pathname)}
+							<li>
 								<a
 									href={item.href}
-									class='text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+									class="block py-3 font-display text-lg transition-colors {active
+										? 'text-[var(--accent)]'
+										: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
+									aria-current={active ? 'page' : undefined}
+									onclick={() => (mobileOpen = false)}
 								>
 									{item.name}
 								</a>
-							{/each}
-						</nav>
-						<div class='text-sm sm:text-right'>
-							<span class='text-[var(--ink-dim)]'>registered domains:</span>
-							<span class='whitespace-nowrap'>
-								<a
-									href='https://khalidwaleed.com'
-									class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-								>
-									khalidwaleed.com
-								</a>
-								<span class='text-[var(--ink-dim)]'>·</span>
-								<a
-									href='/'
-									class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
-								>
-									khaledwaleed.com
-								</a>
-							</span>
+							</li>
+						{/each}
+						<li>
+							<button
+								type='button'
+								class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
+								onclick={() => {
+									mobileOpen = false
+									palette.request()
+								}}
+							>
+								Search…
+							</button>
+						</li>
+						<li>
+							<button
+								type='button'
+								class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
+								onclick={() => sound.toggle()}
+							>
+								{sound.enabled ? 'Sound off' : 'Sound on'}
+							</button>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<!-- The stage: everything the blur swap softens. The header stays
+	     outside it, so the nav lettering holds sharp over the focus
+	     pull (a filter blurs its whole subtree; no exemptions). -->
+		<div class='stage flex flex-1 flex-col'>
+			<main id='main' class='flex-1'>
+				{@render children()}
+			</main>
+
+			<!-- Footer: colophon at left, the rooms and the letterbox at right.
+		     Social platforms live on /contact (and in the Person schema), not here. -->
+			<footer class='rise mt-12 py-6 sm:mt-32 sm:py-10' style='--seq: 10'>
+				<div class='rule-engraved mx-auto mb-6 w-full max-w-6xl px-6 sm:mb-10' aria-hidden='true'>
+					<span class='gem'></span>
+				</div>
+				<Container size='wide'>
+					<div class='flex flex-col gap-6 text-left sm:flex-row sm:items-end sm:justify-between'>
+						<div class='space-y-1'>
+							<div class='text-[var(--ink-muted)] italic max-sm:text-sm'>
+								{site.name} <span lang='ar' class='not-italic'>{site.nameArabic}</span> ·
+								{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
+							</div>
+							<div class='smallcaps'>
+								{colophonYear} · set in playfair &amp; lato ·
+								<!-- Plain text on purpose: no cursor, no role, no hint.
+							     Whoever clicks it anyway hears the music lean in. -->
+								<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+								<span onclick={() => sound.swell()}>for r.</span>
+							</div>
+						</div>
+						<!-- Phones keep the colophon alone: the rooms are a tap away in
+					     the header menu, and repeating them under a hamburger only
+					     lengthened the scroll. -->
+						<div class='footer-rooms hidden space-y-2 sm:block'>
+							<nav
+								aria-label='Pages'
+								class='grid grid-cols-3 gap-x-4 gap-y-2 sm:flex sm:flex-wrap sm:justify-end sm:gap-x-5'
+							>
+								{#each nav as item (item.name)}
+									<a
+										href={item.href}
+										class='text-sm text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+									>
+										{item.name}
+									</a>
+								{/each}
+							</nav>
+							<div class='text-sm sm:text-right'>
+								<span class='text-[var(--ink-dim)]'>registered domains:</span>
+								<span class='whitespace-nowrap'>
+									<a
+										href='https://khalidwaleed.com'
+										class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+									>
+										khalidwaleed.com
+									</a>
+									<span class='text-[var(--ink-dim)]'>·</span>
+									<a
+										href='/'
+										class='text-[var(--ink-muted)] transition-colors hover:text-[var(--accent)]'
+									>
+										khaledwaleed.com
+									</a>
+								</span>
+							</div>
 						</div>
 					</div>
-				</div>
-			</Container>
-		</footer>
+				</Container>
+			</footer>
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	/* The nav letters directly on the room's canvas, so its lettering
@@ -519,14 +552,47 @@
 		filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent));
 	}
 
-	/* The open menu is the one header surface that must read as a panel
-	   over art: a still pane of the room's own air, not a card. */
-	#mobile-nav {
-		padding-bottom: 0.5rem;
-		background: color-mix(in oklab, var(--bg) 84%, transparent);
-		border-bottom: 1px solid var(--rule);
-		-webkit-backdrop-filter: blur(12px);
-		backdrop-filter: blur(12px);
+	/* The open menu needs a surface, and it takes the WHOLE header:
+	   monogram row included, edge to edge. A pane under the list alone
+	   left the row above it floating on bare art, which read as a card
+	   hanging off nothing. Closed, the header keeps no chrome at all. */
+	@media (width < 40rem) {
+		header::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			background: color-mix(in oklab, var(--bg) 84%, transparent);
+			border-bottom: 1px solid var(--rule);
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity var(--dur-beat) var(--ease-out);
+			-webkit-backdrop-filter: blur(12px);
+			backdrop-filter: blur(12px);
+		}
+
+		header.menu-open::before {
+			opacity: 1;
+		}
+	}
+
+	/* The drop collapses through 0fr rather than a slide transition, so
+	   the list and the pane behind it move on one clock in both
+	   directions. Under {#if} the pane popped in and out a whole beat
+	   ahead of the list, leaving its border alone on screen for a frame. */
+	.mobile-menu {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows var(--dur-beat) var(--ease-out);
+	}
+
+	.menu-open .mobile-menu {
+		grid-template-rows: 1fr;
+	}
+
+	.mobile-menu > nav {
+		min-height: 0;
+		overflow: hidden;
 	}
 
 	/* Hamburger ↔ X: both glyphs stay in the DOM and cross-fade with
@@ -539,9 +605,9 @@
 	.menu-icon svg {
 		grid-area: 1 / 1;
 		transition:
-			opacity 200ms cubic-bezier(0.2, 0, 0, 1),
-			scale 200ms cubic-bezier(0.2, 0, 0, 1),
-			filter 200ms cubic-bezier(0.2, 0, 0, 1);
+			opacity var(--dur-quick) var(--ease-out),
+			scale var(--dur-quick) var(--ease-out),
+			filter var(--dur-quick) var(--ease-out);
 	}
 
 	.icon-x,

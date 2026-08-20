@@ -128,6 +128,45 @@
 	--accent: #b8a87a;
 }
 
+/* ---------- The creative space (/space) ----------
+   A drafting table where every other room is a night gallery: bone
+   paper, warm ink, one ultramarine pen. The museum chrome, wallpaper,
+   and vignette all stay outside (+layout.svelte renders /space bare). */
+:root[data-room='space'] {
+	--bg: #e9e4de;
+	--bg-soft: #e0dad1;
+	--ink: #1d1a16;
+	--ink-muted: #57514a;
+	--ink-dim: #6e6960;
+	--rule: #d1cbc1;
+	--accent: #2b44a1;
+}
+
+/* A study is read on plain white; the paper tint stays on the index. */
+:root[data-room='study'] {
+	--bg: #ffffff;
+	--bg-soft: #f5f3ee;
+	--ink: #1d1a16;
+	--ink-muted: #55514a;
+	--ink-dim: #6e6960;
+	--rule: #e6e3dc;
+	--accent: #2b44a1;
+}
+
+/* Light form controls and scrollbars (app.html declares dark). */
+html[data-room='space'],
+html[data-room='study'] {
+	color-scheme: light;
+}
+
+/* Blank paper: no wallpaper, no candlelight pooling at the edges. */
+html[data-room='space'] body::before,
+html[data-room='study'] body::before,
+html[data-room='space'] body::after,
+html[data-room='study'] body::after {
+	display: none;
+}
+
 /* ---------- Typography stack ----------
    Two families, one role each:
    · body    = Lato             (sans: labels, notes, smallcaps, UI)
