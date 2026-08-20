@@ -207,7 +207,7 @@ export const paintings: Record<string, Painting> = {
 	},
 	projects: {
 		// Content-derived key per the immutable-cache law; the Alchemist's
-		// room-era key, the last one in the house, retired with the canvas.
+		// room-era key retired with the canvas 2026-08-20.
 		key: 'geographer',
 		title: 'The Geographer',
 		artist: 'Johannes Vermeer',
@@ -252,8 +252,8 @@ export interface RetiredPainting extends Painting {
 
 export const retired: RetiredPainting[] = [
 	{
-		// The house's last room-named file key, retired with the canvas;
-		// its files stay byte-identical at their year-cached URLs.
+		// Room-era file key, retired with the canvas; its files stay
+		// byte-identical at their year-cached URLs.
 		key: 'projects',
 		title: 'The Alchemist Discovering Phosphorus',
 		artist: 'Joseph Wright of Derby',
