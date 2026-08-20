@@ -2,7 +2,7 @@
 	import { dev } from '$app/environment'
 	import { onNavigate } from '$app/navigation'
 	import { page } from '$app/state'
-	import { CommandPalette, Container, Curtain, JsonLd, site } from '$lib'
+	import { CommandPalette, Container, Curtain, JsonLd, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
 	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
@@ -232,6 +232,7 @@
 <JsonLd />
 <CommandPalette />
 <Curtain />
+<Screensaver />
 
 <svelte:head>
 	{#if !dev && site.cloudflareAnalyticsToken}
