@@ -88,8 +88,8 @@
 <PageHeader room='home' eyebrow={`${site.role} · ${site.location.city}`} title='Khaled Waleed'>
 	{#snippet lede()}
 		<p>
-			I create art, digital and physical, write occasionally, and spend a lot of time thinking
-			about things.
+			I lead frontend at Iraq’s biggest tech company, craft thoughtful interfaces and memorable
+			experiences, and occasionally write.
 		</p>
 	{/snippet}
 </PageHeader>
