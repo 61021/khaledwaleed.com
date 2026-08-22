@@ -1,19 +1,21 @@
 import type { MediaType } from '$lib/tmdb'
 import type { PageServerLoad } from './$types'
+import { PB_URL } from '$lib/constants'
 
 // Your data (ratings, watch dates, notes) AND a denormalized TMDB snapshot
 // (title, year, directors, poster) live together in PocketBase; /manage
-// writes the snapshot at save time. So this page renders complete rows from
-// ONE request at request time (not prerendered), and the browser never talks
-// to TMDB. We ask PocketBase for only the public fields: `privateNotes` is
-// never requested, so it can't reach the browser.
+// writes the snapshot at save time, poster file included. So this page renders
+// complete rows from ONE request at request time (not prerendered), and the
+// browser never talks to TMDB — not for metadata, not for images. We ask
+// PocketBase for only the public fields: `privateNotes` is never requested, so
+// it can't reach the browser.
 export const prerender = false
 
-const PB_URL = 'https://api.khaledwaleed.com'
 const PUBLIC_FIELDS
-	= 'tmdbId,type,rating,watched,watchedOn,notes,title,year,format,directors,posterPath,runtime,genres'
+	= 'id,tmdbId,type,rating,watched,watchedOn,notes,title,year,format,directors,poster,runtime,genres'
 
 interface PbItem {
+	id: string
 	tmdbId: number
 	type: MediaType
 	rating: number
@@ -24,12 +26,14 @@ interface PbItem {
 	year?: number
 	format?: string
 	directors?: string[] | null
-	posterPath?: string
+	poster?: string
 	runtime?: number
 	genres?: string[] | null
 }
 
 export interface PersonalFilm {
+	/** PocketBase record id; half of the poster file URL. */
+	id: string
 	tmdbId: number
 	type: MediaType
 	rating: number
@@ -40,7 +44,8 @@ export interface PersonalFilm {
 	year: number
 	format: string
 	directors: string[]
-	posterPath: string | null
+	/** Filename of our stored poster; '' until /manage has uploaded one. */
+	poster: string
 	/** minutes; movie runtime or TV episode runtime; 0 = unknown */
 	runtime: number
 	genres: string[]
@@ -80,6 +85,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 	})
 
 	const films: PersonalFilm[] = items.map(f => ({
+		id: f.id,
 		tmdbId: f.tmdbId,
 		type: f.type,
 		rating: f.rating,
@@ -90,7 +96,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
 		year: f.year ?? 0,
 		format: f.format ?? '',
 		directors: Array.isArray(f.directors) ? f.directors : [],
-		posterPath: f.posterPath || null,
+		poster: f.poster ?? '',
 		runtime: f.runtime ?? 0,
 		genres: Array.isArray(f.genres) ? f.genres : [],
 		// privateNotes is never requested, so it is never included

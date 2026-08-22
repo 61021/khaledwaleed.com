@@ -4,6 +4,7 @@
 	import { page } from '$app/state'
 	import { Container, Fleuron, PageHeader, SchemaOrg, Seo, site } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
+	import { posterRef } from '$lib/posters'
 	import { formatDate } from '$lib/posts'
 
 	const { data }: { data: PageData } = $props()
@@ -15,9 +16,10 @@
 	const isFavourite = (f: Personal): boolean =>
 		f.tmdbId === FAVOURITE.tmdbId && f.type === FAVOURITE.type
 
-	// Everything, your data AND the TMDB snapshot (title, year, directors,
-	// poster), arrives server-rendered from PocketBase in one request. No
-	// client fetching, no skeletons, no reshuffling.
+	// Everything, your data AND the TMDB snapshot (title, year, directors),
+	// arrives server-rendered from PocketBase in one request. Posters are
+	// PocketBase files too, so the browser never touches TMDB. No client
+	// fetching, no skeletons, no reshuffling.
 	const personal = $derived(data.films)
 
 	// Keyed by "type/tmdbId"; a tmdb id can repeat across a movie and a show.
@@ -294,7 +296,7 @@
 <svelte:window bind:scrollY bind:innerHeight />
 
 <svelte:head>
-	<link rel='preconnect' href='https://image.tmdb.org' />
+	<link rel='preconnect' href='https://api.khaledwaleed.com' />
 </svelte:head>
 
 <PageHeader room='films' title='Films'>
@@ -345,7 +347,7 @@
 					>
 						<!-- The shrine opens the page; lazy would hold its first
 						     posters back behind everything else. -->
-						<Poster posterPath={f.posterPath} alt="" width={112} fluid vivid eager={i < 8} />
+						<Poster poster={posterRef(f)} alt="" width={112} fluid vivid eager={i < 8} />
 					</a>
 				</li>
 			{/each}
@@ -501,7 +503,7 @@
 									rel='noopener noreferrer'
 									aria-label={`${title(f)} on TMDB`}
 								>
-									<Poster posterPath={f.posterPath} alt="" width={84} fluid />
+									<Poster poster={posterRef(f)} alt="" width={84} fluid />
 								</a>
 								<div class='lrow-main'>
 									<h4 class='lrow-title'>
@@ -545,7 +547,7 @@
 									rel='noopener noreferrer'
 									title={title(f)}
 								>
-									<Poster posterPath={f.posterPath} alt="" width={104} fluid />
+									<Poster poster={posterRef(f)} alt="" width={104} fluid />
 									<span class='cell-title'
 									>{title(f)}{#if isFavourite(f)}<span class='fav-mark'
 									>{@render star(11)}<span class='sr-only'>My favourite</span></span

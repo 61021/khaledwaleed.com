@@ -16,6 +16,7 @@ export default antfu(
 			'static/**',
 			'painting-tasting/**',
 			'*-tasting.html',
+			'*-tasting.mjs',
 			'src/lib/painting-sizes.json',
 		],
 	},

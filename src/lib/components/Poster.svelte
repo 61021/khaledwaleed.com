@@ -1,7 +1,10 @@
 <script lang='ts'>
+	import type { PosterRef } from '$lib/posters'
+	import { posterSrc, posterSrcset } from '$lib/posters'
+
 	type Props = {
-		/** TMDB poster_path, e.g. /abc.jpg; null renders a placeholder */
-		posterPath: string | null
+		/** where the image lives (our PB file, or the /manage proxy); null renders a placeholder */
+		poster: PosterRef | null
 		alt: string
 		/** rendered width in px; height follows the 2:3 poster ratio */
 		width?: number
@@ -13,24 +16,23 @@
 		eager?: boolean
 	}
 
-	const { posterPath, alt, width = 52, vivid = false, fluid = false, eager = false }: Props = $props()
+	const { poster, alt, width = 52, vivid = false, fluid = false, eager = false }: Props = $props()
 
-	const TMDB = 'https://image.tmdb.org/t/p'
 	const height = $derived(Math.round((width * 3) / 2))
-	// Hotlinked from TMDB; request a small size and a 2× for retina.
-	const src = $derived(posterPath ? `${TMDB}/${vivid ? 'w342' : 'w185'}${posterPath}` : null)
+	// Served from our own PocketBase thumbs; request a small size and a 2× for retina.
+	const src = $derived(poster ? posterSrc(poster, vivid ? 342 : 185) : null)
 	const srcset = $derived(
-		posterPath
+		poster
 			? vivid
-				? `${TMDB}/w342${posterPath} 1x, ${TMDB}/w500${posterPath} 2x`
-				: `${TMDB}/w185${posterPath} 1x, ${TMDB}/w342${posterPath} 2x`
+				? posterSrcset(poster, 342, 500)
+				: posterSrcset(poster, 185, 342)
 			: null,
 	)
 
-	// A poster that 404s (or a blocked CDN) degrades to the same quiet
-	// placeholder as a missing path, never a broken-image glyph.
-	let failedPath = $state<string | null>(null)
-	const failed = $derived(posterPath !== null && failedPath === posterPath)
+	// A poster that 404s (or a wedged PocketBase) degrades to the same quiet
+	// placeholder as a missing file, never a broken-image glyph.
+	let failedSrc = $state<string | null>(null)
+	const failed = $derived(src !== null && failedSrc === src)
 </script>
 
 {#if src && !failed}
@@ -43,7 +45,7 @@
 		class={[vivid && 'vivid', fluid && 'fluid']}
 		loading={eager ? 'eager' : 'lazy'}
 		decoding='async'
-		onerror={() => (failedPath = posterPath)}
+		onerror={() => (failedSrc = src)}
 	/>
 {:else}
 	<div

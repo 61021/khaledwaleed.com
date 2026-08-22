@@ -1,11 +1,10 @@
 import type { RecordModel } from 'pocketbase'
 import type { FilmMeta, MediaType } from './tmdb'
 import PocketBase from 'pocketbase'
+import { PB_URL } from './constants'
 
 // PocketBase lives on the Contabo box (same as Rocca), exposed over HTTPS so the
 // browser can talk to it from this HTTPS site. Wire api.khaledwaleed.com → PB in CF.
-export const PB_URL = 'https://api.khaledwaleed.com'
-
 export const pb = new PocketBase(PB_URL)
 
 /**
@@ -51,6 +50,8 @@ export interface FilmRecord extends RecordModel, Partial<FilmMetaFields> {
 	notes?: string
 	/** Stored, but never rendered on the public site. */
 	privateNotes?: string
+	/** Our own copy of the poster; '' until /manage has uploaded it. */
+	poster?: string
 }
 
 /** Fields written when adding/updating a title. */

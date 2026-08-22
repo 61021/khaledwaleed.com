@@ -4,6 +4,7 @@
 	import { Container } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
 	import { metaToFields, pb } from '$lib/pocketbase'
+	import { posterRef, tmdbRef } from '$lib/posters'
 	import { onMount } from 'svelte'
 
 	// --- Auth ------------------------------------------------------------
@@ -166,6 +167,28 @@
 		}
 	}
 
+	/**
+	 * Copy the TMDB image onto the record's own `poster` file (via our proxy,
+	 * which also dodges locally blocked image.tmdb.org). Quietly returns null
+	 * on failure: the record is fine, and the poster banner catches it later.
+	 */
+	async function ensurePoster(id: string, posterPath: string | null | undefined): Promise<FilmRecord | null> {
+		if (!posterPath)
+			return null
+		try {
+			const r = await fetch(`/api/tmdb/poster/w780${posterPath}`)
+			if (!r.ok)
+				return null
+			const form = new FormData()
+			form.append('poster', await r.blob(), posterPath.slice(1))
+			return await pb.collection('films').update<FilmRecord>(id, form)
+		}
+		catch (err) {
+			expired(err)
+			return null
+		}
+	}
+
 	async function save(e: Event) {
 		e.preventDefault()
 		if (!selected)
@@ -201,9 +224,13 @@
 			...snapshot,
 		}
 		try {
-			if (editing)
-				await pb.collection('films').update(editing.id, data)
-			else await pb.collection('films').create(data)
+			const rec = editing
+				? await pb.collection('films').update<FilmRecord>(editing.id, data)
+				: await pb.collection('films').create<FilmRecord>(data)
+			// The image becomes ours at save time; skip only when the stored
+			// file already matches this TMDB poster.
+			if (data.posterPath && (!rec.poster || data.posterPath !== editing?.posterPath))
+				await ensurePoster(rec.id, data.posterPath)
 			cancel()
 			await loadFilms()
 		}
@@ -282,6 +309,33 @@
 			await loadFilms()
 	}
 
+	// --- Poster files ------------------------------------------------------
+	// Records whose image still lives only on TMDB: added before posters were
+	// stored here, or saved while the image fetch failed.
+	const missingPosters = $derived(films.filter(f => f.posterPath && !f.poster))
+	let postering = $state(false)
+	let posterDone = $state(0)
+	let posterTotal = $state(0)
+
+	async function storeMissingPosters() {
+		const targets = [...missingPosters]
+		postering = true
+		posterTotal = targets.length
+		posterDone = 0
+		let next = 0
+		async function worker() {
+			while (next < targets.length && pb.authStore.isValid) {
+				const f = targets[next++]
+				await ensurePoster(f.id, f.posterPath)
+				posterDone++
+			}
+		}
+		await Promise.all(Array.from({ length: 4 }, worker))
+		postering = false
+		if (pb.authStore.isValid)
+			await loadFilms()
+	}
+
 	// Re-fetch one title's snapshot (poster swaps, corrected credits, …).
 	let refreshingId = $state<string | null>(null)
 	async function refreshMeta(f: FilmRecord) {
@@ -292,7 +346,15 @@
 			const fields = metaToFields(m)
 			try {
 				await pb.collection('films').update(f.id, fields)
-				films = films.map(x => (x.id === f.id ? { ...x, ...fields } : x))
+				// A swapped TMDB poster (or a record still missing its file)
+				// gets re-stored so the site keeps serving our own copy.
+				const stored
+					= fields.posterPath && (fields.posterPath !== f.posterPath || !f.poster)
+						? await ensurePoster(f.id, fields.posterPath)
+						: null
+				films = films.map(x =>
+					x.id === f.id ? { ...x, ...fields, ...(stored ? { poster: stored.poster } : {}) } : x,
+				)
 			}
 			catch (err) {
 				if (!expired(err))
@@ -355,7 +417,7 @@
 								{@const dupe = existing(r)}
 								<li>
 									<button class='result' type='button' onclick={() => pick(r)}>
-										<Poster posterPath={r.posterPath} alt="" width={42} />
+										<Poster poster={tmdbRef(r.posterPath)} alt="" width={42} />
 										<span class='result-main'>
 											<span class='result-title'>{r.title}</span>
 											<span class='muted'>{r.year || '?'} · {kind(r.mediaType)}</span>
@@ -373,7 +435,12 @@
 				<!-- Add / edit details -->
 				<form class='card mt-8' onsubmit={save}>
 					<div class='flex gap-4'>
-						<Poster posterPath={selected.posterPath} alt="" width={66} vivid />
+						<Poster
+							poster={(editing && posterRef(editing)) || tmdbRef(selected.posterPath)}
+							alt=""
+							width={66}
+							vivid
+						/>
 						<div class='min-w-0'>
 							<div class='result-title'>{selected.title}</div>
 							<div class='muted'>{selected.year || '?'} · {kind(selected.mediaType)}</div>
@@ -438,10 +505,22 @@
 					{/if}
 				</div>
 			{/if}
+			{#if postering || missingPosters.length}
+				<div class='banner mt-3'>
+					{#if postering}
+						<span class='muted'>Storing posters… {posterDone}/{posterTotal}</span>
+					{:else}
+						<span class='muted'
+						>{missingPosters.length} poster{missingPosters.length === 1 ? ' is' : 's are'} not stored here yet.</span
+						>
+						<button class='btn-sm' type='button' onclick={storeMissingPosters}>Store now</button>
+					{/if}
+				</div>
+			{/if}
 			<ul class='mt-3 divide-y divide-[var(--rule)]'>
 				{#each films as f (f.id)}
 					<li class='row'>
-						<Poster posterPath={f.posterPath || null} alt="" width={40} />
+						<Poster poster={posterRef(f) ?? tmdbRef(f.posterPath)} alt="" width={40} />
 						<div class='row-main'>
 							<div class='result-title'>{f.title || `#${f.tmdbId}`}</div>
 							<div class='muted'>
