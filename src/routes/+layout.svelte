@@ -178,10 +178,14 @@
 
 	// Once the version poll (svelte.config.js) spots a new build, the next
 	// room change walks through the front door instead of the client
-	// router, so a long-lived tab stops hanging retired canvases.
-	beforeNavigate(({ willUnload, to }) => {
-		if (updated.current && !willUnload && to?.url)
-			location.href = to.url.href
+	// router, so a long-lived tab stops hanging retired canvases. cancel()
+	// first, or the router keeps going and the blur swap runs under the
+	// reload: a double transition tearing mid-beat.
+	beforeNavigate((navigation) => {
+		if (updated.current && !navigation.willUnload && navigation.to?.url) {
+			navigation.cancel()
+			location.href = navigation.to.url.href
+		}
 	})
 
 	// The blur swap's token: a fast second navigation must never be
@@ -236,12 +240,21 @@
 		const arrive = () => {
 			if (token !== swapToken)
 				return
-			html.setAttribute('data-swap', 'in')
-			setTimeout(() => {
+			// Two held frames before the sharpen: the new room's first paint
+			// is the navigation's dearest raster, and starting the filter
+			// animation against it dropped frames on both engines. The paint
+			// lands under the standing blur, then the focus pulls on a
+			// settled surface.
+			requestAnimationFrame(() => requestAnimationFrame(() => {
 				if (token !== swapToken)
 					return
-				html.removeAttribute('data-swap')
-			}, 200)
+				html.setAttribute('data-swap', 'in')
+				setTimeout(() => {
+					if (token !== swapToken)
+						return
+					html.removeAttribute('data-swap')
+				}, 200)
+			}))
 		}
 		// `complete` settles right after the swap: sharpen on the new room,
 		// or back onto the old one when the navigation aborts.

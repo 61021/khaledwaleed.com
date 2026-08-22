@@ -719,10 +719,13 @@ html[data-navigated] .frontispiece img.loaded {
    short beat, the router swaps the room and the palette under it,
    then the new room settles back sharp. One layer, one clock: nothing
    here carries its own timing, which is what every earlier corridor
-   (view transitions, the velvet band) got wrong. The blur stays small
-   and brief on purpose: a viewport-sized filter is the expensive
-   part, and 5px for a tenth of a second is a soft focus pull, not a
-   wash. */
+   (view transitions, the velvet band) got wrong. The blur animates
+   only on the way DOWN, on the old room's settled raster; on the way
+   up it snaps off under the dip and the room rises sharp on opacity
+   alone. Interpolating a viewport blur re-rasters every frame, and on
+   software compositing (Linux browsers, often) that dropped frames
+   through the whole sharpen. At a fifth of the light nobody can see
+   the difference; the focus pull reads in the dip. */
 :root {
 	--swap-out: 90ms;
 	--swap-in: 170ms;
@@ -745,7 +748,7 @@ html[data-swap='in'] .stage {
 	filter: blur(0);
 	transition:
 		opacity var(--swap-in) var(--ease-out),
-		filter var(--swap-in) var(--ease-out);
+		filter 0ms linear;
 }
 
 /* ---------- The entrance ---------- */
