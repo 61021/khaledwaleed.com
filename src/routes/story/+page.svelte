@@ -153,7 +153,7 @@
 </PageHeader>
 
 <Container size='prose'>
-	<section class='mt-12 space-y-6'>
+	<section class='mt-10 space-y-6'>
 		<figure class='portrait'>
 			<!-- The jpgs stay: OG cards and the Person schema point at them. -->
 			<picture>
@@ -237,7 +237,7 @@
 
 	<Fleuron />
 
-	<section class='mt-8' {@attach reveal}>
+	<section {@attach reveal}>
 		<h2 class='text-center'>Where I’ve worked</h2>
 		<ol class='mt-12'>
 			{#each experiences as exp, i (exp.company)}
@@ -273,18 +273,18 @@
 			<a href={linkedIn} target='_blank' rel='noopener' class='link'>LinkedIn</a>, or as a two-page
 			PDF.
 		</p>
-		<div class='button-row mt-6'>
+		<div class='button-row mt-8'>
 			<Button href={cvUrl} external>View the CV</Button>
 		</div>
 	</section>
 
 	<Fleuron />
 
-	<section class='mt-8 text-left sm:text-center' {@attach reveal}>
+	<section class='text-left sm:text-center' {@attach reveal}>
 		<p class='max-w-md text-[var(--ink-muted)] italic sm:mx-auto'>
 			If you want to talk, about work or anything else, I am easy to reach.
 		</p>
-		<div class='button-row mt-6'>
+		<div class='button-row mt-8'>
 			<Button href='/contact' size='lg'>Talk to me</Button>
 			<Button href='/' variant='outline' size='lg'>Home</Button>
 		</div>

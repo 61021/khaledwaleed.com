@@ -6,6 +6,7 @@
 	import Poster from '$lib/components/Poster.svelte'
 	import { posterRef } from '$lib/posters'
 	import { formatDate } from '$lib/posts'
+	import { onMount } from 'svelte'
 
 	const { data }: { data: PageData } = $props()
 	type Personal = PageData['films'][number]
@@ -100,12 +101,13 @@
 		mine: 'desc',
 	}
 
+	// The log opens on my rating; the chronological sorts are a click away.
 	// Legacy sort values: year → release, rating → mine, recent → watched.
 	const sortParam = params.get('sort')
 	const initialSort: Sort
 		= sortParam === 'release' || sortParam === 'year'
 			? 'release'
-			: sortParam === 'mine' || sortParam === 'rating' ? 'mine' : 'watched'
+			: sortParam === 'watched' || sortParam === 'recent' ? 'watched' : 'mine'
 	const dirParam = params.get('dir')
 
 	let sort = $state<Sort>(initialSort)
@@ -187,8 +189,19 @@
 	})
 
 	// --- View (list ↔ grid) -------------------------------------------------
+	// Desktop opens on the wall, phones on the list, unless the URL names a
+	// view. The pick happens at mount: the edge caches one HTML for every
+	// device, so the server can't know the viewport.
 	type View = 'list' | 'grid'
-	let view = $state<View>(params.get('view') === 'grid' ? 'grid' : 'list')
+	const viewParam = params.get('view')
+	let view = $state<View>(viewParam === 'grid' ? 'grid' : 'list')
+	const deviceView = (): View =>
+		matchMedia('(min-width: 640px)').matches ? 'grid' : 'list'
+
+	onMount(() => {
+		if (!viewParam && deviceView() === 'grid')
+			view = 'grid'
+	})
 
 	// --- Back to the controls ------------------------------------------------
 	// The ledger runs tens of thousands of pixels and the filters live only at
@@ -224,13 +237,13 @@
 		if (filter === 'all')
 			url.searchParams.delete('type')
 		else url.searchParams.set('type', filter)
-		if (sort === 'watched')
+		if (sort === 'mine')
 			url.searchParams.delete('sort')
 		else url.searchParams.set('sort', sort)
 		if (dir === DEFAULT_DIR[sort])
 			url.searchParams.delete('dir')
 		else url.searchParams.set('dir', dir)
-		if (view === 'list')
+		if (view === deviceView())
 			url.searchParams.delete('view')
 		else url.searchParams.set('view', view)
 		replaceState(`${url.pathname}${url.search}`, {})

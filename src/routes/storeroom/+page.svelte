@@ -19,7 +19,7 @@
 
 	<Fleuron />
 
-	<div class='space-y-20 pb-8 sm:space-y-28'>
+	<div class='space-y-20 sm:space-y-28'>
 		{#each retired as p (p.key)}
 			<section {@attach reveal}>
 				<Painting room={p.key} painting={p} />

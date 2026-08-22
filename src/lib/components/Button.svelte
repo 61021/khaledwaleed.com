@@ -95,15 +95,28 @@
 	}
 
 	/* Corner-pieces: the bracketed engraved corner, set a step outside
-	   the rim (see the frame masks in app.css). */
+	   the rim (see the frame masks in app.css). Phones take the smaller
+	   cut, like the frames. */
 	.btn-md {
-		--btn-corner: 16px;
-		--btn-corner-offset: 5px;
+		--btn-corner: 14px;
+		--btn-corner-offset: 4px;
 	}
 
 	.btn-lg {
-		--btn-corner: 18px;
-		--btn-corner-offset: 6px;
+		--btn-corner: 15px;
+		--btn-corner-offset: 5px;
+	}
+
+	@media (min-width: 640px) {
+		.btn-md {
+			--btn-corner: 16px;
+			--btn-corner-offset: 5px;
+		}
+
+		.btn-lg {
+			--btn-corner: 18px;
+			--btn-corner-offset: 6px;
+		}
 	}
 
 	.btn-primary::after,

@@ -294,12 +294,7 @@
 	<div class='space-y-16'>
 		{#each sections as s, i (s.name)}
 			<section id={s.name.toLowerCase()} class='scroll-mt-20' {@attach reveal}>
-				<h2
-					class='text-[var(--ink)]'
-					style='font-family: var(--font-display); font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem); line-height: 1.05;'
-				>
-					{s.name}
-				</h2>
+				<h2 class='h2-display'>{s.name}</h2>
 				<!-- The kicker reads as a chapter subtitle, not a filing label. -->
 				<p
 					class='mt-2 [font-family:var(--font-display)] text-[1.05rem] text-[var(--ink-muted)] italic'
@@ -320,11 +315,13 @@
 						<a href={s.link.href} class='link'>{s.link.label}</a>
 					</p>
 				{/if}
-				{#if i < sections.length - 1}
-					<div class='rule-fine mt-12'></div>
-				{/if}
 			</section>
+			{#if i < sections.length - 1}
+				<div class='rule-fine'></div>
+			{/if}
 		{/each}
+
+		<p class='leading-relaxed text-[var(--ink-muted)]'>R</p>
 	</div>
 
 	<Fleuron />

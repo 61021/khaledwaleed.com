@@ -37,7 +37,7 @@
 </PageHeader>
 
 <Container size='prose'>
-	<p class='mt-12 text-left text-[var(--ink)] sm:text-center'>
+	<p class='mt-10 text-left text-[var(--ink)] sm:text-center'>
 		I’m open to senior roles and select contract work.
 	</p>
 

@@ -223,9 +223,9 @@
 {/snippet}
 
 {#snippet indexRow(p: Project)}
-	<li class='py-4'>
+	<li class='py-3'>
 		{@render measureLine(p, false)}
-		<p class='mt-1.5 text-sm leading-relaxed text-[var(--ink-muted)]'>{p.note}</p>
+		<p class='mt-2 text-sm leading-relaxed text-[var(--ink-muted)]'>{p.note}</p>
 	</li>
 {/snippet}
 
@@ -254,12 +254,12 @@
 
 	<Fleuron />
 
-	<div class='space-y-14'>
+	<div class='space-y-16'>
 		<!-- The two product lines hang as full plates -->
 		<section id={products.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{products.name}</h2>
 			{@render intro(products)}
-			<ul class='mt-8 space-y-10'>
+			<ul class='mt-5 space-y-10'>
 				{#each products.items as p (p.name)}
 					{@render plateRow(p)}
 				{/each}
@@ -272,7 +272,7 @@
 		<section id={commissions.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{commissions.name}</h2>
 			{@render intro(commissions)}
-			<ul class='mt-8 space-y-10'>
+			<ul class='mt-5 space-y-10'>
 				{#each commissions.items as p (p.name)}
 					{@render plateRow(p)}
 				{/each}
@@ -286,7 +286,7 @@
 		<section id={government.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{government.name}</h2>
 			{@render intro(government)}
-			<ul class='mt-4 divide-y divide-[var(--rule)]'>
+			<ul class='mt-5 divide-y divide-[var(--rule)]'>
 				{#each government.items as p (p.name)}
 					{@render indexRow(p)}
 				{/each}
@@ -302,7 +302,7 @@
 				<section id={s.id} class='wing scroll-mt-20' {@attach reveal}>
 					<h2>{s.name}</h2>
 					{@render intro(s)}
-					<ul class='mt-2'>
+					<ul class='mt-3'>
 						{#each s.items as p (p.name)}
 							{@render indexRow(p)}
 						{/each}

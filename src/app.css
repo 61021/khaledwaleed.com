@@ -295,6 +295,13 @@ h3 {
 	font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.5rem);
 }
 
+/* The index rooms (likes, tools) set their chapter headings a size up
+   from the house h2; one class so the rooms stay in step. */
+.h2-display {
+	font-size: clamp(2rem, 4vw + 0.5rem, 2.75rem);
+	line-height: 1.05;
+}
+
 p {
 	line-height: 1.7;
 	text-wrap: pretty;
@@ -500,6 +507,11 @@ html[data-navigated] .frontispiece img.loaded {
 }
 
 /* ---------- Rules ---------- */
+/* The house rhythm, so every room keeps the same beat: content opens
+   mt-10 under the hero (or on a bare fleuron); a heading holds its
+   list at mt-5 (kickers mt-2); sections sit space-y-16 apart with any
+   rule-fine as a bare sibling; ruled rows take py-3; a closing
+   button-row follows its line at mt-8; the footer clears itself. */
 .rule-thin {
 	height: 1px;
 	background: var(--rule);
@@ -595,9 +607,17 @@ html[data-navigated] .frontispiece img.loaded {
    touch. */
 .frame-engraved {
 	position: relative;
-	--frame-corner: 30px;
+	/* Phones hang smaller plates; the pieces take a step down with them. */
+	--frame-corner: 21px;
 	/* How far the pieces stand off the host's rule. */
-	--frame-offset: 6px;
+	--frame-offset: 4px;
+}
+
+@media (min-width: 640px) {
+	.frame-engraved {
+		--frame-corner: 30px;
+		--frame-offset: 6px;
+	}
 }
 
 .frame-engraved::before {
@@ -652,13 +672,13 @@ html[data-navigated] .frontispiece img.loaded {
    A phone column can't hold two labels side by side, and wrapped they
    land as ragged blocks against a page that is otherwise centred. On
    phones they stack the width of the column, like plates; from sm up
-   they sit on one centred line. The 2rem gap is the clearance the
-   corner-pieces need. */
+   they sit on one centred line. The gaps are the clearance the
+   corner-pieces need at each size. */
 .button-row {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
-	gap: 2rem;
+	gap: 1.25rem;
 }
 
 @media (min-width: 640px) {
@@ -666,6 +686,7 @@ html[data-navigated] .frontispiece img.loaded {
 		flex-flow: row wrap;
 		align-items: center;
 		justify-content: center;
+		gap: 2rem;
 	}
 }
 

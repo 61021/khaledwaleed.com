@@ -58,7 +58,14 @@
 
 <style>
 	.page-header {
-		padding-bottom: 2rem;
+		/* Phones keep the plate close; the wall opens up from sm. */
+		padding-bottom: 1.25rem;
+	}
+
+	@media (min-width: 640px) {
+		.page-header {
+			padding-bottom: 2rem;
+		}
 	}
 
 	.hero-wrap {

@@ -18,18 +18,24 @@
 		margin: 2.75rem 0;
 	}
 
-	@media (min-width: 640px) {
-		.fleuron {
-			margin: 4rem 0;
-		}
-	}
-
+	/* Narrow columns carry shorter hairlines; the wall keeps the long ones. */
 	.fleuron::before,
 	.fleuron::after {
 		content: '';
 		height: 1px;
-		flex: 0 0 5.5rem;
+		flex: 0 0 4rem;
 		background: var(--rule);
+	}
+
+	@media (min-width: 640px) {
+		.fleuron {
+			margin: 4rem 0;
+		}
+
+		.fleuron::before,
+		.fleuron::after {
+			flex-basis: 5.5rem;
+		}
 	}
 
 	.fleuron::before {

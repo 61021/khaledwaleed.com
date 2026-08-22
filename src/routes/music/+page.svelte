@@ -53,7 +53,7 @@
 		</p>
 	{:else}
 		<!-- Time-range switcher (server-rendered; each is a plain link) -->
-		<div class='mt-8 flex justify-center'>
+		<div class='mt-10 flex justify-center'>
 			<div class='line' role='group' aria-label='Time range'>
 				{#each ranges as r, i (r.key)}
 					{#if i}<span class='vsep' aria-hidden='true'></span>{/if}
@@ -77,7 +77,7 @@
 		{#if data.tracks.length}
 			<section>
 				<h2>On repeat</h2>
-				<ol class='mt-4 divide-y divide-[var(--rule)]'>
+				<ol class='mt-5 divide-y divide-[var(--rule)]'>
 					{#each data.tracks as t, i (t.url)}
 						<li class='group flex items-center gap-4 py-3'>
 							<span class='smallcaps w-5 shrink-0 text-right tabular-nums'>{i + 1}</span>
@@ -105,7 +105,7 @@
 
 			<section>
 				<h2>In heavy rotation</h2>
-				<ul class='mt-6 grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-4'>
+				<ul class='mt-5 grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-4'>
 					{#each data.artists as a (a.url)}
 						<li>
 							<a
@@ -143,9 +143,9 @@
 
 			<section>
 				<h2>Last spins</h2>
-				<ol class='mt-4 divide-y divide-[var(--rule)]'>
+				<ol class='mt-5 divide-y divide-[var(--rule)]'>
 					{#each data.recent as t, i (`${t.url}-${t.playedAt}-${i}`)}
-						<li class='group flex items-center gap-4 py-2.5'>
+						<li class='group flex items-center gap-4 py-3'>
 							{#if t.image}
 								<img src={t.image} alt="" width='36' height='36' class='art' loading='lazy' />
 							{/if}

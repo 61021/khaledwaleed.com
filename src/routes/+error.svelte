@@ -24,7 +24,7 @@
 		>
 			{page.status}
 		</div>
-		<div class='button-row mt-10'>
+		<div class='button-row mt-8'>
 			<Button href='/' size='lg'>Home</Button>
 			<Button href='/writing' variant='outline' size='lg'>Read something instead</Button>
 		</div>
