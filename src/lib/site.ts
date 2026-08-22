@@ -50,7 +50,7 @@ export const site = {
 	],
 
 	companies: [
-		{ name: 'Enjaz', url: 'https://enjaz.tech', role: 'Lead Frontend Engineer' },
+		{ name: 'Enjaz', url: 'https://enjaz.tech', role: 'Frontend Lead' },
 		{ name: 'Vitex', url: 'https://vitex.dev', role: 'Founder & Lead Engineer' },
 		{
 			name: 'Ishtar Center for Democracy Support',

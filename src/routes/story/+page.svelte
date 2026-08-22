@@ -18,7 +18,7 @@
 			company: 'Enjaz',
 			url: 'https://enjaz.tech',
 			meta: 'Full-time, Baghdad, on-site',
-			title: 'Lead Frontend Engineer',
+			title: 'Frontend Lead',
 			start: 'Jan 2025',
 			highlights: [
 				'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app to modern Vue/Nuxt standards within a year.',
