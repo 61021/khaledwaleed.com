@@ -26,7 +26,7 @@
 			key: 'writing',
 			name: 'Writing',
 			span: 2,
-			note: 'Essays on people, ideas, art, and software.',
+			note: 'Essays and short fiction on people, ideas, and art.',
 		},
 		{
 			href: '/likes',

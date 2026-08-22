@@ -4,7 +4,7 @@
 	import { reveal } from '$lib/reveal'
 
 	const description
-		= 'Essays on people, ideas, art, and philosophy, with the occasional piece on software.'
+		= 'Essays and short fiction on people, ideas, art, and philosophy.'
 
 	const blogSchema = {
 		'@context': 'https://schema.org',
@@ -35,7 +35,7 @@
 
 <PageHeader room='writing' title='Writing'>
 	{#snippet lede()}
-		<p>Essays on people, ideas, art, and philosophy, with the occasional piece on software.</p>
+		<p>Essays and short fiction on people, ideas, art, and philosophy.</p>
 	{/snippet}
 </PageHeader>
 

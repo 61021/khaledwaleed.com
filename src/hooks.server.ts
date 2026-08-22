@@ -13,6 +13,8 @@ const redirects: Record<string, string> = {
 	'/writing/in-defense-of-melancholy': '/writing',
 	'/writing/software-you-can-leave-alone': '/writing',
 	'/writing/it-hasnt-happened-yet': '/writing',
+	// The Bun-on-Cloudflare essay was pulled 2026-08-22; the URL is indexed.
+	'/writing/bun-on-cloudflare-pages': '/writing',
 	// /cv lived for an afternoon; the CV now lives on Story.
 	'/cv': '/story',
 	// About was renamed Story (2026-08-11); the old URL is widely indexed.

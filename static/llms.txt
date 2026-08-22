@@ -19,10 +19,10 @@
 - /: Home.
 - /story: The full story, the work history, and the CV as a downloadable PDF.
 - /projects: Everything built and shipped: products, client work, government platforms, open source.
-- /writing: Essays on people, ideas, art, and philosophy, with the occasional piece on software.
+- /writing: Essays and short fiction on people, ideas, art, and philosophy.
+- /writing/r: Short fiction, a love letter transmitted from deep space.
 - /writing/the-thin-line: How small the difference between a good person and a bad one really is.
 - /writing/life-is-interesting: On meaning, and why we keep asking about it.
-- /writing/bun-on-cloudflare-pages: Deploying Bun projects to Cloudflare Pages.
 - /writing/sitting-in-discomfort-on-purpose: The small, private habit of voluntary difficulty.
 - /likes: A catalogue of obsessions: cinema, music, art, style, food, philosophy.
 - /films: Every film and series I have watched, scored 1 to 10.
