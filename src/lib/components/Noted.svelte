@@ -1,4 +1,6 @@
 <script lang='ts'>
+	import type { Attachment } from 'svelte/attachments'
+
 	type Props = { label: string, note: string }
 	const { label, note }: Props = $props()
 
@@ -23,7 +25,15 @@
 		const short = GUTTER - (centre - half)
 		shift = past > 0 ? -past : short > 0 ? short : 0
 	}
+
+	// The card is in layout from the first paint (opacity 0, not
+	// display none), so it must sit inside the margins from the first
+	// paint too: unclamped resting cards near the column edge widened
+	// the whole page on phones. Hover and focus still re-measure.
+	const settle: Attachment = () => place()
 </script>
+
+<svelte:window onresize={place} />
 
 <button
 	type='button'
@@ -38,6 +48,7 @@
 	role='tooltip'
 	bind:this={card}
 	style:--note-shift='{shift}px'
+	{@attach settle}
 >{note}</span></button>
 
 <style>

@@ -8,6 +8,11 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [vitePreprocess(), mdsvex()],
 	kit: {
+		// A phone tab outlives deploys, and with every chunk immutable-cached
+		// nothing ever fails loudly enough for SvelteKit's own fallback: the
+		// tab kept hanging retired canvases for days. Poll for new builds;
+		// the layout hard-navigates once `updated` flips.
+		version: { pollInterval: 300_000 },
 		// Keep _routes.json under Cloudflare's 100-rule limit. The default
 		// `<files>` token lists every static asset individually (440+ posters),
 		// which overflows. Instead collapse the asset folders into wildcards.

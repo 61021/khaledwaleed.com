@@ -27,6 +27,16 @@ function isCachedPage(pathname: string): boolean {
 	return CACHED_PAGES.has(page)
 }
 
+// The colo key must never be the public URL: Cloudflare's front door
+// serves an entry keyed on the page's own address raw, before the
+// worker runs — retention TTL, bookkeeping headers and all — so the
+// room froze for a day and browsers were told to keep it as long
+// (observed live 2026-08-22). A path only this module ever asks for
+// keeps the copy reachable through cache.match alone.
+function coloKey(url: URL): Request {
+	return new Request(new URL(`/__edge-cache${url.pathname}${url.search}`, url.origin).href)
+}
+
 // The origin's own freshness window; only public, positive-max-age
 // responses are cacheable at all.
 function freshSeconds(cacheControl: string | null): number {
@@ -69,7 +79,7 @@ export async function withEdgeCache(
 	if (!cache || request.method !== 'GET' || !isCachedPage(requestUrl.pathname))
 		return render()
 
-	const key = new Request(requestUrl.href)
+	const key = coloKey(requestUrl)
 
 	// The refresh subrequest scheduled below: no matching, just restock.
 	if (request.headers.has(REFRESH_HEADER)) {

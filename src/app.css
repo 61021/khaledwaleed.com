@@ -872,6 +872,23 @@ html[data-swap='in'] .stage {
 	padding: 0 0.3em;
 }
 
+/* Fenced code scrolls inside its own box: one long line used to take
+   the whole page sideways on phones (782px wide at 360). The tint and
+   padding move from the code span to the pre so the box holds still
+   while its lines scroll. */
+.prose-romantic pre {
+	margin: 2rem 0;
+	padding: 0.9rem 1.1rem;
+	overflow-x: auto;
+	background: color-mix(in oklab, var(--accent) 12%, transparent);
+}
+
+.prose-romantic pre code {
+	display: block;
+	padding: 0;
+	background: none;
+}
+
 .prose-romantic hr {
 	border: none;
 	display: flex;

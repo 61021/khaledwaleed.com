@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import { dev } from '$app/environment'
-	import { onNavigate } from '$app/navigation'
-	import { page } from '$app/state'
+	import { beforeNavigate, onNavigate } from '$app/navigation'
+	import { page, updated } from '$app/state'
 	import { CommandPalette, Container, Curtain, JsonLd, Monogram, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
@@ -174,6 +174,14 @@
 		if (themeColor) {
 			document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor)
 		}
+	})
+
+	// Once the version poll (svelte.config.js) spots a new build, the next
+	// room change walks through the front door instead of the client
+	// router, so a long-lived tab stops hanging retired canvases.
+	beforeNavigate(({ willUnload, to }) => {
+		if (updated.current && !willUnload && to?.url)
+			location.href = to.url.href
 	})
 
 	// The blur swap's token: a fast second navigation must never be
