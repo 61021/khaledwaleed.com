@@ -795,7 +795,8 @@ html[data-swap='in'] .stage {
 
 /* ---------- Prose for posts ----------
    Essays are set in the display serif, book-size: the room is a reading
-   room. Labels and UI around them stay in the sans. */
+   room. Labels and UI around them stay in the sans. Safari hangs the
+   opening quote in the margin. */
 .prose-romantic {
 	color: var(--ink);
 	font-family: var(--font-display);
@@ -803,16 +804,32 @@ html[data-swap='in'] .stage {
 	line-height: 1.7;
 	max-width: 38rem;
 	text-wrap: pretty;
+	hanging-punctuation: first allow-end;
 }
 
 .prose-romantic > p {
 	margin: 1.4em 0;
 }
 
+/* From sm the text sets like a printed leaf: justified and hyphenated.
+   Phones keep the rag (a narrow measure justified is all rivers), and
+   only the essay's own paragraphs take it, so quotes and lists keep
+   theirs too. */
+@media (min-width: 640px) {
+	.prose-romantic > p {
+		text-align: justify;
+		-webkit-hyphens: auto;
+		hyphens: auto;
+		hyphenate-limit-chars: 6 3 3;
+	}
+}
+
 .prose-romantic > p:first-child {
 	margin-top: 0;
 }
 
+/* The initial is illuminated: gilt ink, like the rubricated capitals
+   in the manuscripts the room is painted after. */
 .prose-romantic > p:first-child::first-letter {
 	font-family: var(--font-display);
 	font-weight: 400;
@@ -820,7 +837,7 @@ html[data-swap='in'] .stage {
 	line-height: 0.85;
 	float: left;
 	padding: 0.08em 0.14em 0 0;
-	color: var(--ink);
+	color: color-mix(in oklab, var(--accent) 70%, var(--ink));
 }
 
 @media (min-width: 640px) {
@@ -828,6 +845,14 @@ html[data-swap='in'] .stage {
 		font-size: 4.5em;
 		padding: 0.05em 0.12em 0 0;
 	}
+}
+
+/* A one-line opener (the fiction pieces) leaves the initial taller than
+   its paragraph; the next paragraph clears the float instead of hanging
+   indented off the stem. Long openers absorb the initial and never
+   reach this. */
+.prose-romantic > p:first-child + p {
+	clear: left;
 }
 
 .prose-romantic h2 {
@@ -856,12 +881,46 @@ html[data-swap='in'] .stage {
 	border-bottom-color: currentColor;
 }
 
+/* One weight per family is house law, so emphasis is rubricated, not
+   faux-bolded: gilt ink and a breath of letterspacing. */
+.prose-romantic strong,
+.prose-romantic b {
+	font-weight: 400;
+	letter-spacing: 0.02em;
+	color: color-mix(in oklab, var(--accent) 62%, var(--ink));
+}
+
+/* A quotation is set off like a passage copied into the margin: inset
+   from both edges, a gilt quote hanging in the gutter, no sidebar
+   stripe. */
 .prose-romantic blockquote {
-	border-left: 2px solid var(--accent);
-	padding-left: 1.5rem;
-	margin: 2rem 0;
+	position: relative;
+	margin: 2.25rem 0;
+	padding-inline: 1.6rem;
 	font-style: italic;
 	color: var(--ink-muted);
+}
+
+.prose-romantic blockquote::before {
+	content: '“';
+	position: absolute;
+	left: -0.12rem;
+	top: -0.08em;
+	font-size: 2.4em;
+	line-height: 1;
+	color: color-mix(in oklab, var(--accent) 55%, transparent);
+}
+
+.prose-romantic blockquote p {
+	margin: 0.8em 0;
+}
+
+.prose-romantic blockquote p:first-child {
+	margin-top: 0;
+}
+
+.prose-romantic blockquote p:last-child {
+	margin-bottom: 0;
 }
 
 .prose-romantic ul,
@@ -913,22 +972,35 @@ html[data-swap='in'] .stage {
 	background: none;
 }
 
+/* A scene break inside the text: the fleuron's three gems, set quieter
+   and without the hairlines, so the interior pause never outranks the
+   article's own doorways. */
 .prose-romantic hr {
 	border: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.65rem;
-	margin: 2.75rem 0;
+	width: 2.6rem;
+	height: 11px;
+	margin: 2.75rem auto;
+	background: color-mix(in oklab, var(--accent) 52%, transparent);
+	-webkit-mask:
+		var(--gem-dot) left center / 7px 7px no-repeat,
+		var(--gem-dot) center / 9.5px 9.5px no-repeat,
+		var(--gem-dot) right center / 7px 7px no-repeat;
+	mask:
+		var(--gem-dot) left center / 7px 7px no-repeat,
+		var(--gem-dot) center / 9.5px 9.5px no-repeat,
+		var(--gem-dot) right center / 7px 7px no-repeat;
 }
 
-.prose-romantic hr::before,
-.prose-romantic hr::after {
+/* An end mark seats the last line: the catalogue's small gilt diamond. */
+.prose-romantic > p:last-child::after {
 	content: '';
-	width: 0.26rem;
-	height: 0.26rem;
-	background: color-mix(in oklab, var(--accent) 50%, transparent);
+	display: inline-block;
+	width: 0.3em;
+	height: 0.3em;
+	margin-left: 0.5em;
+	background: color-mix(in oklab, var(--accent) 62%, transparent);
 	transform: rotate(45deg);
+	vertical-align: 0.08em;
 }
 
 /* ---------- Print: pages as catalogue leaves ----------

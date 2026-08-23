@@ -11,6 +11,7 @@
 	} from '$lib'
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte'
 	import { formatDate } from '$lib/posts'
+	import { reveal } from '$lib/reveal'
 
 	const { data } = $props()
 	const post = $derived(data.post)
@@ -81,7 +82,12 @@
 				{ name: post.title, href: `/writing/${post.slug}` },
 			]}
 		/>
-		<div class='smallcaps mt-4'>
+	</div>
+
+	<!-- The imprint: byline and date on the same centred axis as the
+	     fleuron and the text block, like a title page. -->
+	<div class='mt-8 text-center' {@attach reveal}>
+		<div class='smallcaps'>
 			by <a href='/story' class='link-quiet' rel='author'>Khaled Waleed</a> ·
 			<time datetime={post.date}>{formatDate(post.date)}</time>
 		</div>
@@ -92,7 +98,7 @@
 
 	<Fleuron />
 
-	<article class='prose-romantic mx-auto'>
+	<article class='prose-romantic mx-auto' {@attach reveal}>
 		<Content />
 	</article>
 
@@ -100,7 +106,7 @@
 
 	<!-- Neighbouring essays -->
 	{#if data.older || data.newer}
-		<nav aria-label='More essays'>
+		<nav aria-label='More essays' {@attach reveal}>
 			<div class='grid gap-6 sm:grid-cols-2'>
 				{#if data.older}
 					<a href={`/writing/${data.older.slug}`} class='group block text-left'>
@@ -130,7 +136,7 @@
 		<div class='rule-fine mt-10'></div>
 	{/if}
 
-	<footer class='mt-10 flex items-baseline justify-between'>
+	<footer class='mt-10 flex items-baseline justify-between' {@attach reveal}>
 		<a href='/writing' class='link-quiet'>← All writing</a>
 		<a
 			href={`mailto:${site.email}?subject=Re: ${encodeURIComponent(post.title)}`}
@@ -143,7 +149,7 @@
 
 <!-- Painting credit at the foot -->
 <Container size='prose'>
-	<div class='smallcaps mt-16 text-center'>
+	<div class='smallcaps mt-16 text-center' {@attach reveal}>
 		this page is dedicated to <em>{painting.title}</em> by {painting.artist},
 		<span class='whitespace-nowrap'>{painting.year}</span>
 	</div>
