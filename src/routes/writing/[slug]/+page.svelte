@@ -98,7 +98,10 @@
 
 	<Fleuron />
 
-	<article class='prose-romantic mx-auto' {@attach reveal}>
+	<article
+		class={['prose-romantic mx-auto', post.typeface === 'sans' && 'prose-sans']}
+		{@attach reveal}
+	>
 		<Content />
 	</article>
 

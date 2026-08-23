@@ -11,6 +11,7 @@ export interface Post {
 	date: string // ISO yyyy-mm-dd
 	readingTime: string
 	tags: string[]
+	typeface?: 'sans' // absent = the serif leaf
 }
 
 type PostMeta = Omit<Post, 'slug'>

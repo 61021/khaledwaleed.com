@@ -807,6 +807,16 @@ html[data-swap='in'] .stage {
 	hanging-punctuation: first allow-end;
 }
 
+/* An essay can ask for the sans hand (frontmatter `typeface: sans`):
+   the text face changes, the room's serif ink stays on the initial,
+   headings, and ornaments. Stepped down a size so the sans holds the
+   same optical colour on the same measure. */
+.prose-romantic.prose-sans {
+	font-family: var(--font-body);
+	font-size: 1.1rem;
+	line-height: 1.75;
+}
+
 .prose-romantic > p {
 	margin: 1.4em 0;
 }
