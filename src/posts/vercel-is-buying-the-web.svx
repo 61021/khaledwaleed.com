@@ -2,7 +2,7 @@
 title: Vercel is buying the web
 description: Receipts on how much of the frontend now answers to one company, the frameworks, the React core, the auth layer, even the job titles, and why the sincerity of it is the unsettling part.
 date: 2026-08-23
-readingTime: 6 min read
+readingTime: 7 min read
 typeface: sans
 tags:
   - web
@@ -35,6 +35,8 @@ Running Next.js anywhere else was already its own genre of suffering. Netlify, w
 ---
 
 The harder power to see is taste. Vercel has its own typeface ([Geist](https://vercel.com/font), open source, of course), a design system, and since last September a set of [Web Interface Guidelines](https://vercel.com/design/guidelines) that ships with an AGENTS.md so AI agents can follow the house rules too. Fetch their design pages as a bot and you receive instructions written for the machine. Publishing taste as infrastructure, for people and for the models that write a growing share of our interfaces, is new.
+
+Anthropic published [Agent Skills](https://claude.com/blog/skills) last October, folders of instructions an agent loads mid-task, and made the format an open standard in December. By mid-January Vercel had [built the registry](https://github.com/vercel-labs/skills): [skills.sh](https://skills.sh), "the open agent skills ecosystem," one leaderboard ranking everyone's skills, Anthropic's own included. The `npx skills` installer lists [Guillermo Rauch, Vercel's CEO, as a maintainer](https://www.npmjs.com/package/skills), and npm serves it about ten million times a week. Before January was out, Vercel's own evals [reported](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals) that a docs index pasted into AGENTS.md beat skills at their best, 100 percent to 79, on new Next.js APIs. The registry kept filling anyway. You don't have to believe in a format to own its distribution.
 
 They renamed the job while they were at it. "Design Engineer" existed long before Vercel, but they made it the title of the moment, hiring shadcn under it in 2023 and [canonizing it in 2024](https://vercel.com/blog/design-engineering-at-vercel). Somewhere right now a design engineer is building an interface in Next.js, styling it with components whose author Vercel employs, checking it against Vercel's guidelines, in a typeface Vercel drew, and the news about what comes next will reach them at a conference Vercel runs for its own framework. Nobody forced any of it. The defaults were enough.
 
