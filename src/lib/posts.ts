@@ -42,6 +42,24 @@ export const posts: Post[] = Object.entries(metaModules)
 
 export const getPost = (slug: string) => posts.find(p => p.slug === slug)
 
+export interface Topic {
+	name: string
+	count: number
+}
+
+// Every tag in the corpus, busiest first, ties alphabetical: the
+// writing index's filter line.
+export const topics: Topic[] = (() => {
+	const counts = new Map<string, number>()
+	for (const post of posts) {
+		for (const tag of post.tags)
+			counts.set(tag, (counts.get(tag) ?? 0) + 1)
+	}
+	return [...counts]
+		.map(([name, count]) => ({ name, count }))
+		.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+})()
+
 // Pure date helper lives in ./dates so it can be unit-tested without
 // dragging in the Vite import.meta.glob above.
 export { formatDate } from './dates'
