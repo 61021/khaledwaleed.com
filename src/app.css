@@ -25,7 +25,7 @@
 	--bg-soft: #221821;
 	--ink: #e7dacc;
 	--ink-muted: #ab958f;
-	--ink-dim: #907d78;
+	--ink-dim: #927f7a;
 	--rule: #2d1f27;
 	--accent: #c98d6b;
 }
@@ -36,7 +36,7 @@
 	--bg-soft: #241c15;
 	--ink: #dccdb2;
 	--ink-muted: #9c8d78;
-	--ink-dim: #8e806b;
+	--ink-dim: #91836d;
 	--rule: #2c231b;
 	--accent: #c99f5b;
 }
@@ -47,7 +47,7 @@
 	--bg-soft: #221f1a;
 	--ink: #e2d6bd;
 	--ink-muted: #a89c84;
-	--ink-dim: #8b806c;
+	--ink-dim: #908570;
 	--rule: #2a2620;
 	--accent: #c9a464;
 }
@@ -58,7 +58,7 @@
 	--bg-soft: #1a1c25;
 	--ink: #e6e2d6;
 	--ink-muted: #a5a5ad;
-	--ink-dim: #7e7e88;
+	--ink-dim: #83838d;
 	--rule: #242631;
 	--accent: #d3c48e;
 }
@@ -69,7 +69,7 @@
 	--bg-soft: #1d1620;
 	--ink: #ead8c0;
 	--ink-muted: #ad9fb0;
-	--ink-dim: #887986;
+	--ink-dim: #8c7d8a;
 	--rule: #2a2230;
 	--accent: #d8b25a;
 }
@@ -80,7 +80,7 @@
 	--bg-soft: #221e17;
 	--ink: #e3d8bf;
 	--ink-muted: #a2977f;
-	--ink-dim: #8c826b;
+	--ink-dim: #8f856d;
 	--rule: #2a251c;
 	--accent: #c9a55e;
 }
@@ -91,7 +91,7 @@
 	--bg-soft: #121829;
 	--ink: #e4e3d6;
 	--ink-muted: #8a93a8;
-	--ink-dim: #777d8a;
+	--ink-dim: #7b818e;
 	--rule: #1c2238;
 	--accent: #d9b070;
 }
@@ -102,7 +102,7 @@
 	--bg-soft: #221a19;
 	--ink: #e2d8cb;
 	--ink-muted: #afa392;
-	--ink-dim: #8a7e6d;
+	--ink-dim: #8e8270;
 	--rule: #2d2322;
 	--accent: #c99e73;
 }
@@ -113,7 +113,7 @@
 	--bg-soft: #1b1b16;
 	--ink: #e4decb;
 	--ink-muted: #a5a08c;
-	--ink-dim: #86816e;
+	--ink-dim: #888370;
 	--rule: #292920;
 	--accent: #c9a35e;
 }
@@ -123,7 +123,7 @@
 	--bg-soft: #2d3539;
 	--ink: #d8d4c8;
 	--ink-muted: #a09f95;
-	--ink-dim: #94938b;
+	--ink-dim: #9d9c93;
 	--rule: #353d42;
 	--accent: #b8a87a;
 }
@@ -137,7 +137,7 @@
 	--bg-soft: #e0dad1;
 	--ink: #1d1a16;
 	--ink-muted: #57514a;
-	--ink-dim: #6e6960;
+	--ink-dim: #646057;
 	--rule: #d1cbc1;
 	--accent: #2b44a1;
 }
@@ -151,6 +151,12 @@
 	--ink-dim: #6e6960;
 	--rule: #e6e3dc;
 	--accent: #2b44a1;
+}
+
+/* The one alarm colour, room-independent: errors and destructive
+   controls mix it into the room's own ink so it never shouts. */
+:root {
+	--danger: #e0556b;
 }
 
 /* Light form controls and scrollbars (app.html declares dark). */
@@ -382,6 +388,19 @@ a.link-quiet:hover {
 :focus-visible {
 	outline: 1px solid var(--accent);
 	outline-offset: 4px;
+}
+
+/* Nothing here wants a double-tap gesture, and waiting for one costs
+   every tap ~300ms on phones. */
+a,
+button,
+label,
+summary,
+input,
+select,
+textarea,
+[role='button'] {
+	touch-action: manipulation;
 }
 
 /* ---------- Skip link ---------- */

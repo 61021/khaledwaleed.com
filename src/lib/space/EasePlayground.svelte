@@ -92,23 +92,23 @@
 			<label class='param'>
 				<span class='param-name'>overshoot</span>
 				<input type='range' min='0' max='4' step='0.1' bind:value={overshoot} />
-				<code class='param-value'>{fmt(overshoot)}</code>
+				<code translate='no' class='param-value'>{fmt(overshoot)}</code>
 			</label>
 		{:else}
 			<label class='param'>
 				<span class='param-name'>amplitude</span>
 				<input type='range' min='1' max='2' step='0.05' bind:value={amplitude} />
-				<code class='param-value'>{fmt(amplitude)}</code>
+				<code translate='no' class='param-value'>{fmt(amplitude)}</code>
 			</label>
 			<label class='param'>
 				<span class='param-name'>period</span>
 				<input type='range' min='0.1' max='1' step='0.05' bind:value={period} />
-				<code class='param-value'>{fmt(period)}</code>
+				<code translate='no' class='param-value'>{fmt(period)}</code>
 			</label>
 		{/if}
 
 		<div class='line'>
-			<code>ease: "{easeStr}"</code>
+			<code translate='no'>ease: "{easeStr}"</code>
 			<button type='button' class='play' onclick={play}>play</button>
 		</div>
 		<p class='hint'>the dotted curve holds the family default</p>

@@ -81,7 +81,16 @@
 	}
 
 	// --- Search ------------------------------------------------------------
-	let query = $state('')
+	let query = $state(params.get('q') ?? '')
+	let queryTimer: ReturnType<typeof setTimeout>
+
+	// Typing writes to the URL too, but on a rest beat: one replaceState per
+	// keystroke would be a history write per letter.
+	function onQuery(): void {
+		clearTimeout(queryTimer)
+		queryTimer = setTimeout(syncUrl, 300)
+	}
+
 	const matchesQuery = (f: Personal): boolean => {
 		const q = query.trim().toLowerCase()
 		if (!q)
@@ -201,6 +210,8 @@
 	onMount(() => {
 		if (!viewParam && deviceView() === 'grid')
 			view = 'grid'
+		// A pending search sync would otherwise rewrite the next page's URL.
+		return () => clearTimeout(queryTimer)
 	})
 
 	// --- Back to the controls ------------------------------------------------
@@ -228,7 +239,7 @@
 		syncUrl()
 	}
 
-	// --- URL persistence (?type=&sort=&dir=&view=) --------------------------
+	// --- URL persistence (?type=&sort=&dir=&view=&q=) -----------------------
 	// Written from the handlers above, never from an $effect: SvelteKit's
 	// replaceState mutates the router's page state, which is not allowed
 	// mid-flush and would take the whole reactive graph down with it.
@@ -246,6 +257,9 @@
 		if (view === deviceView())
 			url.searchParams.delete('view')
 		else url.searchParams.set('view', view)
+		if (!query.trim())
+			url.searchParams.delete('q')
+		else url.searchParams.set('q', query.trim())
 		replaceState(`${url.pathname}${url.search}`, {})
 	}
 
@@ -322,7 +336,7 @@
 	<span
 		class='inline-flex items-center gap-[0.2rem] text-[0.75rem] leading-none text-[var(--ink-dim)]'
 	>
-		<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 256 256'
+		<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 256 256' aria-hidden='true'
 		><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
 			fill='currentColor'
 			d='M224 48v48a8 8 0 0 1-8 8h-48a8 8 0 0 1 0-16h28.69l-14.63-14.63a79.56 79.56 0 0 0-56.13-23.43h-.45a79.52 79.52 0 0 0-55.89 22.77a8 8 0 0 1-11.18-11.44a96 96 0 0 1 135 .79L208 76.69V48a8 8 0 0 1 16 0m-37.59 135.29a80 80 0 0 1-112.47-.66L59.31 168H88a8 8 0 0 0 0-16H40a8 8 0 0 0-8 8v48a8 8 0 0 0 16 0v-28.69l14.63 14.63A95.43 95.43 0 0 0 130 222.06h.53a95.36 95.36 0 0 0 67.07-27.33a8 8 0 0 0-11.18-11.44Z'
@@ -417,6 +431,7 @@
 						<input
 							type='search'
 							bind:value={query}
+							oninput={onQuery}
 							placeholder='Find a title, a director…'
 							autocomplete='off'
 							spellcheck='false'
@@ -462,7 +477,7 @@
 							title='List view'
 							onclick={() => setView('list')}
 						>
-							<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256'
+							<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256' aria-hidden='true'
 							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
 								fill='currentColor'
 								d='M208 136H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-40a16 16 0 0 0-16-16m0 56H48v-40h160zm0-144H48a16 16 0 0 0-16 16v40a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16m0 56H48V64h160z'
@@ -477,7 +492,7 @@
 							title='Grid view'
 							onclick={() => setView('grid')}
 						>
-							<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256'
+							<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 256 256' aria-hidden='true'
 							><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
 								fill='currentColor'
 								d='M104 40H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64H56V56h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 64h-48V56h48zm-96 32H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64H56v-48h48zm96-64h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16m0 64h-48v-48h48z'
@@ -519,11 +534,11 @@
 									<Poster poster={posterRef(f)} alt="" width={84} fluid />
 								</a>
 								<div class='lrow-main'>
-									<h4 class='lrow-title'>
+									<svelte:element this={s.label ? 'h4' : 'h3'} class='lrow-title'>
 										{title(f)}{#if isFavourite(f)}<span class='fav-mark' title='My favourite'
 										>{@render star(12)}<span class='sr-only'>My favourite</span></span
 										>{/if}
-									</h4>
+									</svelte:element>
 									{#if subline(f)}<p class='lrow-sub'>{subline(f)}</p>{/if}
 									<p class='lrow-ratings'>
 										<span class='r-mine' aria-label={`My rating ${f.rating} out of 10`}>

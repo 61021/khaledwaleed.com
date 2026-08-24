@@ -1,6 +1,7 @@
 <script lang='ts'>
 	import type { FilmInput, FilmMetaFields, FilmRecord } from '$lib/pocketbase'
 	import type { FilmMeta, MediaType, SearchResult } from '$lib/tmdb'
+	import { beforeNavigate } from '$app/navigation'
 	import { Container } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
 	import { metaToFields, pb } from '$lib/pocketbase'
@@ -105,6 +106,25 @@
 	let privateNotes = $state('')
 	let saving = $state(false)
 	let saveError = $state('')
+	/** The form's values as they were loaded, for the unsaved-work guard. */
+	let baseline = $state('')
+
+	function formSnapshot(): string {
+		return JSON.stringify([rating, watched, watchedOn, notes, privateNotes])
+	}
+
+	const dirty = $derived(!!selected && formSnapshot() !== baseline)
+
+	beforeNavigate((nav) => {
+		// eslint-disable-next-line no-alert
+		if (dirty && !confirm('Leave without saving your changes?'))
+			nav.cancel()
+	})
+
+	function onBeforeUnload(e: BeforeUnloadEvent) {
+		if (dirty)
+			e.preventDefault()
+	}
 
 	function today() {
 		return new Date().toISOString().slice(0, 10)
@@ -129,6 +149,7 @@
 		privateNotes = ''
 		results = []
 		query = ''
+		baseline = formSnapshot()
 	}
 
 	function edit(f: FilmRecord) {
@@ -147,6 +168,7 @@
 		privateNotes = f.privateNotes ?? ''
 		results = []
 		query = ''
+		baseline = formSnapshot()
 		window.scrollTo({ top: 0, behavior: 'smooth' })
 	}
 
@@ -375,21 +397,25 @@
 	<meta name='robots' content='noindex, nofollow' />
 </svelte:head>
 
+<svelte:window onbeforeunload={onBeforeUnload} />
+
 <Container size='prose'>
 	{#if !authed}
 		<section class='signin'>
 			<h1 class='m-title'>Manage</h1>
 			<p class='muted mt-2'>Enter the password to enter the secret management area.</p>
 			<form class='mt-6 flex flex-col gap-3' onsubmit={login}>
+				<label class='lbl' for='mg-password'>Password</label>
 				<input
+					id='mg-password'
+					name='password'
 					class='field'
 					type='password'
-					placeholder='Password'
 					bind:value={password}
 					autocomplete='current-password'
 					required
 				/>
-				{#if authError}<p class='err'>{authError}</p>{/if}
+				{#if authError}<p class='err' role='alert'>{authError}</p>{/if}
 				<button class='btn' type='submit'>Sign in</button>
 			</form>
 		</section>
@@ -403,10 +429,14 @@
 			{#if !selected}
 				<!-- Search to add -->
 				<div class='mt-4'>
+					<label class='lbl' for='mg-search'>Add a title</label>
 					<input
-						class='field w-full'
+						id='mg-search'
+						name='q'
+						class='field mt-1.5 w-full'
 						type='search'
 						placeholder='Search a film or show to add…'
+						autocomplete='off'
 						bind:value={query}
 						oninput={onQuery}
 					/>
@@ -480,7 +510,7 @@
 						<textarea class='field' rows='2' bind:value={privateNotes}></textarea>
 					</label>
 
-					{#if saveError}<p class='err mt-3'>{saveError}</p>{/if}
+					{#if saveError}<p class='err mt-3' role='alert'>{saveError}</p>{/if}
 					<div class='mt-5 flex items-center gap-4'>
 						<button class='btn' type='submit' disabled={saving}>
 							{saving ? 'Saving…' : editing ? 'Save changes' : 'Add to collection'}
@@ -492,7 +522,7 @@
 
 			<!-- The collection -->
 			<h2 class='m-sub mt-4'>In your collection · {films.length}</h2>
-			{#if listError}<p class='err mt-2'>{listError}</p>{/if}
+			{#if listError}<p class='err mt-2' role='alert'>{listError}</p>{/if}
 			{#if syncing || missing.length}
 				<div class='banner mt-3'>
 					{#if syncing}
@@ -597,7 +627,7 @@
 	}
 
 	.err {
-		color: color-mix(in oklab, #e0556b 78%, var(--ink));
+		color: color-mix(in oklab, var(--danger) 78%, var(--ink));
 		font-size: 0.9rem;
 	}
 
@@ -766,6 +796,6 @@
 		transition: color var(--dur-quick) var(--ease-out);
 	}
 	.del:hover {
-		color: color-mix(in oklab, #e0556b 78%, var(--ink));
+		color: color-mix(in oklab, var(--danger) 78%, var(--ink));
 	}
 </style>

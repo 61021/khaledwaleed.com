@@ -85,6 +85,7 @@ export const load: PageServerLoad = async ({ url, platform, setHeaders }) => {
 		tracks: [] as Track[],
 		artists: [] as Artist[],
 		recent: [] as Played[],
+		renderedAt: new Date().toISOString(),
 	}
 	if (!id || !secret || !refresh)
 		return empty
@@ -129,5 +130,8 @@ export const load: PageServerLoad = async ({ url, platform, setHeaders }) => {
 		tracks,
 		artists,
 		recent,
+		// Stamped so the relative timestamps hydrate against the same clock
+		// that rendered them; this HTML can be minutes old at the edge.
+		renderedAt: new Date().toISOString(),
 	}
 }

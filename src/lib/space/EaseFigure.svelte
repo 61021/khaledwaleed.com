@@ -78,7 +78,7 @@
 	<div class='runway' bind:this={runwayEl}>
 		<div class='dot' bind:this={dotEl} style:background={pen}></div>
 	</div>
-	<figcaption><code>{code}</code></figcaption>
+	<figcaption><code translate='no'>{code}</code></figcaption>
 </figure>
 
 <style>

@@ -102,6 +102,10 @@
 		{/each}
 	</div>
 
+	<p class='sr-only' aria-live='polite'>
+		{topic ? `${shown.length} of ${posts.length} pieces tagged ${topic}` : `${posts.length} pieces`}
+	</p>
+
 	<ol class='mt-10 space-y-12'>
 		{#each shown as post (post.slug)}
 			<li {@attach reveal}>

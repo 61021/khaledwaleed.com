@@ -143,9 +143,33 @@
 	let listEl = $state<HTMLUListElement | null>(null)
 	let dialogEl = $state<HTMLDivElement | null>(null)
 	let lastFocused: HTMLElement | null = null
+	let scrollLock: (() => void) | null = null
 
 	// The header search button (or anything else) can ask us to open.
-	onMount(() => palette.register(openPalette))
+	onMount(() => {
+		const unregister = palette.register(openPalette)
+		return () => {
+			scrollLock?.()
+			unregister()
+		}
+	})
+
+	// The backdrop covers the page but the page keeps scrolling under it.
+	// Freezing the root also takes the scrollbar away, so its width goes
+	// back as padding or the whole layout jumps sideways.
+	function lockScroll() {
+		const root = document.documentElement
+		const gutter = window.innerWidth - root.clientWidth
+		const overflow = root.style.overflow
+		const padding = root.style.paddingRight
+		root.style.overflow = 'hidden'
+		if (gutter > 0)
+			root.style.paddingRight = `${gutter}px`
+		return () => {
+			root.style.overflow = overflow
+			root.style.paddingRight = padding
+		}
+	}
 
 	const filtered = $derived.by(() => {
 		const q = query.trim().toLowerCase()
@@ -168,12 +192,15 @@
 		open = true
 		query = ''
 		activeIndex = 0
+		scrollLock = lockScroll()
 		sound.tick('open')
 		queueMicrotask(() => inputEl?.focus())
 	}
 
 	function closePalette() {
 		open = false
+		scrollLock?.()
+		scrollLock = null
 		sound.tick('close')
 		lastFocused?.focus()
 		lastFocused = null
@@ -292,16 +319,22 @@
 					oninput={() => (activeIndex = 0)}
 					type='text'
 					placeholder='Search pages and essays…'
-					class='flex-1 bg-transparent text-[1.05rem] text-[var(--ink)] placeholder:text-[var(--ink-dim)] focus:outline-none'
+					class='flex-1 bg-transparent text-[1.05rem] text-[var(--ink)] placeholder:text-[var(--ink-dim)]'
 					autocomplete='off'
 					spellcheck='false'
 					role='combobox'
-					aria-expanded='true'
+					aria-expanded={filtered.length > 0}
 					aria-controls='palette-results'
 					aria-activedescendant={filtered.length ? `palette-opt-${activeIndex}` : undefined}
 					aria-label='Search pages and essays'
 				/>
 				<span class='smallcaps'>esc</span>
+			</div>
+
+			<div class='sr-only' role='status' aria-live='polite'>
+				{filtered.length === 0
+					? `Nothing matches ${query}`
+					: `${filtered.length} result${filtered.length === 1 ? '' : 's'}`}
 			</div>
 
 			{#if filtered.length === 0}
@@ -312,7 +345,7 @@
 				<ul
 					bind:this={listEl}
 					id='palette-results'
-					class='max-h-[55vh] overflow-y-auto py-2'
+					class='max-h-[55vh] overscroll-contain overflow-y-auto py-2'
 					role='listbox'
 					aria-label='Results'
 				>

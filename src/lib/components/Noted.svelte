@@ -12,6 +12,7 @@
 	let trigger = $state<HTMLButtonElement>()
 	let card = $state<HTMLSpanElement>()
 	let shift = $state(0)
+	let dismissed = $state(false)
 
 	// The card is centred on its word, so a word near either edge hung it
 	// off the screen and took the whole page sideways with it. Measure as
@@ -26,6 +27,19 @@
 		shift = past > 0 ? -past : short > 0 ? short : 0
 	}
 
+	function open() {
+		dismissed = false
+		place()
+	}
+
+	// WCAG 1.4.13: dismissable without moving the pointer. Hover and focus
+	// still own the showing, so the note survives without JavaScript; this
+	// only takes it back down.
+	function onKeydown(e: KeyboardEvent) {
+		if (e.key === 'Escape' && trigger?.matches(':hover, :focus'))
+			dismissed = true
+	}
+
 	// The card is in layout from the first paint (opacity 0, not
 	// display none), so it must sit inside the margins from the first
 	// paint too: unclamped resting cards near the column edge widened
@@ -33,15 +47,18 @@
 	const settle: Attachment = () => place()
 </script>
 
-<svelte:window onresize={place} />
+<svelte:window onresize={place} onkeydown={onKeydown} />
 
 <button
 	type='button'
 	class='noted'
 	aria-describedby={id}
+	data-dismissed={dismissed || undefined}
 	bind:this={trigger}
-	onpointerenter={place}
-	onfocus={place}
+	onpointerenter={open}
+	onpointerleave={() => (dismissed = false)}
+	onfocus={open}
+	onblur={() => (dismissed = false)}
 >{label}<span
 	class='note frame-gemmed'
 	{id}
@@ -97,9 +114,24 @@
 			transform 160ms var(--ease-out);
 	}
 
+	/* Carries the pointer across the 12px gap without dropping the hover. */
+	.note::before {
+		content: '';
+		position: absolute;
+		inset-inline: 0;
+		top: 100%;
+		height: 12px;
+	}
+
 	.noted:hover .note,
 	.noted:focus .note {
 		opacity: 1;
 		transform: translate(-50%, 0);
+		pointer-events: auto;
+	}
+
+	.noted[data-dismissed] .note {
+		opacity: 0;
+		pointer-events: none;
 	}
 </style>

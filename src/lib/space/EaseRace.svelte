@@ -102,7 +102,7 @@
 				</div>
 				<div class='cap'>
 					<span class='cap-name'>{lane.name}</span>
-					<code class='cap-code'>{lane.code}</code>
+					<code translate='no' class='cap-code'>{lane.code}</code>
 				</div>
 			</li>
 		{/each}

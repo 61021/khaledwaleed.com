@@ -35,7 +35,7 @@
 			{#each spaces as space, i (space.slug)}
 				<li>
 					<a class='entry' href={`/space/${space.slug}`}>
-						<code class='entry-n'>{spaceNumber(i)}</code>
+						<code translate='no' class='entry-n'>{spaceNumber(i)}</code>
 						<span class='entry-title'>
 							{space.title}
 							<Flourish class='entry-flourish' />

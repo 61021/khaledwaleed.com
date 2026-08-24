@@ -1,5 +1,6 @@
 <script lang='ts'>
 	import { Container, Fleuron, PageHeader, Seo } from '$lib'
+	import { onMount, untrack } from 'svelte'
 
 	const { data } = $props()
 
@@ -15,9 +16,20 @@
 		{ key: 'long', label: 'all time' },
 	]
 
+	// Reading Date.now() straight would print one thing on the server and
+	// another at hydration, since the edge can serve this HTML minutes
+	// later. Start from the render stamp, correct once mounted, then tick.
+	let now = $state(untrack(() => new Date(data.renderedAt).getTime()))
+
+	onMount(() => {
+		now = Date.now()
+		const beat = setInterval(() => (now = Date.now()), 60_000)
+		return () => clearInterval(beat)
+	})
+
 	// A quiet relative timestamp for the "last spins" list.
 	function ago(iso: string): string {
-		const mins = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60_000))
+		const mins = Math.max(0, Math.round((now - new Date(iso).getTime()) / 60_000))
 		if (mins < 2)
 			return 'just now'
 		if (mins < 60)

@@ -60,7 +60,7 @@
 
 	<article>
 		<h1>a study of easing</h1>
-		<p class='imprint'><code>{number}</code> · {study.openedLabel} · khaled waleed</p>
+		<p class='imprint'><code translate='no'>{number}</code> · {study.openedLabel} · khaled waleed</p>
 
 		<p class='lede'>
 			An easing function bends time. The animation's clock runs 0 to 1 at a constant rate,
@@ -87,12 +87,12 @@
 
 		<h2>the css set</h2>
 		<p>
-			Five keywords, and every one is a single <code>cubic-bezier()</code> in different
-			clothes. <code>linear</code> leaves the handles on the diagonal; the other four move
+			Five keywords, and every one is a single <code translate='no'>cubic-bezier()</code> in different
+			clothes. <code translate='no'>linear</code> leaves the handles on the diagonal; the other four move
 			them a few tenths. The caption under each figure shows the four numbers its keyword
 			stands for. Past the keywords you write your own numbers with
-			<code>cubic-bezier()</code>, hold frames with <code>steps()</code>, or, since 2023,
-			hand the browser a list of points with <code>linear()</code> and let it connect the
+			<code translate='no'>cubic-bezier()</code>, hold frames with <code translate='no'>steps()</code>, or, since 2023,
+			hand the browser a list of points with <code translate='no'>linear()</code> and let it connect the
 			dots.
 		</p>
 
@@ -128,7 +128,7 @@
 			One cubic segment can change direction twice, and that is the whole budget. Push a
 			y handle past 1 and you buy a single overshoot, the spring fake below. A real bounce
 			turns six times. An elastic settle keeps turning until it dies out. No four numbers
-			draw either shape, so past this line CSS needs a generated <code>linear()</code>
+			draw either shape, so past this line CSS needs a generated <code translate='no'>linear()</code>
 			list, and somebody has to generate it.
 		</p>
 
@@ -145,25 +145,25 @@
 			/>
 		</div>
 		<p class='fig-note'>
-			The dashed blue curve is <code>elastic.out(1, 0.3)</code>, the shape the cubic is
+			The dashed blue curve is <code translate='no'>elastic.out(1, 0.3)</code>, the shape the cubic is
 			chasing. It catches the first swing and misses the rest.
 		</p>
 
 		<h2>the gsap shelf</h2>
 		<p>
-			GSAP names its curves and grades them. <code>sine</code> is the gentlest;
-			<code>power1</code> through <code>power4</code> raise the same shape by degrees;
-			<code>expo</code> and <code>circ</code> sit at the steep end. <code>back</code>
-			overshoots, <code>elastic</code> rings, <code>bounce</code> lands like a dropped
+			GSAP names its curves and grades them. <code translate='no'>sine</code> is the gentlest;
+			<code translate='no'>power1</code> through <code translate='no'>power4</code> raise the same shape by degrees;
+			<code translate='no'>expo</code> and <code translate='no'>circ</code> sit at the steep end. <code translate='no'>back</code>
+			overshoots, <code translate='no'>elastic</code> rings, <code translate='no'>bounce</code> lands like a dropped
 			ball. Every family conjugates three ways, and the suffix is the design decision:
-			<code>.out</code> for arrivals, <code>.in</code> for exits, <code>.inOut</code> for
+			<code translate='no'>.out</code> for arrivals, <code translate='no'>.in</code> for exits, <code translate='no'>.inOut</code> for
 			moves between rest states. The name carries the intent.
-			<code>ease: "power2.out"</code> reads at a glance;
-			<code>cubic-bezier(0, 0, 0.58, 1)</code> sends the next reader off to plot it.
+			<code translate='no'>ease: "power2.out"</code> reads at a glance;
+			<code translate='no'>cubic-bezier(0, 0, 0.58, 1)</code> sends the next reader off to plot it.
 		</p>
 		<p>
 			GSAP will not even default to a straight line. Tweens fall back to
-			<code>power1.out</code>, because constant speed is the one thing almost nothing in
+			<code translate='no'>power1.out</code>, because constant speed is the one thing almost nothing in
 			the physical world moves at.
 		</p>
 
@@ -192,9 +192,9 @@
 		<h2>tuning</h2>
 		<p>
 			When a bezier needs more overshoot, you write four new numbers and squint at the
-			plot. When <code>back</code> needs more, you write <code>back.out(2.5)</code>.
-			Parameters carry the adjustment: overshoot for <code>back</code>, amplitude and
-			period for <code>elastic</code>, a count for <code>steps</code>. Same name,
+			plot. When <code translate='no'>back</code> needs more, you write <code translate='no'>back.out(2.5)</code>.
+			Parameters carry the adjustment: overshoot for <code translate='no'>back</code>, amplitude and
+			period for <code translate='no'>elastic</code>, a count for <code translate='no'>steps</code>. Same name,
 			different temperament.
 		</p>
 
@@ -203,11 +203,11 @@
 		<h2>the transplant</h2>
 		<p>
 			Here is elastic in CSS, honestly. The one-cubic spring fake above was the best four
-			numbers can do. The faithful version is <code>linear()</code> fed 80 stops, and the
+			numbers can do. The faithful version is <code translate='no'>linear()</code> fed 80 stops, and the
 			80 stops come from sampling GSAP's own function:
 		</p>
 
-		<pre class='transplant'><code>transition-timing-function: {transplant};</code></pre>
+		<pre class='transplant'><code translate='no'>transition-timing-function: {transplant};</code></pre>
 
 		<p>
 			That string renders the right motion. It is also unreadable, untunable by hand, and
@@ -225,11 +225,11 @@
 		</p>
 		<p>
 			GSAP's eases win the moment motion is designed. They are named and parameterized,
-			so <code>ease: "elastic.out(1, 0.3)"</code> records the decision in the code. They
+			so <code translate='no'>ease: "elastic.out(1, 0.3)"</code> records the decision in the code. They
 			cover shapes one cubic never will. And each ease is a plain function of progress,
 			so the same curve drives a transform today, a scroll position tomorrow, a WebGL
 			uniform after that, then plays backwards inside a timeline without a rewrite.
-			<code>cubic-bezier()</code> styles one property on one element in one direction,
+			<code translate='no'>cubic-bezier()</code> styles one property on one element in one direction,
 			and that is the gap the four numbers never close.
 		</p>
 		<p>
