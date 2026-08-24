@@ -37,6 +37,16 @@ function coloKey(url: URL): Request {
 	return new Request(new URL(`/__edge-cache${url.pathname}${url.search}`, url.origin).href)
 }
 
+// What the client is told, always. A page document that carries a real
+// max-age is cached twice over: Cloudflare's front door replays it before
+// the worker runs (so this module is skipped and never refreshes), and the
+// browser holds it — a phone kept the /films document, booted that build's
+// app out of immutable chunks and hung retired paintings in every room it
+// clicked into. The freshness window lives inside the colo copy instead,
+// where only cache.match can reach it. max-age=0 rather than no-store so
+// back/forward cache still works.
+const CLIENT_CC = 'public, max-age=0, must-revalidate'
+
 // The origin's own freshness window; only public, positive-max-age
 // responses are cacheable at all.
 function freshSeconds(cacheControl: string | null): number {
@@ -52,11 +62,10 @@ async function store(cache: Cache, key: Request, response: Response): Promise<vo
 	if (response.status !== 200 || !fresh || originCc === null || response.headers.has('set-cookie'))
 		return
 	const copy = new Response(response.body, response)
-	copy.headers.set('x-edge-origin-cc', originCc)
 	copy.headers.set('x-edge-stored-at', String(Date.now()))
 	copy.headers.set('x-edge-fresh', String(fresh))
-	// Retention for the colo cache (the stale ceiling); browsers get the
-	// origin's own cache-control back when a hit is served.
+	// Retention for the colo cache (the stale ceiling). This value never
+	// reaches a browser: every served copy leaves with CLIENT_CC.
 	copy.headers.set('cache-control', `public, max-age=${STALE_CEILING}`)
 	await cache.put(key, copy)
 }
@@ -76,8 +85,16 @@ export async function withEdgeCache(
 	// file the HTML and the data payload under one entry.
 	const requestUrl = new URL(request.url)
 	const cache = platform?.caches?.default
-	if (!cache || request.method !== 'GET' || !isCachedPage(requestUrl.pathname))
+	if (!isCachedPage(requestUrl.pathname))
 		return render()
+
+	// A live room's document must never leave with a real max-age, even when
+	// the colo cache is out of reach (dev, or a binding that went missing).
+	if (!cache || request.method !== 'GET') {
+		const response = await render()
+		response.headers.set('cache-control', CLIENT_CC)
+		return response
+	}
 
 	const key = coloKey(requestUrl)
 
@@ -99,16 +116,19 @@ export async function withEdgeCache(
 			)
 		}
 		const response = new Response(hit.body, hit)
-		response.headers.set('cache-control', hit.headers.get('x-edge-origin-cc') ?? 'no-cache')
+		response.headers.set('cache-control', CLIENT_CC)
 		response.headers.set('x-edge-cache', stale ? 'stale' : 'hit')
-		for (const internal of ['x-edge-origin-cc', 'x-edge-stored-at', 'x-edge-fresh'])
+		for (const internal of ['x-edge-stored-at', 'x-edge-fresh'])
 			response.headers.delete(internal)
 		return response
 	}
 
+	// Clone before rewriting: store() reads the origin's cache-control to
+	// size the freshness window, and only the outgoing copy gets CLIENT_CC.
 	const response = await render()
 	if (waitUntil)
 		waitUntil(store(cache, key, response.clone()))
+	response.headers.set('cache-control', CLIENT_CC)
 	response.headers.set('x-edge-cache', 'miss')
 	return response
 }
