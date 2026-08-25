@@ -33,5 +33,5 @@
 ## Style note
 
 Each page is paired with one public-domain Northern Romantic painting
-(Friedrich, Dahl, Daguerre, Wright of Derby). The site is set in Playfair
-Display and Lato, built with SvelteKit, and deployed on Cloudflare Pages.
+(Friedrich, Dahl, Daguerre, Wright of Derby). The site is set in Fraunces
+and Libre Franklin, built with SvelteKit, and deployed on Cloudflare Pages.

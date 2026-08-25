@@ -23,16 +23,16 @@ Almost everything is **prerendered to static HTML** at build time. The single ex
 
 ## Tech stack
 
-| Concern      | Choice                                                                                                                                             |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework    | [SvelteKit 2](https://svelte.dev/docs/kit) with Svelte 5 runes                                                                                     |
-| Styling      | [Tailwind CSS 4](https://tailwindcss.com) + `@tailwindcss/typography`                                                                              |
-| Content      | [mdsvex](https://mdsvex.pngwn.io) (`.svx`) for writing                                                                                             |
-| Language     | TypeScript                                                                                                                                         |
-| OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                                                            |
-| Fonts        | Self-hosted [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) + [Lato](https://fonts.google.com/specimen/Lato) via Fontsource |
-| Runtime / PM | [Node 24](https://nodejs.org) + [pnpm 11](https://pnpm.io)                                                                                         |
-| Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                                                                  |
+| Concern      | Choice                                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Framework    | [SvelteKit 2](https://svelte.dev/docs/kit) with Svelte 5 runes                                                                                         |
+| Styling      | [Tailwind CSS 4](https://tailwindcss.com) + `@tailwindcss/typography`                                                                                  |
+| Content      | [mdsvex](https://mdsvex.pngwn.io) (`.svx`) for writing                                                                                                 |
+| Language     | TypeScript                                                                                                                                             |
+| OG images    | [satori](https://github.com/vercel/satori) + resvg (generated at build)                                                                                |
+| Fonts        | Self-hosted [Fraunces](https://fonts.google.com/specimen/Fraunces) + [Libre Franklin](https://fonts.google.com/specimen/Libre+Franklin) via Fontsource |
+| Runtime / PM | [Node 24](https://nodejs.org) + [pnpm 11](https://pnpm.io)                                                                                             |
+| Hosting      | [Cloudflare Pages](https://pages.cloudflare.com) (`@sveltejs/adapter-cloudflare`)                                                                      |
 
 ## Getting started
 

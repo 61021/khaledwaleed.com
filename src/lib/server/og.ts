@@ -22,14 +22,11 @@ function loadFont(...candidates: string[]): Buffer | null {
 	return null
 }
 
-const latoRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/lato/files/lato-latin-400-normal.woff'),
+const franklinRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/libre-franklin/files/libre-franklin-latin-400-normal.woff'),
 )
-const playfairRegular = loadFont(
-	join(
-		ROOT,
-		'node_modules/@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff',
-	),
+const frauncesRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/fraunces/files/fraunces-latin-400-normal.woff'),
 )
 
 type Node = any
@@ -83,7 +80,7 @@ export interface OgCard {
 	palette: OgPalette
 	/** small uppercase line above the headline */
 	eyebrow?: string
-	/** the big Playfair roman lines */
+	/** the big roman lines */
 	headline: string[]
 	/** normal-weight line under the headline */
 	sub?: string
@@ -108,7 +105,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				justifyContent: 'space-between',
 				background: `linear-gradient(180deg, ${c.bg} 0%, ${c.bgSoft} 100%)`,
 				padding: '80px 100px',
-				fontFamily: '"Lato", sans-serif',
+				fontFamily: '"Libre Franklin", sans-serif',
 				color: c.ink,
 			},
 		},
@@ -153,7 +150,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"Playfair Display", serif',
+						fontFamily: '"Fraunces", serif',
 						fontStyle: 'normal',
 						fontSize: `${size}px`,
 						lineHeight: 1.08,
@@ -192,12 +189,12 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	)
 
 	const fonts: { name: string, data: Buffer, weight: 400, style: 'normal' | 'italic' }[] = []
-	if (latoRegular)
-		fonts.push({ name: 'Lato', data: latoRegular, weight: 400, style: 'normal' })
-	if (playfairRegular) {
+	if (franklinRegular)
+		fonts.push({ name: 'Libre Franklin', data: franklinRegular, weight: 400, style: 'normal' })
+	if (frauncesRegular) {
 		fonts.push({
-			name: 'Playfair Display',
-			data: playfairRegular,
+			name: 'Fraunces',
+			data: frauncesRegular,
 			weight: 400,
 			style: 'normal',
 		})
@@ -210,11 +207,11 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 /** Break a title into 1–3 lines that fit the card, and pick a size. */
 export function layoutHeadline(title: string): { lines: string[], size: number } {
 	const size = title.length > 70 ? 60 : title.length > 45 ? 68 : title.length > 26 ? 80 : 96
-	// Rough character budget per line at each size (Playfair Display
-	// roman, 1000px box). Measured 2026-08-06 from rendered cards: the
-	// widest observed line is ~44px/char at size 80 (22 chars ≈ 965px),
-	// so the budgets are 18/22/26/29 for sizes 96/80/68/60.
-	const budget = size >= 96 ? 18 : size >= 80 ? 22 : size >= 68 ? 26 : 29
+	// Rough character budget per line at each size (Fraunces roman, 1000px
+	// box). Measured off satori's own output rather than the browser's:
+	// satori sets this font about 17% wider than Chromium does, so metrics
+	// taken in a page under-count the line and starve the budget.
+	const budget = size >= 96 ? 19 : size >= 80 ? 23 : size >= 68 ? 27 : 31
 
 	const words = title.split(' ')
 	const lines: string[] = []

@@ -11,5 +11,5 @@ Last update: 2026-08
 Standards: HTML5, CSS3
 Components: SvelteKit 5, Tailwind 4
 Software: pnpm, Vite, Cloudflare Pages
-Fonts: Playfair Display, Lato
+Fonts: Fraunces, Libre Franklin
 Music: Chopin, Nocturne in E minor Op. 72 No. 1 (Musopen recording, public domain, via Wikimedia Commons)

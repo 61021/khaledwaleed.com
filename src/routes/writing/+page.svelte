@@ -163,7 +163,7 @@
 		border-bottom: 1px solid transparent;
 		font-family: var(--font-body);
 		font-size: 0.72rem;
-		font-weight: 700;
+		font-weight: 600;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		color: var(--ink-muted);
@@ -190,7 +190,7 @@
 	}
 
 	.topic b {
-		font-weight: 700;
+		font-weight: 600;
 		font-size: 0.92em;
 		color: var(--ink-dim);
 		font-variant-numeric: tabular-nums;

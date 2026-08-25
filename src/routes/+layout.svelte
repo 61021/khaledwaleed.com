@@ -10,18 +10,17 @@
 
 	import { roomBg, roomForPath } from '$lib/site'
 	import { sound } from '$lib/sound.svelte'
+	import frauncesWoff2 from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url'
 	// The two workhorse faces, preloaded so the first paint doesn't run
 	// in fallback type while the CSS is still being parsed for their URLs
 	// (?url resolves to the same hashed asset the @font-face rules name).
-	import latoWoff2 from '@fontsource/lato/files/lato-latin-400-normal.woff2?url'
-	import playfairWoff2 from '@fontsource/playfair-display/files/playfair-display-latin-400-normal.woff2?url'
+	import franklinWoff2 from '@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2?url'
 	import { onMount } from 'svelte'
 	import '../app.css'
-	import '@fontsource/lato/400.css'
-	import '@fontsource/lato/400-italic.css'
-	import '@fontsource/lato/700.css'
-	import '@fontsource/playfair-display/400.css'
-	import '@fontsource/playfair-display/400-italic.css'
+	import '@fontsource-variable/fraunces/opsz.css'
+	import '@fontsource-variable/fraunces/opsz-italic.css'
+	import '@fontsource-variable/libre-franklin/wght.css'
+	import '@fontsource-variable/libre-franklin/wght-italic.css'
 
 	const { children } = $props()
 
@@ -293,8 +292,8 @@
 
 <svelte:head>
 	{#if !inSpace}
-		<link rel='preload' as='font' type='font/woff2' href={playfairWoff2} crossorigin='anonymous' />
-		<link rel='preload' as='font' type='font/woff2' href={latoWoff2} crossorigin='anonymous' />
+		<link rel='preload' as='font' type='font/woff2' href={frauncesWoff2} crossorigin='anonymous' />
+		<link rel='preload' as='font' type='font/woff2' href={franklinWoff2} crossorigin='anonymous' />
 	{/if}
 	{#if !dev && site.cloudflareAnalyticsToken}
 		<script
@@ -502,7 +501,7 @@
 								{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 							</div>
 							<div class='smallcaps'>
-								{colophonYear} · set in playfair &amp; lato ·
+								{colophonYear} · set in fraunces &amp; franklin ·
 								<!-- Plain text on purpose: no cursor, no role, no hint.
 							     Whoever clicks it anyway hears the music lean in. -->
 								<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->

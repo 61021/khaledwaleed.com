@@ -175,15 +175,20 @@ html[data-room='study'] body::after {
 
 /* ---------- Typography stack ----------
    Two families, one role each:
-   · body    = Lato             (sans: labels, notes, smallcaps, UI)
-   · display = Playfair Display (serif: headings, dropcaps, logo, buttons, essay prose)
-   One weight per family (400); Lato 700 only for smallcaps labels
-   (Lato has no 600). The display serif wears ROMAN everywhere since
-   2026-08-06: italic survives only as semantics (em, blockquotes,
+   · body    = Libre Franklin (sans: labels, notes, smallcaps, UI)
+   · display = Fraunces       (serif: headings, dropcaps, logo, buttons, essay prose)
+   One weight per family (400), and the sans keeps one more for its
+   smallcaps labels: 600, which is where Libre Franklin's variable wght
+   holds the apparent weight Lato's static 700 used to (Franklin's bold
+   is a real gothic bold and thuds at that size on a dark ground).
+   Fraunces arrives in Fontsource's opsz build, which carries wght and
+   opsz and nothing else, so WONK and SOFT are baked at 0 and no stray
+   declaration can wake them. The display serif wears ROMAN everywhere
+   since 2026-08-06: italic survives only as semantics (em, blockquotes,
    work titles) and the likes kickers. */
 :root {
-	--font-body: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
-	--font-display: 'Playfair Display', Georgia, 'Times New Roman', ui-serif, serif;
+	--font-body: 'Libre Franklin Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+	--font-display: 'Fraunces Variable', Georgia, 'Times New Roman', ui-serif, serif;
 	--font-code: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -211,6 +216,10 @@ html[data-room='study'] body::after {
 
 html {
 	scroll-behavior: smooth;
+	/* Stated rather than left to the initial value: the serif is cut for
+	   its size here, a caption off the text master and a page title off
+	   the display one. */
+	font-optical-sizing: auto;
 	/* Nothing in the house is meant to be reached sideways: a stray
 	   absolute (a note, a corner-piece) must be clipped, not turned
 	   into a second axis of scroll. clip, not hidden, so it stays out
@@ -323,7 +332,7 @@ i {
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 	font-size: 0.72rem;
-	font-weight: 700;
+	font-weight: 600;
 	color: var(--ink-muted);
 }
 
@@ -815,11 +824,13 @@ html[data-swap='in'] .stage {
 /* ---------- Prose for posts ----------
    Essays are set in the display serif, book-size: the room is a reading
    room. Labels and UI around them stay in the sans. Safari hangs the
-   opening quote in the margin. */
+   opening quote in the margin. Fraunces carries an x-height around six
+   sevenths of the roman it replaced, so the leaf is set larger than the
+   old 1.22rem to hold the same reading size on the same measure. */
 .prose-romantic {
 	color: var(--ink);
 	font-family: var(--font-display);
-	font-size: 1.22rem;
+	font-size: 1.35rem;
 	line-height: 1.7;
 	max-width: 38rem;
 	text-wrap: pretty;
