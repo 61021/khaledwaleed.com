@@ -8,10 +8,10 @@
 	// comments from SSR output, hence @html; the string is static.
 	const contract = `<!--
 THESIS: a drafting table for numbered studies of the craft; refuses the personal-site hub (nav bar, hero, card grid) and the museum next door.
-OWN-WORLD: bone paper #e9e4de for the wall, plain white for studies; warm black ink; one ultramarine pen #2b44a1; the hand-drawn creative-space script; Libre Franklin text with JetBrains Mono only for code and measurement; hairline rules; no cards, no shadows, no gradients.
+OWN-WORLD: bone paper #e9e4de for the wall, each study a long white sheet lying on it (separated by value alone); warm black ink; one ultramarine pen #2b44a1; the hand-drawn creative-space script; Libre Franklin text with JetBrains Mono only for code and measurement; hairline rules; no cards, no shadows, no gradients.
 STORY: step out of the museum onto blank paper, pick a study, read it while its figures run on the real engines.
 FIRST VIEWPORT: index: back-to-website chip top left, wordmark alone in the upper third, the studies listed at center page.
-FORM: printed working paper with live figures; pinned by the brief (logo, #e9e4de, blank page).
+FORM: printed working paper with live figures, each study a sheet on the drafting table; pinned by the brief (logo, #e9e4de, blank page).
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->`
 </script>

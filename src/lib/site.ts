@@ -344,5 +344,5 @@ export const roomBg: Record<string, string> = {
 	tools: '#131310',
 	404: '#232b30',
 	space: '#e9e4de',
-	study: '#ffffff',
+	study: '#e9e4de',
 }

@@ -261,11 +261,15 @@
 </div>
 
 <style>
+	/* The long white sheet on the wall: flat by value contrast alone, the
+	   wall showing above it and running out in a long tail below. The mats
+	   keep today's measure: 58rem minus two 6rem margins is the 46rem column. */
 	.study {
 		width: 100%;
-		max-width: 46rem;
-		margin: 0 auto;
-		padding: 1.5rem 1.5rem 5rem;
+		max-width: 58rem;
+		margin: clamp(3rem, 12vh, 9rem) auto clamp(5rem, 22vh, 14rem);
+		background: #fff;
+		padding: clamp(1.5rem, 5vh, 4rem) clamp(1.5rem, 7vw, 6rem) 5rem;
 	}
 
 	.top {

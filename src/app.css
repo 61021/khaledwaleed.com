@@ -142,9 +142,10 @@
 	--accent: #2b44a1;
 }
 
-/* A study is read on plain white; the paper tint stays on the index. */
+/* A study lies on the index's paper wall as a long white sheet; the
+   page paints the sheet itself, so on-sheet tokens stay keyed to white. */
 :root[data-room='study'] {
-	--bg: #ffffff;
+	--bg: #e9e4de;
 	--bg-soft: #f5f3ee;
 	--ink: #1d1a16;
 	--ink-muted: #55514a;
