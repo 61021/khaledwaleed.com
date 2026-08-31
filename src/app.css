@@ -241,6 +241,14 @@ html[data-swap] body::before {
 	transition-duration: var(--swap-in);
 }
 
+/* The glide (src/lib/smoother.ts) owns the viewport while it's mounted:
+   anchor jumps and scrollIntoView land instantly on the native bar and
+   the smoother alone carries the ease. CSS smoothness on top would run
+   a second clock under the same wheel. */
+html[data-smoother] {
+	scroll-behavior: auto;
+}
+
 body {
 	font-family: var(--font-body);
 	background-color: transparent;
@@ -1081,6 +1089,23 @@ html[data-swap='in'] .stage {
 	body::before,
 	body::after {
 		display: none !important;
+	}
+
+	/* The glide pins its wrapper and moves the content by inline
+	   transform; paper gets the document back in one flow. !important
+	   because the styles it fights are inline. */
+	#smooth-wrapper {
+		position: static !important;
+		height: auto !important;
+		overflow: visible !important;
+	}
+
+	#smooth-content {
+		transform: none !important;
+	}
+
+	body {
+		height: auto !important;
 	}
 
 	.hero {

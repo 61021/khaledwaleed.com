@@ -9,6 +9,7 @@
 	import { palette } from '$lib/palette'
 
 	import { roomBg, roomForPath } from '$lib/site'
+	import { mountSmoother, snapSmoother } from '$lib/smoother'
 	import { sound } from '$lib/sound.svelte'
 	import frauncesWoff2 from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url'
 	// The two workhorse faces, preloaded so the first paint doesn't run
@@ -105,6 +106,30 @@
 
 	// Mobile nav menu (collapsible on phones).
 	let mobileOpen = $state(false)
+
+	// The rail's latch: the fixed header takes its scrolled dress past
+	// 64px and only sheds it back under 16, so the boundary never
+	// flutters mid-wheel.
+	let scrolled = $state(false)
+
+	function onScroll() {
+		const y = window.scrollY
+		scrolled = scrolled ? y > 16 : y > 64
+	}
+
+	// A reload restores its old seat before any wheel moves.
+	onMount(onScroll)
+
+	// The glide (src/lib/smoother.ts) mounts with the museum and leaves
+	// with it: /space keeps native paper scrolling under its own GSAP.
+	let smoothWrapper = $state<HTMLElement>()
+	let smoothContent = $state<HTMLElement>()
+
+	$effect(() => {
+		if (inSpace || !smoothWrapper || !smoothContent)
+			return
+		return mountSmoother(smoothWrapper, smoothContent)
+	})
 
 	// One global keydown: the menu's escape, the sound switch, and two
 	// secrets. The Konami code takes the curtain for an encore; so does
@@ -247,6 +272,9 @@
 			requestAnimationFrame(() => requestAnimationFrame(() => {
 				if (token !== swapToken)
 					return
+				// The glide squares its transform with the router's scroll
+				// reset while the dip still hides the jump (smoother.ts).
+				snapSmoother()
 				html.setAttribute('data-swap', 'in')
 				setTimeout(() => {
 					if (token !== swapToken)
@@ -311,7 +339,7 @@
 	ontouchstart={warmFromIntent}
 />
 
-<svelte:window onkeydown={onGlobalKeydown} />
+<svelte:window onkeydown={onGlobalKeydown} onscroll={onScroll} />
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
@@ -321,168 +349,174 @@
 		{@render children()}
 	</main>
 {:else}
-	<div class='relative flex min-h-[100dvh] flex-col'>
-		<!-- Quiet classical header: not sticky, no chrome, and out of the
-	     flow: the nav is lettering on the room's canvas from the first
-	     frame, never a band of wall above it. -->
-		<header class={['absolute inset-x-0 top-0 z-40 py-4', mobileOpen && 'menu-open']}>
-			<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
-				<a
-					href='/'
-					class='justify-self-start text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
-					aria-label='Khaled Waleed, home'
-				>
-					<Monogram class='block h-7 w-auto' />
-				</a>
+	<!-- The header: still lettering on the room's canvas from the first
+	     frame, no band of wall above it, but it now rides fixed. Past
+	     the first steps it takes glass, a hairline, and a slimmer seat
+	     (.scrolled, below); at rest it keeps no chrome at all. It
+	     stands outside the glide's wrapper, where position: fixed still
+	     means the viewport. -->
+	<header class={['fixed inset-x-0 top-0 z-40 py-4', mobileOpen && 'menu-open', scrolled && 'scrolled']}>
+		<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
+			<a
+				href='/'
+				class='brand justify-self-start text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
+				aria-label='Khaled Waleed, home'
+			>
+				<Monogram class='block h-7 w-auto' />
+			</a>
 
-				<!-- Desktop: links inline, centred between the monogram and the search chip -->
-				<nav aria-label='Primary' class='hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'>
-					{#each nav as item (item.name)}
-						{@const active = isActive(item.href, page.url.pathname)}
-						<a
-							href={item.href}
-							class="-my-2 py-2 font-display text-[1.05rem] transition-colors {active
-								? 'text-[var(--accent)]'
-								: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
-							aria-current={active ? 'page' : undefined}
-						>
-							{item.name}
-						</a>
-					{/each}
-				</nav>
-
-				<!-- Desktop: sound and search balance the monogram, bare glyphs
-			     in the nav's own idiom; the header stays chromeless. -->
-				<div class='relative hidden items-center gap-1 justify-self-end sm:flex'>
-					<button
-						type='button'
-						class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
-						aria-pressed={sound.enabled}
-						aria-label={sound.enabled ? 'Turn sound off' : 'Turn sound on'}
-						title='Sound (press m)'
-						onclick={() => {
-							soundHint = false
-							sound.toggle()
-						}}
+			<!-- Desktop: links inline, centred between the monogram and the search chip -->
+			<nav aria-label='Primary' class='hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'>
+				{#each nav as item (item.name)}
+					{@const active = isActive(item.href, page.url.pathname)}
+					<a
+						href={item.href}
+						class="-my-2 py-2 font-display text-[1.05rem] transition-colors {active
+							? 'text-[var(--accent)]'
+							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
+						aria-current={active ? 'page' : undefined}
 					>
-						<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
-						<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
-							{#if sound.enabled}
-								<path
-									fill='currentColor'
-									d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
-								/>
-							{:else}
-								<path
-									fill='currentColor'
-									d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
-								/>
-							{/if}
-						</svg>
-					</button>
-					<button
-						type='button'
-						class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
-						aria-label='Search the site'
-						title='Search (press /)'
-						onclick={() => palette.request()}
-					>
-						<!-- phosphor: magnifying-glass -->
-						<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
-							<path
-								fill='currentColor'
-								d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
-							/>
-						</svg>
-					</button>
-					{#if soundHint}
-						<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
-					{/if}
-				</div>
+						{item.name}
+					</a>
+				{/each}
+			</nav>
 
-				<!-- Sound state for screen readers: the m shortcut and both
-			     toggles land here, wherever focus happens to be. -->
-				<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
-
-				<!-- Phone: hamburger toggle -->
+			<!-- Desktop: sound and search balance the monogram, bare glyphs
+		     in the nav's own idiom; the header stays chromeless. -->
+			<div class='relative hidden items-center gap-1 justify-self-end sm:flex'>
 				<button
 					type='button'
-					class={[
-						'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden',
-						mobileOpen && 'open',
-					]}
-					aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-					aria-expanded={mobileOpen}
-					aria-controls='mobile-nav'
-					onclick={() => (mobileOpen = !mobileOpen)}
+					class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
+					aria-pressed={sound.enabled}
+					aria-label={sound.enabled ? 'Turn sound off' : 'Turn sound on'}
+					title='Sound (press m)'
+					onclick={() => {
+						soundHint = false
+						sound.toggle()
+					}}
 				>
-					<span class='menu-icon' aria-hidden='true'>
-						<svg
-							width='24'
-							height='24'
-							viewBox='0 0 24 24'
-							fill='none'
-							stroke='currentColor'
-							stroke-width='1.75'
-							stroke-linecap='round'
-						>
-							<path class='bar bar-top' d='M3.5 7h17' />
-							<path class='bar bar-mid' d='M3.5 12h17' />
-							<path class='bar bar-bot' d='M3.5 17h17' />
-						</svg>
-					</span>
+					<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
+					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+						{#if sound.enabled}
+							<path
+								fill='currentColor'
+								d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
+							/>
+						{:else}
+							<path
+								fill='currentColor'
+								d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
+							/>
+						{/if}
+					</svg>
 				</button>
+				<button
+					type='button'
+					class="relative flex cursor-pointer items-center justify-center p-2 text-[var(--ink-muted)] transition-colors after:absolute after:-inset-1 after:content-[''] hover:text-[var(--ink)]"
+					aria-label='Search the site'
+					title='Search (press /)'
+					onclick={() => palette.request()}
+				>
+					<!-- phosphor: magnifying-glass -->
+					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+						<path
+							fill='currentColor'
+							d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
+						/>
+					</svg>
+				</button>
+				{#if soundHint}
+					<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
+				{/if}
 			</div>
 
-			<!-- Phone: collapsible menu -->
-			<div class='mobile-menu mx-auto max-w-6xl px-6 sm:hidden'>
-				<nav id='mobile-nav' aria-label='Primary' inert={!mobileOpen}>
-					<ul class='mt-2 flex flex-col border-t border-[var(--rule)] pt-1 pb-2'>
-						{#each nav as item (item.name)}
-							{@const active = isActive(item.href, page.url.pathname)}
-							<li>
-								<a
-									href={item.href}
-									class="block py-3 font-display text-lg transition-colors {active
-										? 'text-[var(--accent)]'
-										: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
-									aria-current={active ? 'page' : undefined}
-									onclick={() => (mobileOpen = false)}
-								>
-									{item.name}
-								</a>
-							</li>
-						{/each}
-						<li>
-							<button
-								type='button'
-								class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
-								onclick={() => {
-									mobileOpen = false
-									palette.request()
-								}}
-							>
-								Search…
-							</button>
-						</li>
-						<li>
-							<button
-								type='button'
-								class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
-								onclick={() => sound.toggle()}
-							>
-								{sound.enabled ? 'Sound off' : 'Sound on'}
-							</button>
-						</li>
-					</ul>
-				</nav>
-			</div>
-		</header>
+			<!-- Sound state for screen readers: the m shortcut and both
+		     toggles land here, wherever focus happens to be. -->
+			<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
 
-		<!-- The stage: everything the blur swap softens. The header stays
-	     outside it, so the nav lettering holds sharp over the focus
-	     pull (a filter blurs its whole subtree; no exemptions). -->
-		<div class='stage flex flex-1 flex-col'>
+			<!-- Phone: hamburger toggle -->
+			<button
+				type='button'
+				class={[
+					'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden',
+					mobileOpen && 'open',
+				]}
+				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+				aria-expanded={mobileOpen}
+				aria-controls='mobile-nav'
+				onclick={() => (mobileOpen = !mobileOpen)}
+			>
+				<span class='menu-icon' aria-hidden='true'>
+					<svg
+						width='24'
+						height='24'
+						viewBox='0 0 24 24'
+						fill='none'
+						stroke='currentColor'
+						stroke-width='1.75'
+						stroke-linecap='round'
+					>
+						<path class='bar bar-top' d='M3.5 7h17' />
+						<path class='bar bar-mid' d='M3.5 12h17' />
+						<path class='bar bar-bot' d='M3.5 17h17' />
+					</svg>
+				</span>
+			</button>
+		</div>
+
+		<!-- Phone: collapsible menu -->
+		<div class='mobile-menu mx-auto max-w-6xl px-6 sm:hidden'>
+			<nav id='mobile-nav' aria-label='Primary' inert={!mobileOpen}>
+				<ul class='mt-2 flex flex-col border-t border-[var(--rule)] pt-1 pb-2'>
+					{#each nav as item (item.name)}
+						{@const active = isActive(item.href, page.url.pathname)}
+						<li>
+							<a
+								href={item.href}
+								class="block py-3 font-display text-lg transition-colors {active
+									? 'text-[var(--accent)]'
+									: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
+								aria-current={active ? 'page' : undefined}
+								onclick={() => (mobileOpen = false)}
+							>
+								{item.name}
+							</a>
+						</li>
+					{/each}
+					<li>
+						<button
+							type='button'
+							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
+							onclick={() => {
+								mobileOpen = false
+								palette.request()
+							}}
+						>
+							Search…
+						</button>
+					</li>
+					<li>
+						<button
+							type='button'
+							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
+							onclick={() => sound.toggle()}
+						>
+							{sound.enabled ? 'Sound off' : 'Sound on'}
+						</button>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<!-- The glide's frame (src/lib/smoother.ts): the wrapper pins, the
+	     content rides the transform, and the content doubles as the
+	     stage: everything the blur swap softens, main and footer both.
+	     The header stays outside, so the nav lettering holds sharp over
+	     the focus pull (a filter blurs its whole subtree; no
+	     exemptions). -->
+	<div id='smooth-wrapper' bind:this={smoothWrapper}>
+		<div id='smooth-content' bind:this={smoothContent} class='stage flex min-h-[100dvh] flex-col'>
 			<main id='main' class='flex-1'>
 				{@render children()}
 			</main>
@@ -570,28 +604,67 @@
 		filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent));
 	}
 
-	/* The open menu needs a surface, and it takes the WHOLE header:
-	   monogram row included, edge to edge. A pane under the list alone
-	   left the row above it floating on bare art, which read as a card
-	   hanging off nothing. Closed, the header keeps no chrome at all. */
-	@media (width < 40rem) {
-		header::before {
-			content: '';
-			position: absolute;
-			inset: 0;
-			z-index: -1;
-			background: color-mix(in oklab, var(--bg) 84%, transparent);
-			border-bottom: 1px solid var(--rule);
-			opacity: 0;
-			pointer-events: none;
-			transition: opacity var(--dur-beat) var(--ease-out);
-			-webkit-backdrop-filter: blur(12px);
-			backdrop-filter: blur(12px);
-		}
+	/* The rail's glass: the pane the phone menu always wore, promoted to
+	   every size and to the scrolled state. At rest the header keeps no
+	   chrome at all; once the visitor walks (or opens the menu) the
+	   wall's own color rises behind the lettering as frosted glass,
+	   taking the WHOLE header, monogram row included, edge to edge. The
+	   resting canvas still carries no scrim. */
+	header::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: color-mix(in oklab, var(--bg) 84%, transparent);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity var(--dur-beat) var(--ease-out);
+		-webkit-backdrop-filter: blur(12px);
+		backdrop-filter: blur(12px);
+	}
 
-		header.menu-open::before {
-			opacity: 1;
-		}
+	header.scrolled::before,
+	header.menu-open::before {
+		opacity: 1;
+	}
+
+	/* Under the glass a hairline draws from the centre outward, on the
+	   menu bars' own 45ms overlap; leaving, it retracts with the glass,
+	   no delay. */
+	header::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 1px;
+		background: var(--rule);
+		transform: scaleX(0);
+		transition: transform var(--dur-beat) var(--ease-out);
+	}
+
+	header.scrolled::after,
+	header.menu-open::after {
+		transform: scaleX(1);
+		transition-delay: 45ms;
+	}
+
+	/* The seat condenses on the same beat: the padding halves and the
+	   mark steps down with it. */
+	header {
+		transition: padding-block var(--dur-beat) var(--ease-out);
+	}
+
+	header.scrolled {
+		padding-block: 0.5rem;
+	}
+
+	/* 0.857 ≈ 24px from the resting 28, held to the left edge. */
+	.brand {
+		transform-origin: left center;
+		transition: transform var(--dur-beat) var(--ease-out);
+	}
+
+	header.scrolled .brand {
+		transform: scale(0.857);
 	}
 
 	/* The drop collapses through 0fr rather than a slide transition, so

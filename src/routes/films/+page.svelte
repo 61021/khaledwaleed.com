@@ -4,6 +4,7 @@
 	import { page } from '$app/state'
 	import { Container, Fleuron, PageHeader, SchemaOrg, Seo, site } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
+	import { portal } from '$lib/portal'
 	import { posterRef } from '$lib/posters'
 	import { formatDate } from '$lib/posts'
 	import { onMount } from 'svelte'
@@ -620,12 +621,15 @@
 			</p>
 		</div>
 		{#if showReturn}
+			<!-- Seated on <body> (portal): fixed inside the glide's moving
+			     content would pin to the content, not the viewport. -->
 			<button
 				type='button'
 				class='return frame-gemmed'
 				aria-label='Back to the filters'
 				title='Back to the filters'
 				onclick={returnToControls}
+				{@attach portal}
 			>
 				<svg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 256 256' aria-hidden='true'
 				><!-- Icon from Phosphor by Phosphor Icons - https://github.com/phosphor-icons/core/blob/main/LICENSE --><path
