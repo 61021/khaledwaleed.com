@@ -5,21 +5,23 @@
 	import { CommandPalette, Container, Curtain, JsonLd, Monogram, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
+	// The display face is served pinned to its one weight (see
+	// scripts/generate-fonts.ts); Libre Franklin stays variable, it works
+	// at 400, 600 and 700.
+	import frauncesWoff2 from '$lib/fonts/fraunces-latin-opsz-normal-w400.woff2?url'
 	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
-	import { palette } from '$lib/palette'
 
+	import { palette } from '$lib/palette'
 	import { roomBg, roomForPath } from '$lib/site'
 	import { mountSmoother, snapSmoother } from '$lib/smoother'
 	import { sound } from '$lib/sound.svelte'
-	import frauncesWoff2 from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url'
 	// The two workhorse faces, preloaded so the first paint doesn't run
 	// in fallback type while the CSS is still being parsed for their URLs
 	// (?url resolves to the same hashed asset the @font-face rules name).
 	import franklinWoff2 from '@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2?url'
 	import { onMount } from 'svelte'
 	import '../app.css'
-	import '@fontsource-variable/fraunces/opsz.css'
-	import '@fontsource-variable/fraunces/opsz-italic.css'
+	import '$lib/fonts/fraunces.css'
 	import '@fontsource-variable/libre-franklin/wght.css'
 	import '@fontsource-variable/libre-franklin/wght-italic.css'
 
