@@ -19,13 +19,18 @@ import sharp from 'sharp'
 
 const DIR = path.resolve('static/paintings')
 const MANIFEST = path.resolve('src/lib/painting-sizes.json')
-const TARGET_WIDTHS = [720, 1280]
+// A rung for every real display width: 480 for the homepage's small
+// framed cards (they render 300-470px), 1600 so a 1440px desktop stops
+// jumping to the 2000px master for its hero (157K → 77K on `home`).
+const TARGET_WIDTHS = [480, 720, 1280, 1600]
 
 // Masters may carry hyphens (re-hung art gets a NEW, content-derived name:
 // /paintings/* is cached immutable, so a room can never re-use a filename);
-// only the generated -720/-1280 variants are excluded.
+// only the generated variants are excluded, so a run never treats its own
+// output as a master.
+const variantSuffix = new RegExp(`-(?:${TARGET_WIDTHS.join('|')})\\.webp$`)
 const files = (await readdir(DIR)).filter(
-	f => /^[a-z0-9-]+\.webp$/.test(f) && !/-(?:720|1280)\.webp$/.test(f),
+	f => /^[a-z0-9-]+\.webp$/.test(f) && !variantSuffix.test(f),
 )
 
 const manifest: Record<string, { widths: number[], width: number, height: number }> = {}

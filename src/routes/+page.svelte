@@ -128,6 +128,7 @@
 									height={entry?.height}
 									style:object-position={p.focal ?? 'center'}
 									loading='lazy'
+									fetchpriority='low'
 									decoding='async'
 								/>
 							</picture>
