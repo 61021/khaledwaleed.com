@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        if: env.HAS_TOKEN == 'true'
+      - uses: actions/setup-node@v5
+        if: env.HAS_TOKEN == 'true'
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - if: env.HAS_TOKEN == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+      - uses: cloudflare/wrangler-action@v3
+        if: env.HAS_TOKEN == 'true'
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 2ecfb65ac837bf16bb96da2c6d1ea96e
