@@ -38,7 +38,7 @@ A personal museum instead of a developer portfolio: every page is a room hung wi
 - Voice: plain register, direct, shorter than default; the anti-slop writing rules are site law.
 - A quiet dedication threads the site: "for r." closing the footer colophon, one bare "R" after the last /likes section, "R." in humans.txt. Initial-only is a hard ceiling; the name never enters this public repo or its history.
 - Sound: glass-tap ticks and one Chopin nocturne, site-wide, armed only on real gestures.
-- "Built by Vitex" credit in the footer: his studio.
+- "Crafted by Vitex" credit in the footer: his studio.
 
 ## Evidence on Hand
 
