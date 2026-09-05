@@ -26,37 +26,7 @@ const config = {
 		// tab kept hanging retired canvases for days. Poll for new builds;
 		// the layout hard-navigates once `updated` flips.
 		version: { pollInterval: 300_000 },
-		// Keep _routes.json under Cloudflare's 100-rule limit. The default
-		// `<files>` token lists every static asset individually (440+ posters),
-		// which overflows. Instead collapse the asset folders into wildcards.
-		adapter: adapter({
-			routes: {
-				include: ['/*'],
-				exclude: [
-					'<build>',
-					'<prerendered>',
-					'/paintings/*',
-					'/logos/*',
-					'/audio/*',
-					'/.well-known/*',
-					'/avatar.svg',
-					'/favicon.svg',
-					'/apple-touch-icon.png',
-					'/icon-192.png',
-					'/icon-512.png',
-					'/khaled-waleed.jpg',
-					'/khaled-waleed-480.jpg',
-					'/khaled-waleed.avif',
-					'/khaled-waleed-480.avif',
-					'/khaled-waleed.webp',
-					'/khaled-waleed-480.webp',
-					'/humans.txt',
-					'/llms.txt',
-					'/rss.xsl',
-					'/manifest.webmanifest',
-				],
-			},
-		}),
+		adapter: adapter(),
 	},
 	extensions: ['.svelte', '.svx'],
 }
