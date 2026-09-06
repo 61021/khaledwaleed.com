@@ -27,4 +27,6 @@ jobs:
         if: env.HAS_TOKEN == 'true'
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: '4'
+          packageManager: npm
           accountId: 2ecfb65ac837bf16bb96da2c6d1ea96e
