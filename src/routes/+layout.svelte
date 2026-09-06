@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import { dev } from '$app/environment'
-	import { beforeNavigate, onNavigate } from '$app/navigation'
+	import { beforeNavigate, onNavigate, preloadData } from '$app/navigation'
 	import { page, updated } from '$app/state'
 	import { CommandPalette, Container, Curtain, JsonLd, Monogram, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
@@ -93,17 +93,26 @@
 			sound.tick('tap')
 	}
 
-	// Carry the next room's painting to the door: any intent toward an
-	// internal link (hover, focus, first touch) starts fetching + decoding
-	// that room's hero, the way data-sveltekit-preload-data already warms
-	// its data. By the click, the canvas is usually ready to hang.
+	// Carry the next room to the door: any intent toward an internal link
+	// (hover, focus, first touch) starts fetching + decoding that room's
+	// hero AND loading its data. The house setting
+	// (data-sveltekit-preload-data="hover") waits for the pointer to come
+	// to REST, so a decisive click, a tap, or a tab outruns it: /films
+	// traced 756ms of frozen page between the click and the first frame
+	// of the dissolve, because onNavigate only runs once the data is in.
+	// Firing on the raw intent event closes that gap; preloadData
+	// deduplicates, so the router's own attempt costs nothing.
 	function warmFromIntent(e: Event) {
 		const a = (e.target as Element | null)?.closest?.('a[href^="/"]')
 		if (!a)
 			return
 		const href = a.getAttribute('href')
-		if (href)
-			warmPainting(paintingKeyForPath(new URL(href, location.origin).pathname))
+		if (!href)
+			return
+		const { pathname } = new URL(href, location.origin)
+		warmPainting(paintingKeyForPath(pathname))
+		if (pathname !== page.url.pathname)
+			void preloadData(href).catch(() => {})
 	}
 
 	// Mobile nav menu (collapsible on phones).
