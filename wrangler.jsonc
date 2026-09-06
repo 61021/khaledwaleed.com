@@ -1,5 +1,7 @@
 {
 	"name": "khaledwaleed-com",
+	"workers_dev": false,
+	"preview_urls": false,
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"compatibility_date": "2026-05-31",
 	"compatibility_flags": ["nodejs_compat"],
