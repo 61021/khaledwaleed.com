@@ -19,8 +19,8 @@
 <header class='page-header'>
 	<div class='hero-wrap'>
 		<div class='hero' style:--focal={p?.focal ?? 'center'}>
-			<!-- One hero canvas per page; navigations swap it inside the
-			     blur swap's soft beat. -->
+			<!-- One hero canvas per page; navigations swap it while the
+			     dissolve holds the stage clear. -->
 			<div class='hero-art'>
 				<Painting {room} priority bare />
 			</div>
@@ -92,7 +92,7 @@
 		inset: 0;
 		z-index: 0;
 		/* No transition clock of its own: room changes swap this canvas
-		   inside the blur swap (see .stage in app.css). Layers carrying
+		   inside the dissolve (see .stage in app.css). Layers carrying
 		   their own clocks kept meeting the rest at a seam. */
 	}
 

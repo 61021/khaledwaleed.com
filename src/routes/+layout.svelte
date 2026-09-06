@@ -205,7 +205,7 @@
 	// Once the version poll (svelte.config.js) spots a new build, the next
 	// room change walks through the front door instead of the client
 	// router, so a long-lived tab stops hanging retired canvases. cancel()
-	// first, or the router keeps going and the blur swap runs under the
+	// first, or the router keeps going and the dissolve runs under the
 	// reload: a double transition tearing mid-beat.
 	beforeNavigate((navigation) => {
 		if (updated.current && !navigation.willUnload && navigation.to?.url) {
@@ -214,8 +214,15 @@
 		}
 	})
 
-	// The blur swap's token: a fast second navigation must never be
-	// cleaned up (or sharpened early) by the first one's timers.
+	// The dissolve's clock, mirroring --swap-out / --swap-in in app.css.
+	// The cleanup runs a frame past the arrival so the attribute never
+	// leaves mid-animation; SWAP_BAIL only covers a departure whose
+	// transitionend never arrives.
+	const SWAP_BAIL = 260
+	const SWAP_IN = 320
+
+	// The dissolve's token: a fast second navigation must never be
+	// cleaned up (or resolved early) by the first one's timers.
 	let swapToken = 0
 
 	onNavigate((navigation) => {
@@ -227,8 +234,8 @@
 		// curtain sits out and paintings develop in place (see Curtain.svelte
 		// and app.css).
 		document.documentElement.setAttribute('data-navigated', '')
-		// Route changes must land at the top as an instant jump hidden inside
-		// the swap's soft beat; html's smooth scrolling turned the router's
+		// Route changes must land at the top as an instant jump hidden under
+		// the cleared stage; html's smooth scrolling turned the router's
 		// scroll reset into an eased scroll still running when the new room
 		// appeared. Same-page hash jumps keep the smoothness.
 		const pathChanged = navigation.from?.url.pathname !== navigation.to?.url.pathname
@@ -245,53 +252,64 @@
 		// search changes (the music range switcher) swap in place.
 		if (!pathChanged)
 			return
-		// Start carrying the next painting to the door. No hold: the swap's
-		// soft beat is the decode window, and a canvas that still misses
+		// Start carrying the next painting to the door. No hold: the
+		// departure is the decode window, and a canvas that still misses
 		// its cue develops in via .loaded (see .frontispiece img in app.css).
 		const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null
 		if (key)
 			warmPainting(key)
-		// The blur swap (see .stage in app.css): the stage (main + footer;
-		// the nav lettering floats above it, sharp) softens out of focus
-		// for one short beat, the router swaps the room and the palette
-		// underneath, then the new room settles back sharp. One layer, one
-		// clock; the band's covered corridor is gone. data-swap also
-		// shortens the 600ms palette eases to the sharpen's own clock, so
-		// the wall crosses with the focus pull instead of straggling after
-		// it. onNavigate runs after data loading, so the beat never waits
-		// on the network.
+		// The dissolve (see .stage in app.css): the stage (main + footer;
+		// the nav lettering floats above it, lit) clears to the bare wall,
+		// the router swaps the room underneath, then the new room resolves
+		// back up while the palette crosses on the same clock. One layer,
+		// one clock; the band's covered corridor is gone. data-swap also
+		// shortens the 600ms palette eases to the arrival's clock, so the
+		// wall crosses with the room instead of straggling after it.
 		const html = document.documentElement
 		const token = ++swapToken
 		html.setAttribute('data-swap', 'out')
 		const arrive = () => {
 			if (token !== swapToken)
 				return
-			// Two held frames before the sharpen: the new room's first paint
-			// is the navigation's dearest raster, and starting the filter
-			// animation against it dropped frames on both engines. The paint
-			// lands under the standing blur, then the focus pulls on a
-			// settled surface.
-			requestAnimationFrame(() => requestAnimationFrame(() => {
+			// One held frame: the new room's first paint is the navigation's
+			// dearest raster, and it lands while the stage is still clear.
+			// The arrival then animates against a settled surface.
+			requestAnimationFrame(() => {
 				if (token !== swapToken)
 					return
 				// The glide squares its transform with the router's scroll
-				// reset while the dip still hides the jump (smoother.ts).
+				// reset while the stage still hides the jump (smoother.ts).
 				snapSmoother()
 				html.setAttribute('data-swap', 'in')
 				setTimeout(() => {
 					if (token !== swapToken)
 						return
 					html.removeAttribute('data-swap')
-				}, 200)
-			}))
+				}, SWAP_IN)
+			})
 		}
-		// `complete` settles right after the swap: sharpen on the new room,
-		// or back onto the old one when the navigation aborts.
+		// `complete` settles right after the swap: resolve onto the new
+		// room, or back onto the old one when the navigation aborts.
 		navigation.complete.then(arrive, arrive)
 		return new Promise((resolve) => {
-			// Swap at the bottom of the dip, never against a half-blurred
-			// old room (--swap-out is 90ms).
-			setTimeout(resolve, 90)
+			// Wait for the departure to actually finish, not for a timer
+			// that matches its nominal length: the attribute lands a style
+			// recalc before the transition's first frame, and a bare
+			// setTimeout(--swap-out) swapped the room while the old one was
+			// still a fifth lit. transitionend is that offset, measured.
+			const stage = smoothContent
+			let bail: ReturnType<typeof setTimeout>
+			const done = () => {
+				clearTimeout(bail)
+				stage?.removeEventListener('transitionend', done)
+				resolve()
+			}
+			if (!stage) {
+				done()
+				return
+			}
+			bail = setTimeout(done, SWAP_BAIL)
+			stage.addEventListener('transitionend', done)
 		})
 	})
 
@@ -513,10 +531,9 @@
 
 	<!-- The glide's frame (src/lib/smoother.ts): the wrapper pins, the
 	     content rides the transform, and the content doubles as the
-	     stage: everything the blur swap softens, main and footer both.
-	     The header stays outside, so the nav lettering holds sharp over
-	     the focus pull (a filter blurs its whole subtree; no
-	     exemptions). -->
+	     stage: everything the dissolve clears, main and footer both.
+	     The header stays outside, so the nav lettering stays lit while
+	     the rooms cross under it. -->
 	<div id='smooth-wrapper' bind:this={smoothWrapper}>
 		<div id='smooth-content' bind:this={smoothContent} class='stage flex min-h-[100dvh] flex-col'>
 			<main id='main' class='flex-1'>

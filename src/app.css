@@ -234,7 +234,7 @@ html {
 }
 
 /* A room change carries its palette with it: the 600ms eases above and
-   the wallpaper's would straggle long past the blur swap (+layout sets
+   the wallpaper's would straggle long past the dissolve (+layout sets
    data-swap), so the wall crosses on the swap's own clock instead. */
 html[data-swap],
 html[data-swap] body::before {
@@ -496,7 +496,7 @@ textarea,
 	pointer-events: none;
 }
 
-/* A painting that misses the blur swap (cold room, slow line; the swap
+/* A painting that misses the dissolve (cold room, slow line; the swap
    waits for nothing) develops in like a print instead of popping, on a
    clock close enough to the swap's that it doesn't straggle. Scoped to
    walked-in visits: first paint and no-JS visitors keep the image
@@ -750,42 +750,76 @@ html[data-navigated] .frontispiece img.loaded {
 	--dur-beat: 240ms;
 }
 
-/* ---------- The blur swap ----------
+/* ---------- The dissolve ----------
    Room changes are near-instant. The stage (main + footer; the nav
-   lettering floats above it and stays sharp) softens and dips for one
-   short beat, the router swaps the room and the palette under it,
-   then the new room settles back sharp. One layer, one clock: nothing
+   lettering floats above it and stays lit) clears to the bare wall,
+   the router swaps the room under it, then the new room resolves back
+   up as the palette finishes crossing. One layer, one clock: nothing
    here carries its own timing, which is what every earlier corridor
-   (view transitions, the velvet band) got wrong. The blur animates
-   only on the way DOWN, on the old room's settled raster; on the way
-   up it snaps off under the dip and the room rises sharp on opacity
-   alone. Interpolating a viewport blur re-rasters every frame, and on
-   software compositing (Linux browsers, often) that dropped frames
-   through the whole sharpen. At a fifth of the light nobody can see
-   the difference; the focus pull reads in the dip. */
+   (view transitions, the velvet band) got wrong.
+
+   Opacity and transform only. The previous version pulled a 5px blur
+   across the stage and it stalled on every single navigation: traced
+   on the production build, the 90ms dip took 132ms with a 51ms hole in
+   the middle, because interpolating a viewport blur re-rasters the
+   whole layer every frame. Nothing here touches the raster.
+
+   The departure clears the whole way rather than dipping to a ghost,
+   so the swap itself (scroll reset, new room, new wall) happens with
+   nothing on screen to jump. The arrival is the longer half: the wall
+   crosses on this clock (see html[data-swap] above) and main rises the
+   last few pixels into its seat, one step ahead of the reveals that
+   fill the room behind it. */
 :root {
-	--swap-out: 90ms;
-	--swap-in: 170ms;
+	--swap-out: 120ms;
+	--swap-in: 300ms;
 }
 
 html[data-swap] .stage {
-	will-change: opacity, filter;
+	will-change: opacity;
 }
 
+/* Linear, alone in the house, and on purpose: an ease-in holds the room
+   at full light through most of its duration, so the click got no answer
+   for 80ms and the router swapped against a stage still a fifth lit.
+   Perceived brightness already curves on its own against these dark
+   walls, so a straight ramp reads as an accelerating fade and starts on
+   the first frame. */
 html[data-swap='out'] .stage {
-	opacity: 0.2;
-	filter: blur(5px);
-	transition:
-		opacity var(--swap-out) linear,
-		filter var(--swap-out) linear;
+	opacity: 0;
+	transition: opacity var(--swap-out) linear;
 }
 
+/* Keyframes, not a transition: the arrival has to start from below its
+   seat, and a transition can only run from wherever the departure
+   stopped. The stage carries the light, main carries the rise. The
+   stage cannot: ScrollSmoother owns its transform. */
 html[data-swap='in'] .stage {
-	opacity: 1;
-	filter: blur(0);
-	transition:
-		opacity var(--swap-in) var(--ease-out),
-		filter 0ms linear;
+	animation: swap-in var(--swap-in) var(--ease-out) both;
+}
+
+html[data-swap='in'] .stage main {
+	animation: swap-rise var(--swap-in) var(--ease-out) both;
+}
+
+@keyframes swap-in {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes swap-rise {
+	from {
+		transform: translate3d(0, 9px, 0);
+	}
+
+	to {
+		transform: none;
+	}
 }
 
 /* ---------- The entrance ---------- */
