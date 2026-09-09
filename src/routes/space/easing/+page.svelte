@@ -64,10 +64,10 @@
 
 		<p class='lede'>
 			An easing function bends time. The animation's clock runs 0 to 1 at a constant rate,
-			and the ease maps each tick to how far the value has actually moved. Weight, snap,
-			hesitation: the whole character of a motion lives in that map. CSS ships five bends.
-			GSAP ships a vocabulary. The figures below run on the real engines, so press play on
-			everything.
+			and the ease maps each tick to how far the value has actually moved. Whether a motion
+			reads as heavy, snappy or hesitant is decided in that map. CSS ships five of them.
+			GSAP ships named families instead. The figures below run on the real engines, so press
+			play on everything.
 		</p>
 
 		<div class='fig-grid two'>
@@ -157,8 +157,7 @@
 			overshoots, <code translate='no'>elastic</code> rings, <code translate='no'>bounce</code> lands like a dropped
 			ball. Every family conjugates three ways, and the suffix is the design decision:
 			<code translate='no'>.out</code> for arrivals, <code translate='no'>.in</code> for exits, <code translate='no'>.inOut</code> for
-			moves between rest states. The name carries the intent.
-			<code translate='no'>ease: "power2.out"</code> reads at a glance;
+			moves between rest states. <code translate='no'>ease: "power2.out"</code> reads at a glance;
 			<code translate='no'>cubic-bezier(0, 0, 0.58, 1)</code> sends the next reader off to plot it.
 		</p>
 		<p>
@@ -194,8 +193,8 @@
 			When a bezier needs more overshoot, you write four new numbers and squint at the
 			plot. When <code translate='no'>back</code> needs more, you write <code translate='no'>back.out(2.5)</code>.
 			Parameters carry the adjustment: overshoot for <code translate='no'>back</code>, amplitude and
-			period for <code translate='no'>elastic</code>, a count for <code translate='no'>steps</code>. Same name,
-			different temperament.
+			period for <code translate='no'>elastic</code>, a count for <code translate='no'>steps</code>. The name
+			stays put and the number moves.
 		</p>
 
 		<EasePlayground />
@@ -229,8 +228,8 @@
 			cover shapes one cubic never will. And each ease is a plain function of progress,
 			so the same curve drives a transform today, a scroll position tomorrow, a WebGL
 			uniform after that, then plays backwards inside a timeline without a rewrite.
-			<code translate='no'>cubic-bezier()</code> styles one property on one element in one direction,
-			and that is the gap the four numbers never close.
+			<code translate='no'>cubic-bezier()</code> styles one property on one element in one
+			direction.
 		</p>
 		<p>
 			The museum next door changes rooms on two cubic-beziers; that job is CSS-sized.
