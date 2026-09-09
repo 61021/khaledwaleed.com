@@ -184,9 +184,9 @@
 		</figure>
 		<p class='dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]'>
 			At fourteen I was behind a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries
-			and counting change. My father had died in 2014, and I was the eldest son in a family of five,
-			so someone had to provide. I've been working ever since, the register first, then design, then
-			code, now systems that millions of people depend on. And providing ever since, too. This page
+			and counting change. My father had died in 2014 and I was the eldest son in a family of five,
+			so someone had to provide. I've worked ever since, the register first, then design, then code,
+			and now systems a few million people depend on. I've been providing ever since too. This page
 			is the long version.
 		</p>
 		<p>
@@ -194,40 +194,38 @@
 			surgeons and beauty brands at a small Baghdad studio, and I kept wishing the designs could
 			actually do something, so I taught myself to build them. By the end of 2021 I was designing
 			and building websites for a studio in Amsterdam, under the same title I use today (design
-			engineer), and I'd founded
+			engineer), and I'd started
 			<a href='https://vitex.dev' target='_blank' rel='noopener' class='link'>Vitex</a>, my own
 			studio, with the motto it still carries: <em>software, pretty and perfect</em>.
 		</p>
 		<p>
-			Then the work turned serious. At eighteen I was building government systems, the Iraqi
-			Electronic Passport's public website and booking flow, systems for the ports, an ERP behind
-			the intercity-taxi garages of every governorate, and I led a team of nine while doing it.
-			Building software in Iraq is an advantage: the constraints are real, the stakes are rarely
+			Then the work turned serious. At eighteen I was building government systems: the Iraqi
+			Electronic Passport's public website and booking flow, systems for the ports, and the ERP
+			behind the intercity-taxi garages of every governorate. I led a team of nine while doing it.
+			Building software in Iraq is an advantage. The constraints are real, the stakes are rarely
 			abstract, and you learn early what holds up when the thing simply has to work. In those years
-			the Ishtar Center, a democracy NGO, made me its director of AI and technology, where I apply
-			AI models to research alongside some of Iraq's top researchers.
+			the Ishtar Center, a democracy NGO, made me its director of AI and technology, and I apply AI
+			models to research there alongside some of Iraq's top researchers.
 		</p>
 		<p>
 			Today I lead frontend at
-			<a href='https://enjaz.tech' target='_blank' rel='noopener' class='link'>Enjaz</a>, the e-government arm of Qi, Iraq's largest
-			e-payment company, which I joined as the youngest of its 3,000+ employees and the only
-			frontend engineer on seven government platforms. Within a year I'd rebuilt and redesigned all
-			seven, then I recruited and trained the three engineers who now run them with me. The
-			portfolio serves more than four million people, one platform alone reaches three million
-			families. And still, the part I care about most is the part nobody audits: sounds, motion, the
-			small courtesies of an interface, shipped in business dashboards nobody expected to enjoy. I
-			never accepted that “it works” and “it feels right” should be different standards. Vitex,
-			meanwhile, grew up with me, four people now, with products of its own out in the world.
-			There's a title for all of this, design engineer, but it's the same instinct that started
-			with the posters.
+			<a href='https://enjaz.tech' target='_blank' rel='noopener' class='link'>Enjaz</a>, the
+			e-government arm of Qi, Iraq's largest e-payment company. I joined as the youngest of its
+			3,000+ employees and the only frontend engineer on seven government platforms. Within a year
+			I'd rebuilt and redesigned all seven, then I recruited and trained the three engineers who run
+			them with me now. The portfolio serves more than four million people, and one platform alone
+			reaches three million families. The part I care about most is the part nobody audits: sounds,
+			motion, the small courtesies of an interface, shipped in business dashboards nobody expected
+			to enjoy. I've never treated “it works” and “it feels right” as two separate standards, and
+			the title for that is design engineer, the same instinct that started with the posters. Vitex
+			grew up alongside all of it, four people now, with products of its own out in the world.
 		</p>
 		<p>
 			Away from the screen I read, watch films, and walk the older parts of cities. The questions I
 			care about never stay answered: why people suffer, where taste comes from, what makes a life
 			worthwhile. I <a href='/writing' class='link'>write</a> occasionally, mostly because some
-			thoughts become annoying if you leave them alone for too long, and I've found that most
-			things become more bearable once they become interesting, software included. If some of that
-			overlaps with your world, <a href='/contact' class='link'>let's talk</a>.
+			thoughts get annoying if you leave them alone for too long. Most things become more bearable
+			once they become interesting, software included.
 		</p>
 		<p class='text-sm text-[var(--ink-muted)] italic'>
 			The name in Arabic is <span lang='ar' class='not-italic'>خالد وليد</span>: Khaled Waleed in
