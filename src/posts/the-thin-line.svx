@@ -1,6 +1,6 @@
 ---
 title: The thin line
-description: How small the difference between a good person and a bad one really is, and why the people worth trusting are the ones who know they could cross the line and choose not to.
+description: Good and evil are sometimes one decision apart, and the people worth trusting are the ones who know they could cross the line and don't.
 date: 2026-06-22
 readingTime: 2 min read
 tags:
@@ -9,16 +9,14 @@ tags:
   - choice
 ---
 
-Lately I've been thinking about how small the difference between a good person and a bad person really is.
+Lately I've been thinking about how small the difference is between a good person and a bad one.
 
-People like to imagine that good and evil are far apart, I don't think they are, sometimes they're separated by a single decision.
+People like to imagine good and evil sitting far apart. I don't think they are. Some of the time a single decision is the whole distance.
 
-Most bad decisions don't feel evil while you're making them. Your mind gives you reasons, it tells you that you're justified, that they deserve it, that nobody will know, that it isn't a big deal, and for a moment both sides sound right.
+Most bad decisions don't feel evil while you're making them. Your mind hands you the reasons. You're justified, they deserve it, nobody will know, it isn't a big deal. For a moment both sides sound right, and that's the part that scares me.
 
-That's the part that scares me.
+There are moments where the choice sits at about fifty-fifty: take the thing or leave it, hurt someone or walk away, tell the truth or lie. From the inside it doesn't feel like a test of character. It feels like a fight in your own head, and you don't know which side of you won until it's over.
 
-There are moments where the choice feels almost fifty-fifty, take something or leave it, hurt someone or walk away, tell the truth or lie. It doesn't feel like a test of character when you're inside it, it feels like a fight in your own head, and you don't know which side of you wins until it's over.
+People become dangerous when they decide they're incapable of doing wrong. The ones I trust are the ones who know they could cross the line and don't.
 
-I think people become dangerous when they believe they're incapable of doing wrong. The people I trust most are the ones who know they could cross the line and choose not to.
-
-Maybe being good isn't purity, maybe it's just recognizing the line when you see it and refusing to step over it. I hope I keep recognizing it.
+Maybe being good isn't purity. Maybe it's seeing the line and staying on this side of it. I hope I keep seeing it.

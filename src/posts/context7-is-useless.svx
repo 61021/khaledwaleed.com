@@ -1,6 +1,6 @@
 ---
 title: Context7 is useless
-description: A metered middleman standing between your agent and documentation that is free, public, and one fetch away, plus the one line in CLAUDE.md that does the job better.
+description: It charges two API calls and a guess for a page with no version stamped on it. One line in my CLAUDE.md does the job better, and for nothing.
 date: 2026-09-06
 readingTime: 2 min read
 typeface: sans
@@ -10,24 +10,24 @@ tags:
   - web
 ---
 
-Every few weeks someone tells me to install Context7. Your model is a year stale, libraries move, so bolt on an MCP server that pipes it fresh docs. Fine. I ran it, deleted it, and wrote one line in my `CLAUDE.md` instead:
+Every few weeks someone tells me to install Context7. My model is a year stale, libraries move, so I should bolt an MCP server onto it that pipes in fresh docs. I ran it, deleted it, and wrote one line in my `CLAUDE.md` instead:
 
 **Check official docs BEFORE setting up or using any tool/library/framework; fetch the versioned docs page matching the installed version, don't hand-roll configs or guess APIs from memory.**
 
-The line wins, and it isn't close.
+That line has done the job on every library I've pointed it at. Here is what the server does instead.
 
 ---
 
-Look at what you actually bought. The agent calls `resolve-library-id`, hands over "drizzle", and gets a menu back: the real repo, a mirror, a fork, someone's tutorial with a similar name. It guesses. Then it calls `query-docs` and receives snippets that a crawler scraped off that repo at some point, ranked against your question. [The README says it plainly](https://github.com/upstash/context7): the parsing and crawling engines are closed.
+The agent calls `resolve-library-id` and hands over "drizzle". It gets a menu back: the real repo, a mirror, a fork, somebody's tutorial with a similar name. It picks one. Then it calls `query-docs` and receives snippets a crawler scraped off that repo at some point, ranked against the question. [The README says it plainly](https://github.com/upstash/context7): the parsing and crawling engines are closed.
 
-Two round trips, one guess, and an answer with no version stamped on it. You are on v3, main is v4 with a rewritten API, and nothing in the reply tells you which one you are holding. Ask for a specific tag and it may [tell you the docs aren't there](https://github.com/upstash/context7/issues/236). Wrong-version code compiles and dies at runtime, which is the worst possible place to learn this.
+Two round trips, one guess, and an answer with no version on it. You are on v3, main is v4 with a rewritten API, and nothing in the reply says which one you are holding. Ask for a specific tag and it may [tell you the docs aren't there](https://github.com/upstash/context7/issues/236). Wrong-version code compiles and dies at runtime, which is the worst place to find out.
 
-Then, the API key. An API key. For documentation. [The free plan is 1,000 calls a month](https://context7.com/plans), every lookup burns two of them, so that is 500 questions before Pro at $10 a seat and overage at $10 per thousand. You are paying by the call for chopped-up copies of pages Drizzle gives away and updates faster than any crawler walks them. The free tier was [quietly cut in January](https://blog.devgenius.io/context7-quietly-slashed-its-free-tier-by-92-16fa05ddce03), because of course it was.
+Then there is the API key. An API key, for documentation. [The free plan is 1,000 calls a month](https://context7.com/plans) and every lookup burns two of them, so that is 500 questions before Pro at $10 a seat and overage at $10 per thousand. You are paying by the call for chopped-up copies of pages Drizzle gives away and updates faster than any crawler walks them. The free tier was [quietly cut in January](https://blog.devgenius.io/context7-quietly-slashed-its-free-tier-by-92-16fa05ddce03), because of course it was.
 
 ---
 
-Your agent can fetch a URL. That is the entire alternative. Send it to `orm.drizzle.team` for the version in the lockfile and it reads the real page, deprecation banner and migration note attached, edited this morning, for zero dollars and zero tool definitions riding along in every request you make all day.
+Your agent can fetch a URL. That is the whole alternative. Send it to `orm.drizzle.team` for the version in the lockfile and it reads the real page, deprecation banner and migration note attached, edited this morning, for zero dollars and with no tool definitions riding along in every request you make all day.
 
 The line fires on every task instead of whenever a model remembers some server exists, and it works on the library nobody bothered to index.
 
-If your agent has no network access, sure, Context7 is a real adapter for a real problem. Everyone else is paying rent on a fetch.
+If your agent has no network access, Context7 is a real adapter for a real problem. Everyone else is paying two calls and a guess for a page that was one fetch away.
