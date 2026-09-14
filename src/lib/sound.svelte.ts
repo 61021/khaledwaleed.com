@@ -24,6 +24,7 @@ const TRACKS = [
 // deliberately not one of them, so the first click, tap, or keypress
 // is the earliest any browser lets the music begin.
 const GESTURES = ['pointerdown', 'keydown', 'touchend', 'click'] as const
+const ARM_AFTER_NAV = 700
 
 type Tick = 'tap' | 'open' | 'close'
 
@@ -48,7 +49,15 @@ class SoundSystem {
 		if (!browser)
 			return
 		this.enabled = localStorage.getItem(STORAGE_KEY) !== 'off'
-		const tryArm = () => this.arm()
+		// Opening an AudioContext blocks the main thread for ~55ms. On a
+		// link that lands between the click and the room change, so it waits
+		// until the new room is up; the page's activation still covers it.
+		const tryArm = (e: Event) => {
+			if (e.target instanceof Element && e.target.closest('a[href]'))
+				setTimeout(() => this.arm(), ARM_AFTER_NAV)
+			else
+				this.arm()
+		}
 		for (const g of GESTURES) addEventListener(g, tryArm, { passive: true })
 		this.unlisten = () => {
 			for (const g of GESTURES) removeEventListener(g, tryArm)
