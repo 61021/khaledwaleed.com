@@ -40,7 +40,7 @@ export function isPaintingWarm(key: string): boolean {
     forgets itself so a later intent can retry.
  */
 export function warmPainting(key: string | null): Promise<void> {
-	if (!key || !(key in paintings) || warm.has(key))
+	if (!key || !(key in sizes) || warm.has(key))
 		return Promise.resolve()
 	let pending = warming.get(key)
 	if (!pending) {
