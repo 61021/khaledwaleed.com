@@ -233,12 +233,13 @@ html {
 		color 600ms ease;
 }
 
-/* A room change carries its palette with it: the 600ms eases above and
-   the wallpaper's would straggle long past the dissolve (+layout sets
-   data-swap), so the wall crosses on the swap's own clock instead. */
+/* A room change snaps the palette and lets .wall-held (the old color,
+   one composited sheet) fade off it instead. Easing background-color
+   repaints the root and the wallpaper's mask every frame: Firefox drew
+   the arrival at 10fps. */
 html[data-swap],
 html[data-swap] body::before {
-	transition-duration: var(--swap-in);
+	transition: none;
 }
 
 /* The glide (src/lib/smoother.ts) owns the viewport while it's mounted:
@@ -510,6 +511,12 @@ html[data-navigated] .frontispiece img.loaded {
 	opacity: 1;
 }
 
+/* A canvas that lands while the text is still clear goes up at once and
+   resolves with its room; only a late one develops on its own. */
+html[data-swap='out'] .frontispiece img {
+	transition: none;
+}
+
 /* ---------- Plate caption ---------- */
 .plate {
 	font-family: var(--font-body);
@@ -751,55 +758,83 @@ html[data-navigated] .frontispiece img.loaded {
 }
 
 /* ---------- The dissolve ----------
-   Room changes are near-instant. The stage (main + footer; the nav
-   lettering floats above it and stays lit) clears to the bare wall,
-   the router swaps the room under it, then the new room resolves back
-   up as the palette finishes crossing. One layer, one clock: nothing
-   here carries its own timing, which is what every earlier corridor
-   (view transitions, the velvet band) got wrong.
+   Room changes are near-instant and the wall is never bare. The text
+   (main + footer) clears while the painting holds: +layout lays a still
+   copy of the hero canvas (.canvas-held) under main and a sheet of the
+   old wall color (.wall-held) under everything. The router swaps the
+   room, then the new room resolves up while both held layers fade off
+   it, so one painting crosses into the next and the wall crosses with
+   them. One clock for all three.
 
-   Opacity and transform only. The previous version pulled a 5px blur
-   across the stage and it stalled on every single navigation: traced
-   on the production build, the 90ms dip took 132ms with a 51ms hole in
-   the middle, because interpolating a viewport blur re-rasters the
-   whole layer every frame. Nothing here touches the raster.
+   Every earlier corridor (view transitions, the band, the blur, the
+   bare dissolve) cleared the canvas with the text and let the next one
+   arrive on its own, after its title. That second beat is what read as
+   awkward, and the empty wall in the middle is what read as lag.
 
-   The departure clears the whole way rather than dipping to a ghost,
-   so the swap itself (scroll reset, new room, new wall) happens with
-   nothing on screen to jump. The arrival is the longer half: the wall
-   crosses on this clock (see html[data-swap] above) and main rises the
-   last few pixels into its seat, one step ahead of the reveals that
-   fill the room behind it. */
+   Opacity and transform only, on composited layers. Nothing here eases
+   a color or a filter across the viewport. */
 :root {
 	--swap-out: 120ms;
 	--swap-in: 300ms;
 }
 
-html[data-swap] .stage {
+/* The held canvas's containing block. With the glide on, the content's
+   transform already made it one. */
+.stage {
+	position: relative;
+}
+
+html[data-swap] .stage > :is(main, footer) {
 	will-change: opacity;
 }
 
 /* Linear, alone in the house, and on purpose: an ease-in holds the room
    at full light through most of its duration, so the click got no answer
-   for 80ms and the router swapped against a stage still a fifth lit.
-   Perceived brightness already curves on its own against these dark
-   walls, so a straight ramp reads as an accelerating fade and starts on
-   the first frame. */
-html[data-swap='out'] .stage {
+   for 80ms. Perceived brightness already curves on its own against these
+   dark walls, so a straight ramp reads as an accelerating fade and
+   starts on the first frame. */
+html[data-swap='out'] .stage > :is(main, footer) {
 	opacity: 0;
 	transition: opacity var(--swap-out) linear;
 }
 
 /* Keyframes, not a transition: the arrival has to start from below its
    seat, and a transition can only run from wherever the departure
-   stopped. The stage carries the light, main carries the rise. The
-   stage cannot: ScrollSmoother owns its transform. */
-html[data-swap='in'] .stage {
+   stopped. main carries the rise; the stage cannot, ScrollSmoother owns
+   its transform. */
+html[data-swap='in'] .stage > main {
+	animation:
+		swap-in var(--swap-in) var(--ease-out) both,
+		swap-rise var(--swap-in) var(--ease-out) both;
+}
+
+html[data-swap='in'] .stage > footer {
 	animation: swap-in var(--swap-in) var(--ease-out) both;
 }
 
-html[data-swap='in'] .stage main {
-	animation: swap-rise var(--swap-in) var(--ease-out) both;
+/* Positioned and first in the stage, so main (a stacking context for as
+   long as it's fading) paints over it: the title leaves the canvas, the
+   canvas stays. Three classes deep to outrank PageHeader's scoped
+   .hero, which would put the copy back in the flow. */
+.stage > .canvas-held.hero {
+	position: absolute;
+	inset-inline: 0;
+	pointer-events: none;
+}
+
+.canvas-held :is(.frontispiece, img) {
+	background: transparent;
+}
+
+.wall-held {
+	position: fixed;
+	inset: 0;
+	z-index: -3;
+	pointer-events: none;
+}
+
+html[data-swap='in'] :is(.canvas-held, .wall-held) {
+	animation: swap-off var(--swap-in) var(--ease-out) both;
 }
 
 @keyframes swap-in {
@@ -809,6 +844,16 @@ html[data-swap='in'] .stage main {
 
 	to {
 		opacity: 1;
+	}
+}
+
+@keyframes swap-off {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
 	}
 }
 

@@ -226,13 +226,59 @@
 	// The dissolve's clock, mirroring --swap-out / --swap-in in app.css.
 	// The cleanup runs a frame past the arrival so the attribute never
 	// leaves mid-animation; SWAP_BAIL only covers a departure whose
-	// transitionend never arrives.
+	// transitionend never arrives. CANVAS_WAIT caps how long the door
+	// holds for the next painting's decode, counted from the click.
 	const SWAP_BAIL = 260
 	const SWAP_IN = 320
+	const CANVAS_WAIT = 240
 
 	// The dissolve's token: a fast second navigation must never be
 	// cleaned up (or resolved early) by the first one's timers.
 	let swapToken = 0
+
+	// What stays on the wall while the room changes: a still copy of the
+	// hero canvas under the fading text, and a sheet of the old wall
+	// color under everything. Both fade out on the arrival's clock, so the
+	// painting crosses straight into the next one and the wall never
+	// animates its color per frame.
+	type Held = { canvas: HTMLElement | null, wall: HTMLElement, top: number, fromY: number }
+	let held: Held | undefined
+
+	function release() {
+		held?.canvas?.remove()
+		held?.wall.remove()
+		held = undefined
+	}
+
+	function hold(stage: HTMLElement): Held {
+		release()
+		const wall = document.createElement('div')
+		wall.className = 'wall-held'
+		wall.style.backgroundColor = getComputedStyle(document.documentElement).backgroundColor
+		document.body.append(wall)
+
+		const fromY = window.scrollY
+		const hero = stage.querySelector<HTMLElement>('main .hero')
+		let top = 0
+		for (let el: HTMLElement | null = hero; el && el !== stage; el = el.offsetParent as HTMLElement | null)
+			top += el.offsetTop
+		if (!hero || fromY >= top + hero.offsetHeight)
+			return { canvas: null, wall, top, fromY }
+
+		const canvas = hero.cloneNode(true) as HTMLElement
+		canvas.querySelector('.hero-content')?.remove()
+		canvas.classList.add('canvas-held')
+		canvas.setAttribute('aria-hidden', 'true')
+		canvas.inert = true
+		canvas.style.top = `${top}px`
+		canvas.style.height = `${hero.offsetHeight}px`
+		for (const img of canvas.querySelectorAll('img')) {
+			img.loading = 'eager'
+			img.decoding = 'sync'
+		}
+		stage.prepend(canvas)
+		return { canvas, wall, top, fromY }
+	}
 
 	onNavigate((navigation) => {
 		mobileOpen = false
@@ -261,38 +307,46 @@
 		// search changes (the music range switcher) swap in place.
 		if (!pathChanged)
 			return
-		// Start carrying the next painting to the door. No hold: the
-		// departure is the decode window, and a canvas that still misses
-		// its cue develops in via .loaded (see .frontispiece img in app.css).
+		// Start carrying the next painting to the door (intent usually got
+		// there first). The door holds for the decode, capped, so the new
+		// canvas is on the wall in the arrival's first frame instead of
+		// developing in behind its own title.
 		const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null
-		if (key)
-			warmPainting(key)
-		// The dissolve (see .stage in app.css): the stage (main + footer;
-		// the nav lettering floats above it, lit) clears to the bare wall,
-		// the router swaps the room underneath, then the new room resolves
-		// back up while the palette crosses on the same clock. One layer,
-		// one clock; the band's covered corridor is gone. data-swap also
-		// shortens the 600ms palette eases to the arrival's clock, so the
-		// wall crosses with the room instead of straggling after it.
+		const canvasReady = Promise.race([
+			warmPainting(key),
+			new Promise<void>(resolve => setTimeout(resolve, CANVAS_WAIT)),
+		])
+		// The dissolve (see .stage in app.css): main and the footer clear
+		// while the painting and the wall hold still behind them, the
+		// router swaps the room underneath, then the new room resolves
+		// back up as the held canvas and wall fade off it. One clock for
+		// everything that moves; the screen is never bare.
 		const html = document.documentElement
+		const stage = smoothContent
 		const token = ++swapToken
+		const current = stage ? hold(stage) : undefined
+		held = current
 		html.setAttribute('data-swap', 'out')
 		const arrive = () => {
 			if (token !== swapToken)
 				return
 			// One held frame: the new room's first paint is the navigation's
-			// dearest raster, and it lands while the stage is still clear.
-			// The arrival then animates against a settled surface.
+			// dearest raster, and it lands while the text is still clear.
 			requestAnimationFrame(() => {
 				if (token !== swapToken)
 					return
 				// The glide squares its transform with the router's scroll
-				// reset while the stage still hides the jump (smoother.ts).
+				// reset while the text is still clear (smoother.ts).
 				snapSmoother()
+				// Keep the held canvas where the eye left it: the scroll reset
+				// moved the document under it.
+				if (current?.canvas)
+					current.canvas.style.top = `${current.top - current.fromY + window.scrollY}px`
 				html.setAttribute('data-swap', 'in')
 				setTimeout(() => {
 					if (token !== swapToken)
 						return
+					release()
 					html.removeAttribute('data-swap')
 				}, SWAP_IN)
 			})
@@ -300,26 +354,28 @@
 		// `complete` settles right after the swap: resolve onto the new
 		// room, or back onto the old one when the navigation aborts.
 		navigation.complete.then(arrive, arrive)
-		return new Promise((resolve) => {
+		const departed = new Promise<void>((resolve) => {
 			// Wait for the departure to actually finish, not for a timer
 			// that matches its nominal length: the attribute lands a style
-			// recalc before the transition's first frame, and a bare
-			// setTimeout(--swap-out) swapped the room while the old one was
-			// still a fifth lit. transitionend is that offset, measured.
-			const stage = smoothContent
+			// recalc before the transition's first frame. Only main's own
+			// opacity counts; a link's color easing bubbles up here too.
+			const main = stage?.querySelector('main')
 			let bail: ReturnType<typeof setTimeout>
-			const done = () => {
+			const done = (e?: TransitionEvent) => {
+				if (e && (e.target !== main || e.propertyName !== 'opacity'))
+					return
 				clearTimeout(bail)
-				stage?.removeEventListener('transitionend', done)
+				main?.removeEventListener('transitionend', done)
 				resolve()
 			}
-			if (!stage) {
+			if (!main) {
 				done()
 				return
 			}
 			bail = setTimeout(done, SWAP_BAIL)
-			stage.addEventListener('transitionend', done)
+			main.addEventListener('transitionend', done)
 		})
+		return Promise.all([departed, canvasReady]).then(() => {})
 	})
 
 	const nav = [
