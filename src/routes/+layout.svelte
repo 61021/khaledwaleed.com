@@ -235,16 +235,64 @@
 		return nav.findIndex(item => isActive(item.href, pathname))
 	}
 
-	// Once the version poll (svelte.config.js) spots a new build, the next
-	// room change walks through the front door instead of the client
-	// router, so a long-lived tab stops hanging retired canvases. cancel()
-	// first, or the router keeps going and the walk runs under the
-	// reload: a double transition tearing mid-beat.
+	// The gilt thread under the nav runs to the room a click is heading
+	// for on the click itself, while the room's code and data are still
+	// on their way (the first /films visit spends ~500ms there). Once the
+	// router lands or gives up, the thread follows the page again.
+	let heading = $state.raw<{ href: string | null }>()
+	const threadHref = $derived(heading ? heading.href : (nav[wallIndex(page.url.pathname)]?.href ?? null))
+
+	// Measured rather than derived: webfonts load after the first render
+	// and move the links. The first seat and every resize land in place;
+	// only a change of room runs.
+	function threadRuns(primaryNav: HTMLElement) {
+		const thread = primaryNav.querySelector<HTMLElement>('.thread')
+		if (!thread)
+			return
+		const seat = (run: boolean) => {
+			const link = threadHref ? primaryNav.querySelector<HTMLElement>(`a[href='${threadHref}']`) : null
+			if (!link)
+				return
+			if (!run)
+				thread.style.transition = 'none'
+			thread.style.transform = `translate3d(${link.offsetLeft}px, 0, 0) scaleX(${link.offsetWidth})`
+			if (!run) {
+				void thread.offsetWidth
+				thread.style.removeProperty('transition')
+			}
+		}
+		let seated = false
+		$effect(() => {
+			void threadHref
+			seat(seated)
+			seated = true
+		})
+		const observer = new ResizeObserver(() => seat(false))
+		observer.observe(primaryNav)
+		return () => observer.disconnect()
+	}
+
 	beforeNavigate((navigation) => {
+		// Once the version poll (svelte.config.js) spots a new build, the
+		// next room change walks through the front door instead of the
+		// client router, so a long-lived tab stops hanging retired canvases.
+		// cancel() first, or the router keeps going and the walk runs under
+		// the reload: a double transition tearing mid-beat.
 		if (updated.current && !navigation.willUnload && navigation.to?.url) {
 			navigation.cancel()
 			location.href = navigation.to.url.href
+			return
 		}
+		const to = navigation.to?.url
+		if (!to || navigation.willUnload || to.pathname === navigation.from?.url.pathname)
+			return
+		const mark = { href: nav[wallIndex(to.pathname)]?.href ?? null }
+		heading = mark
+		const settle = () => {
+			if (heading === mark)
+				heading = undefined
+		}
+		navigation.complete.then(settle, settle)
 	})
 
 	// The walk's clock, mirroring --walk-in in app.css. The cleanup waits
@@ -437,20 +485,26 @@
 				<Monogram class='block h-7 w-auto' />
 			</a>
 
-			<!-- Desktop: links inline, centred between the monogram and the search chip -->
-			<nav aria-label='Primary' class='hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'>
+			<!-- Desktop: links inline, centred between the monogram and the
+			     search chip. The gilt and the thread follow the click; the
+			     current page keeps aria-current. -->
+			<nav
+				{@attach threadRuns}
+				aria-label='Primary'
+				class='relative hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'
+			>
 				{#each nav as item (item.name)}
-					{@const active = isActive(item.href, page.url.pathname)}
 					<a
 						href={item.href}
-						class="-my-2 py-2 font-display text-[1.05rem] transition-colors {active
+						class="-my-2 py-2 font-display text-[1.05rem] transition-colors {item.href === threadHref
 							? 'text-[var(--accent)]'
 							: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
-						aria-current={active ? 'page' : undefined}
+						aria-current={isActive(item.href, page.url.pathname) ? 'page' : undefined}
 					>
 						{item.name}
 					</a>
 				{/each}
+				<span class={['thread', threadHref && 'lit']} aria-hidden='true'></span>
 			</nav>
 
 			<!-- Desktop: sound and search balance the monogram, bare glyphs
@@ -738,6 +792,28 @@
 		transform: scale(0.857);
 	}
 
+	/* The gilt thread: a 1px hairline stretched to the link's width, so
+	   the run between two rooms is one composited transform. */
+	.thread {
+		position: absolute;
+		bottom: -0.2rem;
+		left: 0;
+		width: 1px;
+		height: 1px;
+		background: var(--accent);
+		box-shadow: 0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent);
+		transform-origin: 0 50%;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			transform var(--dur-beat) var(--ease-out),
+			opacity var(--dur-quick) var(--ease-out);
+	}
+
+	.thread.lit {
+		opacity: 1;
+	}
+
 	/* The drop collapses through 0fr rather than a slide transition, so
 	   the list and the pane behind it move on one clock in both
 	   directions. Under {#if} the pane popped in and out a whole beat
@@ -815,6 +891,7 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.thread,
 		.bar,
 		.menu-toggle.open .bar {
 			transition-duration: 0.01ms;
