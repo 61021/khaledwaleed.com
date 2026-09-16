@@ -11,8 +11,8 @@ let observer: IntersectionObserver | undefined
 let burst = 0
 let lastBurstAt = 0
 
-// Risers crossing the threshold mid-dissolve wait in the wings: rising
-// under the arrival's own fade read as two entrances fighting, and
+// Risers crossing the threshold mid-walk wait in the wings: rising
+// under the arrival's own motion read as two entrances fighting, and
 // under the old filter it re-rastered the whole stage. They rise
 // together once the room has resolved, cascading as one burst.
 let pending: HTMLElement[] = []

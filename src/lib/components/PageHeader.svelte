@@ -19,8 +19,8 @@
 <header class='page-header'>
 	<div class='hero-wrap'>
 		<div class='hero' style:--focal={p?.focal ?? 'center'}>
-			<!-- One hero canvas per page; navigations swap it while the
-			     dissolve holds the stage clear. -->
+			<!-- One hero canvas per page; a room change walks it in under
+			     the old room's copy. -->
 			<div class='hero-art'>
 				<Painting {room} priority bare />
 			</div>
@@ -89,11 +89,13 @@
 
 	.hero-art {
 		position: absolute;
-		inset: 0;
+		/* 32px of bleed each side: the walk moves the canvas up to 28px
+		   (--walk-canvas in app.css) and its edge must never show. */
+		inset: 0 -32px;
 		z-index: 0;
-		/* No transition clock of its own: room changes swap this canvas
-		   inside the dissolve (see .stage in app.css). Layers carrying
-		   their own clocks kept meeting the rest at a seam. */
+		/* No transition clock of its own: room changes carry this canvas
+		   on the walk's clock (app.css). Layers carrying their own clocks
+		   kept meeting the rest at a seam. */
 	}
 
 	.hero :global(.frontispiece) {

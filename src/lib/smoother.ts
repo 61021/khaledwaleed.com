@@ -62,8 +62,8 @@ export function mountSmoother(wrapper: HTMLElement, content: HTMLElement): () =>
  * room, then snaps the content transform to wherever the native bar
  * landed (0 forward, the restored seat on back/forward). Without this
  * the transform eases toward the reset, an eased scroll still running
- * when the new room appears. Call it while the dissolve holds the stage
- * clear.
+ * when the new room appears. Call it while the old room's copy still
+ * covers the stage.
  */
 export function snapSmoother(): void {
 	if (!smoother)

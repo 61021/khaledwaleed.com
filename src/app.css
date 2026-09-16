@@ -497,7 +497,7 @@ textarea,
 	pointer-events: none;
 }
 
-/* A painting that misses the dissolve (cold room, slow line; the swap
+/* A painting that misses the walk (cold room, slow line; the swap
    waits for nothing) develops in like a print instead of popping, on a
    clock close enough to the swap's that it doesn't straggle. Scoped to
    walked-in visits: first paint and no-JS visitors keep the image
@@ -511,8 +511,8 @@ html[data-navigated] .frontispiece img.loaded {
 	opacity: 1;
 }
 
-/* A canvas that lands while the text is still clear goes up at once and
-   resolves with its room; only a late one develops on its own. */
+/* A canvas that decodes before the walk starts goes up at once and walks
+   in with its room; only a late one develops on its own. */
 html[data-swap='out'] .frontispiece img {
 	transition: none;
 }
@@ -757,73 +757,64 @@ html[data-swap='out'] .frontispiece img {
 	--dur-beat: 240ms;
 }
 
-/* ---------- The dissolve ----------
-   Room changes are near-instant and the wall is never bare. The text
-   (main + footer) clears while the painting holds: +layout lays a still
-   copy of the hero canvas (.canvas-held) under main and a sheet of the
-   old wall color (.wall-held) under everything. The router swaps the
-   room, then the new room resolves up while both held layers fade off
-   it, so one painting crosses into the next and the wall crosses with
-   them. One clock for all three.
+/* ---------- The walk ----------
+   The rooms hang along one wall in nav order, and a room change walks
+   along it: forward to the right, back to the left. +layout leaves a
+   still copy of the old room where the eye left it (.room-held) and a
+   sheet of the old wall color under everything (.wall-held). The router
+   swaps the room under the copy at once, then both rooms travel on one
+   clock. The painting moves half as far as the words, so it reads as
+   further off than the title on it.
 
-   Every earlier corridor (view transitions, the band, the blur, the
-   bare dissolve) cleared the canvas with the text and let the next one
-   arrive on its own, after its title. That second beat is what read as
-   awkward, and the empty wall in the middle is what read as lag.
-
-   Opacity and transform only, on composited layers. Nothing here eases
-   a color or a filter across the viewport. */
+   Nothing waits. The old room is gone by half time, the next painting
+   is up under it from the first frame, and its words come in once the
+   old ones have mostly left. Opacity and transform only, on composited
+   layers: nothing eases a color or a filter across the viewport. */
 :root {
-	--swap-out: 120ms;
-	--swap-in: 300ms;
+	--walk-in: 320ms;
+	--walk: 1;
+	--walk-canvas: min(28px, 2vw);
+	--walk-words: min(56px, 4vw);
 }
 
-/* The held canvas's containing block. With the glide on, the content's
-   transform already made it one. */
-.stage {
-	position: relative;
+html[data-walk='back'] {
+	--walk: -1;
 }
 
 html[data-swap] .stage > :is(main, footer) {
 	will-change: opacity;
 }
 
-/* Linear, alone in the house, and on purpose: an ease-in holds the room
-   at full light through most of its duration, so the click got no answer
-   for 80ms. Perceived brightness already curves on its own against these
-   dark walls, so a straight ramp reads as an accelerating fade and
-   starts on the first frame. */
+/* The copy covers the wall until the arrival, so the live stage steps
+   out of sight and the router's swap never shows. */
 html[data-swap='out'] .stage > :is(main, footer) {
 	opacity: 0;
-	transition: opacity var(--swap-out) linear;
 }
 
-/* Keyframes, not a transition: the arrival has to start from below its
-   seat, and a transition can only run from wherever the departure
-   stopped. main carries the rise; the stage cannot, ScrollSmoother owns
-   its transform. */
-html[data-swap='in'] .stage > main {
-	animation:
-		swap-in var(--swap-in) var(--ease-out) both,
-		swap-rise var(--swap-in) var(--ease-out) both;
+html[data-swap='in'] .stage .hero-art {
+	animation: walk-canvas-in var(--walk-in) var(--ease-out) both;
 }
 
+html[data-swap='in'] .stage :is(.hero-content, .hero-plate),
+html[data-swap='in'] .stage > main > :not(.page-header),
 html[data-swap='in'] .stage > footer {
-	animation: swap-in var(--swap-in) var(--ease-out) both;
+	animation:
+		walk-words-in var(--walk-in) var(--ease-out) both,
+		walk-words-show var(--walk-in) linear both;
 }
 
-/* Positioned and first in the stage, so main (a stacking context for as
-   long as it's fading) paints over it: the title leaves the canvas, the
-   canvas stays. Three classes deep to outrank PageHeader's scoped
-   .hero, which would put the copy back in the flow. */
-.stage > .canvas-held.hero {
-	position: absolute;
-	inset-inline: 0;
+/* Above the stage, below every piece of fixed chrome. */
+.room-held {
+	position: fixed;
+	inset: 0;
+	z-index: 1;
+	overflow: hidden;
 	pointer-events: none;
 }
 
-.canvas-held :is(.frontispiece, img) {
-	background: transparent;
+.room-held > * {
+	position: absolute;
+	inset: 0 0 auto;
 }
 
 .wall-held {
@@ -833,37 +824,82 @@ html[data-swap='in'] .stage > footer {
 	pointer-events: none;
 }
 
-html[data-swap='in'] :is(.canvas-held, .wall-held) {
-	animation: swap-off var(--swap-in) var(--ease-out) both;
+html[data-swap='in'] .room-held {
+	animation: walk-away var(--walk-in) linear both;
 }
 
-@keyframes swap-in {
+html[data-swap='in'] .wall-held {
+	animation: walk-wall-away var(--walk-in) linear both;
+}
+
+html[data-swap='in'] .room-held .hero-art {
+	animation: walk-canvas-out var(--walk-in) var(--ease-out) both;
+}
+
+html[data-swap='in'] .room-held :is(.hero-content, .hero-plate),
+html[data-swap='in'] .room-held main > :not(.page-header),
+html[data-swap='in'] .room-held > * > footer {
+	animation: walk-words-out var(--walk-in) var(--ease-out) both;
+}
+
+@keyframes walk-canvas-in {
 	from {
+		transform: translate3d(calc(var(--walk) * var(--walk-canvas)), 0, 0);
+	}
+}
+
+@keyframes walk-canvas-out {
+	to {
+		transform: translate3d(calc(var(--walk) * var(--walk-canvas) * -1), 0, 0);
+	}
+}
+
+@keyframes walk-words-in {
+	from {
+		transform: translate3d(calc(var(--walk) * var(--walk-words)), 0, 0);
+	}
+}
+
+@keyframes walk-words-out {
+	to {
+		transform: translate3d(calc(var(--walk) * var(--walk-words) * -1), 0, 0);
+	}
+}
+
+/* The new words hold back for the first fifth, while the old ones are
+   still leaving, then come up on the house curve. */
+@keyframes walk-words-show {
+	0%,
+	20% {
 		opacity: 0;
+		animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
-	to {
+	75%,
+	100% {
 		opacity: 1;
 	}
 }
 
-@keyframes swap-off {
-	from {
+@keyframes walk-away {
+	0% {
 		opacity: 1;
 	}
 
-	to {
+	50%,
+	100% {
 		opacity: 0;
 	}
 }
 
-@keyframes swap-rise {
-	from {
-		transform: translate3d(0, 9px, 0);
+@keyframes walk-wall-away {
+	0% {
+		opacity: 1;
 	}
 
-	to {
-		transform: none;
+	60%,
+	100% {
+		opacity: 0;
 	}
 }
 

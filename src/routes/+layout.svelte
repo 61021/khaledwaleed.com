@@ -1,4 +1,5 @@
 <script lang='ts'>
+	import type { OnNavigate } from '@sveltejs/kit'
 	import { dev } from '$app/environment'
 	import { beforeNavigate, onNavigate, preloadData } from '$app/navigation'
 	import { page, updated } from '$app/state'
@@ -99,7 +100,7 @@
 	// (data-sveltekit-preload-data="hover") waits for the pointer to come
 	// to REST, so a decisive click, a tap, or a tab outruns it: /films
 	// traced 756ms of frozen page between the click and the first frame
-	// of the dissolve, because onNavigate only runs once the data is in.
+	// of the walk, because onNavigate only runs once the data is in.
 	// Firing on the raw intent event closes that gap; preloadData
 	// deduplicates, so the router's own attempt costs nothing.
 	function warmFromIntent(e: Event) {
@@ -211,10 +212,33 @@
 		}
 	})
 
+	const nav = [
+		{ name: 'Foyer', href: '/' },
+		{ name: 'Story', href: '/story' },
+		{ name: 'Projects', href: '/projects' },
+		{ name: 'Writing', href: '/writing' },
+		{ name: 'Likes', href: '/likes' },
+		{ name: 'Films', href: '/films' },
+		{ name: 'Tools', href: '/tools' },
+		{ name: 'Contact', href: '/contact' },
+	]
+
+	function isActive(href: string, path: string) {
+		if (href === '/')
+			return path === '/'
+		return path === href || path.startsWith(`${href}/`)
+	}
+
+	// The rooms hang along one wall in nav order. A page outside the nav
+	// takes the seat of the room it belongs to, or none.
+	function wallIndex(pathname: string) {
+		return nav.findIndex(item => isActive(item.href, pathname))
+	}
+
 	// Once the version poll (svelte.config.js) spots a new build, the next
 	// room change walks through the front door instead of the client
 	// router, so a long-lived tab stops hanging retired canvases. cancel()
-	// first, or the router keeps going and the dissolve runs under the
+	// first, or the router keeps going and the walk runs under the
 	// reload: a double transition tearing mid-beat.
 	beforeNavigate((navigation) => {
 		if (updated.current && !navigation.willUnload && navigation.to?.url) {
@@ -223,61 +247,72 @@
 		}
 	})
 
-	// The dissolve's clock, mirroring --swap-out / --swap-in in app.css.
-	// The cleanup runs a frame past the arrival so the attribute never
-	// leaves mid-animation; SWAP_BAIL only covers a departure whose
-	// transitionend never arrives. CANVAS_WAIT caps how long the door
-	// holds for the next painting's decode, counted from the click.
-	const SWAP_BAIL = 260
-	const SWAP_IN = 320
-	const CANVAS_WAIT = 240
+	// The walk's clock, mirroring --walk-in in app.css. The cleanup waits
+	// out the arrival so the attribute never leaves mid-animation.
+	const WALK_IN = 320
 
-	// The dissolve's token: a fast second navigation must never be
-	// cleaned up (or resolved early) by the first one's timers.
-	let swapToken = 0
+	// A fast second click must never be cleaned up by the first one's timer.
+	let walkToken = 0
 
-	// What stays on the wall while the room changes: a still copy of the
-	// hero canvas under the fading text, and a sheet of the old wall
-	// color under everything. Both fade out on the arrival's clock, so the
-	// painting crosses straight into the next one and the wall never
-	// animates its color per frame.
-	type Held = { canvas: HTMLElement | null, wall: HTMLElement, top: number, fromY: number }
-	let held: Held | undefined
+	// The old room keeps its own palette while it walks off: <html> has
+	// turned to the next room's by then.
+	const ROOM_TOKENS = ['--bg', '--bg-soft', '--ink', '--ink-muted', '--ink-dim', '--rule', '--accent']
+
+	let held: HTMLElement[] = []
 
 	function release() {
-		held?.canvas?.remove()
-		held?.wall.remove()
-		held = undefined
+		for (const el of held)
+			el.remove()
+		held = []
 	}
 
-	function hold(stage: HTMLElement): Held {
+	// What stays on the wall while the room changes: a still copy of the
+	// stage exactly where the eye left it, and a sheet of the old wall
+	// color under everything. Both hang on <body>, outside the glide's
+	// transform. The copy drops the .stage class so the live stage's
+	// swap rules never reach it.
+	function hold(stage: HTMLElement) {
 		release()
+		const root = getComputedStyle(document.documentElement)
 		const wall = document.createElement('div')
 		wall.className = 'wall-held'
-		wall.style.backgroundColor = getComputedStyle(document.documentElement).backgroundColor
-		document.body.append(wall)
+		wall.style.backgroundColor = root.backgroundColor
 
-		const fromY = window.scrollY
-		const hero = stage.querySelector<HTMLElement>('main .hero')
-		let top = 0
-		for (let el: HTMLElement | null = hero; el && el !== stage; el = el.offsetParent as HTMLElement | null)
-			top += el.offsetTop
-		if (!hero || fromY >= top + hero.offsetHeight)
-			return { canvas: null, wall, top, fromY }
+		const room = document.createElement('div')
+		room.className = 'room-held'
+		room.setAttribute('aria-hidden', 'true')
+		room.inert = true
+		for (const token of ROOM_TOKENS)
+			room.style.setProperty(token, root.getPropertyValue(token))
 
-		const canvas = hero.cloneNode(true) as HTMLElement
-		canvas.querySelector('.hero-content')?.remove()
-		canvas.classList.add('canvas-held')
-		canvas.setAttribute('aria-hidden', 'true')
-		canvas.inert = true
-		canvas.style.top = `${top}px`
-		canvas.style.height = `${hero.offsetHeight}px`
-		for (const img of canvas.querySelectorAll('img')) {
-			img.loading = 'eager'
+		const copy = stage.cloneNode(true) as HTMLElement
+		copy.removeAttribute('id')
+		copy.removeAttribute('style')
+		copy.classList.remove('stage')
+		copy.style.transform = `translate3d(0, ${stage.getBoundingClientRect().top}px, 0)`
+		for (const el of copy.querySelectorAll('[id]'))
+			el.removeAttribute('id')
+		for (const img of copy.querySelectorAll('img'))
 			img.decoding = 'sync'
-		}
-		stage.prepend(canvas)
-		return { canvas, wall, top, fromY }
+
+		room.append(copy)
+		document.body.append(wall, room)
+		held = [wall, room]
+	}
+
+	// Forward walks right and back walks left, by the rooms' order on the
+	// wall. Inside one room (an essay and its index) the deeper page is
+	// forward, and history's own direction settles the rest.
+	function walkDirection(navigation: OnNavigate): 'forward' | 'back' {
+		const from = navigation.from?.url.pathname ?? '/'
+		const to = navigation.to?.url.pathname ?? '/'
+		const a = wallIndex(from)
+		const b = wallIndex(to)
+		if (a !== -1 && b !== -1 && a !== b)
+			return b > a ? 'forward' : 'back'
+		if (navigation.type === 'popstate')
+			return navigation.delta < 0 ? 'back' : 'forward'
+		return to.split('/').length >= from.split('/').length ? 'forward' : 'back'
 	}
 
 	onNavigate((navigation) => {
@@ -303,97 +338,49 @@
 		}
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 			return
-		// The swap is for room changes only: hash jumps and same-path
+		// The walk is for room changes only: hash jumps and same-path
 		// search changes (the music range switcher) swap in place.
 		if (!pathChanged)
 			return
-		// Start carrying the next painting to the door (intent usually got
-		// there first). The door holds for the decode, capped, so the new
-		// canvas is on the wall in the arrival's first frame instead of
-		// developing in behind its own title.
-		const key = navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null
-		const canvasReady = Promise.race([
-			warmPainting(key),
-			new Promise<void>(resolve => setTimeout(resolve, CANVAS_WAIT)),
-		])
-		// The dissolve (see .stage in app.css): main and the footer clear
-		// while the painting and the wall hold still behind them, the
-		// router swaps the room underneath, then the new room resolves
-		// back up as the held canvas and wall fade off it. One clock for
-		// everything that moves; the screen is never bare.
+		// Start the next painting's decode if intent didn't get there first.
+		// Nothing waits on it: a canvas that isn't ready develops in on its
+		// own (Painting.svelte, .loaded).
+		void warmPainting(navigation.to ? paintingKeyForPath(navigation.to.url.pathname) : null)
+		// The walk (see app.css): the copy of the old room covers the wall,
+		// the router swaps the room under it at once, then both rooms travel
+		// on one clock.
 		const html = document.documentElement
 		const stage = smoothContent
-		const token = ++swapToken
-		const current = stage ? hold(stage) : undefined
-		held = current
+		const token = ++walkToken
+		if (stage)
+			hold(stage)
+		html.setAttribute('data-walk', walkDirection(navigation))
 		html.setAttribute('data-swap', 'out')
 		const arrive = () => {
-			if (token !== swapToken)
+			if (token !== walkToken)
 				return
 			// One held frame: the new room's first paint is the navigation's
-			// dearest raster, and it lands while the text is still clear.
+			// dearest raster, and it lands while the copy still covers it.
 			requestAnimationFrame(() => {
-				if (token !== swapToken)
+				if (token !== walkToken)
 					return
 				// The glide squares its transform with the router's scroll
-				// reset while the text is still clear (smoother.ts).
+				// reset while the copy still covers it (smoother.ts).
 				snapSmoother()
-				// Keep the held canvas where the eye left it: the scroll reset
-				// moved the document under it.
-				if (current?.canvas)
-					current.canvas.style.top = `${current.top - current.fromY + window.scrollY}px`
 				html.setAttribute('data-swap', 'in')
 				setTimeout(() => {
-					if (token !== swapToken)
+					if (token !== walkToken)
 						return
 					release()
 					html.removeAttribute('data-swap')
-				}, SWAP_IN)
+					html.removeAttribute('data-walk')
+				}, WALK_IN)
 			})
 		}
-		// `complete` settles right after the swap: resolve onto the new
-		// room, or back onto the old one when the navigation aborts.
+		// `complete` settles right after the swap: walk onto the new room,
+		// or back onto the old one when the navigation aborts.
 		navigation.complete.then(arrive, arrive)
-		const departed = new Promise<void>((resolve) => {
-			// Wait for the departure to actually finish, not for a timer
-			// that matches its nominal length: the attribute lands a style
-			// recalc before the transition's first frame. Only main's own
-			// opacity counts; a link's color easing bubbles up here too.
-			const main = stage?.querySelector('main')
-			let bail: ReturnType<typeof setTimeout>
-			const done = (e?: TransitionEvent) => {
-				if (e && (e.target !== main || e.propertyName !== 'opacity'))
-					return
-				clearTimeout(bail)
-				main?.removeEventListener('transitionend', done)
-				resolve()
-			}
-			if (!main) {
-				done()
-				return
-			}
-			bail = setTimeout(done, SWAP_BAIL)
-			main.addEventListener('transitionend', done)
-		})
-		return Promise.all([departed, canvasReady]).then(() => {})
 	})
-
-	const nav = [
-		{ name: 'Foyer', href: '/' },
-		{ name: 'Story', href: '/story' },
-		{ name: 'Projects', href: '/projects' },
-		{ name: 'Writing', href: '/writing' },
-		{ name: 'Likes', href: '/likes' },
-		{ name: 'Films', href: '/films' },
-		{ name: 'Tools', href: '/tools' },
-		{ name: 'Contact', href: '/contact' },
-	]
-
-	function isActive(href: string, path: string) {
-		if (href === '/')
-			return path === '/'
-		return path === href || path.startsWith(`${href}/`)
-	}
 </script>
 
 {#if !inSpace}
@@ -596,9 +583,9 @@
 
 	<!-- The glide's frame (src/lib/smoother.ts): the wrapper pins, the
 	     content rides the transform, and the content doubles as the
-	     stage: everything the dissolve clears, main and footer both.
-	     The header stays outside, so the nav lettering stays lit while
-	     the rooms cross under it. -->
+	     stage: everything the walk carries, main and footer both.
+	     The header stays outside, so the nav lettering holds still
+	     while the rooms pass under it. -->
 	<div id='smooth-wrapper' bind:this={smoothWrapper}>
 		<div id='smooth-content' bind:this={smoothContent} class='stage flex min-h-[100dvh] flex-col'>
 			<main id='main' class='flex-1'>
