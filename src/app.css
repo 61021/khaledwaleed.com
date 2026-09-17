@@ -997,6 +997,11 @@ html[data-swap='in'] .room-held > * > footer {
 	left: -1px;
 }
 
+/* The drawn menu curtain holds the room's scroll behind it. */
+html[data-menu-open] {
+	overflow: hidden;
+}
+
 /* ---------- Reveal on approach ----------
    The one entrance left: content marked with the reveal attachment
    (src/lib/reveal.ts) starts a step below its seat and rises as it

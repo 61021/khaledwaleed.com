@@ -116,8 +116,33 @@
 			void preloadData(href).catch(() => {})
 	}
 
-	// Mobile nav menu (collapsible on phones).
+	// The phone menu closes the curtain over the room. While it hangs,
+	// the room behind is inert and holds its scroll, and growing past
+	// the phone breakpoint takes the cloth down.
 	let mobileOpen = $state(false)
+
+	$effect(() => {
+		if (!mobileOpen)
+			return
+		const root = document.documentElement
+		root.setAttribute('data-menu-open', '')
+		const wide = window.matchMedia('(min-width: 40rem)')
+		const onWide = () => {
+			if (wide.matches)
+				mobileOpen = false
+		}
+		wide.addEventListener('change', onWide)
+		return () => {
+			root.removeAttribute('data-menu-open')
+			wide.removeEventListener('change', onWide)
+		}
+	})
+
+	// A tap on bare cloth parts the curtain, as Escape does.
+	function partOnCloth(e: MouseEvent) {
+		if (!(e.target as Element).closest('a, button'))
+			mobileOpen = false
+	}
 
 	// The rail's latch: the fixed header takes its scrolled dress past
 	// 64px and only sheds it back under 16, so the boundary never
@@ -438,6 +463,33 @@
 	<Screensaver />
 {/if}
 
+{#snippet soundGlyph()}
+	<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
+	<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+		{#if sound.enabled}
+			<path
+				fill='currentColor'
+				d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
+			/>
+		{:else}
+			<path
+				fill='currentColor'
+				d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
+			/>
+		{/if}
+	</svg>
+{/snippet}
+
+{#snippet searchGlyph()}
+	<!-- phosphor: magnifying-glass -->
+	<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
+		<path
+			fill='currentColor'
+			d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
+		/>
+	</svg>
+{/snippet}
+
 <svelte:head>
 	{#if !inSpace}
 		<link rel='preload' as='font' type='font/woff2' href={frauncesWoff2} crossorigin='anonymous' />
@@ -476,7 +528,7 @@
 	     stands outside the glide's wrapper, where position: fixed still
 	     means the viewport. -->
 	<header class={['fixed inset-x-0 top-0 z-40 py-4', mobileOpen && 'menu-open', scrolled && 'scrolled']}>
-		<div class='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
+		<div class='relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
 			<a
 				href='/'
 				class='brand justify-self-start text-[var(--ink)] transition-colors hover:text-[var(--accent)]'
@@ -521,20 +573,7 @@
 						sound.toggle()
 					}}
 				>
-					<!-- phosphor: speaker-simple-high / speaker-simple-slash -->
-					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
-						{#if sound.enabled}
-							<path
-								fill='currentColor'
-								d='M163.51 24.81a8 8 0 0 0-8.42.88L85.25 80H40a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h45.25l69.84 54.31A8 8 0 0 0 168 224V32a8 8 0 0 0-4.49-7.19M152 207.64l-59.09-45.95A7.94 7.94 0 0 0 88 160H40V96h48a7.94 7.94 0 0 0 4.91-1.69L152 48.36ZM208 104v48a8 8 0 0 1-16 0v-48a8 8 0 0 1 16 0m32-16v80a8 8 0 0 1-16 0V88a8 8 0 0 1 16 0'
-							/>
-						{:else}
-							<path
-								fill='currentColor'
-								d='M192 152v-48a8 8 0 0 1 16 0v48a8 8 0 0 1-16 0m40-72a8 8 0 0 0-8 8v80a8 8 0 0 0 16 0V88a8 8 0 0 0-8-8m-10.08 130.62a8 8 0 1 1-11.84 10.76L168 175.09V224a8 8 0 0 1-12.91 6.31L85.25 176H40a16 16 0 0 1-16-16V96a16 16 0 0 1 16-16h41.55L50.08 45.38a8 8 0 0 1 11.84-10.76ZM152 157.49L96.1 96H40v64h48a7.94 7.94 0 0 1 4.91 1.69L152 207.64Zm-26.94-88.18l26.94-21v58.47a8 8 0 0 0 16 0V32a8 8 0 0 0-12.91-6.31l-39.85 31a8 8 0 0 0 9.82 12.63Z'
-							/>
-						{/if}
-					</svg>
+					{@render soundGlyph()}
 				</button>
 				<button
 					type='button'
@@ -543,13 +582,7 @@
 					title='Search (press /)'
 					onclick={() => palette.request()}
 				>
-					<!-- phosphor: magnifying-glass -->
-					<svg class='glyph' width='16' height='16' viewBox='0 0 256 256' aria-hidden='true'>
-						<path
-							fill='currentColor'
-							d='m229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32M40 112a72 72 0 1 1 72 72a72.08 72.08 0 0 1-72-72'
-						/>
-					</svg>
+					{@render searchGlyph()}
 				</button>
 				{#if soundHint}
 					<span class='sound-hint smallcaps' aria-hidden='true'>chopin, op. 72 no. 1 · press m</span>
@@ -560,77 +593,88 @@
 		     toggles land here, wherever focus happens to be. -->
 			<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
 
-			<!-- Phone: hamburger toggle -->
+			<!-- Phone: the curtain's pull cord. Hanging, it opens the menu;
+			     pulled, the cord rides up out of sight and the tassel's
+			     outer strands swing across into the close mark. -->
 			<button
 				type='button'
 				class={[
-					'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)] sm:hidden',
-					mobileOpen && 'open',
+					'menu-toggle -mr-2.5 inline-flex items-center justify-center p-2.5 transition-colors sm:hidden',
+					mobileOpen ? 'open text-[var(--ink)]' : 'text-[var(--ink-muted)] hover:text-[var(--ink)]',
 				]}
 				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
 				aria-expanded={mobileOpen}
 				aria-controls='mobile-nav'
 				onclick={() => (mobileOpen = !mobileOpen)}
 			>
-				<span class='menu-icon' aria-hidden='true'>
-					<svg
-						width='24'
-						height='24'
-						viewBox='0 0 24 24'
-						fill='none'
-						stroke='currentColor'
-						stroke-width='1.75'
-						stroke-linecap='round'
-					>
-						<path class='bar bar-top' d='M3.5 7h17' />
-						<path class='bar bar-mid' d='M3.5 12h17' />
-						<path class='bar bar-bot' d='M3.5 17h17' />
-					</svg>
-				</span>
+				<svg
+					class='tassel'
+					width='24'
+					height='24'
+					viewBox='0 0 24 24'
+					fill='none'
+					stroke='currentColor'
+					stroke-width='1.6'
+					stroke-linecap='round'
+					aria-hidden='true'
+				>
+					<path class='cord' d='M12 -6V6.5' />
+					<circle class='bead' cx='12' cy='8.5' r='2' />
+					<path class='strand strand-l' d='M0 -5.5V5.5' />
+					<path class='strand strand-m' d='M0 -5.5V5.5' />
+					<path class='strand strand-r' d='M0 -5.5V5.5' />
+				</svg>
 			</button>
 		</div>
 
-		<!-- Phone: collapsible menu -->
-		<div class='mobile-menu mx-auto max-w-6xl px-6 sm:hidden'>
-			<nav id='mobile-nav' aria-label='Primary' inert={!mobileOpen}>
-				<ul class='mt-2 flex flex-col border-t border-[var(--rule)] pt-1 pb-2'>
-					{#each nav as item (item.name)}
-						{@const active = isActive(item.href, page.url.pathname)}
-						<li>
-							<a
-								href={item.href}
-								class="block py-3 font-display text-lg transition-colors {active
-									? 'text-[var(--accent)]'
-									: 'text-[var(--ink-muted)] hover:text-[var(--ink)]'}"
-								aria-current={active ? 'page' : undefined}
-								onclick={() => (mobileOpen = false)}
-							>
-								{item.name}
-							</a>
-						</li>
-					{/each}
-					<li>
+		<!-- Phone: the menu is the curtain drawn shut over the room, the
+		     rooms set on the cloth. It hangs under the header row, so
+		     the monogram and the cord stay in reach above it. -->
+		<div class={['menu-stage sm:hidden', mobileOpen && 'open']}>
+			<div class='menu-veil'></div>
+			<div class='menu-drape drape drape-left'></div>
+			<div class='menu-drape drape drape-right'></div>
+			<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+			<nav id='mobile-nav' aria-label='Primary' inert={!mobileOpen} class='menu-bill' onclick={partOnCloth}>
+				<div class='flex min-h-full flex-col items-center justify-center px-6 pt-24 pb-12'>
+					<ul class='flex flex-col items-center'>
+						{#each nav as item, i (item.name)}
+							{@const active = isActive(item.href, page.url.pathname)}
+							<li class='bill-line' style:--i={i}>
+								<a
+									href={item.href}
+									class={['bill-room block px-4 py-1.5 font-display', active && 'current']}
+									aria-current={active ? 'page' : undefined}
+									onclick={() => (mobileOpen = false)}
+								>
+									{item.name}
+								</a>
+							</li>
+						{/each}
+					</ul>
+					<div class='bill-line mt-10 flex items-center gap-8' style:--i={nav.length}>
 						<button
 							type='button'
-							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
+							class='bill-aside smallcaps flex items-center gap-2 py-2'
 							onclick={() => {
 								mobileOpen = false
 								palette.request()
 							}}
 						>
-							Search…
+							{@render searchGlyph()}
+							Search
 						</button>
-					</li>
-					<li>
 						<button
 							type='button'
-							class='block w-full py-3 text-left font-display text-lg text-[var(--ink-dim)] transition-colors hover:text-[var(--ink)]'
+							class='bill-aside smallcaps flex items-center gap-2 py-2'
+							aria-pressed={sound.enabled}
 							onclick={() => sound.toggle()}
 						>
-							{sound.enabled ? 'Sound off' : 'Sound on'}
+							{@render soundGlyph()}
+							Sound
 						</button>
-					</li>
-				</ul>
+					</div>
+				</div>
 			</nav>
 		</div>
 	</header>
@@ -640,7 +684,7 @@
 	     stage: everything the walk carries, main and footer both.
 	     The header stays outside, so the nav lettering holds still
 	     while the rooms pass under it. -->
-	<div id='smooth-wrapper' bind:this={smoothWrapper}>
+	<div id='smooth-wrapper' bind:this={smoothWrapper} inert={mobileOpen}>
 		<div id='smooth-content' bind:this={smoothContent} class='stage flex min-h-[100dvh] flex-col'>
 			<main id='main' class='flex-1'>
 				{@render children()}
@@ -722,19 +766,19 @@
 			0 1px 14px color-mix(in oklab, var(--bg) 85%, transparent);
 	}
 
-	/* Glyphs are strokes, not letters; the halo comes as a drop-shadow
-	   on their stills (the hamburger's svgs animate their own filter). */
+	/* Glyphs are strokes, not letters; the halo comes as a drop-shadow. */
 	.glyph,
-	.menu-icon {
+	.tassel {
 		filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent));
 	}
 
 	/* The rail's glass: the pane the phone menu always wore, promoted to
 	   every size and to the scrolled state. At rest the header keeps no
-	   chrome at all; once the visitor walks (or opens the menu) the
+	   chrome at all; once the visitor walks the
 	   wall's own color rises behind the lettering as frosted glass,
 	   taking the WHOLE header, monogram row included, edge to edge. The
-	   resting canvas still carries no scrim. */
+	   resting canvas still carries no scrim, and the drawn curtain
+	   needs no glass. */
 	header::before {
 		content: '';
 		position: absolute;
@@ -748,14 +792,12 @@
 		backdrop-filter: blur(12px);
 	}
 
-	header.scrolled::before,
-	header.menu-open::before {
+	header.scrolled:not(.menu-open)::before {
 		opacity: 1;
 	}
 
-	/* Under the glass a hairline draws from the centre outward, on the
-	   menu bars' own 45ms overlap; leaving, it retracts with the glass,
-	   no delay. */
+	/* Under the glass a hairline draws from the centre outward, 45ms
+	   behind it; leaving, it retracts with the glass, no delay. */
 	header::after {
 		content: '';
 		position: absolute;
@@ -766,8 +808,7 @@
 		transition: transform var(--dur-beat) var(--ease-out);
 	}
 
-	header.scrolled::after,
-	header.menu-open::after {
+	header.scrolled:not(.menu-open)::after {
 		transform: scaleX(1);
 		transition-delay: 45ms;
 	}
@@ -814,88 +855,222 @@
 		opacity: 1;
 	}
 
-	/* The drop collapses through 0fr rather than a slide transition, so
-	   the list and the pane behind it move on one clock in both
-	   directions. Under {#if} the pane popped in and out a whole beat
-	   ahead of the list, leaving its border alone on screen for a frame. */
-	.mobile-menu {
-		display: grid;
-		grid-template-rows: 0fr;
-		transition: grid-template-rows var(--dur-beat) var(--ease-out);
-	}
-
-	.menu-open .mobile-menu {
-		grid-template-rows: 1fr;
-	}
-
-	.mobile-menu > nav {
-		min-height: 0;
+	/* The phone menu: the overture's velvet, run backwards. The drapes
+	   come in from the wings and meet at the seam while the house
+	   lights dim in the closing gap; the rooms rise onto the cloth in
+	   wall order once it has nearly met. Parting, the words go first
+	   and all at once, then the drapes open onto the room, which by
+	   then may already be the next one. */
+	.menu-stage {
+		--menu-close: 540ms;
+		--menu-part: 460ms;
+		--menu-cloth: cubic-bezier(0.6, 0, 0.2, 1);
+		position: fixed;
+		inset: 0;
 		overflow: hidden;
+		visibility: hidden;
+		transition: visibility 0s linear calc(var(--menu-part) + 80ms);
 	}
 
-	/* Hamburger ↔ X: the same three strokes throughout. Opening, the
-	   outer two slide to the centre line and start folding into the
-	   cross before they land; closing runs the order backwards. The
-	   45ms overlap is what keeps it one gesture instead of two. */
-	.menu-icon {
-		display: inline-grid;
-		place-items: center;
+	.menu-stage.open {
+		visibility: visible;
+		transition-delay: 0s;
 	}
 
-	.bar {
-		transform-box: view-box;
-		/* Closing: unfold first, then spread apart. */
+	.menu-veil {
+		position: absolute;
+		inset: 0;
+		background: color-mix(in oklab, black 55%, var(--bg));
+		opacity: 0;
+		transition: opacity var(--menu-part) ease-in-out 80ms;
+	}
+
+	.open .menu-veil {
+		opacity: 0.8;
+		transition: opacity var(--menu-close) ease-in-out;
+	}
+
+	.menu-drape {
+		transform: translateX(calc(var(--dir) * 104%));
+		transition: transform var(--menu-part) var(--menu-cloth) 80ms;
+	}
+
+	.open .menu-drape {
+		transform: translateX(0);
+		transition: transform var(--menu-close) var(--menu-cloth);
+	}
+
+	.menu-bill {
+		position: absolute;
+		inset: 0;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+
+	.bill-line {
+		opacity: 0;
+		transform: translateY(14px);
 		transition:
-			rotate var(--dur-quick) var(--ease-out),
-			scale var(--dur-quick) var(--ease-out),
-			opacity var(--dur-quick) var(--ease-out),
-			translate var(--dur-quick) var(--ease-out) 45ms;
+			opacity 140ms var(--ease-out),
+			transform 0s linear 140ms;
 	}
 
-	.bar-top {
-		transform-origin: 12px 7px;
+	.open .bill-line {
+		opacity: 1;
+		transform: translateY(0);
+		transition:
+			opacity 450ms var(--ease-out),
+			transform 450ms var(--ease-out);
+		transition-delay: calc(260ms + var(--i) * 35ms);
 	}
 
-	.bar-mid {
-		transform-origin: 12px 12px;
+	.bill-room {
+		position: relative;
+		font-size: 2.25rem;
+		line-height: 1.15;
+		color: var(--ink);
+		transition: color var(--dur-quick) var(--ease-out);
 	}
 
-	.bar-bot {
-		transform-origin: 12px 17px;
+	.bill-room:active {
+		color: var(--accent);
 	}
 
-	.menu-toggle.open .bar {
-		/* Opening: converge first, then fold. */
+	.bill-room.current {
+		color: var(--accent);
+	}
+
+	/* The current room keeps the desktop's gilt thread, drawn from the
+	   centre once its name has settled. */
+	.bill-room.current::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: 0.3rem;
+		width: 1.5rem;
+		height: 1px;
+		margin-left: -0.75rem;
+		background: var(--accent);
+		transform: scaleX(0);
+		transition: transform var(--dur-quick) var(--ease-out);
+	}
+
+	.open .bill-room.current::after {
+		transform: scaleX(1);
+		transition: transform 450ms var(--ease-out) calc(560ms + var(--i, 0) * 35ms);
+	}
+
+	.bill-aside {
+		transition: color var(--dur-quick) var(--ease-out);
+	}
+
+	.bill-aside:active,
+	.bill-aside[aria-pressed='true'] {
+		color: var(--ink);
+	}
+
+	/* The pull cord. Every stroke is seated by transforms from its own
+	   origin, so hanging and crossed are two sets of numbers and the
+	   swing between them stays on the compositor. Opening, the cord
+	   rides up first and the strands swing in behind it; closing, the
+	   strands swing back and the cord drops in and settles. */
+	.menu-toggle:active .tassel {
+		scale: 0.92;
+	}
+
+	.tassel {
+		overflow: hidden;
+		transition: scale var(--dur-quick) var(--ease-out);
+	}
+
+	.cord,
+	.bead {
+		transition:
+			translate 320ms cubic-bezier(0.34, 1.5, 0.64, 1) 90ms,
+			opacity var(--dur-quick) var(--ease-out) 90ms;
+	}
+
+	.open .cord,
+	.open .bead {
+		translate: 0 -10px;
+		opacity: 0;
 		transition:
 			translate var(--dur-quick) var(--ease-out),
-			opacity var(--dur-quick) var(--ease-out),
-			rotate var(--dur-quick) var(--ease-out) 45ms,
-			scale var(--dur-quick) var(--ease-out) 45ms;
+			opacity var(--dur-quick) var(--ease-out);
 	}
 
-	.menu-toggle.open .bar-top {
-		translate: 0 5px;
-		rotate: 45deg;
-		scale: 0.86 1;
+	.strand {
+		transform-box: view-box;
+		transform-origin: 0 0;
+		transition:
+			translate 300ms cubic-bezier(0.34, 1.3, 0.64, 1),
+			rotate 300ms cubic-bezier(0.34, 1.3, 0.64, 1),
+			scale 300ms cubic-bezier(0.34, 1.3, 0.64, 1),
+			stroke-width 300ms var(--ease-out),
+			opacity var(--dur-quick) var(--ease-out);
 	}
 
-	.menu-toggle.open .bar-bot {
-		translate: 0 -5px;
+	.open .strand {
+		transition-delay: 60ms;
+	}
+
+	.strand-l {
+		translate: 9.9px 16.9px;
+		rotate: 12deg;
+	}
+
+	.strand-m {
+		translate: 12px 17px;
+	}
+
+	.strand-r {
+		translate: 14.1px 16.9px;
+		rotate: -12deg;
+	}
+
+	.open .strand-l,
+	.open .strand-r {
+		translate: 12px 12px;
+		scale: 1.3;
+		stroke-width: 1.23;
+	}
+
+	.open .strand-l {
 		rotate: -45deg;
-		scale: 0.86 1;
 	}
 
-	.menu-toggle.open .bar-mid {
-		scale: 0 1;
+	.open .strand-r {
+		rotate: 45deg;
+	}
+
+	.open .strand-m {
+		scale: 1 0;
 		opacity: 0;
 	}
 
+	/* The global reset zeroes durations but not delays: the stagger and
+	   the cord's beats would otherwise still wait before snapping. */
 	@media (prefers-reduced-motion: reduce) {
 		.thread,
-		.bar,
-		.menu-toggle.open .bar {
-			transition-duration: 0.01ms;
-			transition-delay: 0ms;
+		.menu-stage,
+		.menu-veil,
+		.menu-drape,
+		.bill-line,
+		.bill-room::after,
+		.cord,
+		.bead,
+		.strand {
+			transition-delay: 0ms !important;
+		}
+
+		/* No travel: the drawn curtain fades in where it hangs. */
+		.menu-drape {
+			transform: none;
+			opacity: 0;
+		}
+
+		.open .menu-drape {
+			opacity: 1;
 		}
 	}
 
