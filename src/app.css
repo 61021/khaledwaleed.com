@@ -914,6 +914,89 @@ html[data-swap='in'] .room-held > * > footer {
 	--curtain-sweep: 1150ms;
 }
 
+/* The velvet: a flat sheet of the room's --bg, so a closed curtain is
+   exactly the room's color. Every fold, crease, and catch-light lives
+   on the blurred layer below, where the blur melts the gradient ramps
+   into continuous shading instead of facets. Dark cloth reads by
+   highlight as much as shadow, so the main fold's crowns carry a dim
+   sheen. Rasterised once, then each panel rides its sweep as one
+   composited layer. Worn by the overture (Curtain.svelte) and the
+   phone menu. */
+.drape {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 50%;
+	background-color: var(--bg);
+}
+
+.drape::before {
+	content: '';
+	position: absolute;
+	inset: -16px 0;
+	filter: blur(7px);
+	background-image:
+		radial-gradient(130% 90% at var(--seam) 38%, rgb(255 255 255 / 0.04), transparent 64%),
+		linear-gradient(
+			rgb(0 0 0 / 0.38) 0,
+			rgb(0 0 0 / 0.12) 18%,
+			rgb(0 0 0 / 0.04) 42%,
+			rgb(0 0 0 / 0.14) 72%,
+			rgb(0 0 0 / 0.44) 100%
+		),
+		repeating-linear-gradient(
+			90deg,
+			transparent 0,
+			transparent 42px,
+			rgb(255 255 255 / 0.03) 52px,
+			transparent 62px,
+			transparent 110px
+		),
+		repeating-linear-gradient(90deg, rgb(0 0 0 / 0.1) 0, transparent 9px, transparent 25px, rgb(0 0 0 / 0.1) 34px),
+		repeating-linear-gradient(
+			90deg,
+			rgb(0 0 0 / 0.36) 0,
+			rgb(0 0 0 / 0.2) 16px,
+			rgb(255 255 255 / 0.045) 36px,
+			rgb(255 255 255 / 0.065) 52px,
+			rgb(255 255 255 / 0.04) 68px,
+			rgb(0 0 0 / 0.22) 92px,
+			rgb(0 0 0 / 0.36) 110px
+		),
+		repeating-linear-gradient(90deg, rgb(0 0 0 / 0.22) 0, transparent 74px, transparent 156px, rgb(0 0 0 / 0.22) 230px);
+}
+
+/* A quiet moonlit hem on each leading edge; the pair also hides the
+   subpixel join between the closed panels. */
+.drape::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 2px;
+	background: color-mix(in oklab, white 10%, var(--bg));
+}
+
+.drape-left {
+	left: 0;
+	--seam: 100%;
+	--dir: -1;
+}
+
+.drape-left::after {
+	right: -1px;
+}
+
+.drape-right {
+	right: 0;
+	--seam: 0%;
+	--dir: 1;
+}
+
+.drape-right::after {
+	left: -1px;
+}
+
 /* ---------- Reveal on approach ----------
    The one entrance left: content marked with the reveal attachment
    (src/lib/reveal.ts) starts a step below its seat and rises as it
