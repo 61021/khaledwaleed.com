@@ -593,9 +593,9 @@
 		     toggles land here, wherever focus happens to be. -->
 			<span class='sr-only' role='status'>{sound.enabled ? 'Sound on' : 'Sound off'}</span>
 
-			<!-- Phone: the curtain's pull cord. Hanging, it opens the menu;
-			     pulled, the cord rides up out of sight and the tassel's
-			     outer strands swing across into the close mark. -->
+			<!-- Phone: a small proscenium, a rod over two tied-back drapes.
+			     Opening, the rod lifts away and the drapes swing in and
+			     cross into the close mark. -->
 			<button
 				type='button'
 				class={[
@@ -608,7 +608,7 @@
 				onclick={() => (mobileOpen = !mobileOpen)}
 			>
 				<svg
-					class='tassel'
+					class='proscenium'
 					width='24'
 					height='24'
 					viewBox='0 0 24 24'
@@ -618,18 +618,16 @@
 					stroke-linecap='round'
 					aria-hidden='true'
 				>
-					<path class='cord' d='M12 -6V6.5' />
-					<circle class='bead' cx='12' cy='8.5' r='2' />
-					<path class='strand strand-l' d='M0 -5.5V5.5' />
-					<path class='strand strand-m' d='M0 -5.5V5.5' />
-					<path class='strand strand-r' d='M0 -5.5V5.5' />
+					<path class='rod' d='M4.5 5H19.5' />
+					<path class='hang hang-l' d='M0 -6Q1.8 0 0 6' />
+					<path class='hang hang-r' d='M0 -6Q-1.8 0 0 6' />
 				</svg>
 			</button>
 		</div>
 
 		<!-- Phone: the menu is the curtain drawn shut over the room, the
 		     rooms set on the cloth. It hangs under the header row, so
-		     the monogram and the cord stay in reach above it. -->
+		     the monogram and the toggle stay in reach above it. -->
 		<div class={['menu-stage sm:hidden', mobileOpen && 'open']}>
 			<div class='menu-veil'></div>
 			<div class='menu-drape drape drape-left'></div>
@@ -768,7 +766,7 @@
 
 	/* Glyphs are strokes, not letters; the halo comes as a drop-shadow. */
 	.glyph,
-	.tassel {
+	.proscenium {
 		filter: drop-shadow(0 1px 3px color-mix(in oklab, var(--bg) 80%, transparent));
 	}
 
@@ -969,87 +967,66 @@
 		color: var(--ink);
 	}
 
-	/* The pull cord. Every stroke is seated by transforms from its own
-	   origin, so hanging and crossed are two sets of numbers and the
-	   swing between them stays on the compositor. Opening, the cord
-	   rides up first and the strands swing in behind it; closing, the
-	   strands swing back and the cord drops in and settles. */
-	.menu-toggle:active .tassel {
+	/* The proscenium. Every stroke is seated by transforms from its own
+	   origin, so hung and crossed are two sets of numbers and the swing
+	   between them stays on the compositor (no path morphing, which
+	   Safari won't animate). Opening, the rod lifts first and the drapes
+	   swing in behind it; closing, the drapes swing back out and the
+	   rod settles onto them. */
+	.menu-toggle:active .proscenium {
 		scale: 0.92;
 	}
 
-	.tassel {
-		overflow: hidden;
+	.proscenium {
 		transition: scale var(--dur-quick) var(--ease-out);
 	}
 
-	.cord,
-	.bead {
+	.rod {
 		transition:
-			translate 320ms cubic-bezier(0.34, 1.5, 0.64, 1) 90ms,
-			opacity var(--dur-quick) var(--ease-out) 90ms;
+			translate 300ms cubic-bezier(0.34, 1.3, 0.64, 1) 80ms,
+			opacity var(--dur-quick) var(--ease-out) 80ms;
 	}
 
-	.open .cord,
-	.open .bead {
-		translate: 0 -10px;
+	.open .rod {
+		translate: 0 -4px;
 		opacity: 0;
 		transition:
 			translate var(--dur-quick) var(--ease-out),
-			opacity var(--dur-quick) var(--ease-out);
+			opacity 140ms var(--ease-out);
 	}
 
-	.strand {
+	.hang {
 		transform-box: view-box;
 		transform-origin: 0 0;
 		transition:
-			translate 300ms cubic-bezier(0.34, 1.3, 0.64, 1),
-			rotate 300ms cubic-bezier(0.34, 1.3, 0.64, 1),
-			scale 300ms cubic-bezier(0.34, 1.3, 0.64, 1),
-			stroke-width 300ms var(--ease-out),
-			opacity var(--dur-quick) var(--ease-out);
+			translate 340ms cubic-bezier(0.34, 1.3, 0.64, 1),
+			rotate 340ms cubic-bezier(0.34, 1.3, 0.64, 1);
 	}
 
-	.open .strand {
-		transition-delay: 60ms;
+	.open .hang {
+		transition-delay: 50ms;
 	}
 
-	.strand-l {
-		translate: 9.9px 16.9px;
-		rotate: 12deg;
+	.hang-l {
+		translate: 6.5px 13.5px;
 	}
 
-	.strand-m {
-		translate: 12px 17px;
+	.hang-r {
+		translate: 17.5px 13.5px;
 	}
 
-	.strand-r {
-		translate: 14.1px 16.9px;
-		rotate: -12deg;
-	}
-
-	.open .strand-l,
-	.open .strand-r {
+	.open .hang-l {
 		translate: 12px 12px;
-		scale: 1.3;
-		stroke-width: 1.23;
-	}
-
-	.open .strand-l {
 		rotate: -45deg;
 	}
 
-	.open .strand-r {
+	.open .hang-r {
+		translate: 12px 12px;
 		rotate: 45deg;
 	}
 
-	.open .strand-m {
-		scale: 1 0;
-		opacity: 0;
-	}
-
 	/* The global reset zeroes durations but not delays: the stagger and
-	   the cord's beats would otherwise still wait before snapping. */
+	   the toggle's beats would otherwise still wait before snapping. */
 	@media (prefers-reduced-motion: reduce) {
 		.thread,
 		.menu-stage,
@@ -1057,9 +1034,8 @@
 		.menu-drape,
 		.bill-line,
 		.bill-room::after,
-		.cord,
-		.bead,
-		.strand {
+		.rod,
+		.hang {
 			transition-delay: 0ms !important;
 		}
 
