@@ -781,6 +781,13 @@ html[data-walk='back'] {
 	--walk: -1;
 }
 
+/* The words travel up to 4vw past the edge. Phone browsers widen the
+   layout viewport to fit that, whatever html's overflow says, and every
+   right-hanging piece of fixed chrome slides with it. */
+.stage {
+	overflow-x: clip;
+}
+
 html[data-swap] .stage > :is(main, footer) {
 	will-change: opacity;
 }
