@@ -50,8 +50,8 @@
 				{
 					name: 'Iraq Loto',
 					url: 'https://42.iraqloto.iq',
-					measure: 'national',
-					note: 'Iraq’s national 42+1 lottery. I built all of it alone: the design, the player app, the back office, the backend, the deploys. One Cloudflare Worker serves the three sales channels (the web, a Super Qi mini app, and the POS terminals in shops). It replaced the old system in September 2026 and reports every draw to the Ministry of Labour and Social Affairs.',
+					measure: '480K+ users',
+					note: 'Iraq’s national 42+1 lottery. I built all of it alone: the design, the player app, the back office, the backend, the deploys. One Cloudflare Worker serves the three sales channels (the web, a Super Qi mini app, and the POS terminals in shops). It replaced the old system in September 2026, accounts and balances carried over, and reports every draw to the Ministry of Labour and Social Affairs.',
 				},
 				{
 					name: 'Risha',
