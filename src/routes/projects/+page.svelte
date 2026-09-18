@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-08-08'
+	const lastUpdated = '2026-09-18'
 
 	type Project = {
 		name: string
@@ -47,6 +47,12 @@
 			name: 'Commissions',
 			intro: 'Client work through Vitex, my studio.',
 			items: [
+				{
+					name: 'Iraq Loto',
+					url: 'https://42.iraqloto.iq',
+					measure: 'national',
+					note: 'Iraq’s national 42+1 lottery. One Cloudflare Worker runs the player app, the back office, and three sales channels: the web, a Super Qi mini app, and POS terminals in shops. It replaced the old system in September 2026 and reports every draw to the Ministry of Labour and Social Affairs.',
+				},
 				{
 					name: 'Risha',
 					url: 'https://rishaiq.com',
@@ -154,7 +160,7 @@
 		},
 	]
 
-	const description = `Everything Khaled Waleed has built and shipped: Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`
+	const description = `Everything Khaled Waleed has built and shipped: Iraq Loto, Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`
 
 	const [products, commissions, government, earlier, openSource] = sections
 
