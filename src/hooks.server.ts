@@ -1,4 +1,6 @@
 import type { Handle } from '@sveltejs/kit'
+import { dev } from '$app/environment'
+import { accessOwner } from '$lib/server/access'
 import { withEdgeCache } from '$lib/server/edge-cache'
 import { roomBg, roomForPath } from '$lib/site'
 
@@ -50,11 +52,33 @@ function withSecurityHeaders(response: Response) {
 	return response
 }
 
+// Cloudflare Access fronts these paths; the worker still checks the JWT so a
+// loosened Access policy (or a path it misses) never opens the film log.
+function isOwnerOnly(path: string): boolean {
+	return path === '/manage' || path.startsWith('/manage/') || path.startsWith('/api/manage/')
+}
+
 // Stamp the per-page room palette into the served HTML so the first paint
 // (and no-JS visitors) get the right colors instead of a navy→warm flash.
 // app.html ships data-room="home" / theme-color #0a1220 as placeholders.
 export const handle: Handle = async ({ event, resolve }) => {
 	const path = event.url.pathname.replace(/\/+$/, '') || '/'
+	if (isOwnerOnly(path)) {
+		const env = event.platform?.env
+		const owner = dev
+			? 'dev@localhost'
+			: await accessOwner(
+					event.request.headers.get('cf-access-jwt-assertion') ?? event.cookies.get('CF_Authorization'),
+					env?.ACCESS_TEAM_DOMAIN,
+					env?.ACCESS_AUD,
+				)
+		if (!owner) {
+			return withSecurityHeaders(
+				new Response('Sign in required', { status: 401, headers: { 'cache-control': 'no-store' } }),
+			)
+		}
+		event.locals.owner = owner
+	}
 	const target = redirects[path]
 	if (target) {
 		return withSecurityHeaders(new Response(null, { status: 301, headers: { location: target } }))
