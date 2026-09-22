@@ -64,7 +64,7 @@ CI (GitHub Actions) runs lint → check → test → build on every push and PR 
 
 ## Environment variables
 
-Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everything renders without them, but `/music` shows an empty state, and `/manage` can't save TMDB snapshots until `TMDB_API_KEY` is set. The public `/films` page reads its data (including the TMDB snapshot) straight from PocketBase and needs no keys.
+Copy [`.env.example`](.env.example) to `.env` and fill in what you need. Everything renders without them, but `/music` shows an empty state, and `/manage` can't save TMDB snapshots until `TMDB_API_KEY` is set. The public `/films` page reads its data (including the TMDB snapshot) straight from D1 and needs no keys.
 
 | Variable                | Used for                                                                    |
 | ----------------------- | --------------------------------------------------------------------------- |
@@ -86,7 +86,7 @@ src/
 ├─ lib/
 │  ├─ site.ts             # ← central config: bio, socials, paintings, room map
 │  ├─ posts.ts            # typed index of writing posts (auto-discovered)
-│  ├─ pocketbase.ts       # PocketBase client + Film record types (ratings live in PB)
+│  ├─ films.ts            # Film record types (ratings live in D1)
 │  ├─ tmdb.ts             # shared TMDB types (search results, film metadata)
 │  ├─ server/og.ts        # shared satori → PNG renderer for Open Graph cards
 │  ├─ index.ts            # barrel exports
@@ -106,18 +106,18 @@ static/                   # paintings, logos, manifest, etc.
 
 ## Pages
 
-| Route       | What it is                                                                                    |
-| ----------- | --------------------------------------------------------------------------------------------- |
-| `/`         | Home / hero, the canonical profile page                                                       |
-| `/story`    | Longer bio, career history, CV download (`/about` 301s here)                                  |
-| `/projects` | The catalogue of shipped work: products, client work, government platforms, open source       |
-| `/writing`  | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards                   |
-| `/library`  | Books (hidden for now, 302s to `/likes`)                                                      |
-| `/films`    | A ledger of ~225 rated films & shows, server-rendered from PocketBase, searchable, with stats |
-| `/music`    | **Live** top tracks & artists from Spotify (hidden for now, 302s to `/likes`)                 |
-| `/likes`    | A catalogue of obsessions                                                                     |
-| `/tools`    | The hardware, software, and services in daily use (`/uses` 301s here)                         |
-| `/contact`  | Ways to get in touch                                                                          |
+| Route       | What it is                                                                              |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `/`         | Home / hero, the canonical profile page                                                 |
+| `/story`    | Longer bio, career history, CV download (`/about` 301s here)                            |
+| `/projects` | The catalogue of shipped work: products, client work, government platforms, open source |
+| `/writing`  | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards             |
+| `/library`  | Books (hidden for now, 302s to `/likes`)                                                |
+| `/films`    | A ledger of ~225 rated films & shows, server-rendered from D1, searchable, with stats   |
+| `/music`    | **Live** top tracks & artists from Spotify (hidden for now, 302s to `/likes`)           |
+| `/likes`    | A catalogue of obsessions                                                               |
+| `/tools`    | The hardware, software, and services in daily use (`/uses` 301s here)                   |
+| `/contact`  | Ways to get in touch                                                                    |
 
 ## Data & content tooling
 
@@ -133,12 +133,14 @@ The `scripts/` folder holds small Node scripts for maintaining content:
 Run any of them with `node scripts/<name>.ts` (Node 24 runs TypeScript directly).
 
 - **Writing**: drop a `.svx` file under `src/posts/`; it is auto-discovered (list, RSS, sitemap, palette, OG card, prev/next all follow).
-- **Films**: add & rate titles from **`/manage`** (a noindex admin page, PocketBase-backed): sign in, search TMDB, pick a title, set rating / watch dates / notes. A denormalized TMDB snapshot (title, year, directors, poster, runtime, genres) is written to PocketBase at save time, so the public page needs no TMDB at request time.
+- **Films**: add & rate titles from **`/manage`** (a noindex admin page behind Cloudflare Access, backed by `/api/manage`): search TMDB, pick a title, set rating / watch dates / notes. A denormalized TMDB snapshot (title, year, directors, poster, runtime, genres) is written to D1 at save time and the poster is copied into R2, so the public page needs no TMDB at request time.
 - **A new room**: add a painting to the `paintings` map in `site.ts`, map it in `roomForPath`, add a `[data-room]` palette in `app.css`, drop the image in `static/paintings/`, and run `generate-painting-sizes.ts`.
 
 ## Deployment
 
-The site builds with `@sveltejs/adapter-cloudflare` and deploys to **Cloudflare Pages**. The static pages are served from the edge cache; `/music` runs as a Pages Function. The adapter's `routes.exclude` list in [`svelte.config.js`](svelte.config.js) keeps the generated `_routes.json` under Cloudflare's 100-rule limit by collapsing asset folders into wildcards.
+The site builds with `@sveltejs/adapter-cloudflare` and runs as the `khaledwaleed-com` Worker (Workers Builds deploys every push to `main`). Prerendered pages come from static assets; `/films`, `/music`, `/manage` and the APIs render in the Worker.
+
+The film log lives in the D1 database `khaledwaleed` (schema in [`migrations/`](migrations), applied with `vpx wrangler d1 migrations apply khaledwaleed --remote`) and its posters in the R2 bucket `khaledwaleed-posters`, served from `posters.khaledwaleed.com`. For local dev, run the same command with `--local` and seed it with a `wrangler d1 export` of the remote database. [`legacy-api/`](legacy-api) is a separate Worker on `api.khaledwaleed.com`, the old PocketBase host: it 301s old poster URLs to R2 and answers 410 to everything else (`vpx wrangler deploy -c legacy-api/wrangler.jsonc`).
 
 ## Credits
 
