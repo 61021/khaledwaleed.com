@@ -26,9 +26,6 @@ importers:
       jose:
         specifier: ^6.2.12
         version: 6.2.12
-      pocketbase:
-        specifier: ^0.27.3
-        version: 0.27.3
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^9.3.0
@@ -2710,9 +2707,6 @@ packages:
 
   pnpm-workspace-yaml@1.7.0:
     resolution: {integrity: sha512-cgjaozHkjWL4H8oKZydEWE4mg31XydK3/1cLKjHvwnFAXutp45yAlMKljpOdZEq4TtLuzYAMvy9j05wRm3aoPw==}
-
-  pocketbase@0.27.3:
-    resolution: {integrity: sha512-n2rtQrg3kTF44066B+2eVvQdiYRGZ+RI7isIZqmAptfElLCSDIZrEKLhSrIQA2k5pvQM29Gx5JqGv5n+gtm6dg==}
 
   postcss-load-config@3.1.4:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
@@ -5694,8 +5688,6 @@ snapshots:
   pnpm-workspace-yaml@1.7.0:
     dependencies:
       yaml: 2.9.0
-
-  pocketbase@0.27.3: {}
 
   postcss-load-config@3.1.4(postcss@8.5.25):
     dependencies:
