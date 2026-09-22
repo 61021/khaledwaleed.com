@@ -51,7 +51,7 @@
 				'Built Risha end to end (mobile app, dashboard, website): e-learning connecting Iraq’s sixth-preparatory students with elite private tutors. 25K+ downloads, custom cross-device DRM; led all design and frontend.',
 				'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations: 1,000+ cars and $3M+ in transactions monthly.',
 				'Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, is live in 20+ venues.',
-				'Shipped platforms for the Afaq Al-Obaidi subsidiaries (Smartic for employment, National Foodstuff, Auto Zone, Golden Lube) and an archiving system for the Al-Amal Association.',
+				'Shipped platforms for the Afaq Al-Obaidi subsidiaries (Smartic for employment, National Foodstuff, Auto Zone, Golden Lube, Al-Obaidi General Trading, Taj Al-Salem, Almadafaat) and an archiving system for the Al-Amal Association.',
 				'Operate 20+ production client deployments (Cloudflare Pages + self-hosted VPS backends).',
 			],
 		},

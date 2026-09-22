@@ -73,7 +73,7 @@
 				},
 			],
 			outro:
-				'Around these: platforms for <a href="https://afaqalobaidi.com" target="_blank" rel="noopener" class="link">Afaq Al-Obaidi’s</a> subsidiaries (Smartic, National Foodstuff, <a href="https://auto-zone.co/" target="_blank" rel="noopener" class="link">Auto Zone</a>, Golden Lube), a document-archiving system for the Al-Amal Association, and 20+ client deployments kept running in production.',
+				'Around these: platforms for <a href="https://afaqalobaidi.com" target="_blank" rel="noopener" class="link">Afaq Al-Obaidi’s</a> subsidiaries (Smartic, National Foodstuff, <a href="https://auto-zone.co/" target="_blank" rel="noopener" class="link">Auto Zone</a>, Golden Lube, Al-Obaidi General Trading, Taj Al-Salem, Almadafaat), a document-archiving system for the Al-Amal Association, and 20+ client deployments kept running in production.',
 		},
 		{
 			id: 'government',
