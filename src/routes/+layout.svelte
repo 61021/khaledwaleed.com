@@ -10,6 +10,7 @@
 	// scripts/generate-fonts.ts); Libre Franklin stays variable, it works
 	// at 400, 600 and 700.
 	import frauncesWoff2 from '$lib/fonts/fraunces-latin-opsz-normal-w400.woff2?url'
+	import { markHydrated } from '$lib/hydration'
 	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
 
 	import { palette } from '$lib/palette'
@@ -78,6 +79,7 @@
 	}
 
 	onMount(() => {
+		markHydrated()
 		if (!inSpace)
 			initSound()
 		return () => {

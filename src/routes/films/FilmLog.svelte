@@ -1,16 +1,16 @@
 <script lang='ts'>
-	import type { PageData } from './$types'
+	import type { PersonalFilm } from '$lib/films'
 	import { replaceState } from '$app/navigation'
 	import { page } from '$app/state'
-	import { Container, Fleuron, PageHeader, SchemaOrg, Seo, site } from '$lib'
+	import { Container, Fleuron, SchemaOrg, Seo, site } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
 	import { portal } from '$lib/portal'
 	import { posterRef } from '$lib/posters'
 	import { formatDate } from '$lib/posts'
 	import { onMount } from 'svelte'
 
-	const { data }: { data: PageData } = $props()
-	type Personal = PageData['films'][number]
+	const { films }: { films: PersonalFilm[] } = $props()
+	type Personal = PersonalFilm
 
 	// --- The one ---------------------------------------------------------
 	// Avatar: The Last Airbender (TMDB tv/246).
@@ -19,10 +19,9 @@
 		f.tmdbId === FAVOURITE.tmdbId && f.type === FAVOURITE.type
 
 	// Everything, your data AND the TMDB snapshot (title, year, directors),
-	// arrives server-rendered from D1 in one query. Posters are our own R2
-	// copies too, so the browser never touches TMDB. No client
-	// fetching, no skeletons, no reshuffling.
-	const personal = $derived(data.films)
+	// comes from D1 in one query. Posters are our own R2 copies too, so the
+	// browser never touches TMDB.
+	const personal = $derived(films)
 
 	// Keyed by "type/tmdbId"; a tmdb id can repeat across a movie and a show.
 	const key = (f: Personal): string => `${f.type}/${f.tmdbId}`
@@ -326,12 +325,6 @@
 <svelte:head>
 	<link rel='preconnect' href='https://posters.khaledwaleed.com' />
 </svelte:head>
-
-<PageHeader room='films' title='Films'>
-	{#snippet lede()}
-		<p>Every film and series I have watched, scored 1 to 10.</p>
-	{/snippet}
-</PageHeader>
 
 {#snippet rewatch(n: number)}
 	<span
