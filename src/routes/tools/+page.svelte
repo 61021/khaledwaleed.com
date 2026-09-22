@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-08-11'
+	const lastUpdated = '2026-09-22'
 
 	/* Same anatomy as /likes: an item is plain text, or a term wearing a
 	   small note that shows itself on hover and focus. */
@@ -36,6 +36,11 @@
 			kicker: 'What leaves the house with me',
 			items: [
 				'Samsung Galaxy S24 Ultra',
+				{
+					label: 'Timex Marlin chronograph',
+					note: 'On a black leather strap.',
+				},
+				'Samsung Galaxy SmartTag2',
 				{
 					label: 'Glasses',
 					note: 'Zeiss DuraVision Platinum grayscale lenses in a silver Ray-Ban frame.',
@@ -82,8 +87,10 @@
 				'paru',
 				{ label: 'eww', note: 'The status bar is hand-built.' },
 				'VS Code',
+				'Claude Code',
 				'Firefox',
 				'mpv',
+				{ label: 'restic', note: 'The laptop backs itself up to R2 every night.' },
 				{
 					label: 'IBM Plex everywhere',
 					note: 'Forced system-wide through fontconfig; JetBrains Mono in the terminal.',
@@ -110,12 +117,10 @@
 			name: 'Services',
 			kicker: 'Where things run',
 			items: [
-				'Cloudflare Pages',
-				{
-					label: 'A Contabo VPS',
-					note: 'Docker, nginx, and Coolify, carrying 20+ production deployments.',
-				},
-				'Self-hosted PocketBase',
+				{ label: 'Cloudflare Workers', note: 'This site and most of the client sites.' },
+				'Cloudflare D1',
+				'Cloudflare R2',
+				'Cloudflare Access',
 				{ label: 'Jellyfin', note: 'The home media server.' },
 				'GitHub',
 				'Spotify',
