@@ -47,8 +47,8 @@ export interface Topic {
 	count: number
 }
 
-// Every tag in the corpus, busiest first, ties alphabetical: the
-// writing index's filter line.
+// Tags shared by two or more pieces, busiest first, ties alphabetical:
+// the writing index's filter line. A one-piece tag filters to itself.
 export const topics: Topic[] = (() => {
 	const counts = new Map<string, number>()
 	for (const post of posts) {
@@ -57,6 +57,7 @@ export const topics: Topic[] = (() => {
 	}
 	return [...counts]
 		.map(([name, count]) => ({ name, count }))
+		.filter(t => t.count > 1)
 		.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
 })()
 

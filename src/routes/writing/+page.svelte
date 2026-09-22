@@ -46,7 +46,9 @@
 		return t ? posts.filter(p => p.tags.includes(t)) : posts
 	})
 
-	let topicsEl: HTMLDivElement | undefined
+	const shared = new Set(topics.map(t => t.name))
+
+	let topicsEl = $state<HTMLDivElement>()
 
 	// A tag clicked far down a card row leaves the viewport stranded past
 	// the shortened list; nearest is a no-op when the index is in view.
@@ -75,32 +77,34 @@
 <Container size='prose'>
 	<Fleuron />
 
-	<div
-		bind:this={topicsEl}
-		class='topics'
-		role='group'
-		aria-label='Filter by topic'
-		{@attach reveal}
-	>
-		<button
-			type='button'
-			class={['topic', topic === null && 'on']}
-			aria-pressed={topic === null}
-			onclick={() => pickTopic(null)}
+	{#if topics.length}
+		<div
+			bind:this={topicsEl}
+			class='topics'
+			role='group'
+			aria-label='Filter by topic'
+			{@attach reveal}
 		>
-			All <b>{posts.length}</b>
-		</button>
-		{#each topics as opt (opt.name)}
 			<button
 				type='button'
-				class={['topic', topic === opt.name && 'on']}
-				aria-pressed={topic === opt.name}
-				onclick={() => pickTopic(opt.name)}
+				class={['topic', topic === null && 'on']}
+				aria-pressed={topic === null}
+				onclick={() => pickTopic(null)}
 			>
-				{opt.name} <b>{opt.count}</b>
+				All <b>{posts.length}</b>
 			</button>
-		{/each}
-	</div>
+			{#each topics as opt (opt.name)}
+				<button
+					type='button'
+					class={['topic', topic === opt.name && 'on']}
+					aria-pressed={topic === opt.name}
+					onclick={() => pickTopic(opt.name)}
+				>
+					{opt.name} <b>{opt.count}</b>
+				</button>
+			{/each}
+		</div>
+	{/if}
 
 	<p class='sr-only' aria-live='polite'>
 		{topic ? `${shown.length} of ${posts.length} pieces tagged ${topic}` : `${posts.length} pieces`}
@@ -123,18 +127,20 @@
 					</h2>
 					<p class='mt-3 leading-relaxed text-[var(--ink-muted)]'>{post.description}</p>
 				</a>
-				<div class='topics mt-2'>
-					{#each post.tags as tag (tag)}
-						<button
-							type='button'
-							class={['topic', topic === tag && 'on']}
-							aria-pressed={topic === tag}
-							onclick={() => pickTopic(tag, true)}
-						>
-							{tag}
-						</button>
-					{/each}
-				</div>
+				{#if post.tags.some(t => shared.has(t))}
+					<div class='topics mt-2'>
+						{#each post.tags.filter(t => shared.has(t)) as tag (tag)}
+							<button
+								type='button'
+								class={['topic', topic === tag && 'on']}
+								aria-pressed={topic === tag}
+								onclick={() => pickTopic(tag, true)}
+							>
+								{tag}
+							</button>
+						{/each}
+					</div>
+				{/if}
 			</li>
 		{/each}
 	</ol>
