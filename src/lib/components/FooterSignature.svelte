@@ -2,10 +2,7 @@
      hairline. The mark is drawn stroke-first and the ink settles after,
      once, when the footer arrives. -->
 <script lang='ts'>
-	import { romanYear } from '$lib/dates'
 	import { monogram } from '$lib/monogram'
-
-	const year = romanYear(new Date().getFullYear())
 
 	function sign(node: HTMLElement): (() => void) | undefined {
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches)
@@ -24,7 +21,6 @@
 
 <div class='sign' {@attach sign}>
 	<span class='line'></span>
-	<span class='year'>{year}</span>
 	<svg
 		viewBox='-1 -1 {monogram.width + 2} {monogram.height + 2}'
 		xmlns='http://www.w3.org/2000/svg'
@@ -49,14 +45,6 @@
 		height: 1px;
 		margin-bottom: 0.9rem;
 		background: linear-gradient(to right, transparent, var(--rule) 30%);
-	}
-
-	.year {
-		margin-bottom: 0.3rem;
-		font-family: var(--font-display);
-		font-style: italic;
-		font-size: 0.95rem;
-		color: var(--ink-dim);
 	}
 
 	svg {
