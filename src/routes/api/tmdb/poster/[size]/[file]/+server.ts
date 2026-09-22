@@ -1,8 +1,8 @@
 import type { RequestHandler } from './$types'
 
-// Same-origin proxy for TMDB poster images. /manage uses it twice: to preview
-// search candidates (no PocketBase record exists yet) and to pull the bytes it
-// then uploads to PB. Nothing on the public site touches image.tmdb.org.
+// Same-origin proxy for TMDB poster images. /manage uses it to preview search
+// candidates (no record exists yet, so nothing is stored in R2). Nothing on the
+// public site touches image.tmdb.org.
 export const prerender = false
 
 const SIZES = new Set(['w185', 'w342', 'w500', 'w780'])

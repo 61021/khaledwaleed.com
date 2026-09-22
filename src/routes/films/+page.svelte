@@ -19,8 +19,8 @@
 		f.tmdbId === FAVOURITE.tmdbId && f.type === FAVOURITE.type
 
 	// Everything, your data AND the TMDB snapshot (title, year, directors),
-	// arrives server-rendered from PocketBase in one request. Posters are
-	// PocketBase files too, so the browser never touches TMDB. No client
+	// arrives server-rendered from D1 in one query. Posters are our own R2
+	// copies too, so the browser never touches TMDB. No client
 	// fetching, no skeletons, no reshuffling.
 	const personal = $derived(data.films)
 
@@ -324,7 +324,7 @@
 <svelte:window bind:scrollY bind:innerHeight />
 
 <svelte:head>
-	<link rel='preconnect' href='https://api.khaledwaleed.com' />
+	<link rel='preconnect' href='https://posters.khaledwaleed.com' />
 </svelte:head>
 
 <PageHeader room='films' title='Films'>
@@ -391,7 +391,7 @@
 	{/if}
 
 	{#if total === 0}
-		<!-- PocketBase is unreachable (or the log is empty); say so honestly. -->
+		<!-- D1 is unreachable (or the log is empty); say so honestly. -->
 		<section class='mt-20 mb-12 text-center'>
 			<p class='[font-family:var(--font-display)] text-[1.4rem] text-[var(--ink)]'>
 				The log isn’t loading.

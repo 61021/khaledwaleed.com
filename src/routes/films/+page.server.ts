@@ -1,38 +1,20 @@
+import type { FilmRow } from '$lib/server/films'
 import type { MediaType } from '$lib/tmdb'
 import type { PageServerLoad } from './$types'
-import { PB_URL } from '$lib/constants'
+import { ORDER, parseList, PUBLIC_COLUMNS } from '$lib/server/films'
 
 // Your data (ratings, watch dates, notes) AND a denormalized TMDB snapshot
-// (title, year, directors, poster) live together in PocketBase; /manage
-// writes the snapshot at save time, poster file included. So this page renders
-// complete rows from ONE request at request time (not prerendered), and the
-// browser never talks to TMDB — not for metadata, not for images. We ask
-// PocketBase for only the public fields: `privateNotes` is never requested, so
-// it can't reach the browser.
+// (title, year, directors, poster) live together in D1; /manage writes the
+// snapshot at save time, poster file included. So this page renders complete
+// rows from ONE query at request time (not prerendered), and the browser never
+// talks to TMDB — not for metadata, not for images. The query names only the
+// public columns: `privateNotes` is never read, so it can't reach the browser.
 export const prerender = false
 
-const PUBLIC_FIELDS
-	= 'id,tmdbId,type,rating,watched,watchedOn,notes,title,year,format,directors,poster,runtime,genres'
-
-interface PbItem {
-	id: string
-	tmdbId: number
-	type: MediaType
-	rating: number
-	watched?: number
-	watchedOn?: string
-	notes?: string
-	title?: string
-	year?: number
-	format?: string
-	directors?: string[] | null
-	poster?: string
-	runtime?: number
-	genres?: string[] | null
-}
+type PublicRow = Pick<FilmRow, 'id' | 'tmdbId' | 'type' | 'rating' | 'watched' | 'watchedOn' | 'notes' | 'title' | 'year' | 'format' | 'directors' | 'poster' | 'runtime' | 'genres'>
 
 export interface PersonalFilm {
-	/** PocketBase record id; half of the poster file URL. */
+	/** Record id; half of the poster file URL. */
 	id: string
 	tmdbId: number
 	type: MediaType
@@ -51,55 +33,40 @@ export interface PersonalFilm {
 	genres: string[]
 }
 
-export const load: PageServerLoad = async ({ fetch, setHeaders }) => {
-	const items: PbItem[] = []
+export const load: PageServerLoad = async ({ platform, setHeaders }) => {
+	let rows: PublicRow[] = []
 	let healthy = true
 	try {
-		// Page through the collection (perPage caps at 500) with a bounded
-		// timeout so a wedged PocketBase can't hang the render.
-		let page = 1
-		let totalPages = 1
-		do {
-			const res = await fetch(
-				`${PB_URL}/api/collections/films/records?page=${page}&perPage=500&fields=${PUBLIC_FIELDS}&sort=-rating,-watchedOn`,
-				{ signal: AbortSignal.timeout(5000) },
-			)
-			if (!res.ok) {
-				healthy = false
-				break
-			}
-			const body = (await res.json()) as { items?: PbItem[], totalPages?: number }
-			items.push(...(body.items ?? []))
-			totalPages = body.totalPages ?? 1
-			page += 1
-		} while (page <= totalPages)
+		const db = platform?.env?.DB
+		if (!db)
+			throw new Error('D1 binding missing')
+		rows = (await db.prepare(`SELECT ${PUBLIC_COLUMNS} FROM films ${ORDER}`).all<PublicRow>()).results
 	}
 	catch {
-		// PocketBase unreachable; the page renders an honest empty state.
+		// D1 unreachable; the page renders an honest empty state.
 		healthy = false
 	}
 
 	// Cache good responses briefly; never cache an outage.
 	setHeaders({
-		'cache-control': healthy && items.length ? 'public, max-age=300' : 'no-store',
+		'cache-control': healthy && rows.length ? 'public, max-age=300' : 'no-store',
 	})
 
-	const films: PersonalFilm[] = items.map(f => ({
+	const films: PersonalFilm[] = rows.map(f => ({
 		id: f.id,
 		tmdbId: f.tmdbId,
-		type: f.type,
+		type: f.type as MediaType,
 		rating: f.rating,
-		watched: f.watched ?? 1,
-		watchedOn: f.watchedOn ?? '',
+		watched: f.watched,
+		watchedOn: f.watchedOn,
 		...(f.notes ? { notes: f.notes } : {}),
-		title: f.title ?? '',
-		year: f.year ?? 0,
-		format: f.format ?? '',
-		directors: Array.isArray(f.directors) ? f.directors : [],
-		poster: f.poster ?? '',
-		runtime: f.runtime ?? 0,
-		genres: Array.isArray(f.genres) ? f.genres : [],
-		// privateNotes is never requested, so it is never included
+		title: f.title,
+		year: f.year,
+		format: f.format,
+		directors: parseList(f.directors),
+		poster: f.poster,
+		runtime: f.runtime,
+		genres: parseList(f.genres),
 	}))
 
 	// Canonical order: rating desc, then most-recently watched.

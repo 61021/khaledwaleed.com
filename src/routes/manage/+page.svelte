@@ -1,56 +1,53 @@
 <script lang='ts'>
-	import type { FilmInput, FilmMetaFields, FilmRecord } from '$lib/pocketbase'
+	import type { FilmInput, FilmMetaFields, FilmRecord } from '$lib/films'
 	import type { FilmMeta, MediaType, SearchResult } from '$lib/tmdb'
 	import { beforeNavigate } from '$app/navigation'
 	import { Container } from '$lib'
 	import Poster from '$lib/components/Poster.svelte'
-	import { metaToFields, pb } from '$lib/pocketbase'
+	import { metaToFields } from '$lib/films'
 	import { posterRef, tmdbRef } from '$lib/posters'
 	import { onMount } from 'svelte'
 
-	// --- Auth ------------------------------------------------------------
-	let authed = $state(false)
-	const email = 'master@khaledwaleed.com'
-	let password = $state('')
-	let authError = $state('')
+	// --- Session --------------------------------------------------------
+	// Cloudflare Access signs you in before this page loads; the API behind it
+	// checks the same token. When that session lapses, Access answers API calls
+	// with a redirect to its login page, which a manual-redirect fetch sees as
+	// an opaque response.
+	let sessionLost = $state(false)
 
-	onMount(() => {
-		authed = pb.authStore.isValid
-		if (authed)
-			loadFilms()
-	})
-
-	async function login(e: Event) {
-		e.preventDefault()
-		authError = ''
-		try {
-			await pb.collection('_superusers').authWithPassword(email, password)
-			authed = true
-			password = ''
-			loadFilms()
-		}
-		catch (err) {
-			authError = (err as Error).message || 'Could not sign in.'
+	class ApiError extends Error {
+		status: number
+		constructor(status: number, message: string) {
+			super(message)
+			this.status = status
 		}
 	}
 
-	function logout() {
-		pb.authStore.clear()
-		authed = false
-		films = []
-		selected = null
-		editing = null
-		query = ''
-		results = []
+	async function api<T>(path: string, init: { method?: string, body?: unknown } = {}): Promise<T> {
+		const r = await fetch(`/api/manage/films${path}`, {
+			method: init.method ?? 'GET',
+			redirect: 'manual',
+			headers: init.body === undefined ? undefined : { 'content-type': 'application/json' },
+			body: init.body === undefined ? undefined : JSON.stringify(init.body),
+		})
+		if (!r.ok) {
+			const message = r.type === 'opaqueredirect'
+				? ''
+				: await r.json().then(b => (b as { message?: string }).message ?? '', () => '')
+			throw new ApiError(r.type === 'opaqueredirect' ? 401 : r.status, message || `Request failed (${r.status}).`)
+		}
+		return (r.status === 204 ? undefined : await r.json()) as T
 	}
 
-	/** A 401/403 from PB means the token lapsed; drop back to the gate. */
+	const live = (): boolean => !sessionLost
+
+	onMount(loadFilms)
+
+	/** A 401 means the Access session lapsed; say so instead of failing quietly. */
 	function expired(err: unknown): boolean {
-		const status = (err as { status?: number }).status
-		if (status !== 401 && status !== 403)
+		if (!(err instanceof ApiError) || err.status !== 401)
 			return false
-		logout()
-		authError = 'Session expired. Sign in again.'
+		sessionLost = true
 		return true
 	}
 
@@ -190,20 +187,15 @@
 	}
 
 	/**
-	 * Copy the TMDB image onto the record's own `poster` file (via our proxy,
-	 * which also dodges locally blocked image.tmdb.org). Quietly returns null
-	 * on failure: the record is fine, and the poster banner catches it later.
+	 * Have the server copy the TMDB image into R2 as the record's own poster.
+	 * Quietly returns null on failure: the record is fine, and the poster
+	 * banner catches it later.
 	 */
 	async function ensurePoster(id: string, posterPath: string | null | undefined): Promise<FilmRecord | null> {
 		if (!posterPath)
 			return null
 		try {
-			const r = await fetch(`/api/tmdb/poster/w780${posterPath}`)
-			if (!r.ok)
-				return null
-			const form = new FormData()
-			form.append('poster', await r.blob(), posterPath.slice(1))
-			return await pb.collection('films').update<FilmRecord>(id, form)
+			return await api<FilmRecord>(`/${id}/poster`, { method: 'POST', body: { posterPath } })
 		}
 		catch (err) {
 			expired(err)
@@ -218,7 +210,7 @@
 		saving = true
 		saveError = ''
 		// Denormalize the TMDB snapshot into the record, so the public page
-		// renders everything from PocketBase in one request.
+		// renders everything from D1 in one query.
 		const m = await fetchMeta(selected.mediaType, selected.tmdbId)
 		const snapshot: Partial<FilmMetaFields> = m
 			? metaToFields(m)
@@ -247,8 +239,8 @@
 		}
 		try {
 			const rec = editing
-				? await pb.collection('films').update<FilmRecord>(editing.id, data)
-				: await pb.collection('films').create<FilmRecord>(data)
+				? await api<FilmRecord>(`/${editing.id}`, { method: 'PATCH', body: data })
+				: await api<FilmRecord>('', { method: 'POST', body: data })
 			// The image becomes ours at save time; skip only when the stored
 			// file already matches this TMDB poster.
 			if (data.posterPath && (!rec.poster || data.posterPath !== editing?.posterPath))
@@ -274,7 +266,7 @@
 	async function loadFilms() {
 		listError = ''
 		try {
-			films = await pb.collection('films').getFullList<FilmRecord>({ sort: '-rating,-watchedOn' })
+			films = (await api<{ films: FilmRecord[] }>('')).films
 		}
 		catch (err) {
 			if (!expired(err))
@@ -287,7 +279,7 @@
 		if (!confirm('Remove this title from your collection?'))
 			return
 		try {
-			await pb.collection('films').delete(f.id)
+			await api(`/${f.id}`, { method: 'DELETE' })
 			films = films.filter(x => x.id !== f.id)
 		}
 		catch (err) {
@@ -311,12 +303,12 @@
 		syncDone = 0
 		let next = 0
 		async function worker() {
-			while (next < targets.length && pb.authStore.isValid) {
+			while (next < targets.length && live()) {
 				const f = targets[next++]
 				const m = await fetchMeta(f.type, f.tmdbId)
 				if (m) {
 					try {
-						await pb.collection('films').update(f.id, metaToFields(m))
+						await api(`/${f.id}`, { method: 'PATCH', body: metaToFields(m) })
 					}
 					catch (err) {
 						expired(err)
@@ -327,7 +319,7 @@
 		}
 		await Promise.all(Array.from({ length: 6 }, worker))
 		syncing = false
-		if (pb.authStore.isValid)
+		if (!sessionLost)
 			await loadFilms()
 	}
 
@@ -346,7 +338,7 @@
 		posterDone = 0
 		let next = 0
 		async function worker() {
-			while (next < targets.length && pb.authStore.isValid) {
+			while (next < targets.length && live()) {
 				const f = targets[next++]
 				await ensurePoster(f.id, f.posterPath)
 				posterDone++
@@ -354,7 +346,7 @@
 		}
 		await Promise.all(Array.from({ length: 4 }, worker))
 		postering = false
-		if (pb.authStore.isValid)
+		if (!sessionLost)
 			await loadFilms()
 	}
 
@@ -367,7 +359,7 @@
 		if (m) {
 			const fields = metaToFields(m)
 			try {
-				await pb.collection('films').update(f.id, fields)
+				await api(`/${f.id}`, { method: 'PATCH', body: fields })
 				// A swapped TMDB poster (or a record still missing its file)
 				// gets re-stored so the site keeps serving our own copy.
 				const stored
@@ -400,30 +392,17 @@
 <svelte:window onbeforeunload={onBeforeUnload} />
 
 <Container size='prose'>
-	{#if !authed}
+	{#if sessionLost}
 		<section class='signin'>
 			<h1 class='m-title'>Manage</h1>
-			<p class='muted mt-2'>Enter the password to enter the secret management area.</p>
-			<form class='mt-6 flex flex-col gap-3' onsubmit={login}>
-				<label class='lbl' for='mg-password'>Password</label>
-				<input
-					id='mg-password'
-					name='password'
-					class='field'
-					type='password'
-					bind:value={password}
-					autocomplete='current-password'
-					required
-				/>
-				{#if authError}<p class='err' role='alert'>{authError}</p>{/if}
-				<button class='btn' type='submit'>Sign in</button>
-			</form>
+			<p class='muted mt-2'>Your sign-in has lapsed. Reload to sign in again; unsaved changes on this page are lost.</p>
+			<button class='btn mt-6' type='button' onclick={() => location.reload()}>Reload</button>
 		</section>
 	{:else}
 		<section class='mt-4'>
 			<div class='flex items-baseline justify-between gap-4'>
 				<h1 class='m-title'>Manage · Films</h1>
-				<button class='link-quiet' type='button' onclick={logout}>Sign out</button>
+				<a class='link-quiet' href='/cdn-cgi/access/logout' data-sveltekit-reload>Sign out</a>
 			</div>
 
 			{#if !selected}

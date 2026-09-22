@@ -3,7 +3,7 @@
 	import { posterSrc, posterSrcset } from '$lib/posters'
 
 	type Props = {
-		/** where the image lives (our PB file, or the /manage proxy); null renders a placeholder */
+		/** where the image lives (our R2 copy, or the /manage proxy); null renders a placeholder */
 		poster: PosterRef | null
 		alt: string
 		/** rendered width in px; height follows the 2:3 poster ratio */
@@ -19,7 +19,7 @@
 	const { poster, alt, width = 52, vivid = false, fluid = false, eager = false }: Props = $props()
 
 	const height = $derived(Math.round((width * 3) / 2))
-	// Served from our own PocketBase thumbs; request a small size and a 2× for retina.
+	// Served from our own stored widths; request a small size and a 2× for retina.
 	const src = $derived(poster ? posterSrc(poster, vivid ? 342 : 185) : null)
 	const srcset = $derived(
 		poster
@@ -29,7 +29,7 @@
 			: null,
 	)
 
-	// A poster that 404s (or a wedged PocketBase) degrades to the same quiet
+	// A poster that 404s (or a wedged bucket) degrades to the same quiet
 	// placeholder as a missing file, never a broken-image glyph.
 	let failedSrc = $state<string | null>(null)
 	const failed = $derived(src !== null && failedSrc === src)

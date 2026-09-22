@@ -1,16 +1,9 @@
-import type { RecordModel } from 'pocketbase'
 import type { FilmMeta, MediaType } from './tmdb'
-import PocketBase from 'pocketbase'
-import { PB_URL } from './constants'
-
-// PocketBase lives on the Contabo box (same as Rocca), exposed over HTTPS so the
-// browser can talk to it from this HTTPS site. Wire api.khaledwaleed.com → PB in CF.
-export const pb = new PocketBase(PB_URL)
 
 /**
  * The TMDB snapshot denormalized onto each record. /manage writes it at save
  * time (and can re-sync it), so the public /films page renders everything from
- * PB in one request: no TMDB calls at view time.
+ * D1 in one query: no TMDB calls at view time.
  */
 export interface FilmMetaFields {
 	title: string
@@ -39,19 +32,20 @@ export function metaToFields(m: FilmMeta): FilmMetaFields {
 	}
 }
 
-/** One row in the `films` collection: your data per title + the snapshot. */
-export interface FilmRecord extends RecordModel, Partial<FilmMetaFields> {
+/** One row in the `films` table: your data per title + the snapshot. */
+export interface FilmRecord extends FilmMetaFields {
+	id: string
 	tmdbId: number
 	type: MediaType
 	rating: number
 	watched: number
 	/** yyyy-mm-dd */
 	watchedOn: string
-	notes?: string
+	notes: string
 	/** Stored, but never rendered on the public site. */
-	privateNotes?: string
-	/** Our own copy of the poster; '' until /manage has uploaded it. */
-	poster?: string
+	privateNotes: string
+	/** Filename of our own copy of the poster; '' until /manage has stored it. */
+	poster: string
 }
 
 /** Fields written when adding/updating a title. */

@@ -1,7 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit'
 
 // The two live rooms (/films, /music) render in the worker against
-// upstreams an ocean away: PocketBase on the VPS, Spotify. Prerendered
+// upstreams that may sit an ocean away: D1's primary, Spotify. Prerendered
 // rooms answer from Cloudflare's static pipeline in tens of ms; these two
 // paid the full round trip on every view. This module keeps their rendered
 // responses (page HTML and __data.json alike) in the colo's cache,

@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { posterRef, posterSrc, posterSrcset, tmdbRef } from './posters'
+import { posterKey, posterRef, posterSrc, posterSrcset, tmdbRef } from './posters'
 
-const stored = { id: 'co01u9erkri9fcc', poster: 'vug1dvDI1tSa60Z8qjCuUE7ntkO_9fzX2k1p8m.jpg' }
+const stored = { id: 'co01u9erkri9fcc', poster: 'vug1dv_di1t_sa60_z8qj_cu_ue7ntk_o_1as85yyjl0.jpg' }
 
 describe('posterRef', () => {
 	it('points at the stored file', () => {
 		expect(posterRef(stored)).toEqual({
-			kind: 'pb',
+			kind: 'stored',
 			recordId: stored.id,
 			file: stored.poster,
 		})
@@ -25,10 +25,16 @@ describe('tmdbRef', () => {
 	})
 })
 
+describe('posterKey', () => {
+	it('files each width under the record', () => {
+		expect(posterKey(stored.id, 780, stored.poster)).toBe(`films/${stored.id}/w780/${stored.poster}`)
+	})
+})
+
 describe('posterSrc', () => {
-	it('asks PocketBase for a preconfigured thumb width', () => {
+	it('serves a stored width from the posters bucket', () => {
 		expect(posterSrc(posterRef(stored)!, 185)).toBe(
-			`https://api.khaledwaleed.com/api/files/films/${stored.id}/${stored.poster}?thumb=185x0`,
+			`https://posters.khaledwaleed.com/films/${stored.id}/w185/${stored.poster}`,
 		)
 	})
 
