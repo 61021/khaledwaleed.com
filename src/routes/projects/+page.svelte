@@ -224,7 +224,7 @@
 {#snippet plateRow(p: Project)}
 	<li>
 		{@render measureLine(p, true)}
-		<p class='mt-2 text-sm leading-relaxed text-[var(--ink-muted)]'>{p.note}</p>
+		<p class='mt-2 leading-relaxed text-[var(--ink-muted)]'>{p.note}</p>
 	</li>
 {/snippet}
 
