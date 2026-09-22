@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-09-18'
+	const lastUpdated = '2026-09-22'
 
 	type Project = {
 		name: string
@@ -73,7 +73,7 @@
 				},
 			],
 			outro:
-				'Around these: platforms for Afaq Al-Obaidi’s subsidiaries (Smartic, National Foodstuff, Auto Zone, Golden Lube), a document-archiving system for the Al-Amal Association, and 20+ client deployments kept running in production.',
+				'Around these: platforms for <a href="https://afaqalobaidi.com" target="_blank" rel="noopener" class="link">Afaq Al-Obaidi’s</a> subsidiaries (Smartic, National Foodstuff, Auto Zone, Golden Lube), a document-archiving system for the Al-Amal Association, and 20+ client deployments kept running in production.',
 		},
 		{
 			id: 'government',
@@ -243,7 +243,7 @@
 
 {#snippet outro(s: Section)}
 	{#if s.outro}
-		<p class='mt-4 text-sm leading-relaxed text-[var(--ink-muted)] italic'>{s.outro}</p>
+		<p class='mt-4 text-sm leading-relaxed text-[var(--ink-muted)] italic'>{@html s.outro}</p>
 	{/if}
 {/snippet}
 
