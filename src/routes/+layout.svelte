@@ -3,7 +3,7 @@
 	import { dev } from '$app/environment'
 	import { beforeNavigate, onNavigate, preloadData } from '$app/navigation'
 	import { page, updated } from '$app/state'
-	import { CommandPalette, Container, Curtain, JsonLd, Monogram, PictureRail, Screensaver, site } from '$lib'
+	import { CommandPalette, Container, Curtain, FooterSignature, JsonLd, Monogram, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
 	// The display face is served pinned to its one weight (see
@@ -693,8 +693,8 @@
 			<!-- Footer: colophon at left, the rooms and the letterbox at right.
 		     Social platforms live on /contact (and in the Person schema), not here. -->
 			<footer class='mt-12 py-6 sm:mt-32 sm:py-10'>
-				<div class='footer-rail mx-auto mb-8 w-full max-w-6xl px-6 sm:mb-12'>
-					<PictureRail count={nav.length} lit={wallIndex(page.url.pathname)} />
+				<div class='footer-sign mx-auto mb-8 w-full max-w-6xl px-6 sm:mb-10'>
+					<FooterSignature />
 				</div>
 				<Container size='wide'>
 					<div class='flex flex-col gap-6 text-left sm:flex-row sm:items-end sm:justify-between'>

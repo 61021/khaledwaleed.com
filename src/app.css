@@ -1290,7 +1290,7 @@ html[data-menu-open] {
 	.hero-art,
 	.hero-veil,
 	.footer-rooms,
-	.footer-rail,
+	.footer-sign,
 	nav[aria-label='More essays'],
 	main footer {
 		display: none !important;
