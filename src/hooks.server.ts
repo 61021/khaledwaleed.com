@@ -55,7 +55,7 @@ function withSecurityHeaders(response: Response) {
 // Cloudflare Access fronts these paths; the worker still checks the JWT so a
 // loosened Access policy (or a path it misses) never opens the film log.
 function isOwnerOnly(path: string): boolean {
-	return path === '/manage' || path.startsWith('/manage/') || path.startsWith('/api/manage/')
+	return path === '/manage' || path.startsWith('/manage/') || path.startsWith('/api/manage/') || path.startsWith('/api/tmdb/')
 }
 
 // Stamp the per-page room palette into the served HTML so the first paint
