@@ -9,5 +9,20 @@
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
 	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "khaledwaleed",
+			"database_id": "18b30113-3be8-40ce-a822-ef9bf19a8e18",
+			"migrations_dir": "migrations"
+		}
+	],
+	"r2_buckets": [
+		{ "binding": "POSTERS", "bucket_name": "khaledwaleed-posters" }
+	],
+	"vars": {
+		"ACCESS_TEAM_DOMAIN": "https://foxilated.cloudflareaccess.com",
+		"ACCESS_AUD": "1deaa0a88f4c52cdcd501655096e7478973c8a1b54d8de73cb72691a6e46871d"
+	},
 	"observability": { "enabled": true }
 }

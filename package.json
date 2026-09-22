@@ -42,10 +42,12 @@
 		"@fontsource/fraunces": "^5.3.0",
 		"@fontsource/libre-franklin": "^5.3.0",
 		"gsap": "^3.15.0",
-		"pocketbase": "^0.27.0"
+		"jose": "^6.2.12",
+		"pocketbase": "^0.27.3"
 	},
 	"devDependencies": {
 		"@antfu/eslint-config": "^9.3.0",
+		"@cloudflare/workers-types": "^5.20260921.1",
 		"@fontsource/jetbrains-mono": "^5.2.8",
 		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-cloudflare": "^7.2.9",
