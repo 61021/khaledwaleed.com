@@ -58,3 +58,24 @@ export type FilmInput = {
 	notes?: string
 	privateNotes?: string
 } & Partial<FilmMetaFields>
+
+/** One title as /films shows it: public columns only, never privateNotes. */
+export interface PersonalFilm {
+	/** Record id; half of the poster file URL. */
+	id: string
+	tmdbId: number
+	type: MediaType
+	rating: number
+	watched: number
+	watchedOn: string
+	notes?: string
+	title: string
+	year: number
+	format: string
+	directors: string[]
+	/** Filename of our stored poster; '' until /manage has uploaded one. */
+	poster: string
+	/** minutes; movie runtime or TV episode runtime; 0 = unknown */
+	runtime: number
+	genres: string[]
+}

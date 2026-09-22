@@ -9,7 +9,7 @@ import type { RequestEvent } from '@sveltejs/kit'
 // answers instantly too while a background subrequest re-renders and
 // restocks, and an upstream outage keeps the last good copy on the wall
 // (outage responses are no-store, so they never replace it).
-const CACHED_PAGES = new Set(['/films', '/music'])
+const CACHED_PAGES = new Set(['/films', '/api/films', '/music'])
 
 // How long a copy may keep answering while refreshes fail (seconds).
 const STALE_CEILING = 24 * 60 * 60

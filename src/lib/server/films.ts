@@ -1,4 +1,4 @@
-import type { FilmRecord } from '$lib/films'
+import type { FilmRecord, PersonalFilm } from '$lib/films'
 import type { MediaType } from '$lib/tmdb'
 import type { D1Database } from '@cloudflare/workers-types'
 
@@ -135,4 +135,29 @@ export async function deleteFilm(db: D1Database, id: string): Promise<FilmRecord
 /** D1 surfaces constraint failures only in the message text. */
 export function isDuplicate(err: unknown): boolean {
 	return err instanceof Error && /UNIQUE constraint failed/i.test(err.message)
+}
+
+type PublicRow = Pick<FilmRow, 'id' | 'tmdbId' | 'type' | 'rating' | 'watched' | 'watchedOn' | 'notes' | 'title' | 'year' | 'format' | 'directors' | 'poster' | 'runtime' | 'genres'>
+
+/** The public log, rating desc then most recently watched. */
+export async function listPublicFilms(db: D1Database): Promise<PersonalFilm[]> {
+	const rows = (await db.prepare(`SELECT ${PUBLIC_COLUMNS} FROM films ${ORDER}`).all<PublicRow>()).results
+	const films: PersonalFilm[] = rows.map(f => ({
+		id: f.id,
+		tmdbId: f.tmdbId,
+		type: f.type as MediaType,
+		rating: f.rating,
+		watched: f.watched,
+		watchedOn: f.watchedOn,
+		...(f.notes ? { notes: f.notes } : {}),
+		title: f.title,
+		year: f.year,
+		format: f.format,
+		directors: parseList(f.directors),
+		poster: f.poster,
+		runtime: f.runtime,
+		genres: parseList(f.genres),
+	}))
+	films.sort((a, b) => b.rating - a.rating || b.watchedOn.localeCompare(a.watchedOn))
+	return films
 }
