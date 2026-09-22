@@ -570,7 +570,7 @@ html[data-swap='out'] .frontispiece img {
 /* ---------- Engraved rule ----------
    A single hairline fading at both ends, with a small ornament seated
    in the middle; give it one child: <span class="gem"></span> for a
-   gilt diamond. Used above the colophon. */
+   gilt diamond. */
 .rule-engraved {
 	display: flex;
 	align-items: center;
@@ -1290,7 +1290,7 @@ html[data-menu-open] {
 	.hero-art,
 	.hero-veil,
 	.footer-rooms,
-	footer .rule-engraved,
+	.footer-rail,
 	nav[aria-label='More essays'],
 	main footer {
 		display: none !important;
