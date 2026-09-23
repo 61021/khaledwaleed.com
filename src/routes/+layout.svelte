@@ -326,6 +326,14 @@
 	// out the arrival so the attribute never leaves mid-animation.
 	const WALK_IN = 320
 
+	// The crossing between the two worlds runs on the house beat
+	// (--cross-in in app.css).
+	const CROSS_IN = 240
+
+	// Inside the studies a page change slides straight across to the
+	// next page (--swipe-in in app.css).
+	const SWIPE_IN = 240
+
 	// A fast second click must never be cleaned up by the first one's timer.
 	let walkToken = 0
 
@@ -346,7 +354,7 @@
 	// color under everything. Both hang on <body>, outside the glide's
 	// transform. The copy drops the .stage class so the live stage's
 	// swap rules never reach it.
-	function hold(stage: HTMLElement) {
+	function hold(stage: HTMLElement, chrome: Element[] = []) {
 		release()
 		const root = getComputedStyle(document.documentElement)
 		const wall = document.createElement('div')
@@ -371,8 +379,23 @@
 			img.decoding = 'sync'
 
 		room.append(copy)
+		// The header stands outside the stage, so a crossing that unmounts
+		// it would pop it off the held frame. Its copy hangs with the room.
+		for (const el of chrome) {
+			const piece = el.cloneNode(true) as HTMLElement
+			piece.removeAttribute('id')
+			for (const node of piece.querySelectorAll('[id]'))
+				node.removeAttribute('id')
+			room.append(piece)
+		}
 		document.body.append(wall, room)
 		held = [wall, room]
+	}
+
+	// How deep a path sits, for the studies' own swipe: the contents are
+	// shallower than the study they open.
+	function depth(pathname: string | undefined): number {
+		return (pathname ?? '/').split('/').filter(Boolean).length
 	}
 
 	// Forward walks right and back walks left, by the rooms' order on the
@@ -425,11 +448,29 @@
 		// the router swaps the room under it at once, then both rooms travel
 		// on one clock.
 		const html = document.documentElement
-		const stage = smoothContent
+		// Crossing between the museum and the studies: the two worlds do
+		// not hang on one wall, so there is nothing to walk along. The old
+		// one holds still and fades; the new one blurs into existence over
+		// it (app.css, the crossing). Leaving the studies there is no
+		// stage to copy, only the bare main.
+		const from = navigation.from?.url.pathname
+		const to = navigation.to?.url.pathname
+		const inFrom = from !== undefined && isStudiesPath(from)
+		const inTo = to !== undefined && isStudiesPath(to)
+		const crossing = from !== undefined && to !== undefined && inFrom !== inTo
+		// Sheet to sheet inside the studies: the page swipes aside and the
+		// next one comes in under it, deeper page to the right.
+		const swiping = inFrom && inTo
+		const stage = smoothContent ?? document.getElementById('main') ?? undefined
 		const token = ++walkToken
 		if (stage)
-			hold(stage)
-		html.setAttribute('data-walk', walkDirection(navigation))
+			hold(stage, crossing ? [...document.querySelectorAll('.site-header')] : [])
+		if (crossing)
+			html.setAttribute('data-cross', '')
+		else if (swiping)
+			html.setAttribute('data-swipe', depth(to) > depth(from) ? 'forward' : 'back')
+		else
+			html.setAttribute('data-walk', walkDirection(navigation))
 		html.setAttribute('data-swap', 'out')
 		const arrive = () => {
 			if (token !== walkToken)
@@ -449,7 +490,9 @@
 					release()
 					html.removeAttribute('data-swap')
 					html.removeAttribute('data-walk')
-				}, WALK_IN)
+					html.removeAttribute('data-cross')
+					html.removeAttribute('data-swipe')
+				}, crossing ? CROSS_IN : swiping ? SWIPE_IN : WALK_IN)
 			})
 		}
 		// `complete` settles right after the swap: walk onto the new room,
@@ -529,7 +572,7 @@
 	     (.scrolled, below); at rest it keeps no chrome at all. It
 	     stands outside the glide's wrapper, where position: fixed still
 	     means the viewport. -->
-	<header class={['fixed inset-x-0 top-0 z-40 py-4', mobileOpen && 'menu-open', scrolled && 'scrolled']}>
+	<header class={['site-header fixed inset-x-0 top-0 z-40 py-4', mobileOpen && 'menu-open', scrolled && 'scrolled']}>
 		<div class='relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 sm:grid sm:grid-cols-[1fr_auto_1fr]'>
 			<a
 				href='/'

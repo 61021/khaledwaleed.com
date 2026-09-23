@@ -899,6 +899,126 @@ html[data-swap='in'] .room-held > * > footer {
 	}
 }
 
+/* ---------- The crossing ----------
+   The museum and the studies do not hang on one wall, so a change
+   between them has nothing to walk along. The old world holds still
+   and fades on the held frame; the new one blurs into existence over
+   it, chrome and all. One filter on one element per crossing, and only
+   at this boundary: the walk between rooms still eases nothing. */
+:root {
+	--cross-in: 240ms;
+	--cross-blur: 10px;
+	/* The house curve is an expo out: it spends a blur in the first
+	   fifth and the rest of the time on nothing. A crossing wants to be
+	   watched, so it keeps its own, calmer curve. */
+	--cross-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Everything the walk would have moved sideways stands still. */
+html[data-cross][data-swap='in'] :is(.stage, .room-held) :is(.hero-art, .hero-content, .hero-plate),
+html[data-cross][data-swap='in'] :is(.stage, .room-held) > main > *,
+html[data-cross][data-swap='in'] .room-held > * > footer {
+	animation: none;
+}
+
+/* The held frame and the old wall under it take the longer clock. */
+html[data-cross][data-swap='in'] :is(.room-held, .wall-held) {
+	animation-duration: var(--cross-in);
+}
+
+/* The new world is covered while the router swaps, then comes up. The
+   header is reached by its own class: SvelteKit's shell wraps the app
+   in a display:contents div, so `body > header` matches nothing. */
+html[data-cross][data-swap='out'] :is(#main, .site-header) {
+	opacity: 0;
+}
+
+html[data-cross][data-swap='in'] :is(#main, .site-header, .stage > footer) {
+	animation:
+		cross-sharpen var(--cross-in) var(--cross-ease) both,
+		cross-show calc(var(--cross-in) * 0.6) var(--ease-out) both;
+	will-change: opacity, filter;
+}
+
+/* The new world is there before it is legible: it arrives on the house
+   curve and then spends the rest of the crossing coming into focus. */
+@keyframes cross-sharpen {
+	from {
+		filter: blur(var(--cross-blur));
+	}
+
+	to {
+		filter: blur(0);
+	}
+}
+
+@keyframes cross-show {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+/* ---------- The swipe ----------
+   Inside the studies the pages sit side by side, and a page change
+   slides straight across to the next one: the two travel as one strip,
+   at one speed, with no easing and nothing trailing. Deeper goes
+   right; coming back goes left. */
+:root {
+	--swipe-in: 240ms;
+	--swipe: 1;
+}
+
+html[data-swipe='back'] {
+	--swipe: -1;
+}
+
+/* A sheet travels a whole viewport on its way off and the next one
+   starts beside the page; html already clips sideways (see the html
+   rule above), so neither opens a second axis of scroll. */
+
+/* The next sheet waits out of sight while the router swaps. */
+html[data-swipe][data-swap='out'] #main {
+	opacity: 0;
+}
+
+/* The page on screen goes the whole way off, keeping its ink: a slide
+   that faded would read as a dissolve. */
+html[data-swipe][data-swap='in'] .room-held {
+	animation: swipe-off var(--swipe-in) linear both;
+	will-change: transform;
+}
+
+html[data-swipe][data-swap='in'] .wall-held {
+	animation: none;
+}
+
+html[data-swipe][data-swap='in'] #main {
+	animation: swipe-on var(--swipe-in) linear both;
+	will-change: transform;
+}
+
+@keyframes swipe-off {
+	to {
+		transform: translate3d(calc(var(--swipe) * 100%), 0, 0);
+	}
+}
+
+/* The arriving page starts exactly one viewport behind the leaving
+   one, so the edge between them never opens or closes. */
+@keyframes swipe-on {
+	from {
+		transform: translate3d(calc(var(--swipe) * -100%), 0, 0);
+	}
+
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+}
+
 /* ---------- The entrance ---------- */
 
 /* The curtain's score (Curtain.svelte): one overture per full
