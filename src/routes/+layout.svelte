@@ -327,8 +327,10 @@
 	const WALK_IN = 320
 
 	// The crossing between the two worlds runs on the house beat
-	// (--cross-in in app.css).
+	// (--cross-in in app.css). Coming in to the studies it runs in two,
+	// so the cleanup waits out the sheet as well (--cross-sheet).
 	const CROSS_IN = 240
+	const CROSS_IN_STUDIES = 360
 
 	// Inside the studies a page change slides straight across to the
 	// next page (--swipe-in in app.css).
@@ -466,7 +468,7 @@
 		if (stage)
 			hold(stage, crossing ? [...document.querySelectorAll('.site-header')] : [])
 		if (crossing)
-			html.setAttribute('data-cross', '')
+			html.setAttribute('data-cross', inTo ? 'studies' : 'museum')
 		else if (swiping)
 			html.setAttribute('data-swipe', depth(to) > depth(from) ? 'forward' : 'back')
 		else
@@ -492,7 +494,7 @@
 					html.removeAttribute('data-walk')
 					html.removeAttribute('data-cross')
 					html.removeAttribute('data-swipe')
-				}, crossing ? CROSS_IN : swiping ? SWIPE_IN : WALK_IN)
+				}, crossing ? (inTo ? CROSS_IN_STUDIES : CROSS_IN) : swiping ? SWIPE_IN : WALK_IN)
 			})
 		}
 		// `complete` settles right after the swap: walk onto the new room,

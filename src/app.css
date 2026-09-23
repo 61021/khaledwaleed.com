@@ -901,13 +901,21 @@ html[data-swap='in'] .room-held > * > footer {
 
 /* ---------- The crossing ----------
    The museum and the studies do not hang on one wall, so a change
-   between them has nothing to walk along. The old world holds still
-   and fades on the held frame; the new one blurs into existence over
-   it, chrome and all. One filter on one element per crossing, and only
-   at this boundary: the walk between rooms still eases nothing. */
+   between them has nothing to walk along. data-cross names where the
+   visitor is going, because the two directions arrive differently.
+
+   Going out to the museum the whole world blurs into existence at
+   once. Coming in to the studies it arrives in two beats: the wall
+   first, under the old room blurring off it, and then the sheet rises
+   into the middle of it, the way paper is laid on a table. One filter
+   on one element either way, and only at this boundary: the walk
+   between rooms still eases nothing. */
 :root {
 	--cross-in: 240ms;
 	--cross-blur: 10px;
+	/* The second beat: the paper, held back until the wall is there. */
+	--cross-sheet: 240ms;
+	--cross-sheet-wait: 120ms;
 	/* The house curve is an expo out: it spends a blur in the first
 	   fifth and the rest of the time on nothing. A crossing wants to be
 	   watched, so it keeps its own, calmer curve. */
@@ -933,11 +941,23 @@ html[data-cross][data-swap='out'] :is(#main, .site-header) {
 	opacity: 0;
 }
 
-html[data-cross][data-swap='in'] :is(#main, .site-header, .stage > footer) {
+html[data-cross='museum'][data-swap='in'] :is(#main, .site-header, .stage > footer) {
 	animation:
 		cross-sharpen var(--cross-in) var(--cross-ease) both,
 		cross-show calc(var(--cross-in) * 0.6) var(--ease-out) both;
 	will-change: opacity, filter;
+}
+
+/* Coming in to the studies: beat one is the museum blurring off the
+   wall, so the bone paper is what resolves. The page itself does not
+   move; only the sheet on it does, and it waits out the wall. */
+html[data-cross='studies'][data-swap='in'] .room-held {
+	animation: cross-blur-off var(--cross-in) var(--cross-ease) both;
+}
+
+html[data-cross='studies'][data-swap='in'] .sheet {
+	animation: cross-sheet-up var(--cross-sheet) var(--ease-out) var(--cross-sheet-wait) both;
+	will-change: transform, opacity;
 }
 
 /* The new world is there before it is legible: it arrives on the house
@@ -959,6 +979,32 @@ html[data-cross][data-swap='in'] :is(#main, .site-header, .stage > footer) {
 
 	to {
 		opacity: 1;
+	}
+}
+
+/* The old room goes soft as it leaves, so what sharpens behind it is
+   the studies' own bare wall. */
+@keyframes cross-blur-off {
+	from {
+		opacity: 1;
+		filter: blur(0);
+	}
+
+	to {
+		opacity: 0;
+		filter: blur(var(--cross-blur));
+	}
+}
+
+@keyframes cross-sheet-up {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 28px, 0);
+	}
+
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
 	}
 }
 
