@@ -8,10 +8,10 @@
 	// comments from SSR output, hence @html; the string is static.
 	const contract = `<!--
 THESIS: a drafting table for numbered studies of the craft; refuses the personal-site hub (nav bar, hero, card grid) and the museum next door.
-OWN-WORLD: bone paper #e9e4de for the wall, each study a long white sheet lying on it (separated by value alone); warm black ink; one ultramarine pen #2b44a1; the hand-drawn creative-space script; Libre Franklin text with JetBrains Mono only for code and measurement; hairline rules; no cards, no shadows, no gradients.
-STORY: step out of the museum onto blank paper, pick a study, read it while its figures run on the real engines.
-FIRST VIEWPORT: index: back-to-website chip top left, wordmark alone in the upper third, the studies listed at center page.
-FORM: printed working paper with live figures, each study a sheet on the drafting table; pinned by the brief (logo, #e9e4de, blank page).
+OWN-WORLD: bone paper #e9e4de for the wall, every page a long white sheet lying on it (separated by value alone); warm black ink; one ultramarine pen #2b44a1; the word itself under the hand stroke for a wordmark; Libre Franklin text with JetBrains Mono only for code and measurement; hairline rules; no cards, no shadows, no gradients.
+STORY: step out of the museum onto blank paper, read the table of contents, pick a study, read it while its figures run on the real engines.
+FIRST VIEWPORT: index: a title sheet, the wordmark set large with what the studies are under it, the numbered contents below, back to the website in the imprint.
+FORM: printed working paper with live figures, index and studies on the same sheet; pinned by the brief (#e9e4de, blank page).
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->`
 </script>
@@ -28,6 +28,18 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		display: flex;
 		flex-direction: column;
 		min-height: 100dvh;
+	}
+
+	/* The long white sheet on the wall, shared by the index and every
+	   study: flat by value contrast alone, the wall showing above it and
+	   running out in a long tail below. The mats keep today's measure:
+	   58rem minus two 6rem margins is the 46rem column. */
+	.studies :global(.sheet) {
+		width: 100%;
+		max-width: 58rem;
+		margin: clamp(3rem, 12vh, 9rem) auto clamp(5rem, 22vh, 14rem);
+		background: #fff;
+		padding: clamp(1.5rem, 5vh, 4rem) clamp(1.5rem, 7vw, 6rem) 5rem;
 	}
 
 	/* The table sets its headings in the text face; the serif stays in

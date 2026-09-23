@@ -51,9 +51,9 @@
 	publishedTime={study.opened}
 />
 
-<div class='study'>
+<div class='study sheet'>
 	<header class='top'>
-		<a href='/studies' class='mark' aria-label='back to the studies'>
+		<a href='/studies' class='mark' aria-label='back to the contents'>
 			<StudiesMark class='mark-word' />
 		</a>
 	</header>
@@ -253,24 +253,14 @@
 						d='M224 128a8 8 0 0 1-8 8H59.31l58.35 58.34a8 8 0 0 1-11.32 11.32l-72-72a8 8 0 0 1 0-11.32l72-72a8 8 0 0 1 11.32 11.32L59.31 120H216a8 8 0 0 1 8 8Z'
 					/>
 				</svg>
-				back to the studies
+				back to the contents
 			</a>
 		</footer>
 	</article>
 </div>
 
 <style>
-	/* The long white sheet on the wall: flat by value contrast alone, the
-	   wall showing above it and running out in a long tail below. The mats
-	   keep today's measure: 58rem minus two 6rem margins is the 46rem column. */
-	.study {
-		width: 100%;
-		max-width: 58rem;
-		margin: clamp(3rem, 12vh, 9rem) auto clamp(5rem, 22vh, 14rem);
-		background: #fff;
-		padding: clamp(1.5rem, 5vh, 4rem) clamp(1.5rem, 7vw, 6rem) 5rem;
-	}
-
+	/* The sheet geometry lives in the layout; this page only dresses it. */
 	.top {
 		display: flex;
 	}

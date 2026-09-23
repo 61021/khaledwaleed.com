@@ -7,12 +7,38 @@
 
 <Seo
 	title='Studies'
-	description='Numbered studies by Khaled Waleed on motion and the craft of the web, on blank paper.'
+	description='Numbered studies by Khaled Waleed on motion and the craft of the web, written on blank paper with figures that run on the real engines.'
 	keywords={['studies', 'Khaled Waleed', 'web craft', 'easing', 'gsap', 'css']}
 />
 
-<div class='wall'>
-	<div class='door'>
+<div class='sheet'>
+	<header class='head'>
+		<h1><StudiesMark class='wordmark' /></h1>
+		<p class='what'>
+			working papers on motion and the craft of the web.
+			every figure runs on the real engine it describes.
+		</p>
+	</header>
+
+	<nav class='toc' aria-label='studies'>
+		<ol>
+			{#each studies as study, i (study.slug)}
+				<li>
+					<a class='entry' href={`/studies/${study.slug}`}>
+						<code translate='no' class='entry-n'>{studyNumber(i)}</code>
+						<span class='entry-title'>
+							{study.title}
+							<Flourish class='entry-flourish' />
+						</span>
+						<span class='entry-when'>{study.openedLabel}</span>
+						<span class='entry-line'>{study.line}</span>
+					</a>
+				</li>
+			{/each}
+		</ol>
+	</nav>
+
+	<footer class='imprint'>
 		<a href='/' class='chip'>
 			<!-- phosphor: arrow-left -->
 			<svg width='12' height='12' viewBox='0 0 256 256' aria-hidden='true'>
@@ -23,76 +49,52 @@
 			</svg>
 			back to the website
 		</a>
-	</div>
-
-	<header class='mark'>
-		<h1><StudiesMark class='mark-word' /></h1>
-	</header>
-
-	<nav class='spaces' aria-label='studies'>
-		<ol>
-			{#each studies as study, i (study.slug)}
-				<li>
-					<a class='entry' href={`/studies/${study.slug}`}>
-						<code translate='no' class='entry-n'>{studyNumber(i)}</code>
-						<span class='entry-title'>
-							{study.title}
-							<Flourish class='entry-flourish' />
-						</span>
-						<span class='entry-line'>{study.line}</span>
-						<span class='entry-date'>{study.openedLabel}</span>
-					</a>
-				</li>
-			{/each}
-		</ol>
-	</nav>
+		<span>khaled waleed</span>
+	</footer>
 </div>
 
 <style>
-	.wall {
-		flex: 1;
+	/* The title sheet: wordmark and what these are at the top, the
+	   contents under them, the imprint held at the foot of the page. */
+	.sheet {
 		display: flex;
 		flex-direction: column;
-		padding: 1.5rem;
+		min-height: min(42rem, 76vh);
 	}
 
-	.mark {
-		display: flex;
-		justify-content: center;
-		margin-top: clamp(3rem, 12vh, 7rem);
-	}
-
-	.mark h1 {
-		margin: 0;
-	}
-
-	.mark :global(.mark-word) {
+	.head :global(.wordmark) {
 		font-size: clamp(2.6rem, 8vw, 4.4rem);
 	}
 
-	.spaces {
-		flex: 1;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 3rem 0 14vh;
+	h1 {
+		margin: 0;
 	}
 
-	.spaces ol {
+	.what {
+		margin: 2.2rem 0 0;
+		max-width: 30rem;
+		font-size: 1.02rem;
+		color: var(--ink-muted);
+	}
+
+	.toc {
+		margin-top: clamp(3rem, 9vh, 5rem);
+	}
+
+	.toc ol {
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		display: grid;
-		gap: 1.25rem;
-		justify-items: center;
 	}
 
 	.entry {
 		display: grid;
-		justify-items: center;
-		gap: 0.45rem;
-		text-align: center;
-		padding: 1.25rem 2rem;
+		grid-template-columns: 2.5rem 1fr auto;
+		align-items: baseline;
+		column-gap: 1rem;
+		row-gap: 0.4rem;
+		border-top: 1px solid var(--rule);
+		padding: 1.4rem 0 1.5rem;
 	}
 
 	.entry-n {
@@ -102,22 +104,23 @@
 
 	.entry-title {
 		position: relative;
-		font-size: 1.5rem;
+		font-size: 1.35rem;
 		font-weight: 700;
 		letter-spacing: -0.01em;
 		color: var(--ink);
-		padding-bottom: 0.6rem;
+		justify-self: start;
 		transition: color 250ms cubic-bezier(0.22, 0.7, 0.25, 1);
 	}
 
 	.entry-title :global(.entry-flourish) {
 		position: absolute;
-		left: 50%;
-		bottom: 0;
-		width: 8.5rem;
-		transform: translate(-50%, 3px);
+		left: 0;
+		bottom: -0.45rem;
+		width: 100%;
+		height: auto;
 		color: var(--accent);
 		opacity: 0;
+		transform: translateY(3px);
 		transition:
 			opacity 300ms cubic-bezier(0.22, 0.7, 0.25, 1),
 			transform 300ms cubic-bezier(0.22, 0.7, 0.25, 1);
@@ -131,18 +134,53 @@
 	.entry:hover .entry-title :global(.entry-flourish),
 	.entry:focus-visible .entry-title :global(.entry-flourish) {
 		opacity: 1;
-		transform: translate(-50%, 0);
+		transform: translateY(0);
+	}
+
+	.entry-when {
+		font-size: 0.75rem;
+		color: var(--ink-muted);
+		text-align: right;
 	}
 
 	.entry-line {
-		font-size: 0.95rem;
+		grid-column: 2 / -1;
+		font-size: 0.92rem;
 		color: var(--ink-muted);
-		max-width: 26rem;
+		max-width: 28rem;
 	}
 
-	.entry-date {
-		font-size: 0.72rem;
+	.imprint {
+		margin-top: auto;
+		padding-top: clamp(3rem, 8vh, 4.5rem);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		font-size: 0.78rem;
 		color: var(--ink-muted);
-		margin-top: 0.3rem;
+	}
+
+	@media (max-width: 34rem) {
+		.entry {
+			grid-template-columns: 2rem 1fr;
+		}
+
+		.entry-when {
+			grid-column: 2;
+			grid-row: 2;
+			text-align: left;
+		}
+
+		.entry-line {
+			grid-row: 3;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.entry-title :global(.entry-flourish) {
+			transform: none;
+			transition-duration: 1ms;
+		}
 	}
 </style>
