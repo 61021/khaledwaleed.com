@@ -130,7 +130,7 @@
 
 /* ---------- The studies (/studies) ----------
    A drafting table where every other room is a night gallery: bone
-   paper for the wall, warm ink, one ultramarine pen. The museum chrome,
+   paper for the wall, warm ink and no hue at all. The museum chrome,
    wallpaper, and vignette all stay outside (+layout.svelte renders
    these pages bare). Contents and studies alike lie on the wall as long
    white sheets, and the page paints the sheet itself, so the on-sheet
@@ -143,7 +143,7 @@
 	--ink-muted: #55514a;
 	--ink-dim: #6e6960;
 	--rule: #e6e3dc;
-	--accent: #2b44a1;
+	--accent: #1d1a16;
 }
 
 /* The one alarm colour, room-independent: errors and destructive
@@ -904,7 +904,7 @@ html[data-swap='in'] .room-held > * > footer {
    between them has nothing to walk along. A pen crosses the screen
    instead: a leaning edge sweeps over the old world and a stroke rides
    it in the new world's own ink, which by then is --accent, so it is
-   ultramarine into the studies and gilt back out. data-cross names
+   ink into the studies and gilt back out. data-cross names
    where the visitor is going: into the studies the edge sweeps right,
    out to the museum it sweeps left.
 

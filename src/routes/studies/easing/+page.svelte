@@ -147,7 +147,7 @@
 			/>
 		</div>
 		<p class='fig-note'>
-			The dashed blue curve is <code translate='no'>elastic.out(1, 0.3)</code>, the shape the cubic is
+			The dashed dark curve is <code translate='no'>elastic.out(1, 0.3)</code>, the shape the cubic is
 			chasing. It catches the first swing and misses the rest.
 		</p>
 
@@ -242,7 +242,7 @@
 		<p class='method' {@attach reveal}>
 			method: css curves are plotted from the spec's cubic-bezier math, gsap curves are
 			sampled from gsap.parseEase (gsap 3.15). the dots run on the engines themselves:
-			css transitions drive the pencil lanes, gsap tweens drive the blue. reduced motion
+			css transitions drive the pencil lanes, gsap tweens drive the ink. reduced motion
 			is honored; demos jump to their endings and the curves stay still ink.
 		</p>
 
