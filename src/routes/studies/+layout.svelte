@@ -106,6 +106,52 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		border-bottom-color: var(--accent);
 	}
 
+	/* A specimen plate: a patch of someone else's dark page glued onto
+	   the sheet. Square cut, no frame; the caption sits under it in ink. */
+	.studies :global(.specimen) {
+		position: relative;
+		overflow: hidden;
+		isolation: isolate;
+		color-scheme: dark;
+	}
+
+	.studies :global(.fig-cap) {
+		margin: 0.6rem 0 0;
+		font-size: 0.78rem;
+		line-height: 1.55;
+		color: var(--ink-muted);
+	}
+
+	.studies :global(.fig-cap code) {
+		font-size: 0.72rem;
+		color: var(--ink);
+	}
+
+	/* A labelled slider row, shared by the benches. */
+	.studies :global(.dial) {
+		display: grid;
+		grid-template-columns: 5.2rem minmax(0, 1fr) 3.4rem;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.studies :global(.dial-name) {
+		font-size: 0.82rem;
+		color: var(--ink-muted);
+	}
+
+	.studies :global(.dial input[type='range']) {
+		accent-color: var(--accent);
+		min-width: 0;
+	}
+
+	.studies :global(.dial-value) {
+		font-family: var(--font-code);
+		font-size: 0.78rem;
+		color: var(--ink);
+		text-align: right;
+	}
+
 	.studies :global(.seg-option:has(input:focus-visible)) {
 		outline: 1px solid var(--accent);
 		outline-offset: 3px;
