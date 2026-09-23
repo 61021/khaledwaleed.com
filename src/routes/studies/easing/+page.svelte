@@ -1,5 +1,6 @@
 <script lang='ts'>
 	import { Seo } from '$lib'
+	import { reveal } from '$lib/reveal'
 	import EaseFigure from '$lib/studies/EaseFigure.svelte'
 	import EasePlayground from '$lib/studies/EasePlayground.svelte'
 	import EaseRace from '$lib/studies/EaseRace.svelte'
@@ -70,7 +71,7 @@
 			play on everything.
 		</p>
 
-		<div class='fig-grid two'>
+		<div class='fig-grid two' {@attach reveal}>
 			<EaseFigure
 				label={linearKw.name}
 				code={linearKw.code}
@@ -85,7 +86,7 @@
 			/>
 		</div>
 
-		<h2>the css set</h2>
+		<h2 {@attach reveal}>the css set</h2>
 		<p>
 			Five keywords, and every one is a single <code translate='no'>cubic-bezier()</code> in different
 			clothes. <code translate='no'>linear</code> leaves the handles on the diagonal; the other four move
@@ -96,7 +97,7 @@
 			dots.
 		</p>
 
-		<div class='fig-grid'>
+		<div class='fig-grid' {@attach reveal}>
 			{#each [easeKw, easeInKw, easeOutKw, easeInOutKw] as kw (kw.name)}
 				<EaseFigure
 					label={kw.name}
@@ -123,7 +124,7 @@
 			mind; they come back at the end.
 		</p>
 
-		<h2>the ceiling</h2>
+		<h2 {@attach reveal}>the ceiling</h2>
 		<p>
 			One cubic segment can change direction twice, and that is the whole budget. Push a
 			y handle past 1 and you buy a single overshoot, the spring fake below. A real bounce
@@ -132,7 +133,7 @@
 			list, and somebody has to generate it.
 		</p>
 
-		<div class='fig-wide'>
+		<div class='fig-wide' {@attach reveal}>
 			<EaseFigure
 				label='the spring fake'
 				code='cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -149,7 +150,7 @@
 			chasing. It catches the first swing and misses the rest.
 		</p>
 
-		<h2>the gsap shelf</h2>
+		<h2 {@attach reveal}>the gsap shelf</h2>
 		<p>
 			GSAP names its curves and grades them. <code translate='no'>sine</code> is the gentlest;
 			<code translate='no'>power1</code> through <code translate='no'>power4</code> raise the same shape by degrees;
@@ -176,7 +177,7 @@
 			{/each}
 		</fieldset>
 
-		<div class='fig-grid'>
+		<div class='fig-grid' {@attach reveal}>
 			{#each shelf as item (item.family)}
 				<EaseFigure
 					label={item.family}
@@ -188,7 +189,7 @@
 			{/each}
 		</div>
 
-		<h2>tuning</h2>
+		<h2 {@attach reveal}>tuning</h2>
 		<p>
 			When a bezier needs more overshoot, you write four new numbers and squint at the
 			plot. When <code translate='no'>back</code> needs more, you write <code translate='no'>back.out(2.5)</code>.
@@ -199,14 +200,14 @@
 
 		<EasePlayground />
 
-		<h2>the transplant</h2>
+		<h2 {@attach reveal}>the transplant</h2>
 		<p>
 			Here is elastic in CSS, honestly. The one-cubic spring fake above was the best four
 			numbers can do. The faithful version is <code translate='no'>linear()</code> fed 80 stops, and the
 			80 stops come from sampling GSAP's own function:
 		</p>
 
-		<pre class='transplant'><code translate='no'>transition-timing-function: {transplant};</code></pre>
+		<pre class='transplant' {@attach reveal}><code translate='no'>transition-timing-function: {transplant};</code></pre>
 
 		<p>
 			That string renders the right motion. It is also unreadable, untunable by hand, and
@@ -216,7 +217,7 @@
 
 		<EaseRace />
 
-		<h2>the verdict</h2>
+		<h2 {@attach reveal}>the verdict</h2>
 		<p>
 			For interface furniture, CSS is enough and often better. A hover tint, a menu
 			slide, a transform the compositor can run off the main thread with no JavaScript on
@@ -237,14 +238,14 @@
 			those curves on its own.
 		</p>
 
-		<p class='method'>
+		<p class='method' {@attach reveal}>
 			method: css curves are plotted from the spec's cubic-bezier math, gsap curves are
 			sampled from gsap.parseEase (gsap 3.15). the dots run on the engines themselves:
 			css transitions drive the pencil lanes, gsap tweens drive the blue. reduced motion
 			is honored; demos jump to their endings and the curves stay still ink.
 		</p>
 
-		<footer class='close'>
+		<footer class='close' {@attach reveal}>
 			<a href='/studies' class='chip'>
 				<!-- phosphor: arrow-left -->
 				<svg width='12' height='12' viewBox='0 0 256 256' aria-hidden='true'>
