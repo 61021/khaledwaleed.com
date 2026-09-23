@@ -901,25 +901,23 @@ html[data-swap='in'] .room-held > * > footer {
 
 /* ---------- The crossing ----------
    The museum and the studies do not hang on one wall, so a change
-   between them has nothing to walk along. data-cross names where the
-   visitor is going, because the two directions arrive differently.
+   between them has nothing to walk along. A pen crosses the screen
+   instead: a leaning edge sweeps over the old world and a stroke rides
+   it in the new world's own ink, which by then is --accent, so it is
+   ultramarine into the studies and gilt back out. data-cross names
+   where the visitor is going: into the studies the edge sweeps right,
+   out to the museum it sweeps left.
 
-   Going out to the museum the whole world blurs into existence at
-   once. Coming in to the studies it arrives in two beats: the wall
-   first, under the old room blurring off it, and then the sheet rises
-   into the middle of it, the way paper is laid on a table. One filter
-   on one element either way, and only at this boundary: the walk
-   between rooms still eases nothing. */
+   The old world is the held frame and the old wall under it, and both
+   keep only the side the edge has not crossed yet; the live page shows
+   through the rest. The live header is the exception, because it
+   stands above the held frame, so it takes the other side. Every x is
+   in vw and every y in vh, so the clips and the stroke share one
+   geometry whatever box they sit in. */
 :root {
-	--cross-in: 240ms;
-	--cross-blur: 10px;
-	/* The second beat: the paper, held back until the wall is there. */
-	--cross-sheet: 240ms;
-	--cross-sheet-wait: 120ms;
-	/* The house curve is an expo out: it spends a blur in the first
-	   fifth and the rest of the time on nothing. A crossing wants to be
-	   watched, so it keeps its own, calmer curve. */
-	--cross-ease: cubic-bezier(0.4, 0, 0.2, 1);
+	--cross-in: 380ms;
+	--cross-ease: cubic-bezier(0.65, 0, 0.35, 1);
+	--cross-lean: 18vh;
 }
 
 /* Everything the walk would have moved sideways stands still. */
@@ -929,82 +927,124 @@ html[data-cross][data-swap='in'] .room-held > * > footer {
 	animation: none;
 }
 
-/* The held frame and the old wall under it take the longer clock. */
-html[data-cross][data-swap='in'] :is(.room-held, .wall-held) {
-	animation-duration: var(--cross-in);
-}
-
-/* The new world is covered while the router swaps, then comes up. The
-   header is reached by its own class: SvelteKit's shell wraps the app
-   in a display:contents div, so `body > header` matches nothing. */
+/* The new world is covered while the router swaps. The header is
+   reached by its own class: SvelteKit's shell wraps the app in a
+   display:contents div, so `body > header` matches nothing. */
 html[data-cross][data-swap='out'] :is(#main, .site-header) {
 	opacity: 0;
 }
 
-html[data-cross='museum'][data-swap='in'] :is(#main, .site-header, .stage > footer) {
+/* The held frame is a copy of a page, transparent wherever its wall
+   showed through, and the live page is not hidden under it this time.
+   It carries the old room's tokens inline, so --bg paints the old wall
+   behind the copy and the old side stays whole. */
+html[data-cross] .room-held {
+	background-color: var(--bg);
+}
+
+html[data-cross='studies'][data-swap='in'] :is(.room-held, .wall-held) {
+	animation: cross-keep-right var(--cross-in) var(--cross-ease) both;
+}
+
+html[data-cross='museum'][data-swap='in'] :is(.room-held, .wall-held) {
+	animation: cross-keep-left var(--cross-in) var(--cross-ease) both;
+}
+
+html[data-cross='museum'][data-swap='in'] .site-header {
+	animation: cross-show-right var(--cross-in) var(--cross-ease) both;
+}
+
+/* The stroke: the edge's own length and lean, 5px of ink centred on
+   it. It hangs over the held frame and under the fixed chrome. */
+.cross-pen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 5px;
+	height: hypot(100vh, var(--cross-lean));
+	border-radius: 3px;
+	background: var(--accent);
+	opacity: 0;
+	transform-origin: 0 0;
+	pointer-events: none;
+}
+
+html[data-cross='studies'][data-swap='in'] .cross-pen {
 	animation:
-		cross-sharpen var(--cross-in) var(--cross-ease) both,
-		cross-show calc(var(--cross-in) * 0.6) var(--ease-out) both;
-	will-change: opacity, filter;
+		cross-pen-right var(--cross-in) var(--cross-ease) both,
+		cross-pen-lift var(--cross-in) linear both;
 }
 
-/* Coming in to the studies: beat one is the museum blurring off the
-   wall, so the bone paper is what resolves. The page itself does not
-   move; only the sheet on it does, and it waits out the wall. */
-html[data-cross='studies'][data-swap='in'] .room-held {
-	animation: cross-blur-off var(--cross-in) var(--cross-ease) both;
+html[data-cross='museum'][data-swap='in'] .cross-pen {
+	animation:
+		cross-pen-left var(--cross-in) var(--cross-ease) both,
+		cross-pen-lift var(--cross-in) linear both;
 }
 
-html[data-cross='studies'][data-swap='in'] .sheet {
-	animation: cross-sheet-up var(--cross-sheet) var(--ease-out) var(--cross-sheet-wait) both;
-	will-change: transform, opacity;
-}
-
-/* The new world is there before it is legible: it arrives on the house
-   curve and then spends the rest of the crossing coming into focus. */
-@keyframes cross-sharpen {
+/* The edge runs from the top at x to the bottom at x minus the lean.
+   Sweeping right, the old world keeps what is right of it. */
+@keyframes cross-keep-right {
 	from {
-		filter: blur(var(--cross-blur));
+		clip-path: polygon(0vw 0vh, 100vw 0vh, 100vw 100vh, calc(0vw - var(--cross-lean)) 100vh);
 	}
 
 	to {
-		filter: blur(0);
+		clip-path: polygon(calc(100vw + var(--cross-lean)) 0vh, 100vw 0vh, 100vw 100vh, 100vw 100vh);
 	}
 }
 
-@keyframes cross-show {
+/* Sweeping left, the old world keeps what is left of the edge. */
+@keyframes cross-keep-left {
 	from {
-		opacity: 0;
+		clip-path: polygon(0vw 0vh, calc(100vw + var(--cross-lean)) 0vh, 100vw 100vh, 0vw 100vh);
 	}
 
 	to {
+		clip-path: polygon(0vw 0vh, 0vw 0vh, calc(0vw - var(--cross-lean)) 100vh, 0vw 100vh);
+	}
+}
+
+/* And the live header shows what is right of it. */
+@keyframes cross-show-right {
+	from {
+		clip-path: polygon(calc(100vw + var(--cross-lean)) 0vh, 100vw 0vh, 100vw 100vh, 100vw 100vh);
+	}
+
+	to {
+		clip-path: polygon(0vw 0vh, 100vw 0vh, 100vw 100vh, calc(0vw - var(--cross-lean)) 100vh);
+	}
+}
+
+@keyframes cross-pen-right {
+	from {
+		transform: translateX(-2.5px) rotate(atan2(var(--cross-lean), 100vh));
+	}
+
+	to {
+		transform: translateX(calc(100vw + var(--cross-lean) - 2.5px)) rotate(atan2(var(--cross-lean), 100vh));
+	}
+}
+
+@keyframes cross-pen-left {
+	from {
+		transform: translateX(calc(100vw + var(--cross-lean) - 2.5px)) rotate(atan2(var(--cross-lean), 100vh));
+	}
+
+	to {
+		transform: translateX(-2.5px) rotate(atan2(var(--cross-lean), 100vh));
+	}
+}
+
+/* The fade runs on its own clock so it never bends the travel. */
+@keyframes cross-pen-lift {
+	0%,
+	85% {
 		opacity: 1;
 	}
-}
 
-/* The old room goes soft as it leaves, so what sharpens behind it is
-   the studies' own bare wall. */
-@keyframes cross-blur-off {
-	from {
-		opacity: 1;
-		filter: blur(0);
-	}
-
-	to {
+	100% {
 		opacity: 0;
-		filter: blur(var(--cross-blur));
-	}
-}
-
-@keyframes cross-sheet-up {
-	from {
-		opacity: 0;
-		transform: translate3d(0, 28px, 0);
-	}
-
-	to {
-		opacity: 1;
-		transform: translate3d(0, 0, 0);
 	}
 }
 
