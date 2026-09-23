@@ -108,7 +108,7 @@
 		width: 1.75rem;
 		height: 1.75rem;
 		border: 1px solid var(--line);
-		border-radius: 999px;
+		border-radius: 8px;
 		background: #fff;
 		color: var(--ink);
 		cursor: pointer;
@@ -120,9 +120,8 @@
 	}
 
 	.play:hover {
-		color: var(--accent);
-		border-color: var(--accent);
-		background: color-mix(in oklab, var(--accent) 5%, #fff);
+		border-color: var(--ink);
+		background: var(--well);
 	}
 
 	.play:active {
@@ -130,7 +129,7 @@
 	}
 
 	.play:focus-visible {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--ink);
 		outline-offset: 2px;
 	}
 

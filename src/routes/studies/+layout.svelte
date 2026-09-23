@@ -55,39 +55,41 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		font-family: var(--font-code);
 	}
 
-	/* Controls share one hand: pills drawn in a line darker than the
-	   rules, the pen's ultramarine marking what is on, and a small press
-	   on click. --line is the control edge, one step up from --rule so a
-	   control reads as something to touch rather than a hairline. */
+	/* Controls are ink on paper, no hue: a soft paper well, the chosen
+	   thing filled with ink, a small press on click. One corner scale
+	   for everything that can be touched or looked into: --round for
+	   plates, --round-sm for controls. --line is the control edge, one
+	   step darker than --rule so a control reads as something to touch. */
 	.studies {
-		--line: #cdc7bc;
+		--line: #d4cec4;
+		--well: #f3f0ea;
+		--round: 14px;
+		--round-sm: 10px;
 		--press: cubic-bezier(0.22, 0.7, 0.25, 1);
 	}
 
-	/* The one button shape here: a bordered chip. */
+	/* The one button shape here. */
 	.studies :global(.chip) {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
 		font-size: 0.82rem;
-		letter-spacing: 0.02em;
+		font-weight: 500;
 		color: var(--ink);
 		background: #fff;
 		border: 1px solid var(--line);
-		border-radius: 999px;
-		padding: 0.5rem 1rem;
+		border-radius: var(--round-sm);
+		padding: 0.5rem 0.95rem;
 		cursor: pointer;
 		transition:
-			color 180ms var(--press),
 			border-color 180ms var(--press),
 			background-color 180ms var(--press),
 			transform 120ms var(--press);
 	}
 
 	.studies :global(.chip:hover) {
-		color: var(--accent);
-		border-color: var(--accent);
-		background: color-mix(in oklab, var(--accent) 5%, #fff);
+		border-color: var(--ink);
+		background: var(--well);
 	}
 
 	.studies :global(.chip:active) {
@@ -96,32 +98,31 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 	.studies :global(:is(.chip, .seg-option, .toggle):focus-visible),
 	.studies :global(:is(.seg-option, .toggle):has(input:focus-visible)) {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--ink);
 		outline-offset: 2px;
 	}
 
-	/* Segmented pickers: a pill track on the soft paper, the chosen
-	   option filled with the pen. .code keeps option labels that are
-	   code (.out, back.out) in the mono. */
+	/* Segmented pickers: a paper well, the chosen option inked in.
+	   .code keeps option labels that are code (.out, back.out) in mono. */
 	.studies :global(.seg) {
 		display: inline-flex;
 		flex-wrap: wrap;
-		gap: 0.2rem;
+		gap: 2px;
 		align-self: flex-start;
 		max-width: 100%;
-		margin: 0;
-		padding: 0.2rem;
+		padding: 3px;
 		border: 1px solid var(--line);
-		border-radius: 999px;
-		background: var(--bg-soft);
+		border-radius: var(--round-sm);
+		background: var(--well);
 	}
 
 	.studies :global(.seg-option) {
 		font-size: 0.82rem;
+		font-weight: 500;
 		line-height: 1.2;
 		color: var(--ink-muted);
-		padding: 0.42rem 0.95rem;
-		border-radius: 999px;
+		padding: 0.42rem 0.9rem;
+		border-radius: 7px;
 		cursor: pointer;
 		user-select: none;
 		transition:
@@ -133,6 +134,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 	.studies :global(.seg.code .seg-option) {
 		font-family: var(--font-code);
 		font-size: 0.78rem;
+		font-weight: 400;
 	}
 
 	.studies :global(.seg-option:hover) {
@@ -146,31 +148,34 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 	.studies :global(.seg-option.on) {
 		color: #fff;
-		background: var(--accent);
+		background: var(--ink);
 	}
 
-	/* A checkbox dressed as a pill that fills its box with the pen. */
+	/* A checkbox as a small button of its own: the box inks in when on. */
 	.studies :global(.toggle) {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.55rem;
 		font-size: 0.82rem;
+		font-weight: 500;
 		color: var(--ink-muted);
 		background: #fff;
 		border: 1px solid var(--line);
-		border-radius: 999px;
-		padding: 0.4rem 0.95rem 0.4rem 0.55rem;
+		border-radius: var(--round-sm);
+		padding: 0.45rem 0.9rem 0.45rem 0.6rem;
 		cursor: pointer;
 		user-select: none;
 		transition:
 			color 180ms var(--press),
 			border-color 180ms var(--press),
+			background-color 180ms var(--press),
 			transform 120ms var(--press);
 	}
 
 	.studies :global(.toggle:hover) {
 		color: var(--ink);
-		border-color: var(--ink-dim);
+		border-color: var(--ink);
+		background: var(--well);
 	}
 
 	.studies :global(.toggle:active) {
@@ -179,17 +184,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 	.studies :global(.toggle:has(input:checked)) {
 		color: var(--ink);
-		border-color: var(--accent);
 	}
 
 	.studies :global(.toggle input) {
 		appearance: none;
 		flex: none;
-		width: 1.05rem;
-		height: 1.05rem;
+		width: 1rem;
+		height: 1rem;
 		margin: 0;
-		border: 1.5px solid var(--line);
-		border-radius: 50%;
+		border: 1.5px solid var(--ink-dim);
+		border-radius: 4px;
 		background: #fff center / 0.7rem no-repeat;
 		cursor: pointer;
 		transition:
@@ -199,8 +203,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 	/* phosphor: check, in white */
 	.studies :global(.toggle input:checked) {
-		border-color: var(--accent);
-		background-color: var(--accent);
+		border-color: var(--ink);
+		background-color: var(--ink);
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='%23fff' d='M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
 	}
 
@@ -208,9 +212,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		outline: none;
 	}
 
-	/* Sliders: a thin rule for the track, the pen filling it up to a
-	   round thumb that swells under the hand. --fill comes from the
-	   fill attachment (lib/studies/fill.ts). */
+	/* Sliders: a thin rule for the track, inked up to a solid ink
+	   thumb that swells under the hand. --fill comes from the fill
+	   attachment (lib/studies/fill.ts). */
 	.studies :global(input[type='range']) {
 		appearance: none;
 		height: 1.4rem;
@@ -224,71 +228,71 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 	}
 
 	.studies :global(input[type='range']::-webkit-slider-runnable-track) {
-		height: 3px;
+		height: 4px;
 		border-radius: 999px;
 		background:
-			linear-gradient(var(--accent), var(--accent)) 0 / var(--fill, 0%) 100% no-repeat,
+			linear-gradient(var(--ink), var(--ink)) 0 / var(--fill, 0%) 100% no-repeat,
 			var(--line);
 	}
 
 	.studies :global(input[type='range']::-moz-range-track) {
-		height: 3px;
+		height: 4px;
 		border-radius: 999px;
 		background: var(--line);
 	}
 
 	.studies :global(input[type='range']::-moz-range-progress) {
-		height: 3px;
+		height: 4px;
 		border-radius: 999px;
-		background: var(--accent);
+		background: var(--ink);
 	}
 
 	.studies :global(input[type='range']::-webkit-slider-thumb) {
 		appearance: none;
-		width: 1rem;
-		height: 1rem;
-		margin-top: calc(1.5px - 0.5rem);
-		border: 2px solid var(--accent);
+		width: 1.1rem;
+		height: 1.1rem;
+		margin-top: calc(2px - 0.55rem);
+		border: 3px solid #fff;
 		border-radius: 50%;
-		background: #fff;
+		background: var(--ink);
+		outline: 1px solid var(--ink);
 		transition: transform 150ms var(--press);
 	}
 
 	.studies :global(input[type='range']::-moz-range-thumb) {
 		box-sizing: border-box;
-		width: 1rem;
-		height: 1rem;
-		border: 2px solid var(--accent);
+		width: 1.1rem;
+		height: 1.1rem;
+		border: 3px solid #fff;
 		border-radius: 50%;
-		background: #fff;
+		background: var(--ink);
+		outline: 1px solid var(--ink);
 		transition: transform 150ms var(--press);
 	}
 
 	.studies :global(input[type='range']:hover::-webkit-slider-thumb) {
-		transform: scale(1.2);
+		transform: scale(1.15);
 	}
 
 	.studies :global(input[type='range']:hover::-moz-range-thumb) {
-		transform: scale(1.2);
+		transform: scale(1.15);
 	}
 
 	.studies :global(input[type='range']:active::-webkit-slider-thumb) {
-		transform: scale(1.3);
-		background: var(--accent);
+		transform: scale(1.25);
 	}
 
 	.studies :global(input[type='range']:active::-moz-range-thumb) {
-		transform: scale(1.3);
-		background: var(--accent);
+		transform: scale(1.25);
 	}
 
 	.studies :global(input[type='range']:focus-visible::-webkit-slider-thumb) {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--ink);
 		outline-offset: 2px;
 	}
 
 	.studies :global(input[type='range']:focus-visible::-moz-range-thumb) {
-		outline: 2px solid var(--accent);
+		outline: 2px solid var(--ink);
 		outline-offset: 2px;
 	}
 
@@ -298,11 +302,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		}
 	}
 
-	/* A specimen plate: a patch of someone else's dark page glued onto
-	   the sheet. Square cut, no frame; the caption sits under it in ink. */
+	/* A specimen plate: a patch of someone else's dark page laid on
+	   the sheet, rounded like a screen, no frame; the caption sits under
+	   it in ink. */
 	.studies :global(.specimen) {
 		position: relative;
 		overflow: hidden;
+		border-radius: var(--round);
 		isolation: isolate;
 		color-scheme: dark;
 	}
