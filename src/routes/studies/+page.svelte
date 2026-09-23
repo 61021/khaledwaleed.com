@@ -1,8 +1,8 @@
 <script lang='ts'>
 	import { Seo } from '$lib'
-	import CreativeSpaceLogo from '$lib/studies/CreativeSpaceLogo.svelte'
 	import Flourish from '$lib/studies/Flourish.svelte'
 	import { studies, studyNumber } from '$lib/studies/studies'
+	import StudiesMark from '$lib/studies/StudiesMark.svelte'
 </script>
 
 <Seo
@@ -26,8 +26,7 @@
 	</div>
 
 	<header class='mark'>
-		<h1 class='sr-only'>studies</h1>
-		<CreativeSpaceLogo class='mark-svg' />
+		<h1><StudiesMark class='mark-word' /></h1>
 	</header>
 
 	<nav class='spaces' aria-label='studies'>
@@ -63,10 +62,12 @@
 		margin-top: clamp(3rem, 12vh, 7rem);
 	}
 
-	.mark :global(.mark-svg) {
-		width: clamp(11rem, 24vw, 15rem);
-		height: auto;
-		color: var(--ink);
+	.mark h1 {
+		margin: 0;
+	}
+
+	.mark :global(.mark-word) {
+		font-size: clamp(2.6rem, 8vw, 4.4rem);
 	}
 
 	.spaces {

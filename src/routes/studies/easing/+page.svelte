@@ -1,11 +1,11 @@
 <script lang='ts'>
 	import { Seo } from '$lib'
-	import CreativeSpaceLogo from '$lib/studies/CreativeSpaceLogo.svelte'
 	import EaseFigure from '$lib/studies/EaseFigure.svelte'
 	import EasePlayground from '$lib/studies/EasePlayground.svelte'
 	import EaseRace from '$lib/studies/EaseRace.svelte'
 	import { cssKeywords, cubicBezier, linearStopsFn, sampleStops, stepsEase, toCssLinear } from '$lib/studies/easing'
 	import { studies, studyNumber } from '$lib/studies/studies'
+	import StudiesMark from '$lib/studies/StudiesMark.svelte'
 	import { gsap } from 'gsap'
 
 	const study = studies[0]
@@ -54,7 +54,7 @@
 <div class='study'>
 	<header class='top'>
 		<a href='/studies' class='mark' aria-label='back to the studies'>
-			<CreativeSpaceLogo class='mark-svg' />
+			<StudiesMark class='mark-word' />
 		</a>
 	</header>
 
@@ -284,10 +284,8 @@
 		color: var(--accent);
 	}
 
-	.mark :global(.mark-svg) {
-		width: 5.2rem;
-		height: auto;
-		display: block;
+	.mark :global(.mark-word) {
+		font-size: 1.05rem;
 	}
 
 	article {
