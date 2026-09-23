@@ -5,6 +5,8 @@
 	interface Setting {
 		key: SiteKey
 		face: string
+		/** the face the site actually ships */
+		font: string
 		weight: number
 		/** letter-spacing in em for a given font size in px */
 		track: (px: number) => number
@@ -14,10 +16,10 @@
 	// its token table (20px -2%, 24px -4%, 48px and up -6%); a size
 	// between two tokens takes the step below it.
 	const settings: Setting[] = [
-		{ key: 'resend', face: 'var(--font-display)', weight: 400, track: () => -0.01 },
-		{ key: 'vercel', face: 'var(--font-body)', weight: 400, track: px => px >= 48 ? -0.06 : px >= 24 ? -0.04 : px >= 20 ? -0.02 : 0 },
-		{ key: 'linear', face: 'var(--font-body)', weight: 510, track: px => px >= 32 ? -0.022 : -0.012 },
-		{ key: 'raycast', face: 'var(--font-body)', weight: 600, track: () => 0 },
+		{ key: 'resend', font: 'domaine', face: 'var(--font-display)', weight: 400, track: () => -0.01 },
+		{ key: 'vercel', font: 'geist', face: 'var(--font-body)', weight: 400, track: px => px >= 48 ? -0.06 : px >= 24 ? -0.04 : px >= 20 ? -0.02 : 0 },
+		{ key: 'linear', font: 'inter', face: 'var(--font-body)', weight: 510, track: px => px >= 32 ? -0.022 : -0.012 },
+		{ key: 'raycast', font: 'inter', face: 'var(--font-body)', weight: 600, track: () => 0 },
 	]
 
 	let size = $state(64)
@@ -39,7 +41,7 @@
 				>
 					Gray on black
 				</p>
-				<p class='spec' style:color={p.secondary}>{p.name}</p>
+				<p class='spec' style:color={p.secondary}>{p.name} · {s.font}</p>
 			</div>
 		{/each}
 	</div>
@@ -82,9 +84,6 @@
 
 	.spec {
 		margin: 0.5rem 0 0;
-	}
-
-	.spec {
 		font-size: 0.75rem;
 	}
 

@@ -61,7 +61,7 @@
 		<h2 {@attach reveal}>the header</h2>
 		<p>
 			Vercel's is solid black. Linear's and Raycast's are frosted glass. Resend's bottom edge
-			lights up in the color of whatever passes under it.
+			lights up when something passes under it.
 		</p>
 
 		<div {@attach reveal}>
@@ -86,7 +86,10 @@
 		</div>
 
 		<h2 {@attach reveal}>the type</h2>
-		<p>Resend is the only one with a serif, and the only one still using gradient text.</p>
+		<p>
+			Resend sets its headlines in Domaine, a serif, and is the only one still using gradient
+			text. Vercel uses Geist. Linear and Raycast both use Inter.
+		</p>
 
 		<div {@attach reveal}>
 			<TypeSpecimen />

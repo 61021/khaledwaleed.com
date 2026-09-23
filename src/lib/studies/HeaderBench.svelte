@@ -4,6 +4,12 @@
 
 	const MAX = 300
 
+	const boxes = [
+		{ title: 'Deploy finished', line: 'Production is live on the new build.' },
+		{ title: 'Three new issues', line: 'Two are assigned to you.' },
+		{ title: 'Email delivered', line: 'Opened 4 minutes after it was sent.' },
+	]
+
 	let site = $state<SiteKey>('resend')
 	let scroll = $state(0)
 	const p = $derived(palette(site))
@@ -25,9 +31,12 @@
 		<div class='page' style:transform={`translateY(${-scroll}px)`} style:color={p.secondary}>
 			<p class='lead' style:color={p.text}>the page underneath</p>
 			<p>Drag it up under the header.</p>
-			<div class='slab' style:background='#00b8cc'></div>
-			<div class='slab short' style:background='#ffc446'></div>
-			<div class='slab' style:background='#ff6363'></div>
+			{#each boxes as box (box.title)}
+				<div class='box'>
+					<p class='box-title'>{box.title}</p>
+					<p>{box.line}</p>
+				</div>
+			{/each}
 		</div>
 
 		<header class={['head', site, scrolled && 'scrolled']}>
@@ -73,14 +82,21 @@
 		letter-spacing: -0.02em;
 	}
 
-	.slab {
-		height: 7rem;
+	.box {
 		margin: 1.25rem 0;
+		padding: 1.1rem 1.25rem 1.6rem;
 		border-radius: 10px;
+		background: #fff;
+		color: #55514a;
 	}
 
-	.slab.short {
-		width: 60%;
+	.page .box p {
+		margin: 0.2rem 0 0;
+	}
+
+	.page .box .box-title {
+		color: #1d1a16;
+		font-weight: 600;
 	}
 
 	.head {
