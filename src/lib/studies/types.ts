@@ -1,13 +1,13 @@
-// Shared types for the creative space (/space) and its studies.
+// Shared types for the studies (/studies) and their figures.
 
-export interface Space {
+export interface Study {
 	slug: string
 	title: string
-	/** one line under the title on the index wall */
+	/** one line under the title in the contents */
 	line: string
 	/** ISO date the study opened; sitemap lastmod + the imprint line */
 	opened: string
-	/** the same date in the space's own lowercase voice */
+	/** the same date in the table's own lowercase voice */
 	openedLabel: string
 }
 

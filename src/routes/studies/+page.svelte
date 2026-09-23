@@ -1,14 +1,14 @@
 <script lang='ts'>
 	import { Seo } from '$lib'
-	import CreativeSpaceLogo from '$lib/space/CreativeSpaceLogo.svelte'
-	import Flourish from '$lib/space/Flourish.svelte'
-	import { spaceNumber, spaces } from '$lib/space/spaces'
+	import CreativeSpaceLogo from '$lib/studies/CreativeSpaceLogo.svelte'
+	import Flourish from '$lib/studies/Flourish.svelte'
+	import { studies, studyNumber } from '$lib/studies/studies'
 </script>
 
 <Seo
-	title='Creative space'
-	description='The creative space of Khaled Waleed: numbered studies in motion and the craft of the web, on blank paper.'
-	keywords={['creative space', 'Khaled Waleed', 'studies', 'easing', 'gsap', 'css']}
+	title='Studies'
+	description='Numbered studies by Khaled Waleed on motion and the craft of the web, on blank paper.'
+	keywords={['studies', 'Khaled Waleed', 'web craft', 'easing', 'gsap', 'css']}
 />
 
 <div class='wall'>
@@ -26,22 +26,22 @@
 	</div>
 
 	<header class='mark'>
-		<h1 class='sr-only'>creative space</h1>
+		<h1 class='sr-only'>studies</h1>
 		<CreativeSpaceLogo class='mark-svg' />
 	</header>
 
 	<nav class='spaces' aria-label='studies'>
 		<ol>
-			{#each spaces as space, i (space.slug)}
+			{#each studies as study, i (study.slug)}
 				<li>
-					<a class='entry' href={`/space/${space.slug}`}>
-						<code translate='no' class='entry-n'>{spaceNumber(i)}</code>
+					<a class='entry' href={`/studies/${study.slug}`}>
+						<code translate='no' class='entry-n'>{studyNumber(i)}</code>
 						<span class='entry-title'>
-							{space.title}
+							{study.title}
 							<Flourish class='entry-flourish' />
 						</span>
-						<span class='entry-line'>{space.line}</span>
-						<span class='entry-date'>{space.openedLabel}</span>
+						<span class='entry-line'>{study.line}</span>
+						<span class='entry-date'>{study.openedLabel}</span>
 					</a>
 				</li>
 			{/each}

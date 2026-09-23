@@ -23,7 +23,15 @@ const redirects: Record<string, string> = {
 	'/about': '/story',
 	// Tools lived at /uses until 2026-08-15; the old address is indexed.
 	'/uses': '/tools',
+	// The studies opened as the creative space (/space) and were renamed
+	// 2026-09-23; every study under it moves with the prefix rule below.
+	'/space': '/studies',
 }
+
+// Whole branches that moved; the path keeps everything past the prefix.
+const movedPrefixes: [string, string][] = [
+	['/space/', '/studies/'],
+]
 
 // Rooms hidden for now, links removed everywhere but the pages kept intact.
 // 302 rather than 301 so nothing caches the detour while they're offstage.
@@ -79,7 +87,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 		event.locals.owner = owner
 	}
-	const target = redirects[path]
+	const moved = movedPrefixes.find(([from]) => path.startsWith(from))
+	const target = redirects[path] ?? (moved ? path.replace(moved[0], moved[1]) : undefined)
 	if (target) {
 		return withSecurityHeaders(new Response(null, { status: 301, headers: { location: target } }))
 	}

@@ -1,6 +1,6 @@
 <script lang='ts'>
 	// The wordmark's own underline stroke, on its own: the hand gesture
-	// the space reuses wherever a title takes emphasis.
+	// the table reuses wherever a title takes emphasis.
 	const { class: className = '' }: { class?: string } = $props()
 </script>
 

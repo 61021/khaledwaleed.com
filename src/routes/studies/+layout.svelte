@@ -19,32 +19,32 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
 {@html contract}
 
-<div class='space'>
+<div class='studies'>
 	{@render children()}
 </div>
 
 <style>
-	.space {
+	.studies {
 		display: flex;
 		flex-direction: column;
 		min-height: 100dvh;
 	}
 
-	/* The space sets its headings in the text face; the serif stays in
+	/* The table sets its headings in the text face; the serif stays in
 	   the museum. Mono is reserved for code and measurement. */
-	.space :global(:is(h1, h2, h3)) {
+	.studies :global(:is(h1, h2, h3)) {
 		font-family: var(--font-body);
 		font-weight: 700;
 		letter-spacing: -0.01em;
 	}
 
-	.space :global(code),
-	.space :global(pre) {
+	.studies :global(code),
+	.studies :global(pre) {
 		font-family: var(--font-code);
 	}
 
-	/* The space's one button shape: a quiet bordered chip. */
-	.space :global(.chip) {
+	/* The one button shape here: a quiet bordered chip. */
+	.studies :global(.chip) {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
@@ -59,13 +59,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
 	}
 
-	.space :global(.chip:hover) {
+	.studies :global(.chip:hover) {
 		color: var(--ink);
 		border-color: var(--ink-dim);
 	}
 
 	/* Segmented pickers, shared by the shelf toggle and the playground. */
-	.space :global(.seg) {
+	.studies :global(.seg) {
 		display: flex;
 		gap: 1.1rem;
 		border: 0;
@@ -73,7 +73,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		margin: 0;
 	}
 
-	.space :global(.seg-option) {
+	.studies :global(.seg-option) {
 		font-family: var(--font-code);
 		font-size: 0.8rem;
 		color: var(--ink-muted);
@@ -85,16 +85,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
 	}
 
-	.space :global(.seg-option:hover) {
+	.studies :global(.seg-option:hover) {
 		color: var(--ink);
 	}
 
-	.space :global(.seg-option.on) {
+	.studies :global(.seg-option.on) {
 		color: var(--ink);
 		border-bottom-color: var(--accent);
 	}
 
-	.space :global(.seg-option:has(input:focus-visible)) {
+	.studies :global(.seg-option:has(input:focus-visible)) {
 		outline: 1px solid var(--accent);
 		outline-offset: 3px;
 	}

@@ -1,15 +1,15 @@
 <script lang='ts'>
 	import { Seo } from '$lib'
-	import CreativeSpaceLogo from '$lib/space/CreativeSpaceLogo.svelte'
-	import EaseFigure from '$lib/space/EaseFigure.svelte'
-	import EasePlayground from '$lib/space/EasePlayground.svelte'
-	import EaseRace from '$lib/space/EaseRace.svelte'
-	import { cssKeywords, cubicBezier, linearStopsFn, sampleStops, stepsEase, toCssLinear } from '$lib/space/easing'
-	import { spaceNumber, spaces } from '$lib/space/spaces'
+	import CreativeSpaceLogo from '$lib/studies/CreativeSpaceLogo.svelte'
+	import EaseFigure from '$lib/studies/EaseFigure.svelte'
+	import EasePlayground from '$lib/studies/EasePlayground.svelte'
+	import EaseRace from '$lib/studies/EaseRace.svelte'
+	import { cssKeywords, cubicBezier, linearStopsFn, sampleStops, stepsEase, toCssLinear } from '$lib/studies/easing'
+	import { studies, studyNumber } from '$lib/studies/studies'
 	import { gsap } from 'gsap'
 
-	const study = spaces[0]
-	const number = spaceNumber(0)
+	const study = studies[0]
+	const number = studyNumber(0)
 
 	const [linearKw, easeKw, easeInKw, easeOutKw, easeInOutKw] = cssKeywords
 
@@ -53,7 +53,7 @@
 
 <div class='study'>
 	<header class='top'>
-		<a href='/space' class='mark' aria-label='back to the creative space'>
+		<a href='/studies' class='mark' aria-label='back to the studies'>
 			<CreativeSpaceLogo class='mark-svg' />
 		</a>
 	</header>
@@ -245,7 +245,7 @@
 		</p>
 
 		<footer class='close'>
-			<a href='/space' class='chip'>
+			<a href='/studies' class='chip'>
 				<!-- phosphor: arrow-left -->
 				<svg width='12' height='12' viewBox='0 0 256 256' aria-hidden='true'>
 					<path
@@ -253,7 +253,7 @@
 						d='M224 128a8 8 0 0 1-8 8H59.31l58.35 58.34a8 8 0 0 1-11.32 11.32l-72-72a8 8 0 0 1 0-11.32l72-72a8 8 0 0 1 11.32 11.32L59.31 120H216a8 8 0 0 1 8 8Z'
 					/>
 				</svg>
-				back to the space
+				back to the studies
 			</a>
 		</footer>
 	</article>

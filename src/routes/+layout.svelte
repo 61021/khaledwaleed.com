@@ -29,13 +29,13 @@
 
 	const { children } = $props()
 
-	// The creative space (/space) is a separate world on the same domain:
+	// The studies (/studies) are a separate world on the same domain:
 	// no header, footer, curtain, palette, screensaver, or sound. Only the
 	// room-token plumbing is shared.
-	function isSpacePath(pathname: string) {
-		return pathname === '/space' || pathname.startsWith('/space/')
+	function isStudiesPath(pathname: string) {
+		return pathname === '/studies' || pathname.startsWith('/studies/')
 	}
-	const inSpace = $derived(isSpacePath(page.url.pathname))
+	const inStudies = $derived(isStudiesPath(page.url.pathname))
 
 	// The colophon year, computed so it turns over each New Year.
 	const colophonYear = romanYear(new Date().getFullYear())
@@ -59,7 +59,7 @@
 	// every page ticks without touching the components themselves.
 	// One whisper per visit under the note glyph (the nocturne's own wall
 	// plate), so the house's most distinctive layer stops being a secret.
-	// The space keeps its own silence: a visit that starts there arms
+	// The studies keep their own silence: a visit that starts there arms
 	// nothing until the first step into the museum (see onNavigate).
 	let soundHint = $state(false)
 	let soundReady = false
@@ -80,7 +80,7 @@
 
 	onMount(() => {
 		markHydrated()
-		if (!inSpace)
+		if (!inStudies)
 			initSound()
 		return () => {
 			clearTimeout(hintShow)
@@ -89,7 +89,7 @@
 	})
 
 	function tickOnClick(e: MouseEvent) {
-		if (inSpace)
+		if (inStudies)
 			return
 		const el = e.target instanceof Element ? e.target.closest('a, button') : null
 		if (el)
@@ -160,12 +160,12 @@
 	onMount(onScroll)
 
 	// The glide (src/lib/smoother.ts) mounts with the museum and leaves
-	// with it: /space keeps native paper scrolling under its own GSAP.
+	// with it: /studies keeps native paper scrolling under its own GSAP.
 	let smoothWrapper = $state<HTMLElement>()
 	let smoothContent = $state<HTMLElement>()
 
 	$effect(() => {
-		if (inSpace || !smoothWrapper || !smoothContent)
+		if (inStudies || !smoothWrapper || !smoothContent)
 			return
 		return mountSmoother(smoothWrapper, smoothContent)
 	})
@@ -205,8 +205,8 @@
 	}
 
 	function onGlobalKeydown(e: KeyboardEvent) {
-		// The space has no menu, no sound switch, and no secrets.
-		if (inSpace)
+		// The studies have no menu, no sound switch, and no secrets.
+		if (inStudies)
 			return
 		if (e.key === 'Escape')
 			mobileOpen = false
@@ -392,8 +392,8 @@
 
 	onNavigate((navigation) => {
 		mobileOpen = false
-		// The first walk out of the space arms the house sound system.
-		if (navigation.to && !isSpacePath(navigation.to.url.pathname))
+		// The first walk out of the studies arms the house sound system.
+		if (navigation.to && !isStudiesPath(navigation.to.url.pathname))
 			initSound()
 		// The overture plays once per visit: after the first arrival the
 		// curtain sits out and paintings develop in place (see Curtain.svelte
@@ -458,7 +458,7 @@
 	})
 </script>
 
-{#if !inSpace}
+{#if !inStudies}
 	<JsonLd />
 	<CommandPalette />
 	<Curtain />
@@ -493,7 +493,7 @@
 {/snippet}
 
 <svelte:head>
-	{#if !inSpace}
+	{#if !inStudies}
 		<link rel='preload' as='font' type='font/woff2' href={frauncesWoff2} crossorigin='anonymous' />
 		<link rel='preload' as='font' type='font/woff2' href={franklinWoff2} crossorigin='anonymous' />
 	{/if}
@@ -517,8 +517,8 @@
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
-{#if inSpace}
-	<!-- The space: bare paper. Its world lives in routes/space. -->
+{#if inStudies}
+	<!-- The studies: bare paper. Their world lives in routes/studies. -->
 	<main id='main'>
 		{@render children()}
 	</main>

@@ -298,12 +298,10 @@ export const retired: RetiredPainting[] = [
 export function roomForPath(pathname: string): string {
 	if (pathname === '/' || pathname === '')
 		return 'home'
-	// The creative space and its studies: paper rooms outside the museum
-	// (+layout.svelte renders them without the house chrome).
-	if (pathname === '/space')
-		return 'space'
-	if (pathname.startsWith('/space/'))
-		return 'study'
+	// The studies: a paper room outside the museum (+layout.svelte
+	// renders it without the house chrome).
+	if (pathname === '/studies' || pathname.startsWith('/studies/'))
+		return 'studies'
 	if (pathname === '/story')
 		return 'story'
 	if (pathname === '/likes')
@@ -343,6 +341,5 @@ export const roomBg: Record<string, string> = {
 	contact: '#1a1413',
 	tools: '#131310',
 	404: '#232b30',
-	space: '#e9e4de',
-	study: '#e9e4de',
+	studies: '#e9e4de',
 }

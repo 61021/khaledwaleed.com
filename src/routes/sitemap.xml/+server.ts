@@ -1,6 +1,6 @@
 import { posts } from '$lib/posts'
 import { site } from '$lib/site'
-import { spaces } from '$lib/space/spaces'
+import { studies } from '$lib/studies/studies'
 
 export const prerender = true
 
@@ -17,8 +17,8 @@ export function GET() {
 			lastmod: r === '/writing' ? latestPost : undefined,
 		})),
 		...posts.map(p => ({ loc: `/writing/${p.slug}`, lastmod: p.date })),
-		{ loc: '/space', lastmod: spaces.at(-1)?.opened },
-		...spaces.map(s => ({ loc: `/space/${s.slug}`, lastmod: s.opened })),
+		{ loc: '/studies', lastmod: studies.at(-1)?.opened },
+		...studies.map(s => ({ loc: `/studies/${s.slug}`, lastmod: s.opened })),
 	]
 	const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

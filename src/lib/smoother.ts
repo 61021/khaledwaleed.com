@@ -26,7 +26,7 @@ export function mountSmoother(wrapper: HTMLElement, content: HTMLElement): () =>
 				import('gsap/ScrollTrigger'),
 				import('gsap/ScrollSmoother'),
 			])
-			// A navigation into /space can outrun the import.
+			// A navigation into /studies can outrun the import.
 			if (token !== epoch || !wrapper.isConnected)
 				return
 			gsap.registerPlugin(ScrollTrigger, Smoother)
@@ -50,7 +50,7 @@ export function mountSmoother(wrapper: HTMLElement, content: HTMLElement): () =>
 		refreshTriggers = undefined
 		// kill() can leave the body's synthetic height and the inline
 		// scroll-behavior GSAP stamps on both roots; the next world
-		// (/space) scrolls its own content under its own CSS.
+		// (/studies) scrolls its own content under its own CSS.
 		document.body.style.removeProperty('height')
 		document.body.style.removeProperty('scroll-behavior')
 		document.documentElement.style.removeProperty('scroll-behavior')

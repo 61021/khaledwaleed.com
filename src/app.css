@@ -128,23 +128,15 @@
 	--accent: #b8a87a;
 }
 
-/* ---------- The creative space (/space) ----------
+/* ---------- The studies (/studies) ----------
    A drafting table where every other room is a night gallery: bone
-   paper, warm ink, one ultramarine pen. The museum chrome, wallpaper,
-   and vignette all stay outside (+layout.svelte renders /space bare). */
-:root[data-room='space'] {
-	--bg: #e9e4de;
-	--bg-soft: #e0dad1;
-	--ink: #1d1a16;
-	--ink-muted: #57514a;
-	--ink-dim: #646057;
-	--rule: #d1cbc1;
-	--accent: #2b44a1;
-}
-
-/* A study lies on the index's paper wall as a long white sheet; the
-   page paints the sheet itself, so on-sheet tokens stay keyed to white. */
-:root[data-room='study'] {
+   paper for the wall, warm ink, one ultramarine pen. The museum chrome,
+   wallpaper, and vignette all stay outside (+layout.svelte renders
+   these pages bare). Contents and studies alike lie on the wall as long
+   white sheets, and the page paints the sheet itself, so the on-sheet
+   tokens stay keyed to white. One room for both keeps the swap between
+   them seamless. */
+:root[data-room='studies'] {
 	--bg: #e9e4de;
 	--bg-soft: #f5f3ee;
 	--ink: #1d1a16;
@@ -161,16 +153,13 @@
 }
 
 /* Light form controls and scrollbars (app.html declares dark). */
-html[data-room='space'],
-html[data-room='study'] {
+html[data-room='studies'] {
 	color-scheme: light;
 }
 
 /* Blank paper: no wallpaper, no candlelight pooling at the edges. */
-html[data-room='space'] body::before,
-html[data-room='study'] body::before,
-html[data-room='space'] body::after,
-html[data-room='study'] body::after {
+html[data-room='studies'] body::before,
+html[data-room='studies'] body::after {
 	display: none;
 }
 
