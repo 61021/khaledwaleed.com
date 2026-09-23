@@ -1,6 +1,6 @@
 <script lang='ts'>
 	import { Seo } from '$lib'
-	import Flourish from '$lib/studies/Flourish.svelte'
+	import Scribble from '$lib/studies/Scribble.svelte'
 	import { studies, studyNumber } from '$lib/studies/studies'
 	import StudiesLogo from '$lib/studies/StudiesLogo.svelte'
 </script>
@@ -27,7 +27,7 @@
 						<code translate='no' class='entry-n'>{studyNumber(i)}</code>
 						<span class='entry-title'>
 							{study.title}
-							<Flourish class='entry-flourish' />
+							<Scribble class='entry-scribble' />
 						</span>
 						<span class='entry-when'>{study.openedLabel}</span>
 						<span class='entry-line'>{study.line}</span>
@@ -87,7 +87,7 @@
 		grid-template-columns: 2.5rem 1fr auto;
 		align-items: baseline;
 		column-gap: 1rem;
-		row-gap: 0.4rem;
+		row-gap: 0.55rem;
 		border-top: 1px solid var(--rule);
 		padding: 1.4rem 0 1.5rem;
 	}
@@ -107,18 +107,23 @@
 		transition: color 250ms cubic-bezier(0.22, 0.7, 0.25, 1);
 	}
 
-	.entry-title :global(.entry-flourish) {
+	/* The pen goes under the title on the way in: one stroke out and a
+	   shorter one back, drawn by its own dash. */
+	.entry-title :global(.entry-scribble) {
 		position: absolute;
-		left: 0;
-		bottom: -0.45rem;
-		width: 100%;
-		height: auto;
+		left: -0.15rem;
+		right: -0.15rem;
+		bottom: -0.55rem;
+		width: auto;
+		height: 0.75rem;
+		overflow: visible;
 		color: var(--accent);
-		opacity: 0;
-		transform: translateY(3px);
-		transition:
-			opacity 300ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			transform 300ms cubic-bezier(0.22, 0.7, 0.25, 1);
+	}
+
+	.entry-title :global(.entry-scribble path) {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		transition: stroke-dashoffset 420ms cubic-bezier(0.3, 0.55, 0.35, 1);
 	}
 
 	.entry:hover .entry-title,
@@ -126,10 +131,9 @@
 		color: var(--accent);
 	}
 
-	.entry:hover .entry-title :global(.entry-flourish),
-	.entry:focus-visible .entry-title :global(.entry-flourish) {
-		opacity: 1;
-		transform: translateY(0);
+	.entry:hover .entry-title :global(.entry-scribble path),
+	.entry:focus-visible .entry-title :global(.entry-scribble path) {
+		stroke-dashoffset: 0;
 	}
 
 	.entry-when {
@@ -173,8 +177,7 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.entry-title :global(.entry-flourish) {
-			transform: none;
+		.entry-title :global(.entry-scribble path) {
 			transition-duration: 1ms;
 		}
 	}
