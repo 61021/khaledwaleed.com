@@ -5,7 +5,7 @@
 	import EaseRace from '$lib/studies/EaseRace.svelte'
 	import { cssKeywords, cubicBezier, linearStopsFn, sampleStops, stepsEase, toCssLinear } from '$lib/studies/easing'
 	import { studies, studyNumber } from '$lib/studies/studies'
-	import StudiesMark from '$lib/studies/StudiesMark.svelte'
+	import StudiesLogo from '$lib/studies/StudiesLogo.svelte'
 	import { gsap } from 'gsap'
 
 	const study = studies[0]
@@ -54,7 +54,7 @@
 <div class='study sheet'>
 	<header class='top'>
 		<a href='/studies' class='mark' aria-label='back to the contents'>
-			<StudiesMark class='mark-word' />
+			<StudiesLogo class='mark-logo' />
 		</a>
 	</header>
 
@@ -274,8 +274,10 @@
 		color: var(--accent);
 	}
 
-	.mark :global(.mark-word) {
-		font-size: 1.05rem;
+	.mark :global(.mark-logo) {
+		display: block;
+		width: 6rem;
+		height: auto;
 	}
 
 	article {

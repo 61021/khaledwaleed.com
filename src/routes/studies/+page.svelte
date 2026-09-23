@@ -2,7 +2,7 @@
 	import { Seo } from '$lib'
 	import Flourish from '$lib/studies/Flourish.svelte'
 	import { studies, studyNumber } from '$lib/studies/studies'
-	import StudiesMark from '$lib/studies/StudiesMark.svelte'
+	import StudiesLogo from '$lib/studies/StudiesLogo.svelte'
 </script>
 
 <Seo
@@ -13,11 +13,10 @@
 
 <div class='sheet'>
 	<header class='head'>
-		<h1><StudiesMark class='wordmark' /></h1>
-		<p class='what'>
-			working papers on motion and the craft of the web.
-			every figure runs on the real engine it describes.
-		</p>
+		<h1>
+			<span class='sr-only'>My Studies</span>
+			<StudiesLogo class='wordmark' />
+		</h1>
 	</header>
 
 	<nav class='toc' aria-label='studies'>
@@ -63,22 +62,18 @@
 	}
 
 	.head :global(.wordmark) {
-		font-size: clamp(2.6rem, 8vw, 4.4rem);
+		display: block;
+		width: clamp(11rem, 27vw, 15.5rem);
+		height: auto;
+		color: var(--ink);
 	}
 
 	h1 {
 		margin: 0;
 	}
 
-	.what {
-		margin: 2.2rem 0 0;
-		max-width: 30rem;
-		font-size: 1.02rem;
-		color: var(--ink-muted);
-	}
-
 	.toc {
-		margin-top: clamp(3rem, 9vh, 5rem);
+		margin-top: clamp(3.5rem, 11vh, 6rem);
 	}
 
 	.toc ol {
