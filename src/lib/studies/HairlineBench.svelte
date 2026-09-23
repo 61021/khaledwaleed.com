@@ -1,13 +1,5 @@
 <script lang='ts'>
-	import type { SiteKey } from './types'
 	import { palettes } from './monochrome'
-
-	const recipes: Record<SiteKey, string> = {
-		vercel: 'box-shadow: 0 0 0 1px #ffffff25, 0 0 0 1px #000',
-		linear: 'border: 1px solid #ffffff0d; ::after { border: 1px solid #ffffff14; mask: radial-gradient(ellipse 200px 200px at var(--mask-x) var(--mask-y), #000, #0009 30%, #0003 50%, #0000 70%) }',
-		resend: 'border: 1px solid transparent; background: linear-gradient(42deg, #141517, #191b1e) padding-box, linear-gradient(42deg, rgba(24,25,28,.88) 45%, rgba(215,239,248,.28)) border-box',
-		raycast: '::before { padding: 1px; background: linear-gradient(135deg, #ffffff1a, #ffffff0f 38% 62%, #ffffff1a); mask-composite: exclude }',
-	}
 
 	let loupe = $state(false)
 
@@ -36,7 +28,7 @@
 		</label>
 		<label class={['seg-option', loupe && 'on']}>
 			<input class='sr-only' type='radio' name='loupe' value={true} bind:group={loupe} />
-			the corner at 4×
+			corner, 4×
 		</label>
 	</fieldset>
 
@@ -52,16 +44,10 @@
 						{/if}
 					</div>
 				</div>
-				<p class='fig-cap'>
-					{p.name}<br />
-					<code translate='no'>{recipes[p.key]}</code>
-				</p>
+				<p class='fig-cap'>{p.name}{p.key === 'linear' ? ', lit where your pointer is' : ''}</p>
 			</div>
 		{/each}
 	</div>
-	<p class='fig-cap'>
-		every card here takes the same 12px radius so that only the line changes. linear pins its light at 8% 0; on this card it follows your pointer.
-	</p>
 </figure>
 
 <style>
@@ -156,9 +142,5 @@
 			linear-gradient(#000, #000);
 		mask-composite: exclude;
 		pointer-events: none;
-	}
-
-	.fig-cap code {
-		overflow-wrap: anywhere;
 	}
 </style>

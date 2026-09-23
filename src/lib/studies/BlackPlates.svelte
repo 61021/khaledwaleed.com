@@ -11,10 +11,7 @@
 				<div class='specimen' style:background={p.canvas}>
 					<span class='aa' style:color={p.text}>Aa</span>
 				</div>
-				<p class='fig-cap'>
-					{p.name}<br />
-					<code translate='no'>{p.canvas}</code>
-				</p>
+				<p class='fig-cap'>{p.name}</p>
 			</div>
 		{/each}
 	</div>

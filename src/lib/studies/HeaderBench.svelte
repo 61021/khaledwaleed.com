@@ -2,37 +2,11 @@
 	import type { SiteKey } from './types'
 	import { palette, palettes } from './monochrome'
 
-	interface Recipe {
-		blur: string
-		code: string
-	}
-
-	// Each header as served; the code line is the part that makes it.
-	const recipes: Record<SiteKey, Recipe> = {
-		vercel: {
-			blur: 'none',
-			code: 'background: #000; box-shadow: 0 1px 0 0 rgba(255,255,255,.14)',
-		},
-		linear: {
-			blur: 'blur(20px)',
-			code: 'backdrop-filter: blur(20px); background: #0b0b0bcc; border-bottom: 1px solid #ffffff14',
-		},
-		resend: {
-			blur: 'blur(12px), and blur(40px) brightness(2) on a 1px strip',
-			code: '::before { backdrop-filter: blur(40px) brightness(2); mask-size: 100% 1px }',
-		},
-		raycast: {
-			blur: 'blur(5px)',
-			code: 'backdrop-filter: blur(5px); background: linear-gradient(137deg, #111214bf, #0c0d0fe6)',
-		},
-	}
-
-	const MAX = 520
+	const MAX = 300
 
 	let site = $state<SiteKey>('resend')
 	let scroll = $state(0)
 	const p = $derived(palette(site))
-	const recipe = $derived(recipes[site])
 	const scrolled = $derived(scroll > 8)
 </script>
 
@@ -50,14 +24,10 @@
 	<div class='specimen viewport' style:background={p.canvas} style:--canvas={p.canvas}>
 		<div class='page' style:transform={`translateY(${-scroll}px)`} style:color={p.secondary}>
 			<p class='lead' style:color={p.text}>the page underneath</p>
-			<p>Slide it up under the header and watch the edge.</p>
+			<p>Drag it up under the header.</p>
 			<div class='slab' style:background='#00b8cc'></div>
-			<p>Linear keeps its teal for the charts inside the product.</p>
 			<div class='slab short' style:background='#ffc446'></div>
-			<p>Resend keeps its amber for strings in code.</p>
 			<div class='slab' style:background='#ff6363'></div>
-			<p>Raycast keeps its red for one canvas.</p>
-			<p>Vercel keeps three green checkmarks.</p>
 		</div>
 
 		<header class={['head', site, scrolled && 'scrolled']}>
@@ -72,11 +42,6 @@
 		<input type='range' min='0' max={MAX} step='1' bind:value={scroll} />
 		<code translate='no' class='dial-value'>{scroll}px</code>
 	</label>
-
-	<p class='fig-cap'>
-		{p.name}, backdrop blur: {recipe.blur}<br />
-		<code translate='no'>{recipe.code}</code>
-	</p>
 </figure>
 
 <style>
@@ -192,9 +157,5 @@
 
 	.dial {
 		max-width: 26rem;
-	}
-
-	.fig-cap code {
-		overflow-wrap: anywhere;
 	}
 </style>

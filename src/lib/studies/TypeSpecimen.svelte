@@ -22,10 +22,6 @@
 
 	let size = $state(64)
 	let gradient = $state(true)
-
-	function px(em: number): string {
-		return `${Number((em * size).toFixed(2))}px`
-	}
 </script>
 
 <figure class='type'>
@@ -43,9 +39,7 @@
 				>
 					Gray on black
 				</p>
-				<p class='spec' style:color={p.secondary}>
-					<code translate='no'>{p.name} · {s.weight} · {px(s.track(size))}</code>
-				</p>
+				<p class='spec' style:color={p.secondary}>{p.name}</p>
 			</div>
 		{/each}
 	</div>
@@ -58,14 +52,9 @@
 		</label>
 		<label class='check'>
 			<input type='checkbox' bind:checked={gradient} />
-			resend's gradient text
+			gradient text
 		</label>
 	</div>
-
-	<p class='fig-cap'>
-		the faces are stand-ins: fraunces for resend's domaine, libre franklin for vercel's geist and for the inter
-		linear and raycast use. the weights and the tracking are theirs.
-	</p>
 </figure>
 
 <style>
@@ -95,8 +84,8 @@
 		margin: 0.5rem 0 0;
 	}
 
-	.spec code {
-		font-size: 0.72rem;
+	.spec {
+		font-size: 0.75rem;
 	}
 
 	.controls {

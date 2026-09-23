@@ -7,11 +7,11 @@
 		<legend class='sr-only'>filter on the canvas</legend>
 		<label class={['seg-option', !gray && 'on']}>
 			<input class='sr-only' type='radio' name='red-filter' value={false} bind:group={gray} />
-			as raycast ships it
+			raycast's red
 		</label>
 		<label class={['seg-option', gray && 'on']}>
 			<input class='sr-only' type='radio' name='red-filter' value={true} bind:group={gray} />
-			through resend's grayscale(1)
+			resend's gray
 		</label>
 	</fieldset>
 
@@ -20,12 +20,7 @@
 		<p class='over'>one canvas</p>
 	</div>
 
-	<p class='fig-cap'>
-		a css stand-in, painted from the four colors in raycast's shader
-		(<code translate='no'>#f4feff</code>, <code translate='no'>#ff7a98</code>,
-		<code translate='no'>#b80232</code>, <code translate='no'>#ff162a</code>).
-		the real one is webgl, the red field seen through 16 glass rods at 42 degrees.
-	</p>
+	<p class='fig-cap'>a stand-in for raycast's 3D hero</p>
 </figure>
 
 <style>

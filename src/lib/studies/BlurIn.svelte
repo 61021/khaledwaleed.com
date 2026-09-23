@@ -33,7 +33,7 @@
 			<legend class='sr-only'>start state</legend>
 			<label class={['seg-option', blur && 'on']}>
 				<input class='sr-only' type='radio' name='blur-start' value={true} bind:group={blur} />
-				with blur(10px)
+				with blur
 			</label>
 			<label class={['seg-option', !blur && 'on']}>
 				<input class='sr-only' type='radio' name='blur-start' value={false} bind:group={blur} />
@@ -42,13 +42,6 @@
 		</fieldset>
 		<button type='button' class='chip' onclick={replay}>replay</button>
 	</div>
-
-	<p class='fig-cap'>
-		start state as linear serves it:
-		<code translate='no'>opacity: 0; filter: blur(10px); transform: translateY(20%)</code>.
-		the curve is their most used token, <code translate='no'>cubic-bezier(.25,.46,.45,.94)</code>;
-		the 700ms and the 90ms between lines are mine.
-	</p>
 </figure>
 
 <style>

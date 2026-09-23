@@ -8,14 +8,10 @@
 		return parseColor(color)[3] < 1
 	}
 
-	function kind(color: string): string {
-		return isAlpha(color) ? 'alpha' : 'solid'
-	}
-
 	function lines(p: SitePalette): { role: string, color: string }[] {
 		return [
-			{ role: 'primary', color: p.text },
-			{ role: 'secondary', color: p.secondary },
+			{ role: 'title', color: p.text },
+			{ role: 'body', color: p.secondary },
 			...(p.faint ? [{ role: 'faint', color: p.faint }] : []),
 		]
 	}
@@ -26,11 +22,11 @@
 		<legend class='sr-only'>under the card</legend>
 		<label class={['seg-option', !strip && 'on']}>
 			<input class='sr-only' type='radio' name='underlay' value={false} bind:group={strip} />
-			flat canvas
+			flat
 		</label>
 		<label class={['seg-option', strip && 'on']}>
 			<input class='sr-only' type='radio' name='underlay' value={true} bind:group={strip} />
-			a red strip underneath
+			strip underneath
 		</label>
 	</fieldset>
 
@@ -53,15 +49,11 @@
 						{/each}
 					</div>
 				</div>
-				<p class='fig-cap'>
-					{p.name}: card <strong>{kind(p.surface)}</strong>,
-					edge {kind(p.border)}{p.ring ? ' (a ring)' : ''},
-					text {lines(p).some(l => isAlpha(l.color)) ? 'partly alpha' : 'solid'}
-				</p>
+				<p class='fig-cap'>{p.name}, {isAlpha(p.surface) ? 'see-through' : 'solid'}</p>
 			</div>
 		{/each}
 	</div>
-	<p class='fig-cap'>the ratios are each line's contrast on its own canvas, measured with the strip away</p>
+	<p class='fig-cap'>the numbers are contrast. under 4.5 is hard to read.</p>
 </figure>
 
 <style>
@@ -128,18 +120,13 @@
 		line-height: 1.9;
 	}
 
-	.line.primary {
+	.line.title {
 		font-weight: 600;
 	}
 
 	.ratio {
 		font-family: var(--font-code);
 		font-size: 0.75rem;
-	}
-
-	.fig-cap strong {
-		font-weight: 600;
-		color: var(--ink);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
