@@ -4,6 +4,8 @@
 
 	type Props = {
 		title?: string
+		/** Drop the house signature from the tab title (the studies sign nothing). */
+		bareTitle?: boolean
 		description?: string
 		image?: string
 		imageAlt?: string
@@ -16,6 +18,7 @@
 
 	const {
 		title,
+		bareTitle = false,
 		description = site.tagline,
 		image = site.ogImage,
 		imageAlt = `${site.name}, ${site.role}`,
@@ -28,7 +31,7 @@
 
 	const fullTitle = $derived(
 		title
-			? `${title} · ${site.name}`
+			? bareTitle ? title : `${title} · ${site.name}`
 			: `${site.name} · ${site.role} in ${site.location.city}, ${site.location.country}`,
 	)
 	const url = $derived(`${site.url}${page.url.pathname}`)

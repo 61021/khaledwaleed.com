@@ -7,8 +7,9 @@
 
 <Seo
 	title='Studies'
-	description='Numbered studies by Khaled Waleed on motion and the craft of the web, written on blank paper with figures that run on the real engines.'
-	keywords={['studies', 'Khaled Waleed', 'web craft', 'easing', 'gsap', 'css']}
+	bareTitle
+	description='Numbered studies on motion and the craft of the web, written on blank paper with figures that run on the real engines.'
+	keywords={['studies', 'web craft', 'easing', 'gsap', 'css']}
 />
 
 <div class='sheet'>
@@ -48,7 +49,6 @@
 			</svg>
 			back to the website
 		</a>
-		<span>khaled waleed</span>
 	</footer>
 </div>
 

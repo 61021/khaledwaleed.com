@@ -46,6 +46,7 @@
 
 <Seo
 	title='A study of easing'
+	bareTitle
 	description='CSS built-in easing functions plotted against GSAP eases: what one cubic-bezier can draw, what it cannot, and why GSAP named, parameterized curves win.'
 	keywords={['easing functions', 'cubic-bezier', 'linear()', 'gsap eases', 'css transitions', 'web animation']}
 	type='article'
@@ -61,7 +62,7 @@
 
 	<article>
 		<h1>a study of easing</h1>
-		<p class='imprint'><code translate='no'>{number}</code> · {study.openedLabel} · khaled waleed</p>
+		<p class='imprint'><code translate='no'>{number}</code> · {study.openedLabel}</p>
 
 		<p class='lede'>
 			An easing function bends time. The animation's clock runs 0 to 1 at a constant rate,
