@@ -55,55 +55,247 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		font-family: var(--font-code);
 	}
 
-	/* The one button shape here: a quiet bordered chip. */
+	/* Controls share one hand: pills drawn in a line darker than the
+	   rules, the pen's ultramarine marking what is on, and a small press
+	   on click. --line is the control edge, one step up from --rule so a
+	   control reads as something to touch rather than a hairline. */
+	.studies {
+		--line: #cdc7bc;
+		--press: cubic-bezier(0.22, 0.7, 0.25, 1);
+	}
+
+	/* The one button shape here: a bordered chip. */
 	.studies :global(.chip) {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
 		font-size: 0.82rem;
 		letter-spacing: 0.02em;
-		color: var(--ink-muted);
-		border: 1px solid var(--rule);
+		color: var(--ink);
+		background: #fff;
+		border: 1px solid var(--line);
 		border-radius: 999px;
-		padding: 0.5rem 0.95rem;
+		padding: 0.5rem 1rem;
+		cursor: pointer;
 		transition:
-			color 200ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
+			color 180ms var(--press),
+			border-color 180ms var(--press),
+			background-color 180ms var(--press),
+			transform 120ms var(--press);
 	}
 
 	.studies :global(.chip:hover) {
-		color: var(--ink);
-		border-color: var(--ink-dim);
+		color: var(--accent);
+		border-color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 5%, #fff);
 	}
 
-	/* Segmented pickers, shared by the shelf toggle and the playground. */
+	.studies :global(.chip:active) {
+		transform: scale(0.97);
+	}
+
+	.studies :global(:is(.chip, .seg-option, .toggle):focus-visible),
+	.studies :global(:is(.seg-option, .toggle):has(input:focus-visible)) {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	/* Segmented pickers: a pill track on the soft paper, the chosen
+	   option filled with the pen. .code keeps option labels that are
+	   code (.out, back.out) in the mono. */
 	.studies :global(.seg) {
-		display: flex;
-		gap: 1.1rem;
-		border: 0;
-		padding: 0;
+		display: inline-flex;
+		flex-wrap: wrap;
+		gap: 0.2rem;
+		align-self: flex-start;
+		max-width: 100%;
 		margin: 0;
+		padding: 0.2rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--bg-soft);
 	}
 
 	.studies :global(.seg-option) {
-		font-family: var(--font-code);
-		font-size: 0.8rem;
+		font-size: 0.82rem;
+		line-height: 1.2;
 		color: var(--ink-muted);
-		padding-bottom: 0.2rem;
-		border-bottom: 1px solid transparent;
+		padding: 0.42rem 0.95rem;
+		border-radius: 999px;
 		cursor: pointer;
+		user-select: none;
 		transition:
-			color 200ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
+			color 180ms var(--press),
+			background-color 180ms var(--press),
+			transform 120ms var(--press);
+	}
+
+	.studies :global(.seg.code .seg-option) {
+		font-family: var(--font-code);
+		font-size: 0.78rem;
 	}
 
 	.studies :global(.seg-option:hover) {
 		color: var(--ink);
+		background: #fff;
+	}
+
+	.studies :global(.seg-option:active) {
+		transform: scale(0.96);
 	}
 
 	.studies :global(.seg-option.on) {
+		color: #fff;
+		background: var(--accent);
+	}
+
+	/* A checkbox dressed as a pill that fills its box with the pen. */
+	.studies :global(.toggle) {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55rem;
+		font-size: 0.82rem;
+		color: var(--ink-muted);
+		background: #fff;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		padding: 0.4rem 0.95rem 0.4rem 0.55rem;
+		cursor: pointer;
+		user-select: none;
+		transition:
+			color 180ms var(--press),
+			border-color 180ms var(--press),
+			transform 120ms var(--press);
+	}
+
+	.studies :global(.toggle:hover) {
 		color: var(--ink);
-		border-bottom-color: var(--accent);
+		border-color: var(--ink-dim);
+	}
+
+	.studies :global(.toggle:active) {
+		transform: scale(0.97);
+	}
+
+	.studies :global(.toggle:has(input:checked)) {
+		color: var(--ink);
+		border-color: var(--accent);
+	}
+
+	.studies :global(.toggle input) {
+		appearance: none;
+		flex: none;
+		width: 1.05rem;
+		height: 1.05rem;
+		margin: 0;
+		border: 1.5px solid var(--line);
+		border-radius: 50%;
+		background: #fff center / 0.7rem no-repeat;
+		cursor: pointer;
+		transition:
+			background-color 180ms var(--press),
+			border-color 180ms var(--press);
+	}
+
+	/* phosphor: check, in white */
+	.studies :global(.toggle input:checked) {
+		border-color: var(--accent);
+		background-color: var(--accent);
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='%23fff' d='M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z'/%3E%3C/svg%3E");
+	}
+
+	.studies :global(.toggle input:focus-visible) {
+		outline: none;
+	}
+
+	/* Sliders: a thin rule for the track, the pen filling it up to a
+	   round thumb that swells under the hand. --fill comes from the
+	   fill attachment (lib/studies/fill.ts). */
+	.studies :global(input[type='range']) {
+		appearance: none;
+		height: 1.4rem;
+		margin: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.studies :global(input[type='range']:focus-visible) {
+		outline: none;
+	}
+
+	.studies :global(input[type='range']::-webkit-slider-runnable-track) {
+		height: 3px;
+		border-radius: 999px;
+		background:
+			linear-gradient(var(--accent), var(--accent)) 0 / var(--fill, 0%) 100% no-repeat,
+			var(--line);
+	}
+
+	.studies :global(input[type='range']::-moz-range-track) {
+		height: 3px;
+		border-radius: 999px;
+		background: var(--line);
+	}
+
+	.studies :global(input[type='range']::-moz-range-progress) {
+		height: 3px;
+		border-radius: 999px;
+		background: var(--accent);
+	}
+
+	.studies :global(input[type='range']::-webkit-slider-thumb) {
+		appearance: none;
+		width: 1rem;
+		height: 1rem;
+		margin-top: calc(1.5px - 0.5rem);
+		border: 2px solid var(--accent);
+		border-radius: 50%;
+		background: #fff;
+		transition: transform 150ms var(--press);
+	}
+
+	.studies :global(input[type='range']::-moz-range-thumb) {
+		box-sizing: border-box;
+		width: 1rem;
+		height: 1rem;
+		border: 2px solid var(--accent);
+		border-radius: 50%;
+		background: #fff;
+		transition: transform 150ms var(--press);
+	}
+
+	.studies :global(input[type='range']:hover::-webkit-slider-thumb) {
+		transform: scale(1.2);
+	}
+
+	.studies :global(input[type='range']:hover::-moz-range-thumb) {
+		transform: scale(1.2);
+	}
+
+	.studies :global(input[type='range']:active::-webkit-slider-thumb) {
+		transform: scale(1.3);
+		background: var(--accent);
+	}
+
+	.studies :global(input[type='range']:active::-moz-range-thumb) {
+		transform: scale(1.3);
+		background: var(--accent);
+	}
+
+	.studies :global(input[type='range']:focus-visible::-webkit-slider-thumb) {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.studies :global(input[type='range']:focus-visible::-moz-range-thumb) {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.studies :global(:is(.chip, .seg-option, .toggle)) {
+			transition: none;
+		}
 	}
 
 	/* A specimen plate: a patch of someone else's dark page glued onto
@@ -141,7 +333,6 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 	}
 
 	.studies :global(.dial input[type='range']) {
-		accent-color: var(--accent);
 		min-width: 0;
 	}
 
@@ -152,8 +343,4 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 		text-align: right;
 	}
 
-	.studies :global(.seg-option:has(input:focus-visible)) {
-		outline: 1px solid var(--accent);
-		outline-offset: 3px;
-	}
 </style>

@@ -105,20 +105,33 @@
 	.play {
 		display: grid;
 		place-items: center;
-		width: 1.6rem;
-		height: 1.6rem;
-		border: 1px solid var(--rule);
+		width: 1.75rem;
+		height: 1.75rem;
+		border: 1px solid var(--line);
 		border-radius: 999px;
-		color: var(--ink-muted);
+		background: #fff;
+		color: var(--ink);
 		cursor: pointer;
 		transition:
-			color 200ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
+			color 180ms var(--press),
+			border-color 180ms var(--press),
+			background-color 180ms var(--press),
+			transform 120ms var(--press);
 	}
 
 	.play:hover {
 		color: var(--accent);
 		border-color: var(--accent);
+		background: color-mix(in oklab, var(--accent) 5%, #fff);
+	}
+
+	.play:active {
+		transform: scale(0.94);
+	}
+
+	.play:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
 	}
 
 	.runway {

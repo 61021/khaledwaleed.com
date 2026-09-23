@@ -1,5 +1,6 @@
 <script lang='ts'>
 	import type { SiteKey } from './types'
+	import { fill } from './fill'
 	import { palette, palettes } from './monochrome'
 
 	const MAX = 300
@@ -48,7 +49,7 @@
 
 	<label class='dial'>
 		<span class='dial-name'>scroll</span>
-		<input type='range' min='0' max={MAX} step='1' bind:value={scroll} />
+		<input type='range' min='0' max={MAX} step='1' bind:value={scroll} {@attach fill} />
 		<code translate='no' class='dial-value'>{scroll}px</code>
 	</label>
 </figure>

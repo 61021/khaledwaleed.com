@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte'
 	import { driveDot, prefersReducedMotion } from './drive'
 	import EasePlot from './EasePlot.svelte'
+	import { fill } from './fill'
 
 	type Family = 'back' | 'elastic'
 
@@ -76,7 +77,7 @@
 	</div>
 
 	<div class='controls'>
-		<fieldset class='seg'>
+		<fieldset class='seg code'>
 			<legend class='sr-only'>ease family</legend>
 			<label class={['seg-option', family === 'back' && 'on']}>
 				<input class='sr-only' type='radio' name='pg-family' value='back' bind:group={family} />
@@ -91,25 +92,25 @@
 		{#if family === 'back'}
 			<label class='param'>
 				<span class='param-name'>overshoot</span>
-				<input type='range' min='0' max='4' step='0.1' bind:value={overshoot} />
+				<input type='range' min='0' max='4' step='0.1' bind:value={overshoot} {@attach fill} />
 				<code translate='no' class='param-value'>{fmt(overshoot)}</code>
 			</label>
 		{:else}
 			<label class='param'>
 				<span class='param-name'>amplitude</span>
-				<input type='range' min='1' max='2' step='0.05' bind:value={amplitude} />
+				<input type='range' min='1' max='2' step='0.05' bind:value={amplitude} {@attach fill} />
 				<code translate='no' class='param-value'>{fmt(amplitude)}</code>
 			</label>
 			<label class='param'>
 				<span class='param-name'>period</span>
-				<input type='range' min='0.1' max='1' step='0.05' bind:value={period} />
+				<input type='range' min='0.1' max='1' step='0.05' bind:value={period} {@attach fill} />
 				<code translate='no' class='param-value'>{fmt(period)}</code>
 			</label>
 		{/if}
 
 		<div class='line'>
 			<code translate='no'>ease: "{easeStr}"</code>
-			<button type='button' class='play' onclick={play}>play</button>
+			<button type='button' class='chip' onclick={play}>play</button>
 		</div>
 		<p class='hint'>the dotted curve holds the family default</p>
 	</div>
@@ -143,40 +144,6 @@
 		gap: 1.1rem;
 	}
 
-	.seg {
-		display: flex;
-		gap: 1.1rem;
-		border: 0;
-		padding: 0;
-		margin: 0;
-	}
-
-	.seg-option {
-		font-family: var(--font-code);
-		font-size: 0.8rem;
-		color: var(--ink-muted);
-		padding-bottom: 0.2rem;
-		border-bottom: 1px solid transparent;
-		cursor: pointer;
-		transition:
-			color 200ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
-	}
-
-	.seg-option:hover {
-		color: var(--ink);
-	}
-
-	.seg-option.on {
-		color: var(--ink);
-		border-bottom-color: var(--accent);
-	}
-
-	.seg-option:has(input:focus-visible) {
-		outline: 1px solid var(--accent);
-		outline-offset: 3px;
-	}
-
 	.param {
 		display: grid;
 		grid-template-columns: 5.2rem minmax(0, 1fr) 2.6rem;
@@ -190,7 +157,6 @@
 	}
 
 	.param input[type='range'] {
-		accent-color: var(--accent);
 		min-width: 0;
 	}
 
@@ -214,24 +180,6 @@
 		font-size: 0.82rem;
 		color: var(--ink);
 		overflow-wrap: anywhere;
-	}
-
-	.play {
-		font-size: 0.78rem;
-		letter-spacing: 0.02em;
-		color: var(--ink-muted);
-		border: 1px solid var(--rule);
-		border-radius: 999px;
-		padding: 0.3rem 0.85rem;
-		cursor: pointer;
-		transition:
-			color 200ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
-	}
-
-	.play:hover {
-		color: var(--accent);
-		border-color: var(--accent);
 	}
 
 	.hint {

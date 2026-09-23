@@ -1,5 +1,6 @@
 <script lang='ts'>
 	import type { SiteKey } from './types'
+	import { fill } from './fill'
 	import { palette } from './monochrome'
 
 	interface Setting {
@@ -49,10 +50,10 @@
 	<div class='controls'>
 		<label class='dial'>
 			<span class='dial-name'>size</span>
-			<input type='range' min='16' max='96' step='1' bind:value={size} />
+			<input type='range' min='16' max='96' step='1' bind:value={size} {@attach fill} />
 			<code translate='no' class='dial-value'>{size}px</code>
 		</label>
-		<label class='check'>
+		<label class='toggle'>
 			<input type='checkbox' bind:checked={gradient} />
 			gradient text
 		</label>
@@ -100,16 +101,4 @@
 		max-width: 26rem;
 	}
 
-	.check {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.82rem;
-		color: var(--ink-muted);
-		cursor: pointer;
-	}
-
-	.check input {
-		accent-color: var(--accent);
-	}
 </style>

@@ -84,7 +84,7 @@
 <div class='race'>
 	<div class='head'>
 		<span class='title'>elastic, three ways · one clock</span>
-		<button type='button' class='run' onclick={run}>{ran ? 'run again' : 'run'}</button>
+		<button type='button' class='chip' onclick={run}>{ran ? 'run again' : 'run'}</button>
 	</div>
 	<EasePlot
 		curves={lanes.map(l => ({ fn: l.fn, stroke: l.pen, dash: l.dash }))}
@@ -123,24 +123,6 @@
 		font-weight: 700;
 		letter-spacing: 0.01em;
 		color: var(--ink);
-	}
-
-	.run {
-		font-size: 0.78rem;
-		letter-spacing: 0.02em;
-		color: var(--ink-muted);
-		border: 1px solid var(--rule);
-		border-radius: 999px;
-		padding: 0.3rem 0.85rem;
-		cursor: pointer;
-		transition:
-			color 200ms cubic-bezier(0.22, 0.7, 0.25, 1),
-			border-color 200ms cubic-bezier(0.22, 0.7, 0.25, 1);
-	}
-
-	.run:hover {
-		color: var(--accent);
-		border-color: var(--accent);
 	}
 
 	.lanes {

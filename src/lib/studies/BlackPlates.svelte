@@ -1,4 +1,5 @@
 <script lang='ts'>
+	import { fill } from './fill'
 	import { palettes } from './monochrome'
 
 	let exposure = $state(1)
@@ -18,7 +19,7 @@
 
 	<label class='dial'>
 		<span class='dial-name'>exposure</span>
-		<input type='range' min='1' max='16' step='0.5' bind:value={exposure} />
+		<input type='range' min='1' max='16' step='0.5' bind:value={exposure} {@attach fill} />
 		<code translate='no' class='dial-value'>×{exposure}</code>
 	</label>
 </figure>

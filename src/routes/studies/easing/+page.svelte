@@ -168,7 +168,7 @@
 			the physical world moves at.
 		</p>
 
-		<fieldset class='seg dirs'>
+		<fieldset class='seg code dirs'>
 			<legend class='sr-only'>conjugation</legend>
 			{#each dirs as d (d)}
 				<label class={['seg-option', dir === d && 'on']}>
@@ -346,8 +346,9 @@
 	}
 
 	.dirs {
-		justify-content: flex-end;
-		margin: 1.75rem 0 0.5rem;
+		display: flex;
+		width: fit-content;
+		margin: 1.75rem 0 0.5rem auto;
 	}
 
 	.transplant {
