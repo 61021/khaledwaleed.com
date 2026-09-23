@@ -89,7 +89,7 @@
 	{#snippet lede()}
 		<p>
 			I lead frontend at the biggest tech company in Iraq, create memorable digital experiences,
-			and sometimes write my thoughts on paper.
+			and <a href='/studies' class='door' aria-label='Studies'>s</a>ometimes write my thoughts on paper.
 		</p>
 	{/snippet}
 </PageHeader>
@@ -157,6 +157,17 @@
 </Container>
 
 <style>
+	/* The way into the studies: the s of sometimes, wearing the lede's
+	   own ink until a cursor or the keyboard finds it. */
+	.door {
+		color: inherit;
+		transition: color var(--dur-quick) var(--ease-out);
+	}
+
+	.door:hover {
+		color: var(--accent);
+	}
+
 	/* ---------- Room grid ---------- */
 	/* Phones: a single-column list of horizontal cards (small framed
 	   painting at left, label beside it). Two columns squeeze the notes
