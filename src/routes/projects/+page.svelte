@@ -243,6 +243,7 @@
 
 {#snippet outro(s: Section)}
 	{#if s.outro}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- outros are literals in this file -->
 		<p class='mt-4 text-sm leading-relaxed text-[var(--ink-muted)] italic'>{@html s.outro}</p>
 	{/if}
 {/snippet}
