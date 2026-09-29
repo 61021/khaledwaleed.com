@@ -59,7 +59,7 @@
 			company: 'Morshed',
 			url: 'https://morshed-bdc.com',
 			meta: 'Part-time, Baghdad, hybrid',
-			title: 'Senior Software Engineer',
+			title: 'Software Engineer',
 			start: 'Feb 2024',
 			end: 'Dec 2024',
 			highlights: [
