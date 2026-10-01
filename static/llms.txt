@@ -34,4 +34,4 @@
 
 Each page is paired with one public-domain Northern Romantic painting
 (Friedrich, Dahl, Daguerre, Wright of Derby). The site is set in Newsreader
-and Libre Franklin, built with SvelteKit, and deployed on Cloudflare Pages.
+and Source Sans 3, built with SvelteKit, and deployed on Cloudflare Pages.
