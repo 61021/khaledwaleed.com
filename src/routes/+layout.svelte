@@ -9,7 +9,7 @@
 	// The display face is served pinned to its one weight (see
 	// scripts/generate-fonts.ts); Libre Franklin stays variable, it works
 	// at 400, 600 and 700.
-	import frauncesWoff2 from '$lib/fonts/fraunces-latin-opsz-normal-w400.woff2?url'
+	import newsreaderWoff2 from '$lib/fonts/newsreader-latin-opsz-normal-w400.woff2?url'
 	import { markHydrated } from '$lib/hydration'
 	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
 
@@ -23,7 +23,7 @@
 	import franklinWoff2 from '@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2?url'
 	import { onMount } from 'svelte'
 	import '../app.css'
-	import '$lib/fonts/fraunces.css'
+	import '$lib/fonts/newsreader.css'
 	import '@fontsource-variable/libre-franklin/wght.css'
 	import '@fontsource-variable/libre-franklin/wght-italic.css'
 
@@ -546,7 +546,7 @@
 
 <svelte:head>
 	{#if !inStudies}
-		<link rel='preload' as='font' type='font/woff2' href={frauncesWoff2} crossorigin='anonymous' />
+		<link rel='preload' as='font' type='font/woff2' href={newsreaderWoff2} crossorigin='anonymous' />
 		<link rel='preload' as='font' type='font/woff2' href={franklinWoff2} crossorigin='anonymous' />
 	{/if}
 	{#if !dev && site.cloudflareAnalyticsToken}
@@ -756,7 +756,7 @@
 								{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 							</div>
 							<div class='smallcaps'>
-								{colophonYear} · set in fraunces &amp; franklin ·
+								{colophonYear} · set in newsreader &amp; franklin ·
 								<!-- Plain text on purpose: no cursor, no role, no hint.
 							     Whoever clicks it anyway hears the music lean in. -->
 								<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->

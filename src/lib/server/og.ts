@@ -25,8 +25,8 @@ function loadFont(...candidates: string[]): Buffer | null {
 const franklinRegular = loadFont(
 	join(ROOT, 'node_modules/@fontsource/libre-franklin/files/libre-franklin-latin-400-normal.woff'),
 )
-const frauncesRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/fraunces/files/fraunces-latin-400-normal.woff'),
+const newsreaderRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/newsreader/files/newsreader-latin-400-normal.woff'),
 )
 
 type Node = any
@@ -150,7 +150,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 					style: {
 						display: 'flex',
 						flexDirection: 'column',
-						fontFamily: '"Fraunces", serif',
+						fontFamily: '"Newsreader", serif',
 						fontStyle: 'normal',
 						fontSize: `${size}px`,
 						lineHeight: 1.08,
@@ -191,10 +191,10 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	const fonts: { name: string, data: Buffer, weight: 400, style: 'normal' | 'italic' }[] = []
 	if (franklinRegular)
 		fonts.push({ name: 'Libre Franklin', data: franklinRegular, weight: 400, style: 'normal' })
-	if (frauncesRegular) {
+	if (newsreaderRegular) {
 		fonts.push({
-			name: 'Fraunces',
-			data: frauncesRegular,
+			name: 'Newsreader',
+			data: newsreaderRegular,
 			weight: 400,
 			style: 'normal',
 		})
@@ -207,10 +207,9 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 /** Break a title into 1–3 lines that fit the card, and pick a size. */
 export function layoutHeadline(title: string): { lines: string[], size: number } {
 	const size = title.length > 70 ? 60 : title.length > 45 ? 68 : title.length > 26 ? 80 : 96
-	// Rough character budget per line at each size (Fraunces roman, 1000px
-	// box). Measured off satori's own output rather than the browser's:
-	// satori sets this font about 17% wider than Chromium does, so metrics
-	// taken in a page under-count the line and starve the budget.
+	// Rough character budget per line at each size (1000px box). Measured
+	// off satori's own output rather than the browser's, on Fraunces;
+	// Newsreader sets narrower, so these now run conservative.
 	const budget = size >= 96 ? 19 : size >= 80 ? 23 : size >= 68 ? 27 : 31
 
 	const words = title.split(' ')
