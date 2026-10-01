@@ -165,18 +165,16 @@ html[data-room='studies'] body::after {
 
 /* ---------- Typography stack ----------
    Two families, one role each:
-   · body    = Libre Franklin (sans: labels, notes, smallcaps, UI)
-   · display = Newsreader     (serif: headings, dropcaps, logo, buttons, essay prose)
+   · body    = Source Sans 3 (sans: labels, notes, smallcaps, UI)
+   · display = Newsreader    (serif: headings, dropcaps, logo, buttons, essay prose)
    One weight per family (400), and the sans keeps one more for its
-   smallcaps labels: 600, which is where Libre Franklin's variable wght
-   holds the apparent weight Lato's static 700 used to (Franklin's bold
-   is a real gothic bold and thuds at that size on a dark ground).
+   smallcaps labels: 600.
    Newsreader arrives in Fontsource's opsz build, pinned to wght 400
    with opsz left live. The display serif wears ROMAN everywhere
    since 2026-08-06: italic survives only as semantics (em, blockquotes,
    work titles) and the likes kickers. */
 :root {
-	--font-body: 'Libre Franklin Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+	--font-body: 'Source Sans 3 Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
 	--font-display: 'Newsreader Variable', Georgia, 'Times New Roman', ui-serif, serif;
 	--font-code: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }

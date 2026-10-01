@@ -7,7 +7,7 @@
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
 	// The display face is served pinned to its one weight (see
-	// scripts/generate-fonts.ts); Libre Franklin stays variable, it works
+	// scripts/generate-fonts.ts); Source Sans 3 stays variable, it works
 	// at 400, 600 and 700.
 	import newsreaderWoff2 from '$lib/fonts/newsreader-latin-opsz-normal-w400.woff2?url'
 	import { markHydrated } from '$lib/hydration'
@@ -20,12 +20,12 @@
 	// The two workhorse faces, preloaded so the first paint doesn't run
 	// in fallback type while the CSS is still being parsed for their URLs
 	// (?url resolves to the same hashed asset the @font-face rules name).
-	import franklinWoff2 from '@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2?url'
+	import sourceSansWoff2 from '@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2?url'
 	import { onMount } from 'svelte'
 	import '../app.css'
 	import '$lib/fonts/newsreader.css'
-	import '@fontsource-variable/libre-franklin/wght.css'
-	import '@fontsource-variable/libre-franklin/wght-italic.css'
+	import '@fontsource-variable/source-sans-3/wght.css'
+	import '@fontsource-variable/source-sans-3/wght-italic.css'
 
 	const { children } = $props()
 
@@ -547,7 +547,7 @@
 <svelte:head>
 	{#if !inStudies}
 		<link rel='preload' as='font' type='font/woff2' href={newsreaderWoff2} crossorigin='anonymous' />
-		<link rel='preload' as='font' type='font/woff2' href={franklinWoff2} crossorigin='anonymous' />
+		<link rel='preload' as='font' type='font/woff2' href={sourceSansWoff2} crossorigin='anonymous' />
 	{/if}
 	{#if !dev && site.cloudflareAnalyticsToken}
 		<script
@@ -756,7 +756,7 @@
 								{site.role},&nbsp;{site.location.city},&nbsp;{site.location.country}
 							</div>
 							<div class='smallcaps'>
-								{colophonYear} · set in newsreader &amp; franklin ·
+								{colophonYear} · set in newsreader &amp; source sans ·
 								<!-- Plain text on purpose: no cursor, no role, no hint.
 							     Whoever clicks it anyway hears the music lean in. -->
 								<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->

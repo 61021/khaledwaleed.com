@@ -22,8 +22,8 @@ function loadFont(...candidates: string[]): Buffer | null {
 	return null
 }
 
-const franklinRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/libre-franklin/files/libre-franklin-latin-400-normal.woff'),
+const sourceSansRegular = loadFont(
+	join(ROOT, 'node_modules/@fontsource/source-sans-3/files/source-sans-3-latin-400-normal.woff'),
 )
 const newsreaderRegular = loadFont(
 	join(ROOT, 'node_modules/@fontsource/newsreader/files/newsreader-latin-400-normal.woff'),
@@ -105,7 +105,7 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 				justifyContent: 'space-between',
 				background: `linear-gradient(180deg, ${c.bg} 0%, ${c.bgSoft} 100%)`,
 				padding: '80px 100px',
-				fontFamily: '"Libre Franklin", sans-serif',
+				fontFamily: '"Source Sans 3", sans-serif',
 				color: c.ink,
 			},
 		},
@@ -189,8 +189,8 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	)
 
 	const fonts: { name: string, data: Buffer, weight: 400, style: 'normal' | 'italic' }[] = []
-	if (franklinRegular)
-		fonts.push({ name: 'Libre Franklin', data: franklinRegular, weight: 400, style: 'normal' })
+	if (sourceSansRegular)
+		fonts.push({ name: 'Source Sans 3', data: sourceSansRegular, weight: 400, style: 'normal' })
 	if (newsreaderRegular) {
 		fonts.push({
 			name: 'Newsreader',
