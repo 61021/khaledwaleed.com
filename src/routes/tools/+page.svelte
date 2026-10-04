@@ -1,20 +1,17 @@
 <script lang='ts'>
-	import { Container, Fleuron, Noted, PageHeader, SchemaOrg, Seo, site } from '$lib'
+	import type { FlowItem } from '$lib/types'
+	import { Container, Fleuron, FlowList, PageHeader, SchemaOrg, Seo, site } from '$lib'
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
 	const lastUpdated = '2026-09-22'
-
-	/* Same anatomy as /likes: an item is plain text, or a term wearing a
-	   small note that shows itself on hover and focus. */
-	type Item = string | { label: string, note: string }
 
 	const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
 
 	type Section = {
 		name: string
 		kicker: string
-		items: Item[]
+		items: FlowItem[]
 		link?: { href: string, label: string }
 	}
 
@@ -188,15 +185,7 @@
 				>
 					{s.kicker}
 				</p>
-				<!-- The separator leads each item (except the first) so it wraps with it
-				     and never dangles at the end of a line. -->
-				<ul class='mt-5 flex flex-wrap gap-x-3 gap-y-1 leading-relaxed text-[var(--ink-muted)]'>
-					{#each s.items as it, j (typeof it === 'string' ? it : it.label)}
-						<li>
-							{#if j > 0}<span class='mr-3 text-[var(--rule)]' aria-hidden='true'>·</span>{/if}{#if typeof it === 'string'}{it}{:else}<Noted label={it.label} note={it.note} />{/if}
-						</li>
-					{/each}
-				</ul>
+				<FlowList items={s.items} />
 				{#if s.link}
 					<p class='mt-5'>
 						{#if s.link.href.startsWith('http')}

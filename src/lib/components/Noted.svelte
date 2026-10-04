@@ -75,6 +75,8 @@
 	.noted {
 		position: relative;
 		padding: 0;
+		/* A hanging-indent list would otherwise pull the label left. */
+		text-indent: 0;
 		font: inherit;
 		color: inherit;
 		background: none;
