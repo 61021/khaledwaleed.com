@@ -3,7 +3,7 @@
 	import { dev } from '$app/environment'
 	import { beforeNavigate, onNavigate, preloadData } from '$app/navigation'
 	import { page, updated } from '$app/state'
-	import { CommandPalette, Container, Curtain, FooterSignature, JsonLd, Monogram, Screensaver, site } from '$lib'
+	import { AwayTab, CommandPalette, Container, Curtain, FooterSignature, JsonLd, Monogram, Screensaver, site } from '$lib'
 	import { curtain } from '$lib/curtain'
 	import { romanYear } from '$lib/dates'
 	// The display face is served pinned to its one weight (see
@@ -515,6 +515,7 @@
 	<CommandPalette />
 	<Curtain />
 	<Screensaver />
+	<AwayTab />
 {/if}
 
 {#snippet soundGlyph()}

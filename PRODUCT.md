@@ -34,7 +34,7 @@ A personal museum instead of a developer portfolio: every page is a room hung wi
 ## Brand Commitments
 
 - Name: Khaled Waleed; brand title "Design Engineer"; the bio line and every personal fact come from the private canon file.
-- The drawn "kw" script monogram is the mark; the favicon is the k alone, deliberately.
+- The drawn "kw" script monogram is the mark; the favicon is the k alone, deliberately. While the visitor is on another tab, the tab shows a gold moon and "I’ll be here" (never on /studies).
 - Voice: plain register, direct, shorter than default; the anti-slop writing rules are site law.
 - A quiet dedication threads the site: "for r." closing the footer colophon, one bare "R" after the last /likes section, "R." in humans.txt. Initial-only is a hard ceiling; the name never enters this public repo or its history.
 - Sound: glass-tap ticks and one Chopin nocturne, site-wide, armed only on real gestures.
