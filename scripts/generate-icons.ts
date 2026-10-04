@@ -3,6 +3,7 @@
  * Generate the site icons from the one signature mark: gold on the home
  * room's night blue, matching the header and the OG cards.
  *   - favicon.svg (browser tabs)
+ *   - favicon-away.svg (the tab while the visitor is on another one)
  *   - apple-touch-icon.png (180×180, iOS home screen ignores SVG)
  *   - icon-192.png / icon-512.png (web app manifest)
  *   - avatar.svg (the round one structured data hands to search and chat)
@@ -68,12 +69,27 @@ function mark(box: number, cut: Cut): string {
 
 const night = `<defs><linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${BG}"/><stop offset="100%" stop-color="${BG_SOFT}"/></linearGradient></defs>`
 
-function square(box: number, cut: Cut): string {
-	return `<svg width="${box}" height="${box}" viewBox="0 0 ${box} ${box}" xmlns="http://www.w3.org/2000/svg">${night}<rect width="${box}" height="${box}" fill="url(#night)"/>${mark(box, cut)}</svg>`
+/**
+ * A crescent of two plain arcs, the outer circle less a bite of 0.82r set
+ * 0.42r to the right, centred on its own bounds rather than its circle.
+ */
+function moon(box: number, r: number): string {
+	const f = (n: number): number => +n.toFixed(2)
+	const tip = `${f(0.6 * r)} ${f(0.8 * r)}`
+	const top = `${f(0.6 * r)} ${f(-0.8 * r)}`
+	const d = `M${top}A${r} ${r} 0 1 0 ${tip}A${f(0.82 * r)} ${f(0.82 * r)} 0 1 1 ${top}Z`
+	return `<path transform="translate(${f(box / 2 + 0.2 * r)} ${box / 2})" d="${d}" fill="${GOLD}"/>`
 }
 
-writeFileSync(path.join(OUT, 'favicon.svg'), square(512, initial))
+function square(box: number, art: string): string {
+	return `<svg width="${box}" height="${box}" viewBox="0 0 ${box} ${box}" xmlns="http://www.w3.org/2000/svg">${night}<rect width="${box}" height="${box}" fill="url(#night)"/>${art}</svg>`
+}
+
+writeFileSync(path.join(OUT, 'favicon.svg'), square(512, mark(512, initial)))
 console.log('favicon.svg')
+
+writeFileSync(path.join(OUT, 'favicon-away.svg'), square(512, moon(512, 200)))
+console.log('favicon-away.svg')
 
 writeFileSync(
 	path.join(OUT, 'avatar.svg'),
@@ -81,7 +97,7 @@ writeFileSync(
 )
 console.log('avatar.svg')
 
-const master = new Resvg(square(512, full(230))).render().asPng()
+const master = new Resvg(square(512, mark(512, full(230)))).render().asPng()
 
 const targets = [
 	{ file: 'apple-touch-icon.png', size: 180 },
