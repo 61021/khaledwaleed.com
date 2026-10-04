@@ -66,7 +66,10 @@
 			items: [
 				'Classical music of every era',
 				'Tchaikovsky\'s Swan Lake',
-				'Chopin\'s nocturnes',
+				{
+					label: 'Chopin\'s nocturnes',
+					note: 'The one that plays on this site is Op. 72 No. 1.',
+				},
 				'Progressive metal',
 				'Tool',
 				'Opeth',
@@ -125,7 +128,10 @@
 				'A shoe-shine corner',
 				'Windows onto trees & train tracks',
 				'Fallen leaves indoors',
-				'Easter eggs scattered through the room',
+				{
+					label: 'Easter eggs scattered through the room',
+					note: 'This site has a few too.',
+				},
 				'Hand-painted appliances: fridge, TV, the lot',
 				'Floor-to-ceiling bookshelves',
 				'Wall-sized mirrors in the dressing room and bathroom',
@@ -150,8 +156,14 @@
 			kicker: 'Foods that are worth the effort',
 			items: [
 				'Pancakes',
-				'Slow-cooked quzi',
-				'Yalanji',
+				{
+					label: 'Slow-cooked quzi',
+					note: 'Iraqi lamb, slow-cooked and served on spiced rice with nuts and raisins.',
+				},
+				{
+					label: 'Yalanji',
+					note: 'Vine leaves and vegetables stuffed with rice, the meatless kind of dolma.',
+				},
 				'Steak, rested',
 				'Well-made risotto',
 				'Penne arrabbiata',
@@ -218,7 +230,10 @@
 			kicker: 'The software taste behind the day job',
 			items: [
 				'Total control over my stack',
-				'Linux and nothing else',
+				{
+					label: 'Linux and nothing else',
+					note: 'Arch with Hyprland now, Void with dwm before that.',
+				},
 				'Suckless philosophy',
 				'Software you can leave alone',
 				'Programs that start instantly',
