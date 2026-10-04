@@ -4,7 +4,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-08-17'
+	const lastUpdated = '2026-10-04'
 
 	type Section = {
 		name: string
@@ -155,12 +155,12 @@
 			name: 'Food',
 			kicker: 'Foods that are worth the effort',
 			items: [
-				'Pancakes, flawless and faintly divine',
+				'Pancakes',
 				'Quzi, slow-cooked',
 				'Yalanji',
 				'Steak, rested',
 				'Risotto, done right',
-				'Penne arrabiata',
+				'Penne arrabbiata',
 				'Rocket (arugula) salad',
 				'Sushi',
 				'Sunflower seeds, by the bag',
@@ -192,14 +192,14 @@
 			],
 		},
 		{
-			name: 'Wander',
-			kicker: 'Travel, weather, slight danger',
+			name: 'Travel',
+			kicker: 'Weather and slight danger',
 			items: [
 				'Rain & thunderstorms',
 				'Solo travel, big cities',
 				'Nocturnal urban exploration',
 				'Secret European alleys',
-				'Arboreal retreats, off-map',
+				'Forest retreats off the map',
 				'Deep mountain hikes where no one has been',
 			],
 		},
