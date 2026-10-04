@@ -128,7 +128,7 @@
 		'url': `${site.url}/story`,
 		'name': 'Story',
 		'isPartOf': { '@id': `${site.url}/#website` },
-		'dateModified': '2026-09-18',
+		'dateModified': '2026-10-04',
 		'about': { '@id': `${site.url}/#person` },
 		'breadcrumb': {
 			'@type': 'BreadcrumbList',
@@ -184,49 +184,47 @@
 			<figcaption class='plate portrait-plate'>Khaled Waleed, hung here since August 2026.</figcaption>
 		</figure>
 		<p class='dropcap text-[1.15rem] leading-[1.78] text-[var(--ink)]'>
-			At fourteen I was behind a supermarket checkout in Al-Harithiya, Baghdad, scanning groceries
-			and counting change. My father had died in 2014 and I was the eldest son in a family of five,
-			so someone had to provide. I've worked ever since, the register first, then design, then code,
-			and now systems a few million people depend on. I've been providing ever since too. This page
-			is the long version.
+			It all started when I chose to get out of my bedroom and start talking to real people. My
+			father had died in 2014, I was the eldest son in a family of five, and one of his friends had a
+			supermarket in <span class='whitespace-nowrap'>Al-Harithiya</span>, Baghdad, that needed
+			employees, so at fourteen I was restocking shelves, obsessing over making every can show its
+			Pepsi logo first, and learning to deal with impatient adults before I even had a high school ID.
+			Two years later I found out I'm too good for this.
 		</p>
 		<p>
-			Design came before code. At seventeen, still in school, I spent a summer making posters for
-			surgeons and beauty brands at a small Baghdad studio, and I kept wishing the designs could
-			actually do something, so I taught myself to build them. By the end of 2021 I was designing
-			and building websites for a studio in Amsterdam, under the same title I use today (design
-			engineer), and I'd started
+			I applied for an internship at The Town Studio as a graphic designer, got in, and made decent
+			designs for surgeons and beauty brands with the help of great people, then decided graphic
+			design isn't really for me and switched to designing interfaces. A friend got me started with
+			code and I taught myself the rest. In October 2021 I found an opening at Speetu, a studio in
+			Amsterdam, applied, and got it, so at seventeen, still in high school, I was a design engineer,
+			the same title I use today. The same month I started
 			<a href='https://vitex.dev' target='_blank' rel='noopener' class='link'>Vitex</a>, my own
-			studio, with the motto it still carries: <em>software, pretty and perfect</em>.
+			studio, with the motto it still carries, <em>software, pretty and perfect</em>.
 		</p>
 		<p>
-			Then the work turned serious. At eighteen I was building government systems: the Iraqi
-			Electronic Passport's public website and booking flow, systems for the ports, and the ERP
-			behind the intercity-taxi garages of every governorate. I led a team of nine while doing it.
-			Building software in Iraq is an advantage. The constraints are real, the stakes are rarely
-			abstract, and you learn early what holds up when the thing simply has to work. In those years
-			the Ishtar Center, a democracy NGO, made me its director of AI and technology, and I apply AI
-			models to research there alongside some of Iraq's top researchers.
+			At eighteen I joined Digital Logic and started building for the government, the public website
+			and booking flow of the Iraqi Electronic Passport, frontends for the ports and the shipping
+			agencies, and the ERP behind the intercity taxi garages in every governorate, where I led a team
+			of nine. I made the passport booking form beautiful and friendly, they later rebuilt it on a
+			low-code platform and it got worse.
 		</p>
 		<p>
-			Today I lead frontend at
+			In January 2025 I joined
 			<a href='https://enjaz.tech' target='_blank' rel='noopener' class='link'>Enjaz</a>, the
-			e-government arm of Qi, Iraq's largest e-payment company. I joined as the youngest of its
-			3,000+ employees and the only frontend engineer on seven government platforms. Within a year
-			I'd rebuilt and redesigned all seven, then I recruited and trained the three engineers who run
-			them with me now. The portfolio serves more than four million people, and one platform alone
-			reaches three million families. The part I care about most is the part nobody audits: sounds,
-			motion, the small courtesies of an interface, shipped in business dashboards nobody expected
-			to enjoy. I've never treated “it works” and “it feels right” as two separate standards, and
-			the title for that is design engineer, the same instinct that started with the posters. Vitex
-			grew up alongside all of it, four people now, with products of its own out in the world.
+			e-government arm of Qi, Iraq's largest e-payment company, as the youngest of its 3,000+
+			employees and the only frontend engineer on seven government platforms. Within a year I had
+			rebuilt and redesigned all seven, then I found three engineers, ran their interviews, brought
+			them in, and trained them, and now I lead the four of us. The platforms serve more than four
+			million people, and Oil Coupon alone reaches three million families. I put sounds and
+			animations into business dashboards so people would enjoy using them, and I helped write The
+			Perfect Interface, a long file of rules every app in the company has to follow, down to the
+			teeny tiny details nobody would even notice.
 		</p>
 		<p>
-			Away from the screen I read, watch films, and walk the older parts of cities. The questions I
-			care about never stay answered: why people suffer, where taste comes from, what makes a life
-			worthwhile. I <a href='/writing' class='link'>write</a> occasionally, mostly because some
-			thoughts get annoying if you leave them alone for too long. Most things become more bearable
-			once they become interesting, software included.
+			Vitex grew up next to all of it, there are four of us now, with products of our own. I also run
+			the technology at the Ishtar Center, a democracy NGO, and I'm finishing a computer engineering
+			degree on the side. Outside work I read, watch films, cook, and sometimes
+			<a href='/writing' class='link'>write</a>.
 		</p>
 		<p class='text-sm text-[var(--ink-muted)] italic'>
 			The name in Arabic is <span lang='ar' class='not-italic'>خالد وليد</span>: Khaled Waleed in
