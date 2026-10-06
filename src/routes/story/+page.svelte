@@ -48,6 +48,7 @@
 			highlights: [
 				'Run a four-person design-engineering studio (“Software, pretty and perfect”) building web platforms and mobile apps for Iraqi enterprises and NGOs.',
 				'Built Iraq Loto, the country’s national 42+1 lottery, alone: design, player app, back office, backend, deploys. One Cloudflare Worker serves three sales channels (the web, a Super Qi mini app, POS terminals in shops); it replaced the old system in September 2026 with 480K+ accounts carried over, and reports every draw to the Ministry of Labour and Social Affairs.',
+				'Built Quick EV, the Arabic and English website of Iraq’s first EV charging network, with a station map and no photos: every picture is a to-scale line drawing of the real GRASEN chargers.',
 				'Built Risha end to end (mobile app, dashboard, website): e-learning connecting Iraq’s sixth-preparatory students with elite private tutors. 25K+ downloads, custom cross-device DRM; led all design and frontend.',
 				'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations: 1,000+ cars and $3M+ in transactions monthly.',
 				'Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, is live in 20+ venues.',
