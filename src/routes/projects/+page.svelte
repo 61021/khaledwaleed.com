@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-09-22'
+	const lastUpdated = '2026-10-06'
 
 	type Project = {
 		name: string
@@ -52,6 +52,12 @@
 					url: 'https://42.iraqloto.iq',
 					measure: '480K+ users',
 					note: 'Iraq’s national 42+1 lottery. I built all of it alone: the design, the player app, the back office, the backend, the deploys. One Cloudflare Worker serves the three sales channels (the web, a Super Qi mini app, and the POS terminals in shops). It replaced the old system in September 2026, accounts and balances carried over, and reports every draw to the Ministry of Labour and Social Affairs.',
+				},
+				{
+					name: 'Quick EV',
+					url: 'https://quickev.net',
+					measure: 'since 2026',
+					note: 'The website of Quick, Iraq’s first EV charging network, in Arabic and English. Every picture on it is a line drawing of the real GRASEN chargers at true scale that draws itself in as you scroll, and a map shows each charging station with its price and opening hours.',
 				},
 				{
 					name: 'Risha',
@@ -160,7 +166,7 @@
 		},
 	]
 
-	const description = `Everything Khaled Waleed has built and shipped: Iraq Loto, Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`
+	const description = `Everything Khaled Waleed has built and shipped: Iraq Loto, Quick EV, Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`
 
 	const [products, commissions, government, earlier, openSource] = sections
 
