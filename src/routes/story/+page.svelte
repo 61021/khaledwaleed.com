@@ -36,7 +36,7 @@
 			highlights: [
 				'Center member of an Iraqi NGO advancing democracy and human rights; own all of its technology.',
 				'Work with Iraq’s top researchers, applying advanced AI models to the center’s research.',
-				'Built and operate ishtarcenter.com, a bilingual Nuxt site with a self-hosted backend, and the center’s conference website.',
+				'Built and operate ishtarcenter.com and the center’s conference website.',
 			],
 		},
 		{

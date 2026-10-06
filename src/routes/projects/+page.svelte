@@ -75,7 +75,7 @@
 					name: 'Ishtar Center',
 					url: 'https://ishtarcenter.com',
 					measure: 'since 2024',
-					note: 'The democracy NGO’s bilingual site and its conference site: designed, built, and operated, self-hosted backend included, for the center where I direct technology.',
+					note: 'The democracy NGO’s bilingual site and its conference site: designed, built, and operated for the center where I direct technology.',
 				},
 			],
 			outro:
