@@ -21,7 +21,7 @@
 			title: 'Frontend Lead',
 			start: 'Jan 2025',
 			highlights: [
-				'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app to modern Vue/Nuxt standards within a year.',
+				'Hired as the sole frontend engineer for seven government platforms; rebuilt and redesigned every app within a year.',
 				'Built the frontend team: scouted all three hires from the market, ran their interviews and trial tasks, then trained and onboarded them; now lead the four, owning code review, standards, and release quality.',
 				'Portfolio serves 4+ million users, including Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems managing the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
 				'Designed and built Enjaz’s own corporate website, enjaz.tech.',
@@ -75,7 +75,7 @@
 			start: 'Oct 2022',
 			end: 'Dec 2024',
 			highlights: [
-				'Built the Iraqi Electronic Passport platform’s public website and appointment-booking flow, plus Vue.js frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
+				'Built the Iraqi Electronic Passport platform’s public website and appointment-booking flow, plus the frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
 				'Led a team of nine developing The Garage System, an ERP managing the intercity-taxi garages of every Iraqi governorate; set code conventions and reviewed all frontend work.',
 				'Mentored three interns through their first production features.',
 			],
