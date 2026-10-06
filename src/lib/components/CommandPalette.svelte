@@ -50,7 +50,7 @@
 			href: '/projects',
 			kind: 'page',
 			keywords:
-				'work portfolio products auction key rocca menu risha amanat baghdad enjaz oil coupon vitex open source nuxt ui hyprland',
+				'work portfolio products auction key rocca menu risha amanat baghdad enjaz oil coupon vitex open source nuxt ui',
 		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{

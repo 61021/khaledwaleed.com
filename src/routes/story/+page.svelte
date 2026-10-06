@@ -76,7 +76,6 @@
 			end: 'Dec 2024',
 			highlights: [
 				'Built the Iraqi Electronic Passport platform’s public website and appointment-booking flow, plus the frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
-				'Led a team of nine developing The Garage System, an ERP managing the intercity-taxi garages of every Iraqi governorate; set code conventions and reviewed all frontend work.',
 				'Mentored three interns through their first production features.',
 			],
 		},
@@ -88,7 +87,7 @@
 			start: 'Oct 2021',
 			end: 'Oct 2022',
 			highlights: [
-				'Designed and built websites for Dutch brands, Inflexio among them, plus Speetu’s own site, logo, and brand identity.',
+				'Designed and built websites for Dutch brands, Inflexio among them.',
 			],
 		},
 		{
@@ -204,9 +203,8 @@
 		</p>
 		<p>
 			At eighteen I joined Digital Logic and started building for the government, the public website
-			and booking flow of the Iraqi Electronic Passport, frontends for the ports and the shipping
-			agencies, and the ERP behind the intercity taxi garages in every governorate, where I led a team
-			of nine. I made the passport booking form beautiful and friendly, they later rebuilt it on a
+			and booking flow of the Iraqi Electronic Passport and frontends for the ports and the shipping
+			agencies. I made the passport booking form beautiful and friendly, they later rebuilt it on a
 			low-code platform and it got worse.
 		</p>
 		<p>

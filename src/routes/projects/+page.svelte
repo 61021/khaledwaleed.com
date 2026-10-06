@@ -114,11 +114,6 @@
 					measure: 'national',
 					note: 'The platform’s public website and its appointment-booking flow, from my Digital Logic years.',
 				},
-				{
-					name: 'The Garage System',
-					measure: 'team of nine',
-					note: 'An ERP running the garages that intercity taxis operate from, in every Iraqi governorate. I led the team of nine building it and reviewed all of its frontend.',
-				},
 			],
 			outro:
 				'From the same years: frontends for the General Company for Ports of Iraq and the Shipping Agencies systems.',
@@ -132,12 +127,6 @@
 					url: 'https://morshed-bdc.com',
 					measure: '2024',
 					note: 'The business-development firm’s website, accounting ERP, and internal workflow systems, plus websites and ERPs for its clients.',
-				},
-				{
-					name: 'Speetu',
-					url: 'https://speetu.com',
-					measure: 'Amsterdam',
-					note: 'Websites for Dutch brands, Inflexio among them, and Speetu’s own site, logo, and brand identity.',
 				},
 			],
 		},
@@ -156,12 +145,6 @@
 					url: 'https://ui.nuxt.com',
 					measure: 'merged',
 					note: 'Contributions to the official Nuxt component library.',
-				},
-				{
-					name: 'Hyprland website',
-					url: 'https://hypr.land',
-					measure: 'merged',
-					note: 'Work on the Wayland compositor’s website.',
 				},
 				{
 					name: 'khaledwaleed.com',
