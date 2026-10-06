@@ -43,6 +43,19 @@
 			],
 		},
 		{
+			id: 'enjaz',
+			name: 'Enjaz',
+			intro: 'Built in-house at Enjaz, where I lead frontend.',
+			items: [
+				{
+					name: 'enjaz.tech',
+					url: 'https://enjaz.tech',
+					measure: 'solo build',
+					note: 'The corporate website of Qi’s e-government arm, in Arabic and English, designed and built by me alone. It opens on a map of Iraq, shows the platforms in their real dashboards and phone screens, and its header folds into a floating pill as you scroll.',
+				},
+			],
+		},
+		{
 			id: 'commissions',
 			name: 'Commissions',
 			intro: 'Client work through Vitex, my studio.',
@@ -95,12 +108,6 @@
 					name: 'Oil Coupon',
 					measure: '3M+ families',
 					note: 'The national fuel-coupons miniapp, the most used in Super Qi, and one of the seven.',
-				},
-				{
-					name: 'Enjaz',
-					url: 'https://enjaz.tech',
-					measure: 'solo build',
-					note: 'The corporate website of Qi’s e-government arm.',
 				},
 				{
 					name: 'Iraqi Electronic Passport',
@@ -166,9 +173,9 @@
 		},
 	]
 
-	const description = `Everything Khaled Waleed has built and shipped: Iraq Loto, Quick EV, Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`
+	const description = `Everything Khaled Waleed has built and shipped: Iraq Loto, Quick EV, the Enjaz website, Auction Key, Rocca Menu, Risha, seven government oil platforms serving 4+ million users, open-source work, and this site. Updated ${lastUpdated}.`
 
-	const [products, commissions, government, earlier, openSource] = sections
+	const [products, enjaz, commissions, government, earlier, openSource] = sections
 
 	const schema = {
 		'@context': 'https://schema.org',
@@ -268,7 +275,7 @@
 	<Fleuron />
 
 	<div class='space-y-16'>
-		<!-- The two product lines hang as full plates -->
+		<!-- Products, Enjaz and the commissions hang as full plates -->
 		<section id={products.id} class='scroll-mt-20' {@attach reveal}>
 			<h2>{products.name}</h2>
 			{@render intro(products)}
@@ -278,6 +285,18 @@
 				{/each}
 			</ul>
 			{@render outro(products)}
+		</section>
+
+		<div class='rule-fine'></div>
+
+		<section id={enjaz.id} class='scroll-mt-20' {@attach reveal}>
+			<h2>{enjaz.name}</h2>
+			{@render intro(enjaz)}
+			<ul class='mt-5 space-y-10'>
+				{#each enjaz.items as p (p.name)}
+					{@render plateRow(p)}
+				{/each}
+			</ul>
 		</section>
 
 		<div class='rule-fine'></div>
