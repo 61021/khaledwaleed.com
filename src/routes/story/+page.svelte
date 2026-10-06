@@ -53,7 +53,7 @@
 				'Built and operate Auction Key, a car-auction brokerage platform with built-in ERP and white-label apps, powering Al-Nejoum Al-Zahera’s operations: 1,000+ cars and $3M+ in transactions monthly.',
 				'Rocca Menu, a multi-tenant QR-menu SaaS for restaurants, is live in 20+ venues.',
 				'Shipped platforms for the Afaq Al-Obaidi subsidiaries (Smartic for employment, National Foodstuff, Auto Zone, Golden Lube, Al-Obaidi General Trading, Taj Al-Salem, Almadafaat) and an archiving system for the Al-Amal Association.',
-				'Operate 20+ production client deployments (Cloudflare Pages + self-hosted VPS backends).',
+				'Operate 20+ production client deployments on Cloudflare (Workers, Pages, D1, R2).',
 			],
 		},
 		{
