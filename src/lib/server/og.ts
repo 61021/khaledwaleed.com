@@ -25,8 +25,8 @@ function loadFont(...candidates: string[]): Buffer | null {
 const sourceSansRegular = loadFont(
 	join(ROOT, 'node_modules/@fontsource/source-sans-3/files/source-sans-3-latin-400-normal.woff'),
 )
-const newsreaderRegular = loadFont(
-	join(ROOT, 'node_modules/@fontsource/newsreader/files/newsreader-latin-400-normal.woff'),
+const newsreader = loadFont(
+	join(ROOT, 'node_modules/@fontsource/newsreader/files/newsreader-latin-500-normal.woff'),
 )
 
 type Node = any
@@ -191,10 +191,10 @@ export async function renderOgPng(card: OgCard): Promise<Uint8Array<ArrayBuffer>
 	const fonts: { name: string, data: Buffer, weight: 400, style: 'normal' | 'italic' }[] = []
 	if (sourceSansRegular)
 		fonts.push({ name: 'Source Sans 3', data: sourceSansRegular, weight: 400, style: 'normal' })
-	if (newsreaderRegular) {
+	if (newsreader) {
 		fonts.push({
 			name: 'Newsreader',
-			data: newsreaderRegular,
+			data: newsreader,
 			weight: 400,
 			style: 'normal',
 		})
