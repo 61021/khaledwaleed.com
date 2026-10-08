@@ -2,11 +2,11 @@
 /**
  * Pin the display face to one weight.
  *
- * The museum never sets Newsreader anywhere but 400 (every `--font-display`
+ * The museum only ever sets Newsreader at one weight (every `--font-display`
  * rule, `.prose-romantic strong` included), yet the fontsource file carries
  * wght 200-800 deltas, downloaded on every page ahead of the hero
  * painting. Pinning wght and leaving opsz variable more than halves both
- * faces (128.9K → 54.5K roman, 143.4K → 60.5K italic) with the optical
+ * faces (128.9K → 58.1K roman, 143.4K → 64.1K italic) with the optical
  * size still live.
  *
  * Coverage and unicode-ranges are read out of fontsource's own CSS, so the
@@ -21,7 +21,7 @@ import subsetFont from 'subset-font'
 const SRC = path.resolve('node_modules/@fontsource-variable/newsreader')
 const OUT = path.resolve('src/lib/fonts')
 const STYLESHEET = path.join(OUT, 'newsreader.css')
-const WEIGHT = 400
+const WEIGHT = 500
 
 interface Face {
 	file: string

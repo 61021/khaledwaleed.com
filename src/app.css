@@ -167,10 +167,11 @@ html[data-room='studies'] body::after {
    Two families, one role each:
    · body    = Source Sans 3 (sans: labels, notes, smallcaps, UI)
    · display = Newsreader    (serif: headings, dropcaps, logo, buttons, essay prose)
-   One weight per family (400), and the sans keeps one more for its
-   smallcaps labels: 600.
-   Newsreader arrives in Fontsource's opsz build, pinned to wght 400
-   with opsz left live. The display serif wears ROMAN everywhere
+   One weight per family (Newsreader 500, Source Sans 400), and the
+   sans keeps one more for its smallcaps labels: 600.
+   Newsreader arrives in Fontsource's opsz build, pinned to wght 500
+   with opsz left live, so the display rules' `font-weight: 400` still
+   resolves to the one face. The display serif wears ROMAN everywhere
    since 2026-08-06: italic survives only as semantics (em, blockquotes,
    work titles) and the likes kickers. */
 :root {

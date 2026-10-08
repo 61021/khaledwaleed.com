@@ -9,7 +9,7 @@
 	// The display face is served pinned to its one weight (see
 	// scripts/generate-fonts.ts); Source Sans 3 stays variable, it works
 	// at 400, 600 and 700.
-	import newsreaderWoff2 from '$lib/fonts/newsreader-latin-opsz-normal-w400.woff2?url'
+	import newsreaderWoff2 from '$lib/fonts/newsreader-latin-opsz-normal-w500.woff2?url'
 	import { markHydrated } from '$lib/hydration'
 	import { paintingKeyForPath, warmPainting } from '$lib/painting-warm'
 
