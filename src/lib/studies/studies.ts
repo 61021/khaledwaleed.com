@@ -17,6 +17,13 @@ export const studies: Study[] = [
 		opened: '2026-09-23',
 		openedLabel: 'september 2026',
 	},
+	{
+		slug: 'apple',
+		title: 'a study of apple.com',
+		line: 'apple\'s app guidelines, checked against its own website',
+		opened: '2026-10-14',
+		openedLabel: 'october 2026',
+	},
 ]
 
 export function studyNumber(index: number): string {
