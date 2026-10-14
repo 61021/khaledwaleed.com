@@ -204,7 +204,7 @@
 		<p>
 			At eighteen I joined Digital Logic and started building for the government, the public website
 			and booking flow of the Iraqi Electronic Passport and frontends for the ports and the shipping
-			agencies. I made the passport booking form beautiful and friendly, they later rebuilt it on a
+			agencies. I made the passport booking form beautiful and friendly, after I left they rebuilt it on a
 			low-code platform and it got worse.
 		</p>
 		<p>
