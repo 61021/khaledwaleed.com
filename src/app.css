@@ -735,9 +735,9 @@ html[data-swap='out'] .frontispiece img {
 /* ---------- Motion ----------
    One hand for the whole house: a strong custom ease-out at two
    tempos. Interactions answer at the quick; the few larger surface
-   changes (develop-ins, frames cooling, reveals) take the beat or a
-   touch more. The curtain, the tour, and the screensaver's closing
-   keep their own slow clocks: those are for show. */
+   changes (develop-ins, frames cooling) take the beat or a touch more.
+   The curtain, the tour, the reveal on approach, and the screensaver's
+   closing keep their own slow clocks: those are for show. */
 :root {
 	--ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 	--dur-quick: 180ms;
@@ -1204,21 +1204,29 @@ html[data-menu-open] {
 
 /* ---------- Reveal on approach ----------
    The one entrance left: content marked with the reveal attachment
-   (src/lib/reveal.ts) starts a step below its seat and rises as it
-   enters the viewport, so a room fills up as the visitor walks it.
-   The attachment never hides anything for no-JS or reduced-motion
-   visitors, and bursts arriving together cascade via --rv-wait. */
+   (src/lib/reveal.ts) waits out of focus just below its seat and
+   comes into focus as it enters the viewport, so a room fills up as
+   the visitor walks it. Its own clock on purpose: an expo-out that
+   lands most of the focus early and lets the last of the blur settle
+   slowly. The attachment never hides anything for no-JS or
+   reduced-motion visitors, and bursts arriving together cascade via
+   --rv-wait. The filter lands on none, not blur(0), so a revealed
+   block keeps no stacking context to trap its Noted cards. */
 .rv {
 	opacity: 0;
-	transform: translateY(14px);
+	transform: translateY(4px);
+	filter: blur(12px);
 }
 
 .rv-in {
+	--ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
 	opacity: 1;
-	transform: translateY(0);
+	transform: none;
+	filter: none;
 	transition:
-		opacity 450ms var(--ease-out),
-		transform 450ms var(--ease-out);
+		opacity 900ms var(--ease-reveal),
+		transform 900ms var(--ease-reveal),
+		filter 900ms var(--ease-reveal);
 	transition-delay: var(--rv-wait, 0ms);
 }
 
@@ -1546,6 +1554,7 @@ html[data-menu-open] {
 	.rv {
 		opacity: 1 !important;
 		transform: none !important;
+		filter: none !important;
 		transition: none !important;
 	}
 
