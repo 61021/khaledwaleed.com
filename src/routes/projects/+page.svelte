@@ -209,7 +209,7 @@
 				{:else}{p.name}{/if}
 			</h3>
 		{:else if p.url}
-			<a href={p.url} target='_blank' rel='noopener' class='link italic'>{p.name}</a>
+			<a href={p.url} target='_blank' rel='noopener' class='link w-fit italic'>{p.name}</a>
 		{:else}
 			<span class='text-[var(--ink)] italic'>{p.name}</span>
 		{/if}
