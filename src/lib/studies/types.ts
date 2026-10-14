@@ -53,3 +53,23 @@ export interface SitePalette {
 	/** the dimmest text step the site uses for real copy, when measured */
 	faint?: string
 }
+
+/** One size apple.com sets, with the letter-spacing it serves. */
+export interface SiteSize {
+	px: number
+	/** letter-spacing in px, as getComputedStyle reports it */
+	spacing: number
+	/** which cut of SF Pro the site loads at this size */
+	face: 'text' | 'display'
+}
+
+/** A link in apple.com's top bar, measured at 1440 wide. */
+export interface NavLink {
+	label: string
+	x: number
+	width: number
+	icon?: 'apple' | 'search' | 'bag'
+}
+
+/** How the apple.com study's glass bar is drawn. */
+export type GlassKey = 'apple' | 'blur' | 'tint'
