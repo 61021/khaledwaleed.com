@@ -119,6 +119,13 @@
 		}
 	}
 
+	/* How far the corner-pieces have stepped in from their offset. */
+	@property --btn-clasp {
+		syntax: '<length>';
+		inherits: false;
+		initial-value: 0px;
+	}
+
 	.btn-primary::after,
 	.btn-outline::after {
 		content: '';
@@ -127,22 +134,29 @@
 		pointer-events: none;
 		background: color-mix(in oklab, var(--accent) 80%, transparent);
 		-webkit-mask:
-			var(--corner-bracket-tl) left top / var(--btn-corner) var(--btn-corner) no-repeat,
-			var(--corner-bracket-tr) right top / var(--btn-corner) var(--btn-corner) no-repeat,
-			var(--corner-bracket-br) right bottom / var(--btn-corner) var(--btn-corner) no-repeat,
-			var(--corner-bracket-bl) left bottom / var(--btn-corner) var(--btn-corner) no-repeat;
+			var(--corner-bracket-tl) left var(--btn-clasp) top var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat,
+			var(--corner-bracket-tr) right var(--btn-clasp) top var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat,
+			var(--corner-bracket-br) right var(--btn-clasp) bottom var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat,
+			var(--corner-bracket-bl) left var(--btn-clasp) bottom var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat;
 		mask:
-			var(--corner-bracket-tl) left top / var(--btn-corner) var(--btn-corner) no-repeat,
-			var(--corner-bracket-tr) right top / var(--btn-corner) var(--btn-corner) no-repeat,
-			var(--corner-bracket-br) right bottom / var(--btn-corner) var(--btn-corner) no-repeat,
-			var(--corner-bracket-bl) left bottom / var(--btn-corner) var(--btn-corner) no-repeat;
+			var(--corner-bracket-tl) left var(--btn-clasp) top var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat,
+			var(--corner-bracket-tr) right var(--btn-clasp) top var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat,
+			var(--corner-bracket-br) right var(--btn-clasp) bottom var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat,
+			var(--corner-bracket-bl) left var(--btn-clasp) bottom var(--btn-clasp) / var(--btn-corner) var(--btn-corner) no-repeat;
 		transition:
+			--btn-clasp 260ms var(--ease-out),
 			background-color var(--dur-quick) var(--ease-out),
 			opacity var(--dur-quick) var(--ease-out);
 	}
 
 	.btn-outline::after {
 		opacity: 0.5;
+	}
+
+	/* Under the hand, or the keyboard, the corner-pieces step in and grip the plate, stopping 2px off the rim. */
+	.btn-primary:is(:hover, :focus-visible)::after,
+	.btn-outline:is(:hover, :focus-visible)::after {
+		--btn-clasp: calc(var(--btn-corner-offset) - 3px);
 	}
 
 	/* The plate takes more ink: gold brightens in the night rooms, the pen deepens on paper. */
