@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-10-06'
+	const lastUpdated = '2026-10-14'
 
 	type Project = {
 		name: string
@@ -111,6 +111,7 @@
 				},
 				{
 					name: 'Iraqi Electronic Passport',
+					url: 'https://epp.iq',
 					measure: 'national',
 					note: 'The public website and appointment booking.',
 				},
