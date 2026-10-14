@@ -106,6 +106,7 @@
 				},
 				{
 					name: 'Oil Coupon',
+					url: 'https://link.qi.iq/app/3488020204538547',
 					measure: '3M+ families',
 					note: 'The national fuel-coupon mini app, the most used in Super Qi.',
 				},
