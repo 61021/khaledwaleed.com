@@ -81,11 +81,11 @@
 			company: 'Speetu',
 			url: 'https://speetu.com',
 			meta: 'Part-time, Amsterdam, remote',
-			title: 'UI/UX Designer',
+			title: 'Digital Designer',
 			start: 'Oct 2021',
 			end: 'Oct 2022',
 			highlights: [
-				'Designed Speetu’s logo and brand identity, plus websites for Dutch brands, Inflexio among them.',
+				'Designed and built websites for Dutch brands, Inflexio among them, plus Speetu’s own logo and brand identity.',
 			],
 		},
 		{
@@ -194,7 +194,7 @@
 			designs for surgeons and beauty brands with the help of great people, then decided graphic
 			design isn't really for me and switched to designing interfaces. A friend got me started with
 			code and I taught myself the rest. In October 2021 I found an opening at Speetu, a studio in
-			Amsterdam, applied, and got it, so at seventeen, still in high school, I was a UI/UX designer.
+			Amsterdam, applied, and got it, so at seventeen, still in high school, I was a digital designer.
 			The same month I started
 			<a href='https://vitex.dev' target='_blank' rel='noopener' class='link'>Vitex</a>, my own
 			studio, with the motto it still carries, <em>software, pretty and perfect</em>.
