@@ -52,6 +52,14 @@
 			keywords:
 				'work portfolio products auction key rocca menu risha amanat baghdad enjaz oil coupon vitex open source nuxt ui',
 		},
+		{
+			id: 'craft',
+			title: 'Craft',
+			subtitle: 'Interactions and animations, recorded from the real code',
+			href: '/craft',
+			kind: 'page',
+			keywords: 'motion animation interaction design details showcase videos clips',
+		},
 		{ id: 'writing', title: 'Writing', subtitle: 'Essays & notes', href: '/writing', kind: 'page' },
 		{
 			id: 'likes',

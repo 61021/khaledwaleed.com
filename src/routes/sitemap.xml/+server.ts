@@ -4,7 +4,7 @@ import { studies } from '$lib/studies/studies'
 
 export const prerender = true
 
-const staticRoutes = ['/', '/story', '/projects', '/likes', '/films', '/tools', '/contact', '/writing']
+const staticRoutes = ['/', '/story', '/projects', '/craft', '/likes', '/films', '/tools', '/contact', '/writing']
 
 export function GET() {
 	// Only claim a lastmod when we actually know it; search engines learn to
