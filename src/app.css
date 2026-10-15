@@ -163,6 +163,35 @@ html[data-room='studies'] body::after {
 	display: none;
 }
 
+/* ---------- The craft wall (/craft) ----------
+   A third world: a plain grey wall of clips that follows the visitor's
+   own light or dark setting. No wallpaper, no vignette, no house type;
+   the page itself owns its tokens (routes/craft). */
+:root[data-room='craft'] {
+	--bg: #161616;
+	--ink: #ededed;
+}
+
+html[data-room='craft'] {
+	color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+	:root[data-room='craft'] {
+		--bg: #fafafa;
+		--ink: #171717;
+	}
+
+	html[data-room='craft'] {
+		color-scheme: light;
+	}
+}
+
+html[data-room='craft'] body::before,
+html[data-room='craft'] body::after {
+	display: none;
+}
+
 /* ---------- Typography stack ----------
    Two families, one role each:
    · body    = Source Sans 3 (sans: labels, notes, smallcaps, UI)

@@ -16,6 +16,8 @@ describe('roomForPath', () => {
 		expect(roomForPath('/contact')).toBe('contact')
 		expect(roomForPath('/writing')).toBe('writing')
 		expect(roomForPath('/writing/the-thin-line')).toBe('writing')
+		expect(roomForPath('/studies/easing')).toBe('studies')
+		expect(roomForPath('/craft')).toBe('craft')
 	})
 
 	it('falls back to home for unknown paths', () => {

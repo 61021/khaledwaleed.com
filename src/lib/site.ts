@@ -302,6 +302,9 @@ export function roomForPath(pathname: string): string {
 	// renders it without the house chrome).
 	if (pathname === '/studies' || pathname.startsWith('/studies/'))
 		return 'studies'
+	// The craft wall: its own dark world (+layout.svelte keeps it bare).
+	if (pathname === '/craft')
+		return 'craft'
 	if (pathname === '/story')
 		return 'story'
 	if (pathname === '/likes')
@@ -342,4 +345,5 @@ export const roomBg: Record<string, string> = {
 	tools: '#131310',
 	404: '#232b30',
 	studies: '#e9e4de',
+	craft: '#161616',
 }

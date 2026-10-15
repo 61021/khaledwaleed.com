@@ -37,6 +37,13 @@
 	}
 	const inStudies = $derived(isStudiesPath(page.url.pathname))
 
+	// /craft is a third world: a plain dark wall of clips, with none of
+	// the museum's chrome and none of the studies' paper.
+	function isCraftPath(pathname: string | undefined) {
+		return pathname === '/craft'
+	}
+	const bare = $derived(inStudies || isCraftPath(page.url.pathname))
+
 	// The colophon year, computed so it turns over each New Year.
 	const colophonYear = romanYear(new Date().getFullYear())
 
@@ -80,7 +87,7 @@
 
 	onMount(() => {
 		markHydrated()
-		if (!inStudies)
+		if (!bare)
 			initSound()
 		return () => {
 			clearTimeout(hintShow)
@@ -89,7 +96,7 @@
 	})
 
 	function tickOnClick(e: MouseEvent) {
-		if (inStudies)
+		if (bare)
 			return
 		const el = e.target instanceof Element ? e.target.closest('a, button') : null
 		if (el)
@@ -165,7 +172,7 @@
 	let smoothContent = $state<HTMLElement>()
 
 	$effect(() => {
-		if (inStudies || !smoothWrapper || !smoothContent)
+		if (bare || !smoothWrapper || !smoothContent)
 			return
 		return mountSmoother(smoothWrapper, smoothContent)
 	})
@@ -205,8 +212,9 @@
 	}
 
 	function onGlobalKeydown(e: KeyboardEvent) {
-		// The studies have no menu, no sound switch, and no secrets.
-		if (inStudies)
+		// The studies and the craft wall have no menu, no sound switch,
+		// and no secrets.
+		if (bare)
 			return
 		if (e.key === 'Escape')
 			mobileOpen = false
@@ -414,8 +422,10 @@
 
 	onNavigate((navigation) => {
 		mobileOpen = false
-		// The first walk out of the studies arms the house sound system.
-		if (navigation.to && !isStudiesPath(navigation.to.url.pathname))
+		// The first walk out of the studies or the craft wall arms the
+		// house sound system.
+		const toPath = navigation.to?.url.pathname
+		if (toPath && !isStudiesPath(toPath) && !isCraftPath(toPath))
 			initSound()
 		// The overture plays once per visit: after the first arrival the
 		// curtain sits out and paintings develop in place (see Curtain.svelte
@@ -438,6 +448,10 @@
 		// The walk is for room changes only: hash jumps and same-path
 		// search changes (the music range switcher) swap in place.
 		if (!pathChanged)
+			return
+		// The craft wall stands apart from both worlds: going in or out
+		// is a plain cut, as it is between any two sites.
+		if (isCraftPath(navigation.from?.url.pathname) || isCraftPath(navigation.to?.url.pathname))
 			return
 		// Start the next painting's decode if intent didn't get there first.
 		// Nothing waits on it: a canvas that isn't ready develops in on its
@@ -510,7 +524,7 @@
 	})
 </script>
 
-{#if !inStudies}
+{#if !bare}
 	<JsonLd />
 	<CommandPalette />
 	<Curtain />
@@ -546,7 +560,7 @@
 {/snippet}
 
 <svelte:head>
-	{#if !inStudies}
+	{#if !bare}
 		<link rel='preload' as='font' type='font/woff2' href={newsreaderWoff2} crossorigin='anonymous' />
 		<link rel='preload' as='font' type='font/woff2' href={sourceSansWoff2} crossorigin='anonymous' />
 	{/if}
@@ -570,8 +584,9 @@
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
-{#if inStudies}
-	<!-- The studies: bare paper. Their world lives in routes/studies. -->
+{#if bare}
+	<!-- The studies and the craft wall: no house chrome. Their worlds
+	     live in routes/studies and routes/craft. -->
 	<main id='main'>
 		{@render children()}
 	</main>
