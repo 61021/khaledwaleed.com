@@ -7,6 +7,7 @@ export const LINK_LABEL: Record<CraftLink, string> = {
 	prototype: 'View prototype',
 	study: 'Read the study',
 	essay: 'Read the essay',
+	code: 'View the pull request',
 }
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']

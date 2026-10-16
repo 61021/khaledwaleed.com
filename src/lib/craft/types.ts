@@ -1,5 +1,5 @@
 /** What the button under a linked tile says it opens. */
-export type CraftLink = 'production' | 'prototype' | 'study' | 'essay'
+export type CraftLink = 'production' | 'prototype' | 'study' | 'essay' | 'code'
 
 /** One tile: a single interaction, animation or piece, as a looping clip or a still. */
 export interface CraftItem {
