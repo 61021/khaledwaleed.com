@@ -7,9 +7,11 @@
 		tile: CraftTile
 		/** The first row paints with the page instead of waiting its turn. */
 		eager?: boolean
+		/** Unlinked tiles open the clip large. */
+		onopen?: () => void
 	}
 
-	const { tile, eager = false }: Props = $props()
+	const { tile, eager = false, onopen }: Props = $props()
 
 	const media = $derived(tile.media)
 	const external = $derived(tile.href?.startsWith('http') ?? false)
@@ -61,9 +63,10 @@
 		<span class='sr-only'>{LINK_LABEL[tile.link ?? 'production']}</span>
 	</a>
 {:else}
-	<figure class='tile' style:--order={tile.order}>
+	<button type='button' class='tile viewable' style:--order={tile.order} aria-haspopup='dialog' onclick={onopen}>
 		{@render frame()}
-	</figure>
+		<span class='sr-only'>View larger</span>
+	</button>
 {/if}
 
 <style>
@@ -87,7 +90,16 @@
 		-webkit-tap-highlight-color: transparent;
 	}
 
-	.linked:focus-visible {
+	.viewable {
+		padding: 0;
+		font: inherit;
+		text-align: inherit;
+		cursor: zoom-in;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.linked:focus-visible,
+	.viewable:focus-visible {
 		outline: 2px solid var(--c-focus);
 		outline-offset: 2px;
 	}
@@ -126,6 +138,10 @@
 
 	.tile:global([data-playing]) video {
 		opacity: 1;
+	}
+
+	:global(html[data-viewing]) video {
+		visibility: hidden;
 	}
 
 	/* The caption sits on the clip with a soft scrim of the clip's own

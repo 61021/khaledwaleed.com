@@ -35,8 +35,8 @@ function observe(video: HTMLVideoElement, onNear: () => void, onSeen: (seen: boo
 /**
  * A tile's loop: fetched when it comes near, playing only while in view
  * and the tab is showing. Under reduced motion or Save-Data nothing
- * moves on its own; pointing at the tile, focusing it or tapping it
- * plays the loop, and leaving stops it where it is.
+ * moves on its own; pointing at the tile or focusing it plays the loop,
+ * and leaving stops it where it is.
  */
 export function clip(src: string): Attachment<HTMLVideoElement> {
 	return (video) => {
@@ -55,7 +55,8 @@ export function clip(src: string): Attachment<HTMLVideoElement> {
 		}
 		const sync = () => {
 			const auto = !still.matches && !saveData
-			if (inView && !document.hidden && (auto || asked)) {
+			const viewing = document.documentElement.hasAttribute('data-viewing')
+			if (inView && !document.hidden && !viewing && (auto || asked)) {
 				load()
 				void video.play().catch(() => {})
 			}
@@ -71,15 +72,6 @@ export function clip(src: string): Attachment<HTMLVideoElement> {
 		const release = () => {
 			asked = false
 			sync()
-		}
-		const toggle = (e: Event) => {
-			// Linked tiles keep their click for the link.
-			if (tile.tagName === 'A' || (!still.matches && !saveData))
-				return
-			e.preventDefault()
-			if (asked)
-				release()
-			else ask()
 		}
 
 		const stop = observe(
@@ -98,8 +90,8 @@ export function clip(src: string): Attachment<HTMLVideoElement> {
 		tile.addEventListener('pointerleave', release)
 		tile.addEventListener('focusin', ask)
 		tile.addEventListener('focusout', release)
-		tile.addEventListener('click', toggle)
 		document.addEventListener('visibilitychange', sync)
+		document.addEventListener('craftviewer', sync)
 		still.addEventListener('change', sync)
 
 		return () => {
@@ -109,8 +101,8 @@ export function clip(src: string): Attachment<HTMLVideoElement> {
 			tile.removeEventListener('pointerleave', release)
 			tile.removeEventListener('focusin', ask)
 			tile.removeEventListener('focusout', release)
-			tile.removeEventListener('click', toggle)
 			document.removeEventListener('visibilitychange', sync)
+			document.removeEventListener('craftviewer', sync)
 			still.removeEventListener('change', sync)
 			video.pause()
 			video.removeAttribute('src')

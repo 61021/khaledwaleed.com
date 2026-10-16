@@ -2,12 +2,21 @@
 	import { Monogram, SchemaOrg, Seo, site } from '$lib'
 	import { craftTiles, deal } from '$lib/craft/craft'
 	import CraftCard from '$lib/craft/CraftCard.svelte'
+	import CraftViewer from '$lib/craft/CraftViewer.svelte'
 
 	const tiles = craftTiles()
 	// Both layouts ship in the markup and CSS picks one, so the wall never
 	// reflows after hydration; clips only load inside the one on show.
 	const three = deal(tiles, 3)
 	const two = deal(tiles, 2)
+
+	// The clip on show in the viewer, by its place on the wall.
+	let viewing = $state<number | null>(null)
+
+	function step(delta: number) {
+		if (viewing !== null)
+			viewing = (viewing + delta + tiles.length) % tiles.length
+	}
 
 	const description = 'Interactions, animations and small pieces from the things I build, recorded from the real code.'
 
@@ -53,7 +62,7 @@
 		{#each three as column, c (c)}
 			<div class='column'>
 				{#each column as tile (tile.id)}
-					<CraftCard {tile} eager={tile.order < 3} />
+					<CraftCard {tile} eager={tile.order < 3} onopen={() => (viewing = tile.order)} />
 				{/each}
 			</div>
 		{/each}
@@ -63,11 +72,13 @@
 		{#each two as column, c (c)}
 			<div class='column'>
 				{#each column as tile (tile.id)}
-					<CraftCard {tile} />
+					<CraftCard {tile} onopen={() => (viewing = tile.order)} />
 				{/each}
 			</div>
 		{/each}
 	</div>
+
+	<CraftViewer {tiles} index={viewing} onclose={() => (viewing = null)} onstep={step} />
 </div>
 
 <style>
