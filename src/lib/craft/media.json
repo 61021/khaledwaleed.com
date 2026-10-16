@@ -106,10 +106,10 @@
 	"dipper-overture": {
 		"width": 1280,
 		"height": 722,
-		"seconds": 6.52,
-		"video": "dipper-overture.e0a90802d9.mp4",
-		"poster": "dipper-overture.d85272b6a3.webp",
-		"lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAOCAIAAAC6mkspAAAC/klEQVQozzWSyW5jZRSE6/zDnR0PiTI4Q5PQ0KKRYMWWd2DNnjdC/RjAKwQhwQMgGro7hk7stuM49rVzB9/7/+ewSEeq2pQ+1aJUZE0IEJESAoiICI8CAQSCAAQAgDxaICLCEECEBCIMiHliBEQgPNWpj10ERSQAiXzERMBCgICfEghgBB6koYiIVBAbo00QKm2IlAiDSER82zCzsBdmgQh7MEQg3kMEJBA2REoUKW3CrHt2/tnw5DyOIvZts91WjvPVoqkrYSmrgp2ri03bbFlYvPe+ZZDAC3uAtDLWhFHWPzj75Pnh8bM47URJmsRR1u3auBOGobZWgDDrwQRJbxcEBfICAfTjpmAwjDFBNjjq9vsgFSfx2cW5c651vipWg37suWok3R8ekjYGvMgL8+LlfDapN8vFZFzmS6W0Bzw3JtkdRklqFC3Xm2+HBz98/9222i7z1f3yPgxs43wY2LKqRzcfvvri8/l80esPWqaDfvbjq1c///RLFhhFsIqMglCz9cZo8OvR+PL3P/dUmZflh9m0KouGuXa8figms9vLy18bLztxfDw8ffn1N6/fvU/ikFtHAIOMK/JGEhhtwwgeYVMV20VdlXsBTNoNrAFhVbmTbnI9ma7WhdLqYTaZjq53085EUZhl9SYHaW2NJUCgtNZRGD4/Obmbz96OrojUcNB/dnb85cXF2WG/34kPep3ImKNetr+T7A/210V19e8/YG6bRpEyzN47j7pw1q7y+/+mM95W795PbibT9aYsq7o+2vTSKHLtXpr0X3waJp3GMUWHyfVEadXWNRGRUjq0weNDSWnnuW3bTpzcLRfzxWK2uJ+tivH0dnq3vFsV08WaPbqdgY12lmwv//htPh6BBeyJtGFhcQ6gti6VDd6M3oB9p7tX19t8dZ9vHq4CG6dpluxYjaOj02mblpu/p6WfXP0FZoCgjG8bsjZQSiultTFh3FFBFKfZ6elFtzuYj9/m+Z3zDK21TSxJlvVsYFm4dby8vamqwns414qN/wfyj7fBR0biLQAAAABJRU5ErkJggg=="
+		"seconds": 4.5,
+		"video": "dipper-overture.c12f719414.mp4",
+		"poster": "dipper-overture.f00d6901ad.webp",
+		"lqip": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAOCAMAAAACJixMAAAAYFBMVEUGBQwHBg0EAwoDAgkBAAcCAQgNDBM3NjwKCRAFBAsAAAUXFh0nJi0VFBsSERgQDxYdHCMQDxUZGB4DAgoYFx4gHyUREBchICcgHyYvLjQzMjgIBw4pKC8AAAQWFRsPDhQYCD3AAAAAVUlEQVQY02NgoCNgZGQEEkyY4swsrMxMrGzsHJyo4lzcPLx8/ALcgkLCjMgSnCKiYuICEpKsvFIoGjilZZiYWZhl5aTkOdHsYAFbz8jIjGE5Gk1NAACZxAJ9rEH9ygAAAABJRU5ErkJggg=="
 	},
 	"ease-race": {
 		"width": 1080,

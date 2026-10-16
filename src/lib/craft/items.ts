@@ -66,7 +66,7 @@ export const items: CraftItem[] = [
 	{ id: 'ease-race', title: 'Ease race', project: 'khaledwaleed.com', about: 'Three dots race on one clock, the same elastic ease built three ways, with tracers riding their curves.', made: '2026-08', href: '/studies/easing', link: 'study', ground: 'light' },
 	{ id: 'service-corridor', title: 'Command palette', project: 'khaledwaleed.com', about: 'The palette searches the pages, and a typed fragment surfaces a hidden encore that lowers the curtain again.', made: '2026-08', ground: 'dark' },
 	{ id: 'vitex-the-pour', title: 'The pour', project: 'Vitex', about: 'A loader where each letter fills from hairline to heavy ink while a readout pours past 100 percent.', made: '2026-08', ground: 'light', caption: 'top' },
-	{ id: 'dipper-overture', title: 'Big Dipper loader', project: 'Morshed', about: 'A loader traces the Big Dipper logo star by star, then dissolves into a galaxy as the title rises.', made: '2026-08', ground: 'dark', caption: 'top' },
+	{ id: 'dipper-overture', title: 'Big Dipper loader', project: 'Morshed', about: 'A loader traces the Big Dipper logo star by star, handle to bowl.', made: '2026-08', ground: 'dark', caption: 'top' },
 
 	// July 2026
 	{ id: 'auction-key-voxel-scenes', title: 'Voxel scenes', project: 'Auction Key', about: 'Empty states drawn in cubes: a cargo ship on drifting waves, a crane swinging a block, a magnifier over a missing tile.', made: '2026-07', ground: 'light' },
