@@ -93,15 +93,19 @@
 		outline-offset: 2px;
 	}
 
+	/* Composited media slip past overflow's rounded corners in GPU Firefox;
+	   clip-path holds them. 11px is the tile's 12px less its 1px edge. */
 	.frame {
+		--round: 11px;
 		position: relative;
 		display: block;
 		overflow: hidden;
-		transform: translateZ(0);
+		border-radius: var(--round);
+		clip-path: inset(0 round var(--round));
 	}
 
 	.linked .frame {
-		border-radius: 8px;
+		--round: 8px;
 	}
 
 	.lqip,
