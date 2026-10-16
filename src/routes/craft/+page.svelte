@@ -109,8 +109,11 @@
 		}
 	}
 
+	/* Above the wall, whose fade-in lifts it onto its own layer over
+	   the mark. */
 	.home {
 		position: absolute;
+		z-index: 1;
 		top: 56px;
 		left: 50%;
 		display: grid;
