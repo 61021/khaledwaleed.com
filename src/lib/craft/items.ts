@@ -30,7 +30,6 @@ export const items: CraftItem[] = [
 	{ id: 'tally-painted-scenes', title: 'Painted scenes', project: 'Tally', about: 'Picking a scene swaps the painting behind every page and retints the whole interface with its colours.', made: '2026-10', href: `${tally}/settings`, link: 'production', ground: 'light', caption: 'top' },
 	{ id: 'enjaz-design-starfield', title: 'Traced mark', project: 'Enjaz', about: 'Over a starfield and a planet horizon, the Enjaz mark traces itself as a glowing line.', made: '2026-10', href: `${enjaz}/design`, link: 'production', ground: 'dark', caption: 'top' },
 	{ id: 'loto-ball-drop-empty', title: 'Ball drop', project: 'Iraq Loto', about: 'The empty state for a player with no tickets: six gold balls drop into their cups one by one above the jackpot and the way to play.', made: '2026-10', ground: 'dark' },
-	{ id: 'glass-bench', title: 'Frosted bar', project: 'khaledwaleed.com', about: 'Coloured tiles slide up under a recreated frosted top bar, comparing the real recipe with blur alone.', made: '2026-10', href: '/studies/apple', link: 'study', ground: 'light' },
 	{ id: 'quickev-footer-cable', title: 'Charging cable', project: 'Quick EV', about: 'A drawn cable with a coil hangs over the footer, and current runs its length with a soft amber glow.', made: '2026-10', href: quickev, link: 'production', ground: 'dark' },
 	{ id: 'away-tab', title: 'Away tab', project: 'khaledwaleed.com', about: 'Switch to another tab and this one says it will be here, its icon turning from the k to a gold crescent until you come back.', made: '2026-10', ground: 'dark' },
 	{ id: 'enjaz-governorates-code', title: 'Nineteen lights', project: 'Enjaz', about: 'A secret arrow-key code lights all 19 governorate capitals on the map of Iraq, Baghdad first and the rest outward.', made: '2026-10', href: enjaz, link: 'production', ground: 'dark' },
@@ -39,7 +38,6 @@ export const items: CraftItem[] = [
 
 	// September 2026
 	{ id: 'auction-key-lot-404', title: 'Lot 404', project: 'Auction Key', about: 'A voxel 404 where the key logo stands in for the zero; tap its fallen tooth and it snaps back, the key rattles, and the tooth drops out again.', made: '2026-09', href: `${auctionKey}/lot-404`, link: 'production', ground: 'light' },
-	{ id: 'tally-moonrise-finish', title: 'Moonrise', project: 'Tally', about: 'When the last Sudoku digit lands, the grid thins out, a moon rises behind the board and the digits brighten from the bottom row up.', made: '2026-09', href: tally, link: 'production', ground: 'dark' },
 	{ id: 'room-walk', title: 'Room walk', project: 'khaledwaleed.com', about: 'Changing pages walks along one wall: the old room slides off as the next arrives, its painting travelling half as far as the words.', made: '2026-09', ground: 'dark' },
 	{ id: 'loto-draw-reveal', title: 'Draw reveal', project: 'Iraq Loto', about: 'The six winning balls land one beat apart while matching numbers on the tickets light gold, then the red extra ball and the win.', made: '2026-09', ground: 'dark' },
 	{ id: 'auction-key-cube-toss', title: 'Cube toss', project: 'Auction Key', about: 'Every button press tosses a few of the logo\'s cubes out of the click point, and they land in a row on the button\'s edge.', made: '2026-09', href: auctionKey, link: 'production', ground: 'light' },
@@ -49,31 +47,23 @@ export const items: CraftItem[] = [
 	{ id: 'auction-key-key-assembly', title: 'Voxel key', project: 'Auction Key', about: 'The logo, a key built from eleven amber cubes, assembles cube by cube on a spring.', made: '2026-09', href: auctionKey, link: 'production', ground: 'light' },
 	{ id: 'tread-roll', title: 'Tread roll', project: 'Auto Zone', about: 'The wheel mark rolls across the footer\'s edge and presses a tire tread in behind it, hot cyan cooling to asphalt.', made: '2026-09', href: 'https://auto-zone.co', link: 'production', ground: 'dark', caption: 'top' },
 	{ id: 'pen-crossing', title: 'Pen crossing', project: 'khaledwaleed.com', about: 'Stepping from the dark museum into the paper studies, a leaning edge sweeps across the screen with a pen stroke riding it.', made: '2026-09', ground: 'dark' },
-	{ id: 'shgad-settle-up', title: 'Settle up', project: 'Shgad', about: 'Marking a debt as paid throws a burst of flecks and swaps the balance for a green check that draws itself.', made: '2026-09', ground: 'light' },
 	{ id: 'footer-signature', title: 'Signed footer', project: 'khaledwaleed.com', about: 'Every page is signed like a canvas: the drawn kw writes itself stroke by stroke at the end of a fading hairline.', made: '2026-09', ground: 'dark' },
 	{ id: 'honeycomb-edge', title: 'Vial lattice', project: 'Almadafaat', about: 'A honeycomb edge of vials spins out from the logo cell and fills, and the pointer floods the cells it passes.', made: '2026-09', ground: 'light', caption: 'top' },
 	{ id: 'auction-key-cube-skyline', title: 'Cube skyline', project: 'Auction Key', about: 'The footer rises into the page as a skyline of cubes that drop onto the base row as it scrolls into view.', made: '2026-09', href: auctionKey, link: 'production', ground: 'light', caption: 'top' },
-	{ id: 'exposure-plates', title: 'Exposure plates', project: 'khaledwaleed.com', about: 'Four near-identical black plates under an exposure slider: the pure blacks stay black while the ones hiding blue give it up.', made: '2026-09', href: '/studies/monochrome', link: 'study', ground: 'light', caption: 'top' },
 	{ id: 'diamond-ledger', title: 'Diamond ledger', project: 'Al-Obaidi General Trading', about: 'The logo\'s diamonds stack onto the footer rule column by column, then ripple as the pointer runs along them.', made: '2026-09', ground: 'light', caption: 'top' },
-	{ id: 'scribble-underline', title: 'Scribble underline', project: 'khaledwaleed.com', about: 'Hovering a title draws one wobbling pen stroke under it from left to right.', made: '2026-09', ground: 'light', caption: 'top' },
 
 	// August 2026
 	{ id: 'curtain-overture', title: 'Curtain overture', project: 'khaledwaleed.com', about: 'Every first visit opens on a velvet curtain cut from the room\'s own colour, which parts on a room that is already hung.', made: '2026-08', ground: 'dark' },
 	{ id: 'vitex-wet-ink-masthead', title: 'Wet ink', project: 'Vitex', about: 'The word Vitex as wet ink in a fluid simulation: the pointer smears it into swirls and the letters heal back.', made: '2026-08', ground: 'light' },
 	{ id: 'after-hours-screensaver', title: 'After hours', project: 'khaledwaleed.com', about: 'Leave a page still and the lights go down while the signature writes itself onto the dark wall.', made: '2026-08', ground: 'dark' },
-	{ id: 'vitex-ink-swarm', title: 'Ink swarm', project: 'Vitex', about: 'A quarter of a million grains of ink condense into the word Vitex, blow apart in the scroll and re-form as the next word.', made: '2026-08', ground: 'light', caption: 'top' },
 	{ id: 'vitex-measured-selection', title: 'Measured selection', project: 'Vitex', about: 'A retired hero where the claim arrives already under inspection, a design selection box measuring the last word.', made: '2026-08', ground: 'dark' },
-	{ id: 'ease-race', title: 'Ease race', project: 'khaledwaleed.com', about: 'Three dots race on one clock, the same elastic ease built three ways, with tracers riding their curves.', made: '2026-08', href: '/studies/easing', link: 'study', ground: 'light' },
 	{ id: 'service-corridor', title: 'Command palette', project: 'khaledwaleed.com', about: 'The palette searches the pages, and a typed fragment surfaces a hidden encore that lowers the curtain again.', made: '2026-08', ground: 'dark' },
-	{ id: 'vitex-the-pour', title: 'The pour', project: 'Vitex', about: 'A loader where each letter fills from hairline to heavy ink while a readout pours past 100 percent.', made: '2026-08', ground: 'light', caption: 'top' },
 	{ id: 'dipper-overture', title: 'Big Dipper loader', project: 'Morshed', about: 'A loader traces the Big Dipper logo star by star, handle to bowl.', made: '2026-08', ground: 'dark', caption: 'top' },
 
 	// July 2026
 	{ id: 'auction-key-voxel-scenes', title: 'Voxel scenes', project: 'Auction Key', about: 'Empty states drawn in cubes: a cargo ship on drifting waves, a crane swinging a block, a magnifier over a missing tile.', made: '2026-07', ground: 'light' },
 
 	// Earlier
-	{ id: 'grinders-bean-field', title: 'Bean field', project: 'The Grinders', about: 'A hero of modelled coffee beans tumbling through warm fog, leaning toward the pointer as the camera moves in.', made: '2026-06', href: 'https://grindersiq.com', link: 'production', ground: 'dark', caption: 'top' },
-	{ id: 'rocca-wordmark', title: 'Rocca wordmark', project: 'Rocca Menu', about: 'The hand-drawn Rocca wordmark and the R mark cut from it, on a warm night ground.', made: '2026-06', href: 'https://roccamenu.com', link: 'production', ground: 'dark' },
 	{ id: 'solace-palette-swap', title: 'Solace', project: 'Pixel art', about: 'A pixel scene of a torii gate, a samurai and a dragon crossing the moon, cycling through its three palettes.', made: '2021-11', ground: 'dark', caption: 'top' },
 	{ id: 'campfire-glade', title: 'Campfire', project: 'Pixel art', about: 'A looping pixel forest clearing with a flickering campfire, fireflies and a shimmering river.', made: '2020-04', ground: 'dark', caption: 'top' },
 ]
