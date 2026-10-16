@@ -291,7 +291,9 @@
 				return
 			if (!run)
 				thread.style.transition = 'none'
-			thread.style.transform = `translate3d(${link.offsetLeft}px, 0, 0) scaleX(${link.offsetWidth})`
+			// On a wrapped nav the thread rides up to its link's row.
+			const rise = link.offsetTop + link.offsetHeight - primaryNav.clientHeight
+			thread.style.transform = `translate3d(${link.offsetLeft}px, ${rise}px, 0) scaleX(${link.offsetWidth})`
 			if (!run) {
 				void thread.offsetWidth
 				thread.style.removeProperty('transition')
