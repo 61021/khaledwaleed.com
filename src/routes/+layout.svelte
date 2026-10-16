@@ -251,6 +251,7 @@
 		{ name: 'Foyer', href: '/' },
 		{ name: 'Story', href: '/story' },
 		{ name: 'Projects', href: '/projects' },
+		{ name: 'Craft', href: '/craft' },
 		{ name: 'Writing', href: '/writing' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Films', href: '/films' },
@@ -613,7 +614,7 @@
 			<nav
 				{@attach threadRuns}
 				aria-label='Primary'
-				class='relative hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'
+				class='primary-nav relative hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex'
 			>
 				{#each nav as item (item.name)}
 					<a
@@ -903,6 +904,14 @@
 
 	/* The gilt thread: a 1px hairline stretched to the link's width, so
 	   the run between two rooms is one composited transform. */
+	/* Where nine rooms can't share one line, they split five and four
+	   instead of leaving the last one alone on a second row. */
+	@media (min-width: 40rem) and (max-width: 53rem) {
+		.primary-nav {
+			max-width: 23.5rem;
+		}
+	}
+
 	.thread {
 		position: absolute;
 		bottom: -0.2rem;
