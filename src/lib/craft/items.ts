@@ -66,7 +66,7 @@ export const items: CraftItem[] = [
 	// Pixel art
 	{ id: 'solace-palette-swap', title: 'Solace', project: 'Pixel art', about: 'A pixel scene of a torii gate, a samurai and a dragon crossing the moon, cycling through its three palettes.', made: '2021-11', ground: 'dark', caption: 'top' },
 	{ id: 'px-sunset-city', title: 'Sunset city', project: 'Pixel art', about: 'A skyline burning orange at dusk over the water, with a Ferris wheel and the E Corp tower.', made: '2021-05', ground: 'light', caption: 'top' },
-	{ id: 'px-sorrow', title: 'Sorrow', project: 'Pixel art', about: 'A boy sits alone on a bench under his own rain cloud while the city sleeps.', made: '2021-04', ground: 'dark', caption: 'top' },
+	{ id: 'px-sorrow', title: 'Sorrow', project: 'Pixel art', about: 'A boy sits alone on a bench under his own rain cloud while the city sleeps, a star falls and the lamp breathes.', made: '2021-04', ground: 'dark', caption: 'top' },
 	{ id: 'px-evil-tower', title: 'The evil that does not sleep', project: 'Pixel art', about: 'A dark tower with a watching eye under a sky of burning clouds and a crescent moon.', made: '2021-02', ground: 'dark' },
 	{ id: 'px-bow-shot', title: 'Bow shot', project: 'Pixel art', about: 'A bow draws its string and looses an arrow, frame by frame.', made: '2021-01', ground: 'dark' },
 	{ id: 'px-peace', title: 'Peace', project: 'Pixel art', about: 'A strip of pink sunset clouds over a quiet green shore.', made: '2021-01', ground: 'dark' },
