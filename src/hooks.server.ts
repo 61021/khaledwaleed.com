@@ -110,7 +110,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				// and so does the browser chrome around it.
 				if (room === 'craft') {
 					return stamped
-						.replace('<meta name="theme-color" content="#0a1220" />', '<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#161616" /><meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />')
+						.replace('<meta name="theme-color" content="#0a1220" />', '<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" /><meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />')
 						.replace('<meta name="color-scheme" content="dark" />', '<meta name="color-scheme" content="dark light" />')
 				}
 				return stamped.replace('content="#0a1220"', `content="${roomBg[room] ?? '#0a1220'}"`)

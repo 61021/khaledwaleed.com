@@ -164,11 +164,11 @@ html[data-room='studies'] body::after {
 }
 
 /* ---------- The craft wall (/craft) ----------
-   A third world: a plain grey wall of clips that follows the visitor's
+   A third world: a plain black wall of clips that follows the visitor's
    own light or dark setting. No wallpaper, no vignette, no house type;
    the page itself owns its tokens (routes/craft). */
 :root[data-room='craft'] {
-	--bg: #161616;
+	--bg: #0a0a0a;
 	--ink: #ededed;
 }
 

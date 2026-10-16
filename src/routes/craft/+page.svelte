@@ -73,13 +73,11 @@
 <style>
 	.craft {
 		--gap: 8px;
-		--c-bg: #161616;
-		--c-card: #1c1c1c;
-		--c-edge: #2e2e2e;
-		--c-well: #232323;
-		--c-well-hover: #282828;
+		--c-bg: #0a0a0a;
+		--c-card: #121212;
+		--c-edge: #232323;
 		--c-ink: #ededed;
-		--c-muted: #a0a0a0;
+		--c-muted: #9a9a9a;
 		--c-focus: #707070;
 		min-height: 100dvh;
 		padding: 0 var(--gap) 4px;
@@ -94,8 +92,6 @@
 			--c-bg: #fafafa;
 			--c-card: #fefefe;
 			--c-edge: #e6e6e6;
-			--c-well: #f2f2f2;
-			--c-well-hover: #ebebeb;
 			--c-ink: #171717;
 			--c-muted: #6f6f6f;
 			--c-focus: #8f8f8f;

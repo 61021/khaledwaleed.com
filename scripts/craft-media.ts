@@ -77,7 +77,7 @@ for (const id of ids) {
 const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)))
 writeFileSync(MANIFEST, `${JSON.stringify(sorted, null, '\t')}\n`)
 
-// The share card: the top of the wall, six posters on the wall's grey.
+// The share card: the top of the wall, six posters on the wall's black.
 const W = 1200
 const H = 630
 const GAP = 8
@@ -102,7 +102,7 @@ if (newest.length === COLS * ROWS) {
 		left: GAP + (i % COLS) * (cellW + GAP),
 		top: GAP + Math.floor(i / COLS) * (cellH + GAP),
 	})))
-	await sharp({ create: { width: W, height: H, channels: 3, background: '#161616' } })
+	await sharp({ create: { width: W, height: H, channels: 3, background: '#0a0a0a' } })
 		.composite(cells)
 		.png({ compressionLevel: 9 })
 		.toFile(path.resolve('static/og-craft.png'))

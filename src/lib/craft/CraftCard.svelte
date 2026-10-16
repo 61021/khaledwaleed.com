@@ -58,7 +58,7 @@
 		rel={external ? 'noopener' : undefined}
 	>
 		{@render frame()}
-		<span class='cta'>{LINK_LABEL[tile.link ?? 'production']}</span>
+		<span class='sr-only'>{LINK_LABEL[tile.link ?? 'production']}</span>
 	</a>
 {:else}
 	<figure class='tile' style:--order={tile.order}>
@@ -83,7 +83,6 @@
 	}
 
 	.linked {
-		padding: 4px;
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
 	}
@@ -102,10 +101,6 @@
 		overflow: hidden;
 		border-radius: var(--round);
 		clip-path: inset(0 round var(--round));
-	}
-
-	.linked .frame {
-		--round: 8px;
 	}
 
 	.lqip,
@@ -202,22 +197,89 @@
 		color: rgb(0 0 0 / 0.57);
 	}
 
-	.cta {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 40px;
-		margin-top: 4px;
-		border-radius: 8px;
-		background: var(--c-well);
-		font-size: 0.875rem;
-		font-weight: 500;
-		color: var(--c-ink);
-		transition: background-color 150ms ease;
+	/* A linked tile shows where it leads with a small arrow chip in its
+	   free corner, under the pointer or focus; touch screens keep it on. */
+	.linked::before,
+	.linked::after {
+		content: '';
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		pointer-events: none;
+		transition:
+			opacity 150ms ease,
+			translate 150ms ease,
+			background-color 150ms ease;
 	}
 
-	.linked:hover .cta,
-	.linked:focus-visible .cta {
-		background: var(--c-well-hover);
+	.linked::after {
+		z-index: 3;
+		width: 30px;
+		height: 30px;
+		border-radius: 999px;
+	}
+
+	/* phosphor: arrow-up-right */
+	.linked::before {
+		z-index: 4;
+		width: 14px;
+		height: 14px;
+		margin: 8px 8px 0 0;
+		background: currentColor;
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M200 64v104a8 8 0 0 1-16 0V83.31L69.66 197.66a8 8 0 0 1-11.32-11.32L172.69 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8'/%3E%3C/svg%3E")
+			center / contain no-repeat;
+	}
+
+	.linked:has(.top)::before,
+	.linked:has(.top)::after {
+		top: auto;
+		bottom: 12px;
+	}
+
+	.linked:has(.top)::before {
+		margin: 0 8px 8px 0;
+	}
+
+	.linked:has(.dark)::after {
+		background: rgb(0 0 0 / 0.42);
+		box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+	}
+
+	.linked:has(.dark)::before {
+		color: #ededed;
+	}
+
+	.linked:has(.light)::after {
+		background: rgb(255 255 255 / 0.72);
+		box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+	}
+
+	.linked:has(.light)::before {
+		color: #171717;
+	}
+
+	.linked:is(:hover, :focus-visible)::before {
+		translate: 1px -1px;
+	}
+
+	.linked:has(.dark):is(:hover, :focus-visible)::after {
+		background: rgb(0 0 0 / 0.6);
+	}
+
+	.linked:has(.light):is(:hover, :focus-visible)::after {
+		background: rgb(255 255 255 / 0.92);
+	}
+
+	@media (hover: hover) {
+		.linked:not(:hover, :focus-visible)::before,
+		.linked:not(:hover, :focus-visible)::after {
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.linked::before {
+			translate: none !important;
+		}
 	}
 </style>
