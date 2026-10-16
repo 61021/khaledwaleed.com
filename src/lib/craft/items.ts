@@ -64,14 +64,11 @@ export const items: CraftItem[] = [
 	{ id: 'auction-key-voxel-scenes', title: 'Voxel scenes', project: 'Auction Key', about: 'Empty states drawn in cubes: a cargo ship on drifting waves, a crane swinging a block, a magnifier over a missing tile.', made: '2026-07', ground: 'light' },
 
 	// Pixel art
-	{ id: 'px-crystal', title: 'Crystal', project: 'Pixel art', about: 'A cut crystal for the first day of Inktober, drawn in pixels.', made: '2021-10', ground: 'dark' },
 	{ id: 'solace-palette-swap', title: 'Solace', project: 'Pixel art', about: 'A pixel scene of a torii gate, a samurai and a dragon crossing the moon, cycling through its three palettes.', made: '2021-11', ground: 'dark', caption: 'top' },
 	{ id: 'px-sunset-city', title: 'Sunset city', project: 'Pixel art', about: 'A skyline burning orange at dusk over the water, with a Ferris wheel and the E Corp tower.', made: '2021-05', ground: 'light', caption: 'top' },
 	{ id: 'px-sorrow', title: 'Sorrow', project: 'Pixel art', about: 'A boy sits alone on a bench under his own rain cloud while the city sleeps.', made: '2021-04', ground: 'dark', caption: 'top' },
 	{ id: 'px-evil-tower', title: 'The evil that does not sleep', project: 'Pixel art', about: 'A dark tower with a watching eye under a sky of burning clouds and a crescent moon.', made: '2021-02', ground: 'dark' },
 	{ id: 'px-bow-shot', title: 'Bow shot', project: 'Pixel art', about: 'A bow draws its string and looses an arrow, frame by frame.', made: '2021-01', ground: 'dark' },
-	{ id: 'px-desert-eagle', title: 'Desert Eagle', project: 'Pixel art', about: 'A Desert Eagle pistol as a pixel sprite.', made: '2021-01', ground: 'dark' },
-	{ id: 'px-walk-cycle', title: 'Walk cycle', project: 'Pixel art', about: 'A figure walking in place, an early walk cycle in eight frames.', made: '2021-01', ground: 'light' },
 	{ id: 'px-peace', title: 'Peace', project: 'Pixel art', about: 'A strip of pink sunset clouds over a quiet green shore.', made: '2021-01', ground: 'dark' },
 	{ id: 'px-storm-clouds', title: 'Storm clouds', project: 'Pixel art', about: 'Purple storm clouds over the hills, lit by a strike of lightning and a full moon.', made: '2020-11', ground: 'dark' },
 	{ id: 'px-pines', title: 'Pines', project: 'Pixel art', about: 'A pine forest under a misty full moon, with a small cabin among the trees.', made: '2020-09', ground: 'dark' },
@@ -81,9 +78,6 @@ export const items: CraftItem[] = [
 	{ id: 'px-eye-of-cthulhu', title: 'Eye of Cthulhu', project: 'Pixel art', about: 'A lone figure with a torch under a black eclipse in the night sky.', made: '2020-06', ground: 'dark' },
 	{ id: 'px-red-dusk', title: 'Red dusk', project: 'Pixel art', about: 'A red sun setting behind autumn trees.', made: '2020-06', ground: 'dark' },
 	{ id: 'px-aang', title: 'Aang', project: 'Pixel art', about: 'Aang meditating, drawn in pixels.', made: '2020-05', ground: 'dark', caption: 'top' },
-	{ id: 'px-battleaxe', title: 'Battleaxe', project: 'Pixel art', about: 'A purple battleaxe as a pixel sprite.', made: '2020-05', ground: 'dark' },
 	{ id: 'px-nether', title: 'Nether', project: 'Pixel art', about: 'A dark cave with falls of lava and a glowing portal.', made: '2020-04', ground: 'dark', caption: 'top' },
 	{ id: 'campfire-glade', title: 'Campfire', project: 'Pixel art', about: 'A looping pixel forest clearing with a flickering campfire, fireflies and a shimmering river.', made: '2020-04', ground: 'dark', caption: 'top' },
-	{ id: 'px-sword', title: 'Sword', project: 'Pixel art', about: 'A crimson sword with a glint running along its blade.', made: '2020-03', ground: 'light' },
-	{ id: 'px-burning-eye', title: 'Burning eye', project: 'Pixel art', about: 'A green eyeball wrapped in flickering flame.', made: '2020-03', ground: 'dark' },
 ]
