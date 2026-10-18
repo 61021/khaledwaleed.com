@@ -21,7 +21,7 @@
 			title: 'Frontend Lead',
 			start: 'Jan 2025',
 			highlights: [
-				'Joined as the only frontend engineer on seven government platforms with 4+ million users, rebuilt and redesigned all seven within a year, and took production bugs from daily to about weekly.',
+				'Joined as the only frontend engineer on seven government platforms with 4+ million users, rebuilt and redesigned all seven within a year, and took production bugs from multiple a day to about weekly.',
 				'Built the frontend team from zero: scouted all three hires from the market, ran their interviews and trial tasks, then trained and onboarded them. Now lead the four, owning code review, standards, and release quality.',
 				'Helped write The Perfect Interface, the rulebook every Enjaz dashboard and app must implement, from the basics of a fast interface down to the polish details nobody notices.',
 				'The seven include Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems running the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
