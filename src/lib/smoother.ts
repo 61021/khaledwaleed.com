@@ -1,5 +1,5 @@
 // The glide: GSAP's ScrollSmoother carrying the museum's scroll on a
-// short catch-up (0.7s), subtle enough to read as weight rather than
+// short catch-up (0.5s), subtle enough to read as weight rather than
 // syrup. Desktop pointers only: touch compositors already glide, and
 // pinning the wrapper on phones buys jank for nothing; reduced-motion
 // visitors are never smoothed at all. GSAP loads on demand so the
@@ -36,7 +36,7 @@ export function mountSmoother(wrapper: HTMLElement, content: HTMLElement): () =>
 			// re-stamps an inline `smooth` after every refresh, a second
 			// clock under the same wheel.
 			document.documentElement.setAttribute('data-smoother', '')
-			smoother = Smoother.create({ wrapper, content, smooth: 0.7, effects: false })
+			smoother = Smoother.create({ wrapper, content, smooth: 0.5, effects: false })
 			refreshTriggers = () => ScrollTrigger.refresh()
 		})()
 	}
