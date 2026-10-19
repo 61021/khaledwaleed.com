@@ -1,9 +1,9 @@
-// The glide: GSAP's ScrollSmoother carrying the museum's scroll on a
-// short catch-up (0.5s), subtle enough to read as weight rather than
-// syrup. Desktop pointers only: touch compositors already glide, and
-// pinning the wrapper on phones buys jank for nothing; reduced-motion
-// visitors are never smoothed at all. GSAP loads on demand so the
-// museum's first paint never carries it.
+// The glide: GSAP's ScrollSmoother carrying the museum's and the craft
+// wall's scroll on a short catch-up (0.5s), subtle enough to read as
+// weight rather than syrup. Desktop pointers only: touch compositors
+// already glide, and pinning the wrapper on phones buys jank for
+// nothing; reduced-motion visitors are never smoothed at all. GSAP
+// loads on demand so no first paint carries it.
 import type { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 let smoother: ScrollSmoother | undefined
@@ -11,7 +11,7 @@ let refreshTriggers: (() => void) | undefined
 let epoch = 0
 
 /**
- * Mounts the glide over the museum. Returns its disposer; call it when
+ * Mounts the glide over a frame. Returns its disposer; call it when
  * the wrapper leaves the DOM (the layout's effect does).
  */
 export function mountSmoother(wrapper: HTMLElement, content: HTMLElement): () => void {

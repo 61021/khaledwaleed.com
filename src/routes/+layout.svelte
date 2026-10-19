@@ -166,13 +166,14 @@
 	// A reload restores its old seat before any wheel moves.
 	onMount(onScroll)
 
-	// The glide (src/lib/smoother.ts) mounts with the museum and leaves
-	// with it: /studies keeps native paper scrolling under its own GSAP.
+	// The glide (src/lib/smoother.ts) mounts with the museum or the craft
+	// wall and leaves with them: /studies keeps native paper scrolling
+	// under its own GSAP.
 	let smoothWrapper = $state<HTMLElement>()
 	let smoothContent = $state<HTMLElement>()
 
 	$effect(() => {
-		if (bare || !smoothWrapper || !smoothContent)
+		if (inStudies || !smoothWrapper || !smoothContent)
 			return
 		return mountSmoother(smoothWrapper, smoothContent)
 	})
@@ -587,12 +588,21 @@
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
-{#if bare}
-	<!-- The studies and the craft wall: no house chrome. Their worlds
-	     live in routes/studies and routes/craft. -->
+{#if inStudies}
+	<!-- The studies: no house chrome. Their world lives in routes/studies. -->
 	<main id='main'>
 		{@render children()}
 	</main>
+{:else if bare}
+	<!-- The craft wall (routes/craft): no house chrome either, but the
+	     glide on a frame of its own. -->
+	<div id='smooth-wrapper' bind:this={smoothWrapper}>
+		<div id='smooth-content' bind:this={smoothContent}>
+			<main id='main'>
+				{@render children()}
+			</main>
+		</div>
+	</div>
 {:else}
 	<!-- The header: still lettering on the room's canvas from the first
 	     frame, no band of wall above it, but it now rides fixed. Past
