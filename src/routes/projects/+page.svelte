@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-10-14'
+	const lastUpdated = '2026-10-19'
 
 	type Project = {
 		name: string
@@ -76,7 +76,7 @@
 					name: 'Risha',
 					url: 'https://rishaiq.com',
 					measure: '25K+ downloads',
-					note: 'E-learning for Iraq’s sixth-preparatory year, the app, dashboard, website and a custom DRM all designed and built by me.',
+					note: 'E-learning for Iraq’s sixth-preparatory year, I designed it and built the frontend of its app, dashboard and website.',
 				},
 				{
 					name: 'Amanat Baghdad',
