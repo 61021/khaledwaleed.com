@@ -49,11 +49,13 @@ export function mountSmoother(wrapper: HTMLElement, content: HTMLElement): () =>
 		smoother = undefined
 		refreshTriggers = undefined
 		// kill() can leave the body's synthetic height and the inline
-		// scroll-behavior GSAP stamps on both roots; the next world
-		// (/studies) scrolls its own content under its own CSS.
+		// scroll-behavior GSAP stamps on the body; the next world scrolls
+		// its own content under its own CSS. The root's inline `auto`
+		// stays: the navigation unmounting this frame set it for its jump
+		// to the top and clears it itself (+layout onNavigate); dropped
+		// here, html's smooth turns that jump into a glide.
 		document.body.style.removeProperty('height')
 		document.body.style.removeProperty('scroll-behavior')
-		document.documentElement.style.removeProperty('scroll-behavior')
 	}
 }
 
