@@ -10,7 +10,6 @@ const auctionKey = 'https://auctionkey.app'
 
 export const items: CraftItem[] = [
 	// October 2026
-	{ id: 'rain-window', title: 'Wipe the glass', project: 'Shader', about: 'A finger wipes a fogged window clear over Baghdad at night in the rain, the drops show the street upside down, lightning lights the pane and the fog comes back.', made: '2026-10', ground: 'dark', caption: 'top' },
 	{ id: 'loto-scratch-card', title: 'Scratch card', project: 'Iraq Loto', about: 'A finger scratches the foil off the gold ball, the five white balls wake with a hop, two swipes clear them and confetti bursts from the matching ball.', made: '2026-10', href: `${loto}/scratch/sc1k`, link: 'production', ground: 'dark' },
 	{ id: 'enjaz-annotated-headline', title: 'Annotated headline', project: 'Enjaz', about: 'Two words in a headline take turns being annotated the way their discipline works: a design selection frame with its size, then a code highlight that gets approved.', made: '2026-10', href: `${enjaz}/design`, link: 'production', ground: 'dark' },
 	{ id: 'quickev-charging-favicon', title: 'Charging favicon', project: 'Quick EV', about: 'The tab icon charges with amber in ten steps as the page scrolls down and turns back into the real icon at the top.', made: '2026-10', href: quickev, link: 'production', ground: 'dark' },
