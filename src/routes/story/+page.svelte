@@ -22,7 +22,7 @@
 			start: 'Jan 2025',
 			highlights: [
 				'Joined as the only frontend engineer on seven government platforms with 4+ million users, rebuilt and redesigned all seven within a year, and took production bugs from multiple a day to about weekly.',
-				'Built the frontend team from zero: scouted all three hires from the market, ran their interviews and trial tasks, then trained and onboarded them. Now lead the four, owning code review, standards, and release quality.',
+				'Built the frontend team from zero: scouted all three hires from the market and brought them in, then trained and onboarded them. Now lead the four, owning code review, standards, and release quality.',
 				'Helped write The Perfect Interface, the rulebook every Enjaz dashboard and app must implement, from the basics of a fast interface down to the polish details nobody notices.',
 				'The seven include Oil Coupon, Super Qi’s most-used miniapp (3+ million families), and the systems running the state OPDC’s oil-product distribution to gas stations, bakeries, generators, and farms nationwide.',
 				'Designed and built Enjaz’s corporate website, enjaz.tech.',
@@ -210,8 +210,8 @@
 			<a href='https://enjaz.tech' target='_blank' rel='noopener' class='link'>Enjaz</a>, the
 			e-government arm of Qi, Iraq's largest e-payment company, as the youngest of its 3,000+
 			employees and the only frontend engineer on seven government platforms. Within a year I had
-			rebuilt and redesigned all seven, then I found three engineers, ran their interviews, brought
-			them in, and trained them, and now I lead the four of us. The platforms serve more than four
+			rebuilt and redesigned all seven, then I found three engineers, brought them in
+			and trained them, and now I lead the four of us. The platforms serve more than four
 			million people, and Oil Coupon alone reaches three million families. I put sounds and
 			animations into business dashboards so people would enjoy using them, and I helped write The
 			Perfect Interface, a long file of rules every app in the company has to follow, down to the
