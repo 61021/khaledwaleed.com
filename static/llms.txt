@@ -28,7 +28,7 @@
 - /likes: A catalogue of obsessions: cinema, music, art, style, food, philosophy.
 - /films: Every film and series I have watched, scored 1 to 10.
 - /tools: The hardware, software, and services in daily use, physical and digital.
-- /contact: Phone, email, GitHub, LinkedIn, Telegram, Instagram, WhatsApp.
+- /contact: Phone, email, GitHub, LinkedIn, Telegram, WhatsApp.
 - /rss.xml: RSS feed for the writing.
 
 ## Style note

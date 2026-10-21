@@ -67,7 +67,6 @@ export const site = {
 			handle: 'kwaleedkhalid',
 		},
 		{ label: 'Telegram', href: 'https://t.me/x61021', handle: '@x61021' },
-		{ label: 'Instagram', href: 'https://www.instagram.com/khaled.jsx/', handle: '@khaled.jsx' },
 		{ label: 'WhatsApp', href: 'https://wa.me/message/6N52L7STPCUJO1', handle: 'Message' },
 	],
 

@@ -22,7 +22,7 @@
 			items: [
 				{
 					label: 'ASUS Zenbook 14',
-					note: 'UX3405MA, Core Ultra 9 185H. Hostname: archbook.',
+					note: 'UX3405MA, Core Ultra 9 185H. Hostname: runa.',
 				},
 				'Logitech MX Master mouse',
 				'Logitech MX Keys keyboard',
@@ -87,7 +87,7 @@
 				'Claude Code',
 				'Firefox',
 				'mpv',
-				{ label: 'restic', note: 'The laptop backs itself up to R2 every night.' },
+				{ label: 'restic', note: 'I back the laptop up to R2 with it.' },
 				{
 					label: 'IBM Plex everywhere',
 					note: 'Forced system-wide through fontconfig; JetBrains Mono in the terminal.',
