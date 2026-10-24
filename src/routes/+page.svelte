@@ -88,7 +88,7 @@
 <PageHeader room='home' eyebrow={`${site.role} · ${site.location.city}`} title='Khaled Waleed'>
 	{#snippet lede()}
 		<p>
-			I lead frontend at the biggest tech company in Iraq, create memorable digital experiences,
+			I lead frontend at the biggest tech company in Iraq, create memorable digital experience<a href='/showcase' class='door' aria-label='Showcase'>s</a>,
 			and <a href='/studies' class='door' aria-label='Studies'>s</a>ometimes write my thoughts on paper.
 		</p>
 	{/snippet}
@@ -157,8 +157,9 @@
 </Container>
 
 <style>
-	/* The way into the studies: the s of sometimes, wearing the lede's
-	   own ink until a cursor or the keyboard finds it. */
+	/* The ways into the showcase and the studies: the s of experiences
+	   and of sometimes, wearing the lede's own ink until a cursor or the
+	   keyboard finds them. */
 	.door {
 		color: inherit;
 		transition: color var(--dur-quick) var(--ease-out);
