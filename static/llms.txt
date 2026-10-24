@@ -19,7 +19,6 @@
 - /: Home.
 - /story: The full story, the work history, and the CV as a downloadable PDF.
 - /projects: Everything built and shipped: products, client work, government platforms, open source.
-- /craft: Short looping clips of interactions and animations from the projects, recorded from the real code.
 - /writing: Essays and short fiction on people, ideas, art, and philosophy.
 - /writing/r: Short fiction, a love letter transmitted from deep space.
 - /writing/the-thin-line: How small the difference between a good person and a bad one really is.

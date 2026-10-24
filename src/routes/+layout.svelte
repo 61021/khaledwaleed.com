@@ -252,7 +252,6 @@
 		{ name: 'Foyer', href: '/' },
 		{ name: 'Story', href: '/story' },
 		{ name: 'Projects', href: '/projects' },
-		{ name: 'Craft', href: '/craft' },
 		{ name: 'Writing', href: '/writing' },
 		{ name: 'Likes', href: '/likes' },
 		{ name: 'Films', href: '/films' },
@@ -916,11 +915,11 @@
 
 	/* The gilt thread: a 1px hairline stretched to the link's width, so
 	   the run between two rooms is one composited transform. */
-	/* Where nine rooms can't share one line, they split five and four
-	   instead of leaving the last one alone on a second row. */
-	@media (min-width: 40rem) and (max-width: 53rem) {
+	/* Where eight rooms can't share one centred line, they split four
+	   and four instead of leaving the last one alone on a second row. */
+	@media (min-width: 40rem) and (max-width: 49rem) {
 		.primary-nav {
-			max-width: 23.5rem;
+			max-width: 18.5rem;
 		}
 	}
 

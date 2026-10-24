@@ -49,6 +49,7 @@
 	image='/og-craft.png'
 	imageAlt='Six clips from the craft wall: interactions and animations from my projects.'
 	keywords={['craft', 'interaction design', 'motion', 'animation', 'design engineer', 'ui']}
+	noindex
 />
 <SchemaOrg {schema} />
 

@@ -248,7 +248,7 @@
 
 <PageHeader room='projects' title='Projects'>
 	{#snippet lede()}
-		<p>What I have shipped, with the numbers. Clips of the details are on <a href='/craft' class='link'>Craft</a>.</p>
+		<p>What I have shipped, with the numbers.</p>
 	{/snippet}
 </PageHeader>
 

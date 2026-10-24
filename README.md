@@ -111,7 +111,7 @@ static/                   # paintings, logos, manifest, etc.
 | `/`         | Home / hero, the canonical profile page                                                 |
 | `/story`    | Longer bio, career history, CV download (`/about` 301s here)                            |
 | `/projects` | The catalogue of shipped work: products, client work, government platforms, open source |
-| `/craft`    | A wall of looping clips: interactions and animations recorded from the real code        |
+| `/craft`    | Looping clips from the real code; unlisted: off the nav and sitemap, noindex            |
 | `/writing`  | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards             |
 | `/library`  | Books (hidden for now, 302s to `/likes`)                                                |
 | `/films`    | A ledger of ~225 rated films & shows, server-rendered from D1, searchable, with stats   |
