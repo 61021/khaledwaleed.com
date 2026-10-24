@@ -111,7 +111,7 @@ static/                   # paintings, logos, manifest, etc.
 | `/`         | Home / hero, the canonical profile page                                                 |
 | `/story`    | Longer bio, career history, CV download (`/about` 301s here)                            |
 | `/projects` | The catalogue of shipped work: products, client work, government platforms, open source |
-| `/craft`    | Looping clips from the real code; unlisted: off the nav and sitemap, noindex            |
+| `/showcase` | Unlisted wall of looping clips from the real code, noindex (`/craft` 301s here)         |
 | `/writing`  | Essays (Markdown via mdsvex), with `/writing/[slug]` and per-essay OG cards             |
 | `/library`  | Books (hidden for now, 302s to `/likes`)                                                |
 | `/films`    | A ledger of ~225 rated films & shows, server-rendered from D1, searchable, with stats   |
@@ -130,7 +130,7 @@ The `scripts/` folder holds small Node scripts for maintaining content:
 | `fetch-paintings-direct.ts`  | Same, for paintings that need a specific Commons file                    |
 | `generate-painting-sizes.ts` | Emit 720/1280px responsive variants + the `painting-sizes.json` manifest |
 | `generate-icons.ts`          | Render the apple-touch and manifest PNG icons from the wordmark          |
-| `craft-media.ts`             | Bring recorded clips onto `/craft`: hashed files + `craft/media.json`    |
+| `craft-media.ts`             | Bring recorded clips onto `/showcase`: hashed files + `craft/media.json` |
 
 Run any of them with `node scripts/<name>.ts` (Node 24 runs TypeScript directly).
 

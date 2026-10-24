@@ -1,5 +1,5 @@
-// The glide: GSAP's ScrollSmoother carrying the museum's and the craft
-// wall's scroll on a short catch-up (0.5s), subtle enough to read as
+// The glide: GSAP's ScrollSmoother carrying the museum's and the
+// showcase's scroll on a short catch-up (0.5s), subtle enough to read as
 // weight rather than syrup. Desktop pointers only: touch compositors
 // already glide, and pinning the wrapper on phones buys jank for
 // nothing; reduced-motion visitors are never smoothed at all. GSAP

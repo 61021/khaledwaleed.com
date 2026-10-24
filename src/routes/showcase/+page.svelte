@@ -24,9 +24,9 @@
 	const schema = {
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
-		'@id': `${site.url}/craft#page`,
-		'url': `${site.url}/craft`,
-		'name': 'Craft',
+		'@id': `${site.url}/showcase#page`,
+		'url': `${site.url}/showcase`,
+		'name': 'Showcase',
 		description,
 		'author': { '@type': 'Person', '@id': `${site.url}/#person`, 'name': site.name, 'url': site.url },
 		'hasPart': tiles.map(t => ({
@@ -44,20 +44,20 @@
 </script>
 
 <Seo
-	title='Craft'
+	title='Showcase'
 	{description}
-	image='/og-craft.png'
-	imageAlt='Six clips from the craft wall: interactions and animations from my projects.'
-	keywords={['craft', 'interaction design', 'motion', 'animation', 'design engineer', 'ui']}
+	image='/og-showcase.png'
+	imageAlt='Six clips from the showcase: interactions and animations from my projects.'
+	keywords={['showcase', 'craft', 'interaction design', 'motion', 'animation', 'design engineer', 'ui']}
 	noindex
 />
 <SchemaOrg {schema} />
 
-<div class='craft'>
+<div class='showcase'>
 	<a class='home' href='/' aria-label='Khaled Waleed, home'>
 		<Monogram class='mark' />
 	</a>
-	<h1 class='sr-only'>Craft</h1>
+	<h1 class='sr-only'>Showcase</h1>
 
 	<div class='wall three'>
 		{#each three as column, c (c)}
@@ -83,7 +83,7 @@
 </div>
 
 <style>
-	.craft {
+	.showcase {
 		--gap: 8px;
 		--c-bg: #0a0a0a;
 		--c-card: #121212;
@@ -100,7 +100,7 @@
 	}
 
 	@media (prefers-color-scheme: light) {
-		.craft {
+		.showcase {
 			--c-bg: #fafafa;
 			--c-card: #fefefe;
 			--c-edge: #e6e6e6;

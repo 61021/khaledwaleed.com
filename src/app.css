@@ -163,32 +163,32 @@ html[data-room='studies'] body::after {
 	display: none;
 }
 
-/* ---------- The craft wall (/craft) ----------
+/* ---------- The showcase (/showcase) ----------
    A third world: a plain black wall of clips that follows the visitor's
    own light or dark setting. No wallpaper, no vignette, no house type;
-   the page itself owns its tokens (routes/craft). */
-:root[data-room='craft'] {
+   the page itself owns its tokens (routes/showcase). */
+:root[data-room='showcase'] {
 	--bg: #0a0a0a;
 	--ink: #ededed;
 }
 
-html[data-room='craft'] {
+html[data-room='showcase'] {
 	color-scheme: dark;
 }
 
 @media (prefers-color-scheme: light) {
-	:root[data-room='craft'] {
+	:root[data-room='showcase'] {
 		--bg: #fafafa;
 		--ink: #171717;
 	}
 
-	html[data-room='craft'] {
+	html[data-room='showcase'] {
 		color-scheme: light;
 	}
 }
 
-html[data-room='craft'] body::before,
-html[data-room='craft'] body::after {
+html[data-room='showcase'] body::before,
+html[data-room='showcase'] body::after {
 	display: none;
 }
 

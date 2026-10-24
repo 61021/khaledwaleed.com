@@ -37,12 +37,12 @@
 	}
 	const inStudies = $derived(isStudiesPath(page.url.pathname))
 
-	// /craft is a third world: a plain dark wall of clips, with none of
+	// /showcase is a third world: a plain dark wall of clips, with none of
 	// the museum's chrome and none of the studies' paper.
-	function isCraftPath(pathname: string | undefined) {
-		return pathname === '/craft'
+	function isShowcasePath(pathname: string | undefined) {
+		return pathname === '/showcase'
 	}
-	const bare = $derived(inStudies || isCraftPath(page.url.pathname))
+	const bare = $derived(inStudies || isShowcasePath(page.url.pathname))
 
 	// The colophon year, computed so it turns over each New Year.
 	const colophonYear = romanYear(new Date().getFullYear())
@@ -166,8 +166,8 @@
 	// A reload restores its old seat before any wheel moves.
 	onMount(onScroll)
 
-	// The glide (src/lib/smoother.ts) mounts with the museum or the craft
-	// wall and leaves with them: /studies keeps native paper scrolling
+	// The glide (src/lib/smoother.ts) mounts with the museum or the
+	// showcase and leaves with them: /studies keeps native paper scrolling
 	// under its own GSAP.
 	let smoothWrapper = $state<HTMLElement>()
 	let smoothContent = $state<HTMLElement>()
@@ -213,7 +213,7 @@
 	}
 
 	function onGlobalKeydown(e: KeyboardEvent) {
-		// The studies and the craft wall have no menu, no sound switch,
+		// The studies and the showcase have no menu, no sound switch,
 		// and no secrets.
 		if (bare)
 			return
@@ -425,10 +425,10 @@
 
 	onNavigate((navigation) => {
 		mobileOpen = false
-		// The first walk out of the studies or the craft wall arms the
+		// The first walk out of the studies or the showcase arms the
 		// house sound system.
 		const toPath = navigation.to?.url.pathname
-		if (toPath && !isStudiesPath(toPath) && !isCraftPath(toPath))
+		if (toPath && !isStudiesPath(toPath) && !isShowcasePath(toPath))
 			initSound()
 		// The overture plays once per visit: after the first arrival the
 		// curtain sits out and paintings develop in place (see Curtain.svelte
@@ -452,9 +452,9 @@
 		// search changes (the music range switcher) swap in place.
 		if (!pathChanged)
 			return
-		// The craft wall stands apart from both worlds: going in or out
+		// The showcase stands apart from both worlds: going in or out
 		// is a plain cut, as it is between any two sites.
-		if (isCraftPath(navigation.from?.url.pathname) || isCraftPath(navigation.to?.url.pathname))
+		if (isShowcasePath(navigation.from?.url.pathname) || isShowcasePath(navigation.to?.url.pathname))
 			return
 		// Start the next painting's decode if intent didn't get there first.
 		// Nothing waits on it: a canvas that isn't ready develops in on its
@@ -593,7 +593,7 @@
 		{@render children()}
 	</main>
 {:else if bare}
-	<!-- The craft wall (routes/craft): no house chrome either, but the
+	<!-- The showcase (routes/showcase): no house chrome either, but the
 	     glide on a frame of its own. -->
 	<div id='smooth-wrapper' bind:this={smoothWrapper}>
 		<div id='smooth-content' bind:this={smoothContent}>

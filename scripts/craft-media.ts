@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Bring recorded clips onto the craft wall.
+ * Bring recorded clips onto the showcase.
  *
  * Each recording directory holds `<id>.mp4` (or none, for a still),
  * `<id>.webp` (the poster, the loop's first frame) and `meta.json`
@@ -11,7 +11,7 @@
  *   node scripts/craft-media.ts <recordings-dir> [id ...]
  *
  * With no ids, every recording in the directory is brought over.
- * The share card (static/og-craft.png) is redrawn from the six newest
+ * The share card (static/og-showcase.png) is redrawn from the six newest
  * tiles on the wall every run.
  */
 import { Buffer } from 'node:buffer'
@@ -105,6 +105,6 @@ if (newest.length === COLS * ROWS) {
 	await sharp({ create: { width: W, height: H, channels: 3, background: '#0a0a0a' } })
 		.composite(cells)
 		.png({ compressionLevel: 9 })
-		.toFile(path.resolve('static/og-craft.png'))
-	console.log('share card: static/og-craft.png')
+		.toFile(path.resolve('static/og-showcase.png'))
+	console.log('share card: static/og-showcase.png')
 }

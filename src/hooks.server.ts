@@ -23,6 +23,8 @@ const redirects: Record<string, string> = {
 	'/about': '/story',
 	// Tools lived at /uses until 2026-08-15; the old address is indexed.
 	'/uses': '/tools',
+	// The craft wall was renamed Showcase (2026-10-24); its old link was shared.
+	'/craft': '/showcase',
 	// The studies opened as the creative space (/space) and were renamed
 	// 2026-09-23; every study under it moves with the prefix rule below.
 	'/space': '/studies',
@@ -106,9 +108,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 				if (!done)
 					return ''
 				const stamped = buffer.replace('data-room="home"', `data-room="${room}"`)
-				// The craft wall follows the visitor's light or dark setting,
+				// The showcase follows the visitor's light or dark setting,
 				// and so does the browser chrome around it.
-				if (room === 'craft') {
+				if (room === 'showcase') {
 					return stamped
 						.replace('<meta name="theme-color" content="#0a1220" />', '<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0a0a" /><meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />')
 						.replace('<meta name="color-scheme" content="dark" />', '<meta name="color-scheme" content="dark light" />')
