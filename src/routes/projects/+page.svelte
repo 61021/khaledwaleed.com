@@ -62,7 +62,7 @@
 			items: [
 				{
 					name: 'Iraq Loto',
-					url: 'https://42.iraqloto.iq',
+					url: 'https://loto.iq',
 					measure: '480K+ users',
 					note: 'Iraq’s national lottery, built entirely by me, sold on the web, in Super Qi and on POS terminals in shops.',
 				},

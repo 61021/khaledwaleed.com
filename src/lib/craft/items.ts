@@ -5,7 +5,7 @@ import type { CraftItem } from './types'
 const enjaz = 'https://enjaz.tech/en'
 const quickev = 'https://quickev.net/en'
 const tally = 'https://tally.vitex.dev'
-const loto = 'https://42.iraqloto.iq'
+const loto = 'https://loto.iq'
 const auctionKey = 'https://auctionkey.app'
 
 export const items: CraftItem[] = [
