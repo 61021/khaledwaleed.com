@@ -25,13 +25,3 @@ export function craftTiles(list: readonly CraftItem[] = items, library: Record<s
 		.sort((a, b) => b.item.made.localeCompare(a.item.made) || a.i - b.i)
 		.map(({ item }, order) => ({ ...item, media: library[item.id], order }))
 }
-
-/**
- * Deal the tiles across n columns like cards, left to right, so reading
- * across the top row still runs newest to oldest.
- */
-export function deal<T>(tiles: readonly T[], n: number): T[][] {
-	const columns: T[][] = Array.from({ length: n }, () => [])
-	tiles.forEach((tile, i) => columns[i % n].push(tile))
-	return columns
-}

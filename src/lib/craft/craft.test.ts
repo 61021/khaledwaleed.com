@@ -1,7 +1,7 @@
 import type { CraftItem, CraftMedia } from './types'
 import { existsSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { craftTiles, deal, monthLabel } from './craft'
+import { craftTiles, monthLabel } from './craft'
 import { items } from './items'
 import media from './media.json'
 
@@ -30,13 +30,6 @@ describe('craftTiles', () => {
 	it('leaves out anything without media', () => {
 		const tiles = craftTiles([item('a', '2025-01'), item('b', '2026-03')], { a: still })
 		expect(tiles.map(t => t.id)).toEqual(['a'])
-	})
-})
-
-describe('deal', () => {
-	it('deals left to right so the top row reads newest first', () => {
-		expect(deal([1, 2, 3, 4, 5, 6, 7], 3)).toEqual([[1, 4, 7], [2, 5], [3, 6]])
-		expect(deal([1, 2, 3], 1)).toEqual([[1, 2, 3]])
 	})
 })
 
