@@ -37,8 +37,8 @@
 	}
 	const inStudies = $derived(isStudiesPath(page.url.pathname))
 
-	// /showcase is a third world: a plain dark wall of clips, with none of
-	// the museum's chrome and none of the studies' paper.
+	// /showcase is a third world: a drum of clips filling the screen, with
+	// none of the museum's chrome and none of the studies' paper.
 	function isShowcasePath(pathname: string | undefined) {
 		return pathname === '/showcase'
 	}
@@ -166,14 +166,14 @@
 	// A reload restores its old seat before any wheel moves.
 	onMount(onScroll)
 
-	// The glide (src/lib/smoother.ts) mounts with the museum or the
-	// showcase and leaves with them: /studies keeps native paper scrolling
-	// under its own GSAP.
+	// The glide (src/lib/smoother.ts) mounts with the museum and leaves
+	// with it: /studies keeps native paper scrolling under its own GSAP,
+	// and the showcase never scrolls.
 	let smoothWrapper = $state<HTMLElement>()
 	let smoothContent = $state<HTMLElement>()
 
 	$effect(() => {
-		if (inStudies || !smoothWrapper || !smoothContent)
+		if (bare || !smoothWrapper || !smoothContent)
 			return
 		return mountSmoother(smoothWrapper, smoothContent)
 	})
@@ -587,21 +587,12 @@
 
 <a href='#main' class='skip-link'>Skip to content</a>
 
-{#if inStudies}
-	<!-- The studies: no house chrome. Their world lives in routes/studies. -->
+{#if bare}
+	<!-- The studies and the showcase: no house chrome. Each world lives
+	     in its own routes. -->
 	<main id='main'>
 		{@render children()}
 	</main>
-{:else if bare}
-	<!-- The showcase (routes/showcase): no house chrome either, but the
-	     glide on a frame of its own. -->
-	<div id='smooth-wrapper' bind:this={smoothWrapper}>
-		<div id='smooth-content' bind:this={smoothContent}>
-			<main id='main'>
-				{@render children()}
-			</main>
-		</div>
-	</div>
 {:else}
 	<!-- The header: still lettering on the room's canvas from the first
 	     frame, no band of wall above it, but it now rides fixed. Past
