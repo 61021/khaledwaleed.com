@@ -1,9 +1,9 @@
-// The glide: GSAP's ScrollSmoother carrying the museum's scroll on a
-// short catch-up (0.5s), subtle enough to read as weight rather than
-// syrup. Desktop pointers only: touch compositors already glide, and
-// pinning the wrapper on phones buys jank for nothing; reduced-motion
-// visitors are never smoothed at all. GSAP loads on demand so no first
-// paint carries it.
+// The glide: GSAP's ScrollSmoother carrying the museum's and the
+// showcase's scroll on a short catch-up (0.5s), subtle enough to read as
+// weight rather than syrup. Desktop pointers only: touch compositors
+// already glide, and pinning the wrapper on phones buys jank for
+// nothing; reduced-motion visitors are never smoothed at all. GSAP
+// loads on demand so no first paint carries it.
 import type { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 let smoother: ScrollSmoother | undefined

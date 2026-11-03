@@ -29,7 +29,7 @@
 			dialog.close()
 	}
 
-	// The drum's own clips rest while one plays large: video layers can
+	// The wall's own clips rest while one plays large: video layers can
 	// paint over a modal's backdrop, and nobody watches them behind it.
 	function hush(on: boolean) {
 		document.documentElement.toggleAttribute('data-viewing', on)

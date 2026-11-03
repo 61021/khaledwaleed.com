@@ -40,41 +40,6 @@ export interface CraftMedia {
 /** A tile with its media resolved and its place in the date order. */
 export interface CraftTile extends CraftItem {
 	media: CraftMedia
-	/** Position in the newest-first order; the barrel's source index. */
+	/** Position in the newest-first order, for the one-column flow. */
 	order: number
-}
-
-export interface BarrelOptions {
-	/** A click or Enter on the tile in front. */
-	onopen: (source: number) => void
-	/** An arrow key put this source in front. */
-	onfront: (source: number) => void
-}
-
-/** One place on the drum; the barrel deals it a source as it turns. */
-export interface BarrelSlot {
-	el: HTMLElement
-	/** Its seat round the ring, in degrees. */
-	angle: number
-	/** Its row among the slots, before wrapping. */
-	row: number
-	/** The world row it stands on, null until placed. */
-	at: number | null
-	hidden: boolean | null
-	source: number
-	content: HTMLElement | null
-	video: HTMLVideoElement | null
-}
-
-export interface BarrelLayout {
-	stepX: number
-	stepY: number
-	angleStep: number
-	radius: number
-	/** How far the ring's axis comes toward the camera. */
-	anchorZ: number
-	rows: number
-	/** Sources per world row, so the row below runs on from this one. */
-	across: number
-	degPerPx: number
 }
