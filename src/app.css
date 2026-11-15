@@ -202,7 +202,7 @@ html[data-room='showcase'] body::after {
    with opsz left live, so the display rules' `font-weight: 400` still
    resolves to the one face. The display serif wears ROMAN everywhere
    since 2026-08-06: italic survives only as semantics (em, blockquotes,
-   work titles) and the likes kickers. */
+   work titles). */
 :root {
 	--font-body: 'Source Sans 3 Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
 	--font-display: 'Newsreader Variable', Georgia, 'Times New Roman', ui-serif, serif;
@@ -562,7 +562,7 @@ html[data-swap='out'] .frontispiece img {
 /* ---------- Rules ---------- */
 /* The house rhythm, so every room keeps the same beat: content opens
    mt-10 under the hero (or on a bare fleuron); a heading holds its
-   list at mt-5 (kickers mt-2); sections sit space-y-16 apart with any
+   list at mt-5; sections sit space-y-16 apart with any
    rule-fine as a bare sibling; ruled rows take py-3; a closing
    button-row follows its line at mt-8; the footer clears itself. */
 .rule-thin {
