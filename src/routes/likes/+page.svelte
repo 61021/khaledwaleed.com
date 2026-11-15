@@ -4,7 +4,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-10-04'
+	const lastUpdated = '2026-11-15'
 
 	type Section = {
 		name: string
@@ -36,6 +36,7 @@
 				'Studio Ghibli',
 				'Beautiful failures',
 				'Films that trust the audience',
+				'Every episode of Tom and Jerry',
 			],
 			link: { href: '/films', label: 'Every film and show I have rated →' },
 		},
@@ -54,6 +55,7 @@
 				'Lonely figures in vast landscapes',
 				'Storms at sea',
 				'Melancholy without despair',
+				'Old camera shots printed on Instax',
 			],
 		},
 		{
@@ -74,6 +76,7 @@
 				'Garage rock revival',
 				'Moody Americana',
 				'The tuning note before the first note',
+				'Old Disney-style scores',
 			],
 		},
 		{
@@ -104,16 +107,30 @@
 				'Cozy, small, lived-in rooms',
 				'Patterned wallpaper',
 				'Warm yellow light',
+				{
+					label: 'Orange filament bulbs',
+					note: 'Orange, not yellow. Below 3000 Kelvin.',
+				},
 				'Victorian & Greek detailing',
 				'A real fireplace',
 				'Archways instead of corners',
 				'Dark wood interiors and doors',
+				'Dark oak furniture',
 				'Worn leather',
 				'Indoor plants in every room',
+				'Big plants in very big pots',
+				{
+					label: 'Cuttings rooting in a glass of water',
+					note: 'I cut a stem, leave it in water until it roots, then plant it somewhere else.',
+				},
+				'A wardrobe filled with plants',
+				'Empty bottles holding flowers',
 				'Paintings on every wall',
 				'Dead flowers in a vase',
 				'Patterned carpets',
+				'Persian carpets in many colours',
 				'A big TV, sofa pulled close',
+				'A big sofa you sink into',
 				'A bed too big for the room',
 				'Candles & lanterns',
 				'Detailed spoons & utensils',
@@ -130,6 +147,25 @@
 				'Wall-sized mirrors in the dressing room and bathroom',
 				'An oversized shower head',
 				'Rain against windows',
+				{
+					label: 'A floor clean enough to sleep on',
+					note: 'The vacuum runs five times a day.',
+				},
+			],
+		},
+		{
+			name: 'Comfort',
+			items: [
+				'A dark purple cotton bathrobe',
+				{
+					label: 'Fifteen minutes by the heater doing nothing',
+					note: 'After a shower, before work. Sometimes thirty.',
+				},
+				'Cotton-lined slippers built like shoes',
+				{
+					label: 'Pyjamas and slippers to the office',
+					note: 'On the days I go in late.',
+				},
 			],
 		},
 		{
@@ -160,6 +196,7 @@
 				'Penne arrabbiata',
 				'Rocket (arugula) salad',
 				'Sushi',
+				'Jarred pickles',
 				'Sunflower seeds, by the bag',
 			],
 		},
@@ -170,6 +207,10 @@
 				'Sex on the Beach, ordered without irony',
 				'Ice-cold Jägermeister',
 				'Ice-cold beer',
+				{
+					label: 'Good red table wine',
+					note: 'Red only.',
+				},
 				'Iced V60',
 				'Peach iced tea',
 				'Black tea',
