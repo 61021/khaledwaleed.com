@@ -8,7 +8,6 @@
 
 	type Section = {
 		name: string
-		kicker: string
 		items: FlowItem[]
 		link?: { href: string, label: string }
 	}
@@ -16,7 +15,6 @@
 	const sections: Section[] = [
 		{
 			name: 'Mind',
-			kicker: 'Philosophy I keep returning to',
 			items: [
 				'Why people suffer',
 				'Whether meaning is discovered or invented',
@@ -32,7 +30,6 @@
 		},
 		{
 			name: 'Cinema',
-			kicker: 'What I rewatch on principle',
 			items: [
 				'Stanley Kubrick',
 				'David Lynch',
@@ -44,7 +41,6 @@
 		},
 		{
 			name: 'Art',
-			kicker: 'Art I never get tired of',
 			items: [
 				'Northern Romantic painting',
 				'Caspar David Friedrich',
@@ -62,7 +58,6 @@
 		},
 		{
 			name: 'Music',
-			kicker: 'What I listen to',
 			items: [
 				'Classical music of every era',
 				'Tchaikovsky\'s Swan Lake',
@@ -83,7 +78,6 @@
 		},
 		{
 			name: 'Style',
-			kicker: 'A dark, tailored world',
 			items: [
 				'Oversized English trousers',
 				'Crisp dress shirts',
@@ -106,7 +100,6 @@
 		},
 		{
 			name: 'Space',
-			kicker: 'How a room should feel',
 			items: [
 				'Cozy, small, lived-in rooms',
 				'Patterned wallpaper',
@@ -141,7 +134,6 @@
 		},
 		{
 			name: 'Places',
-			kicker: 'Rooms I don\'t own',
 			items: [
 				'Libraries',
 				'Bookshops with ladders',
@@ -153,7 +145,6 @@
 		},
 		{
 			name: 'Food',
-			kicker: 'Foods that are worth the effort',
 			items: [
 				'Pancakes',
 				{
@@ -174,7 +165,6 @@
 		},
 		{
 			name: 'Drink',
-			kicker: 'What ends up in the glass',
 			items: [
 				'Almost any cocktail',
 				'Sex on the Beach, ordered without irony',
@@ -187,7 +177,6 @@
 		},
 		{
 			name: 'Road',
-			kicker: 'Fast cars, empty roads',
 			items: [
 				'Porsche 911 Turbo S',
 				'Aston Martin DB11',
@@ -198,7 +187,6 @@
 		},
 		{
 			name: 'Travel',
-			kicker: 'Weather and slight danger',
 			items: [
 				'Rain & thunderstorms',
 				'Solo trips to big cities',
@@ -210,7 +198,6 @@
 		},
 		{
 			name: 'Body',
-			kicker: 'A Greek-god frame, and tolerance for pain',
 			items: [
 				'Inhuman training volumes',
 				'Endurance past the point of reason',
@@ -227,7 +214,6 @@
 		},
 		{
 			name: 'Craft',
-			kicker: 'The software taste behind the day job',
 			items: [
 				'Total control over my stack',
 				{
@@ -300,29 +286,26 @@
 
 	<Fleuron />
 
-	<div class='space-y-16'>
-		{#each sections as s, i (s.name)}
-			<section id={s.name.toLowerCase()} class='scroll-mt-20' {@attach reveal}>
-				<h2 class='h2-display'>{s.name}</h2>
-				<!-- The kicker reads as a chapter subtitle, not a filing label. -->
-				<p
-					class='mt-2 [font-family:var(--font-display)] text-[1.05rem] text-[var(--ink-muted)] italic'
-				>
-					{s.kicker}
-				</p>
-				<FlowList items={s.items} />
-				{#if s.link}
-					<p class='mt-5'>
-						<a href={s.link.href} class='link'>{s.link.label}</a>
-					</p>
-				{/if}
+	<div>
+		{#each sections as s (s.name)}
+			<section
+				id={s.name.toLowerCase()}
+				class='grid scroll-mt-20 gap-x-8 gap-y-1.5 border-t border-[var(--rule)] py-[1.4rem] sm:grid-cols-[9.5rem_minmax(0,1fr)]'
+				{@attach reveal}
+			>
+				<h2 class='self-start text-[1.6rem]! leading-[1.2]!'>{s.name}</h2>
+				<div class='[&>ul]:mt-[0.2rem]'>
+					<FlowList items={s.items} />
+					{#if s.link}
+						<p class='mt-5'>
+							<a href={s.link.href} class='link'>{s.link.label}</a>
+						</p>
+					{/if}
+				</div>
 			</section>
-			{#if i < sections.length - 1}
-				<div class='rule-fine'></div>
-			{/if}
 		{/each}
 
-		<p class='leading-relaxed text-[var(--ink-muted)]'>R</p>
+		<p class='mt-16 leading-relaxed text-[var(--ink-muted)]'>R</p>
 	</div>
 
 	<Fleuron />
