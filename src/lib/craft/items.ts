@@ -12,11 +12,8 @@ const rocca = 'https://roccamenu.com'
 export const items: CraftItem[] = [
 	// November 2026
 	{ id: 'loto-sc500-neon-card', title: 'Neon card', project: 'Iraq Loto', about: 'A scratch card with a neon edge over a grid floor: tickets are scratched open one by one and the three matching prizes stand in a gold ring.', made: '2026-11', href: `${loto}/scratch/sc500`, link: 'production', ground: 'dark' },
-	{ id: 'rocca-menu-style-presets', title: 'Menu styles', project: 'Rocca Menu', about: 'One café menu repaints itself through six starting looks, each changing the type, corners, edges, price tags and photo shapes.', made: '2026-11', href: rocca, link: 'production', ground: 'dark' },
 	{ id: 'loto-scratch-card', title: 'Scratch card', project: 'Iraq Loto', about: 'A finger scratches the gold football in the goal, five footballs wake below it, two swipes clear them and the matching number takes a gold ring and confetti.', made: '2026-11', href: `${loto}/scratch/sc1k`, link: 'production', ground: 'dark' },
-	{ id: 'loto-open-all-pile', title: 'Open all', project: 'Iraq Loto', about: 'Opening 24 scratch cards at once: the pile deals itself card by card while the total climbs, then the prizes rise grouped by amount.', made: '2026-11', ground: 'dark' },
 	{ id: 'rocca-qr-table-card', title: 'Table card designer', project: 'Rocca Menu', about: 'A QR table card redraws as its dots, corners and colours are picked, turns into a sticker and comes back.', made: '2026-11', href: rocca, link: 'production', ground: 'light' },
-	{ id: 'loto-landing-hero', title: 'Landing entrance', project: 'Iraq Loto', about: 'The home page arrives: the headline feeds up, the last draw drops into its tray ball by ball and the game cards rise as a row.', made: '2026-11', href: loto, link: 'production', ground: 'dark' },
 
 	// October 2026
 	{ id: 'turner-storm', title: 'Turner in the rain', project: 'Shader', about: 'Turner\'s Fishermen at Sea in heavy rain, the sea heaves, mist drifts low, the moon dims as clouds pass and lightning flickers inside the clouds.', made: '2026-10', ground: 'dark' },
