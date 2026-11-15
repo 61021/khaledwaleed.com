@@ -3,7 +3,7 @@
 	import { formatDate } from '$lib/posts'
 	import { reveal } from '$lib/reveal'
 
-	const lastUpdated = '2026-10-19'
+	const lastUpdated = '2026-11-15'
 
 	type Project = {
 		name: string
@@ -63,7 +63,7 @@
 				{
 					name: 'Iraq Loto',
 					url: 'https://loto.iq',
-					measure: '480K+ users',
+					measure: '590K+ users',
 					note: 'Iraq’s national lottery, built entirely by me, sold on the web, in Super Qi and on POS terminals in shops.',
 				},
 				{
