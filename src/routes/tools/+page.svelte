@@ -10,7 +10,6 @@
 
 	type Section = {
 		name: string
-		kicker: string
 		items: FlowItem[]
 		link?: { href: string, label: string }
 	}
@@ -18,7 +17,6 @@
 	const sections: Section[] = [
 		{
 			name: 'Desk',
-			kicker: 'The machine and what plugs into it',
 			items: [
 				{
 					label: 'ASUS Zenbook 14',
@@ -30,7 +28,6 @@
 		},
 		{
 			name: 'Everyday',
-			kicker: 'What leaves the house with me',
 			items: [
 				'Samsung Galaxy S24 Ultra',
 				{
@@ -52,7 +49,6 @@
 		},
 		{
 			name: 'Home & hobby',
-			kicker: 'Evenings, mostly',
 			items: [
 				{
 					label: 'LG 55-inch 4K OLED TV',
@@ -64,7 +60,6 @@
 		},
 		{
 			name: 'Road & ritual',
-			kicker: 'The car and the coffee',
 			items: [
 				{
 					label: '2022 Toyota Corolla Hybrid',
@@ -75,7 +70,6 @@
 		},
 		{
 			name: 'System',
-			kicker: 'What the machine runs',
 			items: [
 				'Arch Linux',
 				'Hyprland',
@@ -97,7 +91,6 @@
 		},
 		{
 			name: 'Stack',
-			kicker: 'What I build with',
 			items: [
 				'TypeScript',
 				'Svelte & SvelteKit',
@@ -112,7 +105,6 @@
 		},
 		{
 			name: 'Services',
-			kicker: 'Where things run',
 			items: [
 				{ label: 'Cloudflare Workers', note: 'This site and most of the client sites.' },
 				'Cloudflare D1',
@@ -175,30 +167,27 @@
 
 	<Fleuron />
 
-	<div class='space-y-16'>
-		{#each sections as s, i (s.name)}
-			<section id={slug(s.name)} class='scroll-mt-20' {@attach reveal}>
-				<h2 class='h2-display'>{s.name}</h2>
-				<!-- The kicker reads as a chapter subtitle, not a filing label. -->
-				<p
-					class='mt-2 [font-family:var(--font-display)] text-[1.05rem] text-[var(--ink-muted)] italic'
-				>
-					{s.kicker}
-				</p>
-				<FlowList items={s.items} />
-				{#if s.link}
-					<p class='mt-5'>
-						{#if s.link.href.startsWith('http')}
-							<a href={s.link.href} class='link' target='_blank' rel='noopener noreferrer'>{s.link.label}</a>
-						{:else}
-							<a href={s.link.href} class='link'>{s.link.label}</a>
-						{/if}
-					</p>
-				{/if}
+	<div>
+		{#each sections as s (s.name)}
+			<section
+				id={slug(s.name)}
+				class='grid scroll-mt-20 gap-x-8 gap-y-1.5 border-t border-[var(--rule)] py-[1.4rem] sm:grid-cols-[9.5rem_minmax(0,1fr)]'
+				{@attach reveal}
+			>
+				<h2 class='self-start text-[1.6rem]! leading-[1.2]!'>{s.name}</h2>
+				<div class='[&>ul]:mt-[0.2rem]'>
+					<FlowList items={s.items} />
+					{#if s.link}
+						<p class='mt-5'>
+							{#if s.link.href.startsWith('http')}
+								<a href={s.link.href} class='link' target='_blank' rel='noopener noreferrer'>{s.link.label}</a>
+							{:else}
+								<a href={s.link.href} class='link'>{s.link.label}</a>
+							{/if}
+						</p>
+					{/if}
+				</div>
 			</section>
-			{#if i < sections.length - 1}
-				<div class='rule-fine'></div>
-			{/if}
 		{/each}
 	</div>
 </Container>
